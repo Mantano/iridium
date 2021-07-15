@@ -1,0 +1,64 @@
+// Copyright (c) 2021 Mantano. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+import 'package:r2_shared_dart/publication.dart';
+
+class ReadiumCssLayout {
+// Right to left
+  static const ReadiumCssLayout rtl = ReadiumCssLayout._("rtl");
+// Left to right
+  static const ReadiumCssLayout ltr = ReadiumCssLayout._("ltr");
+// Asian language, vertically laid out
+  static const ReadiumCssLayout cjkVertical =
+      ReadiumCssLayout._("cjk-vertical");
+// Asian language, horizontally laid out
+  static const ReadiumCssLayout cjkHorizontal =
+      ReadiumCssLayout._("cjk-horizontal");
+
+  final String cssId;
+  const ReadiumCssLayout._(this.cssId);
+
+  String get readiumCSSPath {
+    switch (this) {
+      case ltr:
+        return "";
+      case rtl:
+        return "rtl/";
+      case cjkVertical:
+        return "cjk-vertical/";
+      case cjkHorizontal:
+        return "cjk-horizontal/";
+    }
+    return "";
+  }
+
+  static ReadiumCssLayout findWithMetadata(Metadata metadata) => find(
+      languages: metadata.languages,
+      readingProgression: metadata.effectiveReadingProgression);
+
+  /// Determines the [ReadiumCssLayout] for the given BCP 47 language codes and
+  /// [readingProgression].
+  /// Defaults to [ltr].
+  static ReadiumCssLayout find(
+      {List<String> languages, ReadingProgression readingProgression}) {
+    bool isCjk;
+    if (languages.length == 1) {
+      String language = languages[0].split("-")[0]; // Remove region
+      isCjk = ["zh", "ja", "ko"].contains(language);
+    } else {
+      isCjk = false;
+    }
+
+    switch (readingProgression) {
+      case ReadingProgression.rtl:
+      case ReadingProgression.btt:
+        return (isCjk) ? cjkVertical : rtl;
+      case ReadingProgression.ltr:
+      case ReadingProgression.ttb:
+      case ReadingProgression.auto:
+      default:
+        return (isCjk) ? cjkHorizontal : ltr;
+    }
+  }
+}
