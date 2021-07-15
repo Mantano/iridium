@@ -1,0 +1,23 @@
+name: r2_commons_dart
+description: This package provide utilities for other r2_xxx_dart packages.
+version: 0.1.0
+homepage: https://github.com/Mantano/r2_commons_dart
+publish_to: none
+
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+
+dependencies:
+  archive: ^3.1.2
+  crypto: ^3.0.1
+  dartx: ^0.7.1
+  dfunc: ^0.7.2
+  fimber: ^0.6.1
+  path: ^1.8.0
+  universal_io: ^2.0.4
+
+dev_dependencies:
+  lints: ^1.0.1
+
+# For information on the generic Dart part of this file, see the
+# following page: https://www.dartlang.org/tools/pub/pubspec
