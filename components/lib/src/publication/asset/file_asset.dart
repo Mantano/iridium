@@ -1,0 +1,63 @@
+// Copyright (c) 2021 Mantano. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+import 'package:path/path.dart';
+import 'package:r2_commons_dart/io.dart';
+import 'package:r2_commons_dart/utils/try.dart';
+import 'package:r2_shared_dart/src/mediatype/mediatype.dart';
+import 'package:universal_io/io.dart';
+
+import '../../../fetcher.dart';
+import '../../../publication.dart';
+import 'publication_asset.dart';
+
+/// Represents a publication stored as a file on the local file system.
+///
+/// @param file File on the file system.
+class FileAsset extends PublicationAsset {
+  final FileSystemEntity file;
+  final MediaType knownMediaType;
+  final String mediaTypeHint;
+  MediaType _mediaType;
+
+  /// Creates a [FileAsset] from a [File] and an optional media type, when known or an optional media type hint.
+  /// Providing a media type hint will improve performances when sniffing the media type.
+  FileAsset(this.file, {this.knownMediaType, this.mediaTypeHint});
+
+  @override
+  String get name => basename(file.path);
+
+  @override
+  Future<MediaType> get mediaType async => _mediaType ??= knownMediaType ??
+      (await MediaType.ofFileWithSingleHint(file, mediaType: mediaTypeHint)) ??
+      MediaType.binary;
+
+  @override
+  Future<Try<Fetcher, OpeningException>> createFetcher(
+      PublicationAssetDependencies dependencies, String credentials) async {
+    try {
+      Fetcher fetcher;
+      if (await FileSystemEntity.isDirectory(file.path)) {
+        fetcher = FileFetcher.single(href: "/", file: file);
+      } else if (await file.exists()) {
+        if ((await mediaType).isZip) {
+          fetcher = await ArchiveFetcher.fromPath(file.path,
+              archiveFactory: dependencies.archiveFactory);
+        } else {
+          fetcher = FileFetcher.single(href: "/$name", file: file);
+        }
+      } else {
+        throw FileNotFoundException(file.path);
+      }
+      return Try.success(fetcher);
+      // } on SecurityException catch (e) {
+      //   return Try.failure(OpeningException.forbidden(e));
+    } on FileNotFoundException {
+      return Try.failure(OpeningException.notFound);
+    }
+  }
+
+  @override
+  String toString() => '$runtimeType{${file.path}}';
+}

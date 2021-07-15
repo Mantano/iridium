@@ -1,0 +1,26 @@
+name: r2_shared_dart
+description: Contains the definitions of the custom types (model) used across the readium-2 Dart projects.
+version: 0.1.0
+homepage: https://github.com/Mantano/r2_shared_dart
+publish_to: none
+
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+
+dependencies:
+  archive: ^3.1.2
+  dartx: ^0.7.1
+  dfunc: ^0.7.2
+  equatable: ^2.0.3
+  fimber: ^0.6.1
+  http: ^0.13.3
+  image: ^3.0.2
+  multiple_localization: ^0.2.2
+  path: ^1.8.0
+  universal_io: ^2.0.4
+  xml: ^5.1.2
+  r2_commons_dart:
+    path: ../r2_commons_dart
+
+dev_dependencies:
+  lints: ^1.0.1
