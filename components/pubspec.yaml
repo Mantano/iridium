@@ -1,7 +1,7 @@
-name: r2_commons_dart
+name: mno_commons_dart
 description: This package provide utilities for other r2_xxx_dart packages.
 version: 0.1.0
-homepage: https://github.com/Mantano/r2_commons_dart
+homepage: https://github.com/Mantano/mno_commons_dart
 publish_to: none
 
 environment:
