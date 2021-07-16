@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:r2_shared_dart/src/publication/user_exception.dart';
+import 'package:mno_shared_dart/src/publication/user_exception.dart';
 
 /// Errors occurring while accessing a resource.
 class ResourceException extends UserException {

@@ -8,7 +8,7 @@ import 'dart:math';
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:r2_commons_dart/utils/jsonable.dart';
+import 'package:mno_commons_dart/utils/jsonable.dart';
 import 'package:universal_io/io.dart';
 
 import 'file_buffer.dart';

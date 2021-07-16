@@ -5,7 +5,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
-import 'package:r2_commons_dart/utils/jsonable.dart';
+import 'package:mno_commons_dart/utils/jsonable.dart';
 
 import '../../publication.dart';
 

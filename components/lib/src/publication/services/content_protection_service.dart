@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:r2_shared_dart/fetcher.dart';
-import 'package:r2_shared_dart/publication.dart';
+import 'package:mno_shared_dart/fetcher.dart';
+import 'package:mno_shared_dart/publication.dart';
 
 abstract class ContentProtectionService extends PublicationService {
   /// Whether the [Publication] has a restricted access to its resources, and can't be rendered in

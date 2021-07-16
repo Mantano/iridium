@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:r2_shared_dart/publication.dart';
+import 'package:mno_shared_dart/publication.dart';
 
 /// Direction of the [Publication] reading progression.
 class ReadingProgression {

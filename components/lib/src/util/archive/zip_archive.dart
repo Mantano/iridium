@@ -5,12 +5,12 @@
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
-import 'package:r2_commons_dart/extensions/data.dart';
-import 'package:r2_commons_dart/utils/take.dart';
-import 'package:r2_shared_dart/container.dart';
-import 'package:r2_shared_dart/src/util/archive/archive.dart';
-import 'package:r2_shared_dart/streams.dart';
-import 'package:r2_shared_dart/zip.dart';
+import 'package:mno_commons_dart/extensions/data.dart';
+import 'package:mno_commons_dart/utils/take.dart';
+import 'package:mno_shared_dart/container.dart';
+import 'package:mno_shared_dart/src/util/archive/archive.dart';
+import 'package:mno_shared_dart/streams.dart';
+import 'package:mno_shared_dart/zip.dart';
 import 'package:universal_io/io.dart';
 
 class ZipArchiveFactory implements ArchiveFactory {

@@ -3,10 +3,10 @@
 // found in the LICENSE file.
 
 import 'package:fimber/fimber.dart';
-import 'package:r2_commons_dart/extensions/uri.dart';
-import 'package:r2_commons_dart/utils/href.dart';
-import 'package:r2_commons_dart/utils/jsonable.dart';
-import 'package:r2_shared_dart/publication.dart';
+import 'package:mno_commons_dart/extensions/uri.dart';
+import 'package:mno_commons_dart/utils/href.dart';
+import 'package:mno_commons_dart/utils/jsonable.dart';
+import 'package:mno_shared_dart/publication.dart';
 
 import 'link_list_extension.dart';
 import 'subcollection_map.dart';

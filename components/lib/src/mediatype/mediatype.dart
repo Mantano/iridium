@@ -9,7 +9,7 @@ import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
-import 'package:r2_commons_dart/utils/take.dart';
+import 'package:mno_commons_dart/utils/take.dart';
 import 'package:universal_io/io.dart';
 
 import 'sniffer.dart';

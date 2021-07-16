@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:r2_commons_dart/utils/jsonable.dart';
+import 'package:mno_commons_dart/utils/jsonable.dart';
 
 import 'file_buffer.dart';
 

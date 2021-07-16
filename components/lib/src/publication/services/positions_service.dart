@@ -7,8 +7,8 @@ import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart' hide GroupBy;
-import 'package:r2_commons_dart/extensions/strings.dart';
-import 'package:r2_commons_dart/utils/jsonable.dart';
+import 'package:mno_commons_dart/extensions/strings.dart';
+import 'package:mno_commons_dart/utils/jsonable.dart';
 
 import '../../../fetcher.dart';
 import '../../../publication.dart';

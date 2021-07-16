@@ -1,7 +1,7 @@
-name: r2_shared_dart
+name: mno_shared_dart
 description: Contains the definitions of the custom types (model) used across the readium-2 Dart projects.
 version: 0.1.0
-homepage: https://github.com/Mantano/r2_shared_dart
+homepage: https://github.com/Mantano/mno_shared_dart
 publish_to: none
 
 environment:
@@ -19,8 +19,8 @@ dependencies:
   path: ^1.8.0
   universal_io: ^2.0.4
   xml: ^5.1.2
-  r2_commons_dart:
-    path: ../r2_commons_dart
+  mno_commons_dart:
+    path: ../mno_commons_dart
 
 dev_dependencies:
   lints: ^1.0.1

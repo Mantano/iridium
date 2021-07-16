@@ -8,8 +8,8 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
-import 'package:r2_commons_dart/utils/try.dart';
-import 'package:r2_shared_dart/publication.dart';
+import 'package:mno_commons_dart/utils/try.dart';
+import 'package:mno_shared_dart/publication.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
 

@@ -7,10 +7,10 @@ import 'package:dfunc/dfunc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
-import 'package:r2_commons_dart/utils/href.dart';
-import 'package:r2_commons_dart/utils/jsonable.dart';
-import 'package:r2_commons_dart/utils/uri_template.dart';
-import 'package:r2_shared_dart/src/mediatype/mediatype.dart';
+import 'package:mno_commons_dart/utils/href.dart';
+import 'package:mno_commons_dart/utils/jsonable.dart';
+import 'package:mno_commons_dart/utils/uri_template.dart';
+import 'package:mno_shared_dart/src/mediatype/mediatype.dart';
 
 import '../../publication.dart';
 

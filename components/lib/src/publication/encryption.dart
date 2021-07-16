@@ -4,7 +4,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:r2_commons_dart/utils/jsonable.dart';
+import 'package:mno_commons_dart/utils/jsonable.dart';
 
 /// Indicates that a resource is encrypted/obfuscated and provides relevant information for decryption.
 class Encryption with EquatableMixin, JSONable {

@@ -8,10 +8,10 @@ import 'dart:typed_data';
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:path/path.dart' as p;
-import 'package:r2_commons_dart/extensions/strings.dart';
-import 'package:r2_commons_dart/io.dart';
-import 'package:r2_shared_dart/fetcher.dart';
-import 'package:r2_shared_dart/src/mediatype/mediatype.dart';
+import 'package:mno_commons_dart/extensions/strings.dart';
+import 'package:mno_commons_dart/io.dart';
+import 'package:mno_shared_dart/fetcher.dart';
+import 'package:mno_shared_dart/src/mediatype/mediatype.dart';
 import 'package:universal_io/io.dart';
 
 import '../../publication.dart';

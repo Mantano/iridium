@@ -7,9 +7,9 @@ import 'dart:convert';
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
-import 'package:r2_commons_dart/utils/jsonable.dart';
-import 'package:r2_commons_dart/utils/take.dart';
-import 'package:r2_shared_dart/publication.dart';
+import 'package:mno_commons_dart/utils/jsonable.dart';
+import 'package:mno_commons_dart/utils/take.dart';
+import 'package:mno_shared_dart/publication.dart';
 
 /// Provides a precise location in a publication in a format that can be stored and shared.
 ///

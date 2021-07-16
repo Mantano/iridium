@@ -8,8 +8,8 @@ import 'dart:ui';
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:image/image.dart';
-import 'package:r2_commons_dart/extensions/data.dart';
-import 'package:r2_shared_dart/fetcher.dart';
+import 'package:mno_commons_dart/extensions/data.dart';
+import 'package:mno_shared_dart/fetcher.dart';
 
 import '../../../publication.dart';
 

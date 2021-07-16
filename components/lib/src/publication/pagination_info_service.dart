@@ -6,8 +6,8 @@ import 'dart:math';
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:r2_shared_dart/publication.dart';
-import 'package:r2_shared_dart/src/mediatype/mediatype.dart';
+import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared_dart/src/mediatype/mediatype.dart';
 
 import '../../publication.dart';
 

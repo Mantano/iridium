@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:equatable/equatable.dart';
-import 'package:r2_commons_dart/utils/jsonable.dart';
-import 'package:r2_shared_dart/publication.dart';
+import 'package:mno_commons_dart/utils/jsonable.dart';
+import 'package:mno_shared_dart/publication.dart';
 
 import 'link.dart';
 

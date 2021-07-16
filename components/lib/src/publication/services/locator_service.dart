@@ -4,10 +4,10 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:r2_commons_dart/utils/ref.dart';
-import 'package:r2_commons_dart/utils/take.dart';
-import 'package:r2_shared_dart/publication.dart';
-import 'package:r2_shared_dart/src/publication/link_list_extension.dart';
+import 'package:mno_commons_dart/utils/ref.dart';
+import 'package:mno_commons_dart/utils/take.dart';
+import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared_dart/src/publication/link_list_extension.dart';
 
 /// Locates the destination of various sources (e.g. locators, progression, etc.) in the
 /// publication.
