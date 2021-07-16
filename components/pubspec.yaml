@@ -1,7 +1,7 @@
-name: r2_server_dart
+name: mno_server_dart
 description: Contains the server functions to serve resources in the webview.
 version: 0.1.0
-homepage: https://github.com/Mantano/r2_server_dart
+homepage: https://github.com/Mantano/mno_server_dart
 publish_to: none
 
 environment:
@@ -13,10 +13,10 @@ dependencies:
   pedantic: ^1.11.1
   rxdart: ^0.27.1
   universal_io: ^2.0.4
-  r2_commons_dart:
-    path: ../r2_commons_dart
-  r2_shared_dart:
-    path: ../r2_shared_dart
+  mno_commons_dart:
+    path: ../mno_commons_dart
+  mno_shared_dart:
+    path: ../mno_shared_dart
 
 dev_dependencies:
   lints: ^1.0.1
