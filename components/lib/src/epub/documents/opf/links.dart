@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared_dart/xml.dart';
 import 'package:path/path.dart' as p;
-import 'package:r2_shared_dart/publication.dart';
-import 'package:r2_shared_dart/xml.dart';
 
 import 'meta.dart';
 

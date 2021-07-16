@@ -2,15 +2,15 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:r2_shared_dart/mediatype.dart';
-import 'package:r2_commons_dart/utils/href.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:r2_streamer_dart/parser.dart';
-import 'package:r2_streamer_dart/src/container/container.dart';
-import 'package:r2_streamer_dart/src/container/publication_container.dart';
-import 'package:r2_streamer_dart/src/epub/package_document.dart';
-import 'package:r2_shared_dart/fetcher.dart';
-import 'package:r2_shared_dart/publication.dart';
+import 'package:mno_commons_dart/utils/href.dart';
+import 'package:mno_shared_dart/fetcher.dart';
+import 'package:mno_shared_dart/mediatype.dart';
+import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_streamer_dart/parser.dart';
+import 'package:mno_streamer_dart/src/container/container.dart';
+import 'package:mno_streamer_dart/src/container/publication_container.dart';
+import 'package:mno_streamer_dart/src/epub/package_document.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
 

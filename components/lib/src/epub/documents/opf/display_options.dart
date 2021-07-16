@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:fimber/fimber.dart';
-import 'package:r2_shared_dart/container.dart';
-import 'package:r2_shared_dart/xml.dart';
+import 'package:mno_shared_dart/container.dart';
+import 'package:mno_shared_dart/xml.dart';
 
 /// iBooks Display Options XML document to use as a fallback for some metadata.
 /// https://github.com/readium/architecture/blob/master/streamer/parser/metadata.md#epub-2x-9

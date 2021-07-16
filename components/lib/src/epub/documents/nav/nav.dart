@@ -4,9 +4,9 @@
 
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
+import 'package:mno_shared_dart/container.dart';
+import 'package:mno_shared_dart/publication.dart';
 import 'package:path/path.dart' as p;
-import 'package:r2_shared_dart/container.dart';
-import 'package:r2_shared_dart/publication.dart';
 
 import '../opf/opf.dart';
 import 'html.dart';

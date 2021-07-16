@@ -1,7 +1,7 @@
-name: r2_streamer_dart
+name: mno_streamer_dart
 version: 0.1.0
 description: Streamer API and multiple file parsers (PDF, CBZ, Epub) for Dart.
-homepage: https://github.com/Mantano/r2_streamer_dart
+homepage: https://github.com/Mantano/mno_streamer_dart
 publish_to: none # Temporary
 
 environment:
@@ -14,10 +14,10 @@ dependencies:
   path: ^1.8.0
   universal_io: ^2.0.4
   xml: ^5.1.2
-  r2_commons_dart:
-    path: ../r2_commons_dart
-  r2_shared_dart:
-    path: ../r2_shared_dart
+  mno_commons_dart:
+    path: ../mno_commons_dart
+  mno_shared_dart:
+    path: ../mno_shared_dart
 
 dev_dependencies:
   lints: ^1.0.1

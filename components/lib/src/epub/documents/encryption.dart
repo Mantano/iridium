@@ -4,8 +4,8 @@
 
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:r2_shared_dart/container.dart';
-import 'package:r2_shared_dart/publication.dart';
+import 'package:mno_shared_dart/container.dart';
+import 'package:mno_shared_dart/publication.dart';
 import 'package:xml/xml.dart';
 
 import '../constants.dart';

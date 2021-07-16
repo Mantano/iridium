@@ -1,4 +1,4 @@
-# r2-streamer-dart
+# mno_streamer_dart
 
 Streamer API and multiple file parsers (PDF, CBZ, Epub) for Dart.
 

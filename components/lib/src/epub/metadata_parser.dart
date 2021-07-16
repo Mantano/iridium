@@ -4,12 +4,12 @@
 
 import 'package:dartx/dartx.dart' hide IterableGroupBy;
 import 'package:dfunc/dfunc.dart';
-import 'package:r2_commons_dart/extensions/strings.dart';
-import 'package:r2_commons_dart/utils/href.dart';
-import 'package:r2_commons_dart/utils/take.dart';
-import 'package:r2_shared_dart/publication.dart';
-import 'package:r2_streamer_dart/src/epub/constants.dart';
-import 'package:r2_streamer_dart/src/epub/property_data_type.dart';
+import 'package:mno_commons_dart/extensions/strings.dart';
+import 'package:mno_commons_dart/utils/href.dart';
+import 'package:mno_commons_dart/utils/take.dart';
+import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_streamer_dart/src/epub/constants.dart';
+import 'package:mno_streamer_dart/src/epub/property_data_type.dart';
 import 'package:xml/xml.dart' show XmlElement, XmlNode, XmlFindExtension;
 
 import 'clock_value_parser.dart';

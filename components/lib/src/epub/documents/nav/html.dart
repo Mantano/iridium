@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:meta/meta.dart';
-import 'package:r2_shared_dart/publication.dart';
-import 'package:r2_shared_dart/xml.dart';
+import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared_dart/xml.dart';
 
 import 'nav.dart';
 

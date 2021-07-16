@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:r2_streamer_dart/src/epub/constants.dart';
+import 'package:mno_streamer_dart/src/epub/constants.dart';
 
 const Map<String, String> packageReservedPrefixes = {
   "dcterms": Vocabularies.dcterms,

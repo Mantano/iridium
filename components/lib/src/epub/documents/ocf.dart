@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:fimber/fimber.dart';
-import 'package:r2_shared_dart/container.dart';
-import 'package:r2_shared_dart/xml.dart';
+import 'package:mno_shared_dart/container.dart';
+import 'package:mno_shared_dart/xml.dart';
 
 /// EPUB Open Container Format Document (located in META-INF/container.xml).
 class OcfDocument {
