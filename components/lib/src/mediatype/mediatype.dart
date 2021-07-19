@@ -498,19 +498,6 @@ class MediaType {
         zab
       ]);
 
-  static const List<MediaType> supportedMediaTypes = [
-    epub,
-    // LCP_LICENSE_DOCUMENT,
-    cbz,
-    mp4,
-    pdf,
-    doc,
-    docx,
-    text
-  ];
-
-  bool isSupportedMediaType() => matchesAny(supportedMediaTypes);
-
   /// The default sniffers provided by Readium 2 to resolve a [MediaType].
   /// You can register additional sniffers globally by modifying this list.
   /// The sniffers order is important, because some formats are subsets of other formats.
