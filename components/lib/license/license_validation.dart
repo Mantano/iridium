@@ -57,7 +57,7 @@ class LicenseValidationStatusDocument extends LicenseValidationDocument {
 
 class LicenseValidation {
   static const bool _debug = false;
-  static List<Product2<Observer, ObserverPolicy>> observers = [];
+  List<Product2<Observer, ObserverPolicy>> observers = [];
   static const List<String> supportedProfiles = [
     "http://readium.org/lcp/basic-profile",
     "http://readium.org/lcp/profile-1.0"
@@ -320,7 +320,7 @@ class LicenseValidation {
     _raise(RegisteredDeviceEvent(data));
   }
 
-  static void observe(LicenseValidation licenseValidation,
+  void observe(LicenseValidation licenseValidation,
       {ObserverPolicy policy = ObserverPolicy.always, Observer observer}) {
     bool notified = true;
     switch (licenseValidation.stateMachine.state.runtimeType) {

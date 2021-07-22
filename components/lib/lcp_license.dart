@@ -42,7 +42,7 @@ mixin LcpLicense implements pub.UserRights {
   bool get canReturnPublication;
 
   /// Returns the publication to its provider.
-  Future<Try<void, LcpException>> returnPublication();
+  Future<Try<bool, LcpException>> returnPublication();
 
   /// Decrypts the given [data] encrypted with the license's content key.
   Future<Try<ByteData, LcpException>> decrypt(ByteData data);

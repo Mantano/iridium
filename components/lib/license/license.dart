@@ -20,7 +20,7 @@ class License implements LcpLicense {
 
   License(this._documents, this._validation, this._licenses, this._device,
       this._network) {
-    LicenseValidation.observe(_validation, observer: (documents, _) {
+    _validation.observe(_validation, observer: (documents, _) {
       if (documents != null) {
         _documents = documents;
       }
@@ -236,7 +236,7 @@ class License implements LcpLicense {
   bool get canReturnPublication => status?.link(StatusRel.ret) != null;
 
   @override
-  Future<Try<void, LcpException>> returnPublication() async {
+  Future<Try<bool, LcpException>> returnPublication() async {
     try {
       StatusDocument status = _documents.status;
       Uri url;
@@ -264,7 +264,7 @@ class License implements LcpLicense {
             }
           }));
 
-      return Try.success(null);
+      return Try.success(true);
     } on Exception catch (e) {
       return Try.failure(LcpException.wrap(e));
     }
@@ -272,4 +272,13 @@ class License implements LcpLicense {
 
   void _validateStatusDocument(ByteData data) =>
       _validation.validate(LicenseValidationDocument.status(data), (_, __) {});
+
+  @override
+  String toString() => 'License{license: $license, '
+      'status: $status, '
+      'charactersToCopyLeft: $charactersToCopyLeft, '
+      'pagesToPrintLeft: $pagesToPrintLeft, '
+      'canRenewLoan: $canRenewLoan, '
+      'maxRenewDate: $maxRenewDate, '
+      'canReturnPublication: $canReturnPublication}';
 }

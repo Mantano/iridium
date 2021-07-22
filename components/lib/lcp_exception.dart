@@ -12,12 +12,15 @@ class LcpException extends UserException {
   static const Renew renew = Renew._("");
   static const Return return_ = Return._("");
   static const Parsing parsing = Parsing._();
-  static const Container container = Container._("");
+  static const ContainerException container = ContainerException._("");
   static const LicenseIntegrity licenseIntegrity = LicenseIntegrity._("");
   static const Decryption decryption = Decryption._("");
 
   const LcpException(String userMessageId,
-      {List<dynamic> args, int quantity, this.message, Exception cause})
+      {List<dynamic> args = const [],
+      int quantity,
+      this.message,
+      Exception cause})
       : super(userMessageId, args: args, quantity: quantity, cause: cause);
 
   static LcpException wrap(dynamic e) {
@@ -64,7 +67,7 @@ class LcpException extends UserException {
 /// January 2018").
 class LicenseStatus extends LcpException {
   const LicenseStatus._(String userMessageId,
-      {List<dynamic> args, int quantity, String message})
+      {List<dynamic> args = const [], int quantity, String message})
       : super(userMessageId, args: args, quantity: quantity, message: message);
 
   LicenseStatus cancelled(DateTime date) =>
@@ -109,7 +112,7 @@ class Renew extends LcpException {
 class InvalidRenewalPeriod extends Renew {
   final DateTime maxRenewDate;
 
-  InvalidRenewalPeriod._(this.maxRenewDate)
+  const InvalidRenewalPeriod._(this.maxRenewDate)
       : super._("r2_lcp_exception_renew_invalid_renewal_period");
 }
 
@@ -163,29 +166,33 @@ class Parsing extends LcpException {
 class Url extends Parsing {
   final String rel;
 
-  Url._(this.rel) : super._();
+  const Url._(this.rel) : super._();
 }
 
 /// Errors while reading or writing a LCP container (LCPL, EPUB, LCPDF, etc.)
-class Container extends LcpException {
+class ContainerException extends LcpException {
   final String path;
-  const Container._(String userMessageId, {this.path}) : super(userMessageId);
+  const ContainerException._(String userMessageId, {this.path})
+      : super(userMessageId);
 
   /// Can't access the container, it's format is wrong.
-  Container get openFailed =>
-      const Container._("r2_lcp_exception_container_open_failed");
+  ContainerException get openFailed =>
+      const ContainerException._("r2_lcp_exception_container_open_failed");
 
   /// The file at given relative path is not found in the Container.
-  Container fileNotFound(String path) =>
-      Container._("r2_lcp_exception_container_file_not_found", path: path);
+  ContainerException fileNotFound(String path) =>
+      ContainerException._("r2_lcp_exception_container_file_not_found",
+          path: path);
 
   /// Can't read the file at given relative path in the Container.
-  Container readFailed(String path) =>
-      Container._("r2_lcp_exception_container_read_failed", path: path);
+  ContainerException readFailed(String path) =>
+      ContainerException._("r2_lcp_exception_container_read_failed",
+          path: path);
 
   /// Can't write the file at given relative path in the Container.
-  Container writeFailed(String path) =>
-      Container._("r2_lcp_exception_container_write_failed", path: path);
+  ContainerException writeFailed(String path) =>
+      ContainerException._("r2_lcp_exception_container_write_failed",
+          path: path);
 }
 
 /// An error occurred while checking the integrity of the License, it can't be retrieved.

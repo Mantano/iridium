@@ -21,11 +21,15 @@ class MaterialRenewListener implements RenewListener {
   MaterialRenewListener(this.license, this.context);
 
   @override
-  Future<DateTime> preferredEndDate(DateTime maximumDate) {
+  Future<DateTime> preferredEndDate(DateTime maximumDate) async {
     DateTime start = (license.license.rights.end ?? DateTime.now());
     DateTime end = maximumDate ?? DateTime.now().add(const Duration(days: 365));
-    return showDatePicker(
-        context: context, initialDate: start, firstDate: start, lastDate: end);
+    return await showDatePicker(
+            context: context,
+            initialDate: start,
+            firstDate: start,
+            lastDate: end) ??
+        start;
   }
 
   @override

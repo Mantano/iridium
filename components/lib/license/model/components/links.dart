@@ -25,9 +25,13 @@ class Links {
       links.where((element) => element.matches(rel, type)).toList();
 
   List<Link> get(String rel) => allWithRel(rel);
+
+  @override
+  String toString() => '$links';
 }
 
 extension _LinkExt on Link {
   bool matches(String rel, MediaType type) =>
-      rel.contains(rel) && (type == null || type.matchesFromName(this.type));
+      this.rel.contains(rel) &&
+      (type == null || type.matchesFromName(this.type));
 }

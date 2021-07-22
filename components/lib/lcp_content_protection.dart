@@ -17,7 +17,7 @@ class LcpContentProtection implements ContentProtection {
   LcpContentProtection(this._lcpService, this._authentication);
 
   @override
-  Future<Try<ProtectedAsset, OpeningException>> open(
+  Future<Try<ProtectedAsset, UserException>> open(
       PublicationAsset asset,
       Fetcher fetcher,
       String credentials,
@@ -42,7 +42,7 @@ class LcpContentProtection implements ContentProtection {
     Try<LcpLicense, LcpException> license = await _lcpService.retrieveLicense(
         fileAsset.file, authentication, allowUserInteraction, sender);
     if (license == null || license.isFailure) {
-      return Try.failure(OpeningException.incorrectCredentials);
+      return Try.failure(license.failure);
     }
 
     ProtectedAsset protectedFile = ProtectedAsset(

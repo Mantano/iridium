@@ -161,7 +161,7 @@ class StatusDocument {
   Link linkWithNoType(StatusRel rel) => _links.firstWithRelAndNoType(rel.value);
 
   Uri url(StatusRel rel,
-      {MediaType preferredType, Map<String, dynamic> parameters = const {}}) {
+      {MediaType preferredType, Map<String, String> parameters = const {}}) {
     Link l = link(rel, type: preferredType) ?? linkWithNoType(rel);
     if (l == null) {
       throw LcpException.parsing.url(rel.value);

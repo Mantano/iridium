@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:fimber/fimber.dart';
@@ -48,8 +49,7 @@ class NetworkService {
         port: uri.port,
         fragment: uri.fragment,
         path: uri.path,
-        query: uri.query,
-        queryParameters: parameters,
+        queryParameters: Map.of(parameters)..addAll(uri.queryParameters),
       );
 
       HttpClient httpClient = HttpClient();
@@ -62,9 +62,11 @@ class NetworkService {
       if (status >= 400) {
         return Try.failure(NetworkException(status: status));
       } else {
-        return response
-            .transform(const ToUint8List())
-            .first
+        Completer<Uint8List> completer = Completer<Uint8List>();
+        List<int> contents = [];
+        response.listen((c) => contents.addAll(c),
+            onDone: () => completer.complete(Uint8List.fromList(contents)));
+        return completer.future
             .then((uint8List) => ByteData.sublistView(uint8List))
             .then((bytes) => Try.success(bytes));
       }

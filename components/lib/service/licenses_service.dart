@@ -65,11 +65,19 @@ class LicensesService extends LcpService {
       // calling runBlocking in LicenseValidation.handle would block the main thread and cause a severe issue
       // with LcpAuthenticating.retrievePassphrase. Specifically, the interaction of runBlocking and suspendCoroutine
       // blocks the current thread before the passphrase popup has been showed until some button not yet showed is clicked.
+      LcpException lcpException;
       LcpLicense license = await _retrieveLicense(
-          container, authentication, allowUserInteraction, sender);
+              container, authentication, allowUserInteraction, sender)
+          .onError((error, stackTrace) {
+        lcpException = LcpException.wrap(error);
+        return null;
+      });
 
       if (license != null) {
         return Try.success(license);
+      }
+      if (lcpException != null) {
+        return Try.failure(lcpException);
       }
       return null;
     } on Exception catch (e, stacktrace) {
@@ -114,8 +122,7 @@ class LicensesService extends LcpService {
     });
     await validation.init();
 
-    StreamController<Try<LcpLicense, void>> lcpLicenseController =
-        StreamController.broadcast();
+    Completer<Try<LcpLicense, LcpException>> lcpLicenseCompleter = Completer();
     validation.validate(LicenseValidationDocument.license(initialData),
         (documents, error) {
       Fimber.d("documents: $documents, error: $error");
@@ -124,23 +131,20 @@ class LicensesService extends LcpService {
           documents.getContext();
           LcpLicense license = License(
               documents, validation, this.licenses, this.device, this.network);
-          lcpLicenseController.add(Try.success(license));
-          lcpLicenseController.close();
-        } on Exception catch (e, stacktrace) {
-          Fimber.d("completion ERROR", ex: e, stacktrace: stacktrace);
-          lcpLicenseController.add(Try.failure(null));
-          lcpLicenseController.close();
+          lcpLicenseCompleter.complete(Try.success(license));
+        } on Exception catch (e) {
+          Fimber.d("completion ERROR", ex: e);
+          lcpLicenseCompleter.complete(Try.failure(LcpException.wrap(e)));
           rethrow;
         }
       }
       if (error != null) {
-        lcpLicenseController.add(Try.failure(null));
-        lcpLicenseController.close();
+        lcpLicenseCompleter.complete(Try.failure(LcpException.unknown));
         throw error;
       }
     });
-    Try<LcpLicense, void> result = await lcpLicenseController.stream.first;
-    return result.getOrNull();
+    Try<LcpLicense, void> result = await lcpLicenseCompleter.future;
+    return result.getOrThrow();
   }
 
   Future<AcquiredPublication> _fetchPublication(LicenseDocument license) async {

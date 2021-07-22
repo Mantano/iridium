@@ -79,7 +79,7 @@ class Link {
     if (!templated) {
       return [];
     } else {
-      return UriTemplate(href).parameters;
+      return UriTemplate(href).parameters.toList();
     }
   }
 
