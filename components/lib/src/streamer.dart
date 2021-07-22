@@ -11,10 +11,10 @@ import 'package:mno_shared_dart/publication.dart';
 import 'package:mno_streamer_dart/parser.dart';
 import 'package:mno_streamer_dart/pdf.dart';
 
-class PublicationTry<SuccessT> extends Try<SuccessT, OpeningException> {
+class PublicationTry<SuccessT> extends Try<SuccessT, UserException> {
   PublicationTry.success(SuccessT success) : super.success(success);
 
-  PublicationTry.failure(OpeningException failure) : super.failure(failure);
+  PublicationTry.failure(UserException failure) : super.failure(failure);
 }
 
 typedef OnCreatePublication = void Function(PublicationBuilder);
@@ -81,7 +81,7 @@ class Streamer {
   ///   factories of the [Publication].
   /// @param warnings Logger used to broadcast non-fatal parsing warnings.
   /// @return Null if the asset was not recognized by any parser, or a
-  ///   [Publication.OpeningException] in case of failure.
+  ///   [Publication.UserException] in case of failure.
   Future<PublicationTry<Publication>> open(
     PublicationAsset asset,
     bool allowUserInteraction, {
@@ -95,7 +95,7 @@ class Streamer {
               PublicationAssetDependencies(archiveFactory), credentials))
           .getOrThrow();
 
-      Try<ProtectedAsset, OpeningException> protectedAssetResult =
+      Try<ProtectedAsset, UserException> protectedAssetResult =
           (await contentProtections.lazyMapFirstNotNullOrNull((it) => it.open(
               asset, fetcher, credentials, allowUserInteraction, sender)));
 
@@ -138,7 +138,7 @@ class Streamer {
       // Fimber.d("publication.manifest: ${publication.manifest}");
 
       return PublicationTry.success(publication);
-    } on OpeningException catch (e) {
+    } on UserException catch (e) {
       return PublicationTry.failure(e);
     }
   }
