@@ -20,7 +20,7 @@ abstract class PublicationParser {
 abstract class StreamPublicationParser {
   /// Constructs a [Publication.Builder] to build a [Publication] from a publication file.
   ///
-  /// @param file Path to the publication file.
+  /// @param asset Digital medium (e.g. a file) used to access the publication.
   /// @param fetcher Initial leaf fetcher which should be used to read the publication's resources.
   /// This can be used to:
   /// - support content protection technologies
@@ -30,7 +30,7 @@ abstract class StreamPublicationParser {
   /// @param warnings Used to report non-fatal parsing warnings, such as publication authoring
   /// mistakes. This is useful to warn users of potential rendering issues or help authors
   /// debug their publications.
-  Future<PublicationBuilder> parseFile(PublicationAsset file, Fetcher fetcher);
+  Future<PublicationBuilder> parseFile(PublicationAsset asset, Fetcher fetcher);
 }
 
 class PubBox {

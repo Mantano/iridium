@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:dfunc/dfunc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:mno_commons_dart/utils/try.dart';
 import 'package:mno_shared_dart/archive.dart';
 import 'package:mno_shared_dart/fetcher.dart';
@@ -10,6 +11,7 @@ import 'package:mno_shared_dart/mediatype.dart';
 import 'package:mno_shared_dart/publication.dart';
 import 'package:mno_streamer_dart/parser.dart';
 import 'package:mno_streamer_dart/pdf.dart';
+import 'package:mno_streamer_dart/src/readium/readium_web_pub_parser.dart';
 
 class PublicationTry<SuccessT> extends Try<SuccessT, UserException> {
   PublicationTry.success(SuccessT success) : super.success(success);
@@ -138,7 +140,8 @@ class Streamer {
       // Fimber.d("publication.manifest: ${publication.manifest}");
 
       return PublicationTry.success(publication);
-    } on UserException catch (e) {
+    } on UserException catch (e, stacktrace) {
+      Fimber.e("ERROR", ex: e, stacktrace: stacktrace);
       return PublicationTry.failure(e);
     }
   }
@@ -147,6 +150,7 @@ class Streamer {
         EpubParser(),
         PdfParser(pdfFactory),
         ImageParser(),
+        ReadiumWebPubParser(pdfFactory),
       ];
 
   List<StreamPublicationParser> get parsers =>

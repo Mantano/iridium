@@ -26,17 +26,17 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
 
   @override
   Future<PublicationBuilder> parseFile(
-          PublicationAsset file, Fetcher fetcher) =>
-      _parseFile(file, fetcher, file.toTitle());
+          PublicationAsset asset, Fetcher fetcher) =>
+      _parseFile(asset, fetcher, asset.toTitle());
 
   String get _rootHref => "/$_publicationFileName";
 
   Future<PublicationBuilder> _parseFile(
-      PublicationAsset file, Fetcher fetcher, String fallbackTitle) async {
+      PublicationAsset asset, Fetcher fetcher, String fallbackTitle) async {
     if (pdfFactory == null) {
       throw Exception("No pdfFactory was provided.");
     }
-    if ((await file.mediaType) != MediaType.pdf) {
+    if ((await asset.mediaType) != MediaType.pdf) {
       return null;
     }
 
@@ -47,7 +47,7 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
     }
 
     File pdfFile = fetcher.get(pdfLink).file;
-    PdfDocument document = await pdfFactory.loadDocument(pdfFile.path);
+    PdfDocument document = await pdfFactory.openFile(pdfFile.path);
     String title = document.title?.ifBlank(() => null) ?? fallbackTitle;
 
     // TODO implement lookup the table of content
