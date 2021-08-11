@@ -182,7 +182,7 @@ class StringList extends Struct {
   static Pointer<StringList> fromList(List<String> arr) {
     Pointer<Pointer<Utf8>> list = calloc.allocate<Pointer<Utf8>>(arr.length);
 
-    for (var i = 0; i < arr.length; i++) {
+    for (int i = 0; i < arr.length; i++) {
       list[i] = arr[i].toNativeUtf8();
     }
 

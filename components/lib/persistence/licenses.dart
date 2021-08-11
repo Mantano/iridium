@@ -43,7 +43,7 @@ class Licenses implements DeviceRepository, LicensesRepository {
     );
     return (result.isNotEmpty)
         ? {
-            for (var row in result)
+            for (Map<String, dynamic> row in result)
               row[LicensesTable.id] as String: row[column] as int
           }
         : {};

@@ -73,7 +73,7 @@ class License implements LcpLicense {
 
   @override
   bool copy(String text) {
-    var charactersLeft = charactersToCopyLeft;
+    int charactersLeft = charactersToCopyLeft;
     if (charactersLeft == null) {
       return true;
     }

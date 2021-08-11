@@ -39,7 +39,7 @@ class Link {
     if (href == null) {
       throw LcpException.parsing.link;
     }
-    var rel = json["rel"];
+    dynamic rel = json["rel"];
     List<String> relations = [];
     if (rel is String) {
       relations.add(rel);
