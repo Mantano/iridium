@@ -107,7 +107,8 @@ class LicensesService extends LcpService {
         Fimber.d("Failed to add the LCP License to the local database",
             ex: e, stacktrace: stacktrace);
       }
-      if (const ListEquality().equals(licenseDocument.data.buffer.asUint8List(),
+      if (!const ListEquality().equals(
+          licenseDocument.data.buffer.asUint8List(),
           initialData.buffer.asUint8List())) {
         try {
           await container.write(licenseDocument);

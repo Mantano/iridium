@@ -3,12 +3,12 @@
 // found in the LICENSE file.
 
 import 'dart:ffi';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/services.dart';
-import 'package:mno_commons_dart/extensions/data.dart';
 import 'package:mno_lcp_dart/lcp.dart';
 import 'package:universal_io/io.dart';
 
@@ -29,6 +29,7 @@ typedef LcpWrapperNativeDecrypt = Uint8Array Function(
 LcpWrapperNativeDecrypt fLcpWrapperNativeDecrypt;
 
 class LcpClient {
+  static const int _maxLengthToDecrypt = 128 * 1024;
   static bool _isInitialized;
 
   static bool get isAvailable => _isInitialized;
@@ -107,7 +108,20 @@ class LcpClient {
   }
 
   static ByteData decrypt(DrmContext drmContext, ByteData encryptedData) {
-    Pointer<Uint8Array> encryptedBytes = Uint8Array.fromData(encryptedData);
+    int offset = 0;
+    List<int> rawData = [];
+    while (offset < encryptedData.lengthInBytes) {
+      Uint8List uint8list = encryptedData.buffer.asUint8List(offset,
+          min(encryptedData.lengthInBytes - offset, _maxLengthToDecrypt));
+      List<int> chunk = _decrypt(drmContext, uint8list);
+      rawData.addAll(chunk);
+      offset += _maxLengthToDecrypt;
+    }
+    return ByteData.sublistView(Uint8List.fromList(rawData));
+  }
+
+  static List<int> _decrypt(DrmContext drmContext, Uint8List uint8list) {
+    Pointer<Uint8Array> encryptedBytes = Uint8Array.fromData(uint8list);
     Pointer<LcpDrmContext> lcpDrmContextPtr = LcpDrmContext.allocate(
       hashedPassphrase: drmContext.hashedPassphrase,
       encryptedContentKey: drmContext.encryptedContentKey,
@@ -121,7 +135,7 @@ class LcpClient {
     if (error != DRMError.none) {
       throw DRMException(error);
     }
-    return decryptResult.toByteData();
+    return decryptResult.data;
   }
 }
 
@@ -181,7 +195,7 @@ class StringList extends Struct {
 }
 
 class Uint8Array extends Struct {
-  Pointer<Uint8> bytes;
+  Pointer<Uint8> list;
 
   @Int64()
   int size;
@@ -189,18 +203,17 @@ class Uint8Array extends Struct {
   @Int32()
   int errorCode;
 
-  static Pointer<Uint8Array> fromData(ByteData data) {
-    Uint8List uint8list = data.buffer.asUint8List();
+  static Pointer<Uint8Array> fromData(Uint8List uint8list) {
     Pointer<Uint8> bytes = calloc.allocate<Uint8>(uint8list.length);
     bytes.asTypedList(uint8list.length).setAll(0, uint8list);
 
     Pointer<Uint8Array> pStrList = calloc<Uint8Array>();
-    pStrList.ref.bytes = bytes;
+    pStrList.ref.list = bytes;
     pStrList.ref.size = uint8list.length;
     pStrList.ref.errorCode = 0;
 
     return pStrList;
   }
 
-  ByteData toByteData() => bytes.asTypedList(size).toByteData();
+  List<int> get data => list.asTypedList(size);
 }
