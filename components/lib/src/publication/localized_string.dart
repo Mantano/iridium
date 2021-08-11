@@ -53,7 +53,7 @@ class LocalizedString with EquatableMixin, JSONable {
       return null;
     }
     if (json is String) {
-      return LocalizedString.fromJson(json);
+      return LocalizedString.fromString(json);
     }
     if (json is Map) {
       return LocalizedString._fromJSONObject(json);

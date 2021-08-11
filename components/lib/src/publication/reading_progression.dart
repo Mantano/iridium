@@ -34,7 +34,7 @@ class ReadingProgression {
     }
   }
   factory ReadingProgression.fromValue(String value) =>
-      _values.firstWhere((it) => it.value == value, orElse: () => null);
+      _values.firstWhere((it) => it.value == value, orElse: () => auto);
 
   /// Returns the leading [Page] for the [ReadingProgression].
   PresentationPage get leadingPage {

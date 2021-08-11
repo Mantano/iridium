@@ -8,8 +8,8 @@ import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
-import 'package:path/path.dart' as p;
 import 'package:mno_commons_dart/utils/take.dart';
+import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
 import 'sniffer.dart';
@@ -467,18 +467,6 @@ class MediaType {
   /// Returns whether this media type is of a Readium Web Publication Manifest.
   bool get isRwpm => matchesAny(
       [readiumAudiobookManifest, divinaManifest, readiumWebpubManifest]);
-
-  /// Returns whether this media type is of a Readium Web Publication profile.
-  bool get isReadiumWebPubProfile => matchesAny([
-        readiumWebpub,
-        readiumWebpubManifest,
-        readiumAudiobook,
-        readiumAudiobookManifest,
-        lcpProtectedAudiobook,
-        divina,
-        divinaManifest,
-        lcpProtectedPdf
-      ]);
 
   /// Returns whether this media type is of a publication file.
   bool get isPublication => matchesAny([

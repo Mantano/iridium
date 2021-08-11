@@ -47,7 +47,7 @@ class Metadata with EquatableMixin, JSONable {
       this.belongsTo = const {},
       this.belongsToCollections = const [],
       this.belongsToSeries = const [],
-      this.readingProgression = ReadingProgression.ltr,
+      this.readingProgression = ReadingProgression.auto,
       this.rendition,
       this.otherMetadata})
       : assert(languages != null),
@@ -216,7 +216,7 @@ class Metadata with EquatableMixin, JSONable {
   /// Parses a [Metadata] from its RWPM JSON representation.
   ///
   /// If the metadata can't be parsed, a warning will be logged with [warnings].
-  factory Metadata.fromJson(dynamic json,
+  factory Metadata.fromJson(Map<String, dynamic> json,
       {LinkHrefNormalizer normalizeHref = linkHrefNormalizerIdentity}) {
     if (json == null) {
       return null;
@@ -322,7 +322,7 @@ class Metadata with EquatableMixin, JSONable {
       duration: duration,
       numberOfPages: numberOfPages,
       belongsTo: belongsTo,
-      otherMetadata: json.toMap(),
+      otherMetadata: json,
     );
   }
 

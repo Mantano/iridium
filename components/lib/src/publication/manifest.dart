@@ -119,18 +119,21 @@ class Manifest implements JSONable {
             : it.copy(
                 rels: it.rels
                   ..remove("self")
-                  ..add("alternate")));
+                  ..add("alternate")))
+        .toList();
     // [readingOrder] used to be [spine], so we parse [spine] as a fallback.
     List<dynamic> readingOrderJSON =
         (json.remove("readingOrder") ?? json.remove("spine")) as List<dynamic>;
     Iterable<Link> readingOrder = Link.fromJSONArray(readingOrderJSON,
             normalizeHref: normalizeHref(baseUrl))
-        .where((it) => it.type != null);
+        .where((it) => it.type != null)
+        .toList();
 
     Iterable<Link> resources = Link.fromJSONArray(
             json.remove("resources") as List<dynamic>,
             normalizeHref: normalizeHref(baseUrl))
-        .where((it) => it.type != null);
+        .where((it) => it.type != null)
+        .toList();
 
     Iterable<Link> tableOfContents = Link.fromJSONArray(
         json.remove("toc") as List<dynamic>,

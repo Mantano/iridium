@@ -88,7 +88,7 @@ class Link with EquatableMixin, JSONable {
   /// If a link can't be parsed, a warning will be logged with [warnings].
   static List<Link> fromJSONArray(List<dynamic> json,
           {LinkHrefNormalizer normalizeHref = linkHrefNormalizerIdentity}) =>
-      json.parseObjects(
+      (json ?? []).parseObjects(
           (it) => Link.fromJSON(it as Map, normalizeHref: normalizeHref));
 
   /// (Nullable) Unique identifier for this link in the [Publication].
@@ -247,5 +247,5 @@ class Link with EquatableMixin, JSONable {
 
   @override
   String toString() =>
-      'Link{id: $id, href: $href, type: $type, title: $title, rels: $rels}';
+      'Link{id: $id, href: $href, type: $type, title: $title, rels: $rels, properties: $properties}';
 }

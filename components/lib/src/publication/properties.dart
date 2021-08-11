@@ -115,7 +115,7 @@ class Properties with EquatableMixin, JSONable {
       );
 
   @override
-  String toString() => 'LinkProperties($props)';
+  String toString() => 'Properties(${toJson()})';
 
   /// Creates a [Properties] from its RWPM JSON representation.
   static Properties fromJSON(Map<String, dynamic> json) => Properties(
@@ -127,7 +127,7 @@ class Properties with EquatableMixin, JSONable {
         overflow: PresentationOverflow.from(json.optString("overflow")),
         spread: PresentationSpread.from(json.optString("spread")),
         encryption:
-            Encryption.fromJSON(json['encryption'] as Map<String, dynamic>),
+            Encryption.fromJSON(json['encrypted'] as Map<String, dynamic>),
         otherProperties: json['otherProperties'] as Map<String, dynamic>,
       );
 }
