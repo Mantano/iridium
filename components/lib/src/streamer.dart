@@ -114,7 +114,7 @@ class Streamer {
       PublicationBuilder builder =
           (await parsers.lazyMapFirstNotNullOrNull((it) {
         try {
-          return it.parseFile(asset, fetcher);
+          return it.parseFile(asset, fetcher).catchError((e, st) => null);
         } on Exception catch (e) {
           throw OpeningException.parsingFailed(e);
         }
