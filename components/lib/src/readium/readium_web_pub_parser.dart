@@ -79,20 +79,29 @@ class ReadiumWebPubParser extends PublicationParser
           pdfFactory?.let((it) => LcpdfPositionsService.create(it));
       await pdfFactory?.let((it) async {
         Link link = readingOrder.first;
-        PdfDocument document = await it.openResource(fetcher.get(link));
-        coverServiceFactory =
-            document.cover?.let(InMemoryCoverService.createFactory);
-        manifest.subcollections["pageList"] = [
-          PublicationCollection(
-              links: List.generate(
-                  document.pageCount,
-                  (index) => Link(
-                        id: "${link.href}?page=$index",
-                        href: "${link.href}?page=$index",
-                        type: MediaType.pdf.toString(),
-                        title: manifest.metadata.localizedTitle.string,
-                      )))
-        ];
+        try {
+          PdfDocument document = await it.openResource(fetcher.get(link));
+          coverServiceFactory =
+              document.cover?.let(InMemoryCoverService.createFactory);
+          manifest = manifest.copy(
+            metadata: manifest.metadata.copy(
+              numberOfPages: document.pageCount,
+            ),
+          );
+          manifest.subcollections["pageList"] = [
+            PublicationCollection(
+                links: List.generate(
+                    document.pageCount,
+                    (index) => Link(
+                          id: "${link.href}?page=$index",
+                          href: "${link.href}?page=$index",
+                          type: MediaType.pdf.toString(),
+                          title: manifest.metadata.localizedTitle.string,
+                        )))
+          ];
+        } on Exception catch (e) {
+          Fimber.e("openPdfAt failed", ex: e);
+        }
       });
     } else if (mediaType == MediaType.divinaManifest ||
         mediaType == MediaType.divina) {
