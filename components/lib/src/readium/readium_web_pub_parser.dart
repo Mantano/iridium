@@ -73,12 +73,15 @@ class ReadiumWebPubParser extends PublicationParser
     }
 
     ServiceFactory positionsServiceFactory;
+    ServiceFactory coverServiceFactory;
     if (mediaType == MediaType.lcpProtectedPdf) {
       positionsServiceFactory =
           pdfFactory?.let((it) => LcpdfPositionsService.create(it));
       await pdfFactory?.let((it) async {
         Link link = readingOrder.first;
         PdfDocument document = await it.openResource(fetcher.get(link));
+        coverServiceFactory =
+            document.cover?.let(InMemoryCoverService.createFactory);
         manifest.subcollections["pageList"] = [
           PublicationCollection(
               links: List.generate(
@@ -101,8 +104,10 @@ class ReadiumWebPubParser extends PublicationParser
       // positionsServiceFactory = AudioLocatorService.createFactory();
     }
 
-    ServicesBuilder servicesBuilder =
-        ServicesBuilder.create(positions: positionsServiceFactory);
+    ServicesBuilder servicesBuilder = ServicesBuilder.create(
+      positions: positionsServiceFactory,
+      cover: coverServiceFactory,
+    );
 
     return PublicationBuilder(
         manifest: manifest, fetcher: fetcher, servicesBuilder: servicesBuilder);
