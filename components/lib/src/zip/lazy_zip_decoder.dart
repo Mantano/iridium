@@ -29,7 +29,7 @@ class LazyZipDecoder {
         final mode = zfh.externalFileAttributes;
         final compress = zf.compressionMethod != archive.ZipFile.STORE;
 
-        var file = LazyArchiveFile(
+        LazyArchiveFile file = LazyArchiveFile(
             zfh, zf.filename, zf.uncompressedSize, zf.compressionMethod);
 
         file.mode = mode >> 16;

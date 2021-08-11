@@ -19,7 +19,7 @@ abstract class XmlNode<Node extends xml.XmlNode> {
   List<XmlElement> xpath(String xpath) => _xpathString(xpath);
 
   XmlElement firstXPath(String xpath) {
-    var elements = _xpathString(xpath, onlyFirst: true);
+    List<XmlElement> elements = _xpathString(xpath, onlyFirst: true);
     return (elements.isEmpty) ? null : elements.first;
   }
 
@@ -35,20 +35,20 @@ abstract class XmlNode<Node extends xml.XmlNode> {
     if (paths.isEmpty) {
       return [if (this is XmlElement) this as XmlElement];
     }
-    var path = paths.removeAt(0);
+    String path = paths.removeAt(0);
     if (path.isEmpty) {
       return _xpath(paths, relative: false, onlyFirst: onlyFirst);
     }
 
-    var match = RegExp(r'(?:([-\w]+)\:)?([-\w\*]+)').firstMatch(path);
+    RegExpMatch match = RegExp(r'(?:([-\w]+)\:)?([-\w\*]+)').firstMatch(path);
     if (match == null) {
       return [];
     }
-    var prefix = match.group(1);
-    var tag = match.group(2);
-    var namespace = prefixes[prefix];
+    String prefix = match.group(1);
+    String tag = match.group(2);
+    String namespace = prefixes[prefix];
 
-    var elements = relative
+    Iterable<xml.XmlElement> elements = relative
         ? _node.findElements(tag, namespace: namespace)
         : _node.findAllElements(tag, namespace: namespace);
 

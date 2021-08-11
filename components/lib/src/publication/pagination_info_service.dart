@@ -36,7 +36,7 @@ class PaginationInfosService {
     }
     int length = (await publication.fetcher.get(link).length())
         .getOrElse((failure) => 0);
-    var res = (length / _pageSize).ceil();
+    int res = (length / _pageSize).ceil();
     return res;
   }
 }

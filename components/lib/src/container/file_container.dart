@@ -24,11 +24,11 @@ class FileContainer extends Container {
 
   @override
   Future<DataStream> streamAt(String path) async {
-    var filePath = files[path];
+    String filePath = files[path];
     if (filePath == null) {
       throw ContainerException.resourceNotFound(path);
     }
-    var file = File(filePath);
+    File file = File(filePath);
     if (!await file.exists()) {
       throw ContainerException.fileNotFound(path);
     }
@@ -38,11 +38,11 @@ class FileContainer extends Container {
 
   @override
   Future<int> resourceLength(String path) async {
-    var filePath = files[path];
+    String filePath = files[path];
     if (filePath == null) {
       throw ContainerException.resourceNotFound(path);
     }
-    var file = File(filePath);
+    File file = File(filePath);
     if (!await file.exists()) {
       throw ContainerException.fileNotFound(path);
     }

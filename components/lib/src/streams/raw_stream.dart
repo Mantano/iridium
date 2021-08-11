@@ -20,11 +20,11 @@ class RawDataStream extends DataStream {
 
   @override
   Future<Stream<List<int>>> read({int start, int length}) async {
-    var range = validateRange(start, length);
+    List<int> range = validateRange(start, length);
     start = range[0];
     length = range[1];
 
-    var stream = Stream.fromFuture(
+    Stream<List<int>> stream = Stream.fromFuture(
         Future.value(_data.sublist(start, start + length - 1)));
     return stream;
   }

@@ -54,7 +54,7 @@ class LazyZipDirectory {
       if (fileSig != LazyZipFileHeader.zipSignature) {
         break;
       }
-      var fileHeader = LazyZipFileHeader(fileSig);
+      LazyZipFileHeader fileHeader = LazyZipFileHeader(fileSig);
       await fileHeader.load(dirContent, input, password);
       fileHeaders.add(fileHeader);
     }

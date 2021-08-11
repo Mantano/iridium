@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:typed_data';
+
 import 'package:universal_io/io.dart';
 
 import 'stream.dart';
@@ -13,8 +15,8 @@ class FileStream extends DataStream {
         assert(_length != null);
 
   static Future<FileStream> fromFile(File file) async {
-    var raFile = await file.open();
-    var length = await raFile.length();
+    RandomAccessFile raFile = await file.open();
+    int length = await raFile.length();
     return FileStream._(raFile, length);
   }
 
@@ -26,12 +28,12 @@ class FileStream extends DataStream {
 
   @override
   Future<Stream<List<int>>> read({int start, int length}) async {
-    var range = validateRange(start, length);
+    List<int> range = validateRange(start, length);
     start = range[0];
     length = range[1];
 
     await _file.setPosition(start);
-    var bytes = _file.read(length);
+    Future<Uint8List> bytes = _file.read(length);
     return Stream.fromFuture(bytes);
   }
 }

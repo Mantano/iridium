@@ -26,7 +26,8 @@ class ZipStream extends DataStream {
     length = validatedRange[1];
     IntRange range = IntRange(start, start + length);
 
-    var stream = await _package.extractStream(_entry.filename, range: range);
+    Stream<List<int>> stream =
+        await _package.extractStream(_entry.filename, range: range);
     if (stream == null) {
       throw DataStreamException.readError(
           "Can't read file at ${_entry.filename}");

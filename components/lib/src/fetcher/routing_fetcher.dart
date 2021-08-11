@@ -45,7 +45,7 @@ class RoutingFetcher extends Fetcher {
 
   @override
   Future<void> close() async {
-    for (var route in routes) {
+    for (Route route in routes) {
       route.fetcher.close();
     }
   }

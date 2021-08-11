@@ -72,13 +72,13 @@ class FileBuffer {
     final List<int> result = List.filled(count, 0);
     if (count == 0) return result;
 
-    var start = 0;
-    var blkIndexStart = _position >> _blockShift;
-    var blkOffsetStart = _position & _blockMask;
-    final end = _position + count;
+    int start = 0;
+    int blkIndexStart = _position >> _blockShift;
+    int blkOffsetStart = _position & _blockMask;
+    final int end = _position + count;
     if (blkIndexStart == _blockIndex) {
       // read from current buffer
-      final remained = _blockSize - blkOffsetStart;
+      final int remained = _blockSize - blkOffsetStart;
       start = count > remained ? remained : count;
       result.setRange(0, start, _buffer, blkOffsetStart);
 
@@ -89,15 +89,15 @@ class FileBuffer {
       blkOffsetStart = 0;
     }
 
-    final blkIndexEnd = end >> _blockShift;
-    final lastBlockPos = blkIndexEnd << _blockShift;
+    final int blkIndexEnd = end >> _blockShift;
+    final int lastBlockPos = blkIndexEnd << _blockShift;
     // directly read blocks
     if (blkIndexStart != blkIndexEnd) {
       if (_blockIndex != _fileBlockIndex) {
         await _file.setPosition(_position);
       }
 
-      final stopOffset = lastBlockPos - _position;
+      final int stopOffset = lastBlockPos - _position;
       await _file.readInto(result, start, stopOffset);
       start = stopOffset;
       blkOffsetStart = 0;

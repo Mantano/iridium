@@ -127,9 +127,9 @@ class DefaultLocatorService extends LocatorService {
   _Match<T> _findFirstByPair<T>(
       List<List<T>> items, bool Function(T, T) condition) {
     _Match<T> previous;
-    for (var x = 0; x < items.length; x++) {
+    for (int x = 0; x < items.length; x++) {
       List<T> section = items[x];
-      for (var y = 0; y < section.length; y++) {
+      for (int y = 0; y < section.length; y++) {
         T item = section[y];
         if (previous != null) {
           if (condition(previous.item, item)) {
@@ -146,9 +146,9 @@ class DefaultLocatorService extends LocatorService {
   _Match<T> _findLast<T>(List<List<T>> items) {
     _Match<T> last;
 
-    for (var x = 0; x < items.length; x++) {
+    for (int x = 0; x < items.length; x++) {
       List<T> section = items[x];
-      for (var y = 0; y < section.length; y++) {
+      for (int y = 0; y < section.length; y++) {
         T item = section[y];
         last = _Match(x: x, y: y, item: item);
       }

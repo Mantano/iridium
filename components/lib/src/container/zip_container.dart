@@ -45,8 +45,8 @@ class ZipContainer extends Container {
   @override
   Future<DataStream> streamAt(String path) async {
     assert(path != null);
-    var package = await archive;
-    var entry = package.entries[path];
+    ZipPackage package = await archive;
+    ZipLocalFile entry = package.entries[path];
     if (entry == null) {
       throw ContainerException.resourceNotFound(path);
     }
@@ -56,8 +56,8 @@ class ZipContainer extends Container {
   @override
   Future<int> resourceLength(String path) async {
     assert(path != null);
-    var package = await archive;
-    var entry = package.entries[path];
+    ZipPackage package = await archive;
+    ZipLocalFile entry = package.entries[path];
     if (entry == null) {
       throw ContainerException.resourceNotFound(path);
     }

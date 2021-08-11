@@ -29,7 +29,7 @@ class PublicationFormat extends Equatable {
   factory PublicationFormat.fromMIMETypes(List<String> mimetypes,
       {String fileExtension}) {
     assert(mimetypes != null);
-    for (var mimetype in mimetypes) {
+    for (String mimetype in mimetypes) {
       // FIXME: video MIME types?
       switch (mimetype) {
         case "application/epub+zip":
@@ -51,7 +51,7 @@ class PublicationFormat extends Equatable {
 
   /// Finds the [PublicationFormat] of the file at the given [path], using an optionally provided [mimetype].
   factory PublicationFormat.fromPath(String path, {String mimetype}) {
-    var extension = p.extension(path);
+    String extension = p.extension(path);
     if (extension.length > 1) {
       // Removes the dot.
       extension = extension.substring(1);
