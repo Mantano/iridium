@@ -48,7 +48,7 @@ class Href {
   ///
   /// Taken from https://stackoverflow.com/a/49796882/1474476
   String get percentEncodedString {
-    var string = this.string;
+    String string = this.string;
     if (string.startsWith("/")) {
       string = string.addPrefix("file://");
     }
