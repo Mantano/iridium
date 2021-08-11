@@ -13,7 +13,6 @@ import 'package:xml/xml.dart';
 
 import '../../fetcher.dart';
 import '../../publication.dart';
-import '../publication/link_list_extension.dart';
 
 /// Provides access to a [Resource] from a [Link].
 abstract class Fetcher {

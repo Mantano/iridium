@@ -10,7 +10,6 @@ import 'package:mno_commons_dart/extensions/data.dart';
 import 'package:mno_commons_dart/extensions/strings.dart';
 import 'package:mno_shared_dart/archive.dart';
 import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_shared_dart/src/publication/link_list_extension.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
 

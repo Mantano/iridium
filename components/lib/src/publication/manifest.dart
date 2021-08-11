@@ -8,7 +8,6 @@ import 'package:mno_commons_dart/utils/href.dart';
 import 'package:mno_commons_dart/utils/jsonable.dart';
 import 'package:mno_shared_dart/publication.dart';
 
-import 'link_list_extension.dart';
 import 'subcollection_map.dart';
 
 /// Holds the metadata of a Readium publication, as described in the Readium Web Publication Manifest.

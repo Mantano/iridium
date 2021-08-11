@@ -12,7 +12,6 @@ import 'package:mno_commons_dart/utils/jsonable.dart';
 
 import '../../../fetcher.dart';
 import '../../../publication.dart';
-import '../link_list_extension.dart';
 
 final Link _positionsLink = Link(
     href: "/~readium/positions",

@@ -11,6 +11,7 @@ export 'src/publication/drm.dart';
 export 'src/publication/encryption.dart';
 export 'src/publication/format.dart';
 export 'src/publication/link.dart';
+export 'src/publication/link_list_extension.dart';
 export 'src/publication/link_pagination.dart';
 export 'src/publication/localized_string.dart';
 export 'src/publication/locator.dart';
