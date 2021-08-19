@@ -8,7 +8,7 @@ environment:
   sdk: ">=2.6.0 <3.0.0"
 
 dependencies:
-  bloc: ^7.0.0
+  bloc: ^7.1.0
   fimber: ^0.6.1
   pedantic: ^1.11.1
   rxdart: ^0.27.1
