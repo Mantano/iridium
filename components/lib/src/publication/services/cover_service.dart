@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'dart:typed_data';
-import 'dart:ui';
 
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
@@ -12,6 +11,17 @@ import 'package:mno_commons_dart/extensions/data.dart';
 import 'package:mno_shared_dart/fetcher.dart';
 
 import '../../../publication.dart';
+
+class CoverSize {
+  final double width;
+  final double height;
+
+  /// Creates a [CoverSize] with the given [width] and [height].
+  const CoverSize(this.width, this.height);
+
+  @override
+  String toString() => 'CoverSize{width: $width, height: $height}';
+}
 
 /// Provides an easy access to a bitmap version of the publication cover.
 ///
@@ -35,7 +45,7 @@ abstract class CoverService extends PublicationService {
   Future<Image> cover();
 
   ///  Returns the publication cover as a [Bitmap], scaled down to fit the given [maxSize].
-  Future<Image> coverFitting(Size maxSize) async =>
+  Future<Image> coverFitting(CoverSize maxSize) async =>
       cover()?.then((value) => copyResize(value,
           width: maxSize.width.toInt(), height: maxSize.height.toInt()));
 
@@ -71,7 +81,7 @@ extension PublicationCoverExtension on Publication {
   }
 
   /// Returns the publication cover as a [Bitmap], scaled down to fit the given [maxSize].
-  Future<Image> coverFitting(Size maxSize) async {
+  Future<Image> coverFitting(CoverSize maxSize) async {
     Image cover = await findService<CoverService>()?.coverFitting(maxSize);
     if (cover != null) {
       return cover;

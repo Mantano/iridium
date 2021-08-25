@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:ui';
-
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons_dart/utils/jsonable.dart';
@@ -83,10 +81,7 @@ class LocalizedString with EquatableMixin, JSONable {
 
   /// Returns the localized string matching the given language code, or fallback on the user's locale.
   String stringForLanguageCode(String languageCode) {
-    languageCode = languageCode ??
-        window.locale.languageCode ??
-        Platform.localeName ??
-        'en';
+    languageCode = languageCode ?? Platform.localeName ?? 'en';
     return translations[languageCode]
         // First string with the language having the locale for prefix.
         ??
