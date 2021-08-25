@@ -64,6 +64,14 @@ extension StringExtension on String {
     }
   }
 
+  List toJsonArrayOrNull() {
+    try {
+      return json.decode(this);
+    } on Exception {
+      return null;
+    }
+  }
+
   bool toBooleanOrNull() {
     String normalized = this.toLowerCase();
     if (normalized == "true") {
