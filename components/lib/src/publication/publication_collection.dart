@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons_dart/utils/jsonable.dart';
 import 'package:mno_shared_dart/publication.dart';
@@ -12,7 +13,7 @@ import 'subcollection_map.dart';
 ///
 /// https://readium.org/webpub-manifest/schema/subcollection.schema.json
 /// Can be used as extension point in the Readium Web Publication Manifest.
-class PublicationCollection implements JSONable {
+class PublicationCollection with EquatableMixin implements JSONable {
   final Map<String, dynamic> metadata;
   final List<Link> links;
   final Map<String, List<PublicationCollection>> subcollections;
@@ -22,6 +23,13 @@ class PublicationCollection implements JSONable {
     this.links = const [],
     this.subcollections = const {},
   });
+
+  @override
+  List<Object> get props => [
+        metadata,
+        links,
+        subcollections,
+      ];
 
   /// Serializes a [PublicationCollection] to its RWPM JSON representation.
   @override

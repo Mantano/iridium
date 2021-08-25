@@ -44,7 +44,7 @@ class Metadata with EquatableMixin, JSONable {
       this.description,
       this.duration,
       this.numberOfPages,
-      this.belongsTo = const {},
+      Map<String, List<Collection>> belongsTo,
       this.belongsToCollections = const [],
       this.belongsToSeries = const [],
       this.readingProgression = ReadingProgression.auto,
@@ -57,12 +57,13 @@ class Metadata with EquatableMixin, JSONable {
         assert(publishers != null),
         assert(belongsToCollections != null),
         assert(belongsToSeries != null),
-        assert(readingProgression != null) {
+        assert(readingProgression != null),
+        this.belongsTo = belongsTo ?? {} {
     if (belongsToCollections.isNotEmpty) {
-      belongsTo["collections"] = belongsToCollections;
+      this.belongsTo["collections"] = belongsToCollections;
     }
     if (belongsToSeries.isNotEmpty) {
-      belongsTo["series"] = belongsToSeries;
+      this.belongsTo["series"] = belongsToSeries;
     }
   }
 

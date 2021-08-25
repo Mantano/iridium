@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons_dart/extensions/uri.dart';
 import 'package:mno_commons_dart/utils/href.dart';
@@ -11,7 +12,7 @@ import 'package:mno_shared_dart/publication.dart';
 import 'subcollection_map.dart';
 
 /// Holds the metadata of a Readium publication, as described in the Readium Web Publication Manifest.
-class Manifest implements JSONable {
+class Manifest with EquatableMixin implements JSONable {
   final List<String> context;
   final Metadata metadata;
   List<Link> links;
@@ -47,6 +48,17 @@ class Manifest implements JSONable {
         tableOfContents: tableOfContents ?? this.tableOfContents,
         subcollections: subcollections ?? this.subcollections,
       );
+
+  @override
+  List<Object> get props => [
+        context,
+        metadata,
+        links,
+        readingOrder,
+        resources,
+        tableOfContents,
+        subcollections,
+      ];
 
   /// Finds the first [Link] with the given relation in the manifest's links.
   Link linkWithRel(String rel) =>

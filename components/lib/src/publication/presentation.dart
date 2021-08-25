@@ -103,7 +103,7 @@ class Presentation with EquatableMixin, JSONable {
 }
 
 /// Suggested method for constraining a resource inside the viewport.
-class PresentationFit {
+class PresentationFit with EquatableMixin {
   static const PresentationFit width = PresentationFit._("width");
   static const PresentationFit height = PresentationFit._("height");
   static const PresentationFit contain = PresentationFit._("contain");
@@ -114,12 +114,15 @@ class PresentationFit {
 
   const PresentationFit._(this.value);
 
+  @override
+  List<Object> get props => [value];
+
   static PresentationFit from(String value) => _values
       .firstWhere((element) => element.value == value, orElse: () => null);
 }
 
 /// Hints how the layout of the resource should be presented.
-class EpubLayout {
+class EpubLayout with EquatableMixin {
   // Fixed layout.
   static const EpubLayout fixed = EpubLayout._("fixed");
   // Apply dynamic pagination when rendering.
@@ -130,12 +133,15 @@ class EpubLayout {
 
   const EpubLayout._(this.value);
 
+  @override
+  List<Object> get props => [value];
+
   static EpubLayout from(String value) => _values
       .firstWhere((element) => element.value == value, orElse: () => null);
 }
 
 /// Suggested orientation for the device when displaying the linked resource.
-class PresentationOrientation {
+class PresentationOrientation with EquatableMixin {
   // Specifies that the Reading System can determine the orientation to rendered the spine item in.
   static const PresentationOrientation auto = PresentationOrientation._("auto");
 
@@ -156,12 +162,15 @@ class PresentationOrientation {
 
   const PresentationOrientation._(this.value);
 
+  @override
+  List<Object> get props => [value];
+
   static PresentationOrientation from(String value) => _values
       .firstWhere((element) => element.value == value, orElse: () => null);
 }
 
 /// Suggested method for handling overflow while displaying the linked resource.
-class PresentationOverflow {
+class PresentationOverflow with EquatableMixin {
   // Indicates no preference for overflow content handling by the Author.
   static const PresentationOverflow auto = PresentationOverflow._("auto");
 
@@ -178,13 +187,16 @@ class PresentationOverflow {
 
   const PresentationOverflow._(this.value);
 
+  @override
+  List<Object> get props => [value];
+
   static PresentationOverflow from(String value) => _values
       .firstWhere((element) => element.value == value, orElse: () => null);
 }
 
 /// Indicates how the linked resource should be displayed in a reading
 /// environment that displays synthetic spreads.
-class PresentationPage {
+class PresentationPage with EquatableMixin {
   static const PresentationPage left = PresentationPage._("left");
   static const PresentationPage right = PresentationPage._("right");
   static const PresentationPage center = PresentationPage._("center");
@@ -194,12 +206,15 @@ class PresentationPage {
 
   const PresentationPage._(this.value);
 
+  @override
+  List<Object> get props => [value];
+
   static PresentationPage from(String value) => _values
       .firstWhere((element) => element.value == value, orElse: () => null);
 }
 
 /// Indicates the condition to be met for the linked resource to be rendered within a synthetic spread.
-class PresentationSpread {
+class PresentationSpread with EquatableMixin {
   // Specifies the Reading System can determine when to render a synthetic spread for the readingOrder item.
   static const PresentationSpread auto = PresentationSpread._("auto");
   // Specifies the Reading System should render a synthetic spread for the readingOrder item in both portrait and landscape orientations.
@@ -213,6 +228,9 @@ class PresentationSpread {
   final String value;
 
   const PresentationSpread._(this.value);
+
+  @override
+  List<Object> get props => [value];
 
   static PresentationSpread from(String value) => _values
       .firstWhere((element) => element.value == value, orElse: () => null);

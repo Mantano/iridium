@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons_dart/extensions/strings.dart';
 import 'package:mno_commons_dart/extensions/uri.dart';
@@ -28,7 +29,7 @@ typedef ServiceFactory = PublicationService Function(PublicationServiceContext);
 /// @param servicesBuilder Holds the list of service factories used to create the instances of
 /// Publication.Service attached to this Publication.
 /// @param positionsFactory Factory used to build lazily the [positions].
-class Publication {
+class Publication with EquatableMixin {
   final Manifest manifest;
   final Fetcher fetcher;
 
@@ -179,6 +180,13 @@ class Publication {
   /// empty list.
   List<Link> linksWithRole(String role) =>
       subcollections[role]?.firstOrNull?.links ?? [];
+
+  @override
+  List<Object> get props => [
+        manifest,
+        cssStyle,
+        nbPages,
+      ];
 
   @override
   String toString() =>
