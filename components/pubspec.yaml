@@ -1,0 +1,20 @@
+name: mno_opds_dart
+description: Contains OPDS1 and OPDS2 parsers.
+version: 0.1.0
+homepage: https://github.com/Mantano/mno_opds_dart
+publish_to: none
+
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+
+dependencies:
+  fimber: ^0.6.1
+  http: ^0.13.3
+  universal_io: ^2.0.4
+  xml: ^5.2.0
+  mno_shared_dart:
+    path: ../mno_shared_dart
+
+dev_dependencies:
+  lints: ^1.0.1
+  test: ^1.17.11
