@@ -50,15 +50,10 @@ class ReadiumCssLayout {
       isCjk = false;
     }
 
-    switch (readingProgression) {
-      case ReadingProgression.rtl:
-      case ReadingProgression.btt:
-        return (isCjk) ? cjkVertical : rtl;
-      case ReadingProgression.ltr:
-      case ReadingProgression.ttb:
-      case ReadingProgression.auto:
-      default:
-        return (isCjk) ? cjkHorizontal : ltr;
+    if (readingProgression == ReadingProgression.rtl ||
+        readingProgression == ReadingProgression.btt) {
+      return (isCjk) ? cjkVertical : rtl;
     }
+    return (isCjk) ? cjkHorizontal : ltr;
   }
 }
