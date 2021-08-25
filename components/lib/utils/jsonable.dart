@@ -307,7 +307,7 @@ extension MapExtension on Map<String, dynamic> {
 extension ListExtension on List<dynamic> {
   /// Parses a [JSONArray] of [JSONObject] into a [List] of models using the given [transform].
   List<T> parseObjects<T>(T Function(dynamic) transform) {
-    if (isEmpty) {
+    if (this == null || isEmpty) {
       return [];
     }
     List<T> models = [];
