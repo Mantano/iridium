@@ -25,7 +25,7 @@ void main() {
   });
 
   test("parse null JSON copies", () {
-    expect(Copies.fromJSON(null), null);
+    expect(Copies.fromJSON(null), isNull);
   });
 
   test("parse JSON copies requires positive {total}", () {

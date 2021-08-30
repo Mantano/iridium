@@ -20,8 +20,8 @@ void main() {
     expect(AvailabilityState.reserved, AvailabilityState.from("reserved"));
     expect(
         AvailabilityState.unavailable, AvailabilityState.from("unavailable"));
-    expect(AvailabilityState.from("foobar"), null);
-    expect(AvailabilityState.from(null), null);
+    expect(AvailabilityState.from("foobar"), isNull);
+    expect(AvailabilityState.from(null), isNull);
   });
 
   test("get JSON availability state", () {
@@ -51,7 +51,7 @@ void main() {
   });
 
   test("parse null JSON availability", () {
-    expect(Availability.fromJSON(null), null);
+    expect(Availability.fromJSON(null), isNull);
   });
 
   test("parse JSON availability requires {state}", () {

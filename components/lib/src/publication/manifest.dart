@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dfunc/dfunc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons_dart/extensions/uri.dart';
@@ -109,7 +110,9 @@ class Manifest with EquatableMixin implements JSONable {
       String href = Link.fromJSONArray(json.optJSONArray("links"))
           .firstWithRel("self")
           ?.href;
-      baseUrl = Uri.tryParse(href)?.removeLastComponent()?.toString() ?? "/";
+      baseUrl = href?.let(
+              (it) => Uri.tryParse(it)?.removeLastComponent()?.toString()) ??
+          "/";
     }
 
     List<String> context =

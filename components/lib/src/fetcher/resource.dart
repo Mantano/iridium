@@ -9,6 +9,7 @@ import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
 import 'package:mno_commons_dart/utils/try.dart';
+import 'package:mno_shared_dart/mediatype.dart';
 import 'package:mno_shared_dart/publication.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
@@ -82,8 +83,6 @@ typedef ResourceTransformer = Resource Function(Resource resource);
 
 /// Acts as a proxy to an actual resource by handling read access.
 abstract class Resource {
-  static const String charsetUtf8 = "utf-8";
-
   /// Direct file to this resource, when available.
   ///
   /// This is meant to be used as an optimization for consumers which can't work efficiently
@@ -115,7 +114,7 @@ abstract class Resource {
   /// If [charset] is null, then it is parsed from the `charset` parameter of link().type,
   /// or falls back on UTF-8.
   Future<ResourceTry<String>> readAsString({String charset}) async {
-    charset = charset ?? (await link()).mediaType.charset ?? charsetUtf8;
+    charset = charset ?? (await link()).mediaType.charset ?? Charsets.utf8;
     return read().then((st) => st.mapCatching((data) {
           Encoding encoding = Encoding.getByName(charset) ?? utf8;
           return encoding.decoder.convert(data.buffer.asUint8List());
@@ -124,7 +123,7 @@ abstract class Resource {
 
   /// Reads the full content as a JSON object.
   Future<ResourceTry<Map<String, dynamic>>> readAsJson() async =>
-      (await readAsString(charset: charsetUtf8))
+      (await readAsString(charset: Charsets.utf8))
           .mapCatching((it) => json.decode(it));
 
   /// Reads the full content as an XML document.

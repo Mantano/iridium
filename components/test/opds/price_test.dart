@@ -13,19 +13,19 @@ void main() {
   });
 
   test("parse invalid JSON price", () {
-    expect(Price.fromJSON('{}'.toJsonOrNull()), null);
+    expect(Price.fromJSON('{}'.toJsonOrNull()), isNull);
   });
 
   test("parse null JSON price", () {
-    expect(Price.fromJSON(null), null);
+    expect(Price.fromJSON(null), isNull);
   });
 
   test("parse JSON price requires {currency}", () {
-    expect(Price.fromJSON('{"value": 4.65}'.toJsonOrNull()), null);
+    expect(Price.fromJSON('{"value": 4.65}'.toJsonOrNull()), isNull);
   });
 
   test("parse JSON price requires {value}", () {
-    expect(Price.fromJSON('{"currency": "EUR"}'.toJsonOrNull()), null);
+    expect(Price.fromJSON('{"currency": "EUR"}'.toJsonOrNull()), isNull);
   });
 
   test("parse JSON price requires positive {value}", () {

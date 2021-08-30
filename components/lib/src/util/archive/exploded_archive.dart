@@ -58,7 +58,8 @@ class ExplodedEntry extends ArchiveEntry {
   int get length => file.lengthSync();
 
   @override
-  String get path => relative(file.path, from: directory.path);
+  String get path =>
+      relative(file.path, from: directory.path).replaceAll("\\", "/");
 
   @override
   Future<ByteData> read({IntRange range}) async => FileStream.fromFile(file)

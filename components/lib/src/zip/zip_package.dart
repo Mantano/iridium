@@ -180,7 +180,9 @@ class ZipPackage implements JSONable {
       if (compressionMethod == 8) return stream.transform(zlibDecoder);
     }
     if (compressionMethod == 0) {
-      return file.openRead(entryStart + range.start, entryStart + range.length);
+      int start = min(entryStart + range.start, entryEnd);
+      int end = min(entryStart + range.length, entryEnd);
+      return file.openRead(start, end);
     }
     if (compressionMethod == 8) {
       return file

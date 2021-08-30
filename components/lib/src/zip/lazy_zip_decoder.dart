@@ -54,6 +54,7 @@ class LazyZipDecoder {
       return _archive;
     }).catchError((ex, st) {
       Fimber.d("ERROR", ex: ex, stacktrace: st);
+      return null;
     }).whenComplete(fileBuffer.close);
   }
 }

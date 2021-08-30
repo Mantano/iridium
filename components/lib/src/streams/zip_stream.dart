@@ -24,7 +24,7 @@ class ZipStream extends DataStream {
     List<int> validatedRange = validateRange(start, length);
     start = validatedRange[0];
     length = validatedRange[1];
-    IntRange range = IntRange(start, start + length);
+    IntRange range = IntRange(start, start + length - 1);
 
     Stream<List<int>> stream =
         await _package.extractStream(_entry.filename, range: range);

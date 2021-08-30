@@ -36,7 +36,6 @@ class Sniffers {
     lpf,
     archive,
     pdf,
-    any
   ];
 
   /// Sniffs an HTML document.
@@ -371,25 +370,10 @@ class Sniffers {
     }
     return null;
   }
-
-  static Future<MediaType> any(SnifferContext context) async {
-    if (context.mediaTypes.isNotEmpty) {
-      return context.mediaTypes.first;
-    }
-    if (context.fileExtensions.isNotEmpty) {
-      for (String fileExtension in context.fileExtensions) {
-        MediaType mediaType = MediaType.filterByFileExtension(fileExtension);
-        if (mediaType != null) {
-          return mediaType;
-        }
-      }
-    }
-    return null;
-  }
 }
 
 extension ListLinkFirstWithRelMatching on List<Link> {
   /// Finds the first [Link] having a relation matching the given [predicate].
   Link _firstWithRelMatching(bool Function(String) predicate) =>
-      firstWhere((it) => it.rels.any(predicate));
+      firstWhere((it) => it.rels.any(predicate), orElse: () => null);
 }

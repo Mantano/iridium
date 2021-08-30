@@ -7,11 +7,11 @@ import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:path/path.dart' as p;
 import 'package:mno_commons_dart/extensions/strings.dart';
 import 'package:mno_commons_dart/io.dart';
 import 'package:mno_shared_dart/fetcher.dart';
 import 'package:mno_shared_dart/src/mediatype/mediatype.dart';
+import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
 import '../../publication.dart';
@@ -43,7 +43,7 @@ class FileFetcher extends Fetcher {
             .then((list) => files.addAll(list));
       } else if (entry.value is File) {
         File file = entry.value as File;
-        files.add(await _toLink(href, file, entry.value));
+        files.add(await _toLink(href, file, file));
       }
     }
     return files;
@@ -51,11 +51,17 @@ class FileFetcher extends Fetcher {
 
   Future<Link> _toLink(
       String href, FileSystemEntity file, FileSystemEntity root) async {
-    String path =
-        p.absolute(href, file.canonicalPath.removePrefix(root.canonicalPath));
+    String path = p
+        .join(
+            href,
+            file.canonicalPath
+                .removePrefix(root.canonicalPath)
+                .replaceAll("\\", "/")
+                .removePrefix("/"))
+        .replaceAll("\\", "/");
     return Link(
-      href: File(path).canonicalPath,
-      type: (await MediaType.ofFileWithSingleHint(root,
+      href: path,
+      type: (await MediaType.ofFileWithSingleHint(file,
               fileExtension: p.extension(file.path)))
           ?.toString(),
     );
@@ -68,8 +74,8 @@ class FileFetcher extends Fetcher {
       String itemHref = entry.key.addPrefix("/");
       FileSystemEntity itemFile = entry.value;
       if (linkHref.startsWith(itemHref)) {
-        String path =
-            p.absolute(itemFile.path, linkHref.removePrefix(itemHref));
+        String path = p.join(
+            itemFile.path, linkHref.removePrefix(itemHref).removePrefix("/"));
         File resourceFile = File(path);
         // Make sure that the requested resource is [path] or one of its descendant.
         if (resourceFile.canonicalPath.startsWith(itemFile.canonicalPath)) {
@@ -127,6 +133,9 @@ class FileResource extends Resource {
       catching(() => _readSync(range));
 
   Future<ByteData> _readSync(IntRange range) async {
+    if (!await file.exists()) {
+      throw FileNotFoundException(file.path);
+    }
     if (range == null) {
       return file.readAsBytes().then((value) => ByteData.sublistView(value));
     }
@@ -154,7 +163,7 @@ class FileResource extends Resource {
 
   Future<int> get metadataLength {
     try {
-      return file.length();
+      return file.exists().then((exists) => (exists) ? file.length() : null);
     } on Exception {
       return null;
     }
@@ -164,7 +173,7 @@ class FileResource extends Resource {
   String toString() => "FileResource(${file.path})";
 
   static Future<ResourceTry<T>> catching<T>(Future<T> Function() closure) =>
-      closure().then((value) => ResourceTry.success(value)).catchError((e) {
+      closure().then((value) => ResourceTry.success(value)).catchError((e, st) {
         if (e is FileNotFoundException) {
           return ResourceTry<T>.failure(ResourceException.notFound);
         }

@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:xml/xml.dart' as xml;
 
@@ -54,14 +55,14 @@ abstract class DataStream {
   /// (or the default ones if null). Throws an exception if the range is not
   /// valid.
   List<int> validateRange(int start, int length) {
-    start = start ?? 0;
-    length = length ?? this.length - start;
-    if (start < 0 ||
-        start >= this.length ||
-        length < 1 ||
-        length - 1 > this.length - start) {
-      throw DataStreamException.outOfRange(start, length);
-    }
+    start = max(0, start ?? 0);
+    length = min(this.length, length ?? this.length - start);
+    // if (start < 0 ||
+    //     start >= this.length ||
+    //     length < 1 ||
+    //     length - 1 > this.length - start) {
+    //   throw DataStreamException.outOfRange(start, length);
+    // }
     return [start, length];
   }
 }

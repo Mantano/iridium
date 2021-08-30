@@ -24,6 +24,9 @@ class RawDataStream extends DataStream {
     start = range[0];
     length = range[1];
 
+    if (_data.isEmpty) {
+      return Stream.empty();
+    }
     Stream<List<int>> stream = Stream.fromFuture(
         Future.value(_data.sublist(start, start + length - 1)));
     return stream;

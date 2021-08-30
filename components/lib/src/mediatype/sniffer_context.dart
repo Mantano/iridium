@@ -12,6 +12,7 @@ import 'package:mno_commons_dart/extensions/data.dart';
 import 'package:mno_commons_dart/extensions/strings.dart';
 import 'package:mno_commons_dart/utils/exceptions.dart';
 import 'package:mno_shared_dart/archive.dart';
+import 'package:mno_shared_dart/mediatype.dart';
 import 'package:mno_shared_dart/publication.dart';
 import 'package:mno_shared_dart/streams.dart';
 import 'package:xml/xml.dart';
@@ -25,7 +26,6 @@ import 'sniffer_content.dart';
 /// @param mediaTypes Media type hints.
 /// @param fileExtensions File extension hints.
 class SnifferContext {
-  static const String charsetUtf8 = "utf-8";
   final SnifferContent content;
   final List<String> fileExtensions;
   final List<MediaType> mediaTypes;
@@ -38,7 +38,9 @@ class SnifferContext {
             mediaTypes.mapNotNull((it) => MediaType.parse(it)).toList(),
         fileExtensions = fileExtensions.map((it) => it.toLowerCase()).toList();
 
-  // Metadata
+  @override
+  String toString() =>
+      'SnifferContext{content: $content, fileExtensions: $fileExtensions, mediaTypes: $mediaTypes}'; // Metadata
 
   /// Finds the first [Charset] declared in the media types' `charset` parameter.
   String get charset => mediaTypes.mapNotNull((it) => it.charset).firstOrNull;
@@ -76,7 +78,7 @@ class SnifferContext {
   Future<String> contentAsString() async {
     if (!_loadedContentAsString) {
       _loadedContentAsString = true;
-      Encoding encoding = Encoding.getByName(charset ?? charsetUtf8) ?? utf8;
+      Encoding encoding = Encoding.getByName(charset ?? Charsets.utf8) ?? utf8;
       Stream<List<int>> _stream = await stream();
       _contentAsString =
           await _stream?.let((it) async => await encoding.decodeStream(it));
@@ -106,7 +108,7 @@ class SnifferContext {
   /// Content as an Archive instance.
   /// Warning: Archive is only supported for a local file, for now.
   Future<Archive> contentAsArchive() async {
-    if (!loadedContentAsArchive) {
+    if (content is SnifferFileContent && !loadedContentAsArchive) {
       loadedContentAsArchive = true;
       _contentAsArchive = await (content as SnifferFileContent)
           ?.let((it) => DefaultArchiveFactory().open(it.file, null));
@@ -136,7 +138,7 @@ class SnifferContext {
     if (json == null) {
       return false;
     }
-    return json.keys.toSet().containsAll(keys);
+    return json.keys.containsAll(keys);
   }
 
   /// Returns whether an Archive entry exists in this file.

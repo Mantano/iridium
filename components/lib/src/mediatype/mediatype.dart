@@ -9,6 +9,7 @@ import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
 import 'package:mno_commons_dart/utils/take.dart';
+import 'package:mno_shared_dart/mediatype.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
@@ -285,7 +286,7 @@ class MediaType {
     try {
       return MediaType._create(string,
           name: name, fileExtension: fileExtension);
-    } on Exception catch (e, stacktrace) {
+    } on Error catch (e, stacktrace) {
       Fimber.e("MediaType._create ERROR", ex: e, stacktrace: stacktrace);
       return null;
     }
@@ -328,8 +329,8 @@ class MediaType {
     // > of US-ASCII.  However, no distinction is made between use of upper and lower case
     // > letters.
     // > https://www.iana.org/assignments/character-sets/character-sets.xhtml
-    parameters["charset"]
-        ?.let((it) => parameters["charset"] = it.toUpperCase());
+    parameters["charset"]?.let((it) =>
+        parameters["charset"] = Charset.forName(it)?.name ?? it.toUpperCase());
 
     return MediaType._(
         name: name,
@@ -511,12 +512,12 @@ class MediaType {
           List<Sniffer> sniffers = MediaType.sniffers}) =>
       _of(
           content: null,
-          mediaTypes: mediaTypes,
-          fileExtensions: fileExtensions,
+          mediaTypes: mediaTypes ?? const [],
+          fileExtensions: fileExtensions ?? const [],
           sniffers: sniffers);
 
   /// Resolves a format from a local file path.
-  static Future<MediaType> ofFileWithSingleHint(File file,
+  static Future<MediaType> ofFileWithSingleHint(FileSystemEntity file,
           {String mediaType,
           String fileExtension,
           List<Sniffer> sniffers = MediaType.sniffers}) =>
@@ -526,7 +527,7 @@ class MediaType {
           sniffers: sniffers);
 
   /// Resolves a format from a local file path.
-  static Future<MediaType> ofFile(File file,
+  static Future<MediaType> ofFile(FileSystemEntity file,
           {List<String> mediaTypes = const [],
           List<String> fileExtensions = const [],
           List<Sniffer> sniffers = MediaType.sniffers}) =>
@@ -557,7 +558,8 @@ class MediaType {
           sniffers: sniffers);
 
   /// Resolves a format from bytes, e.g. from an HTTP response.
-  static Future<MediaType> ofBytesWithSingleHint(ByteData Function() bytes,
+  static Future<MediaType> ofBytesWithSingleHint(
+          Future<ByteData> Function() bytes,
           {String mediaType,
           String fileExtension,
           List<Sniffer> sniffers = MediaType.sniffers}) =>
@@ -567,7 +569,7 @@ class MediaType {
           sniffers: sniffers);
 
   /// Resolves a format from bytes, e.g. from an HTTP response.
-  static Future<MediaType> ofBytes(ByteData Function() bytes,
+  static Future<MediaType> ofBytes(Future<ByteData> Function() bytes,
           {List<String> mediaTypes = const [],
           List<String> fileExtensions = const [],
           List<Sniffer> sniffers = MediaType.sniffers}) =>
@@ -653,9 +655,18 @@ class MediaType {
     // Sniffers.system(context)?.let { return it }
     //
     // // If nothing else worked, we try to parse the first valid media type hint.
-    // for (mediaType in mediaTypes) {
-    // parse(mediaType)?.let { return it }
-    // }
+    for (String mt in mediaTypes) {
+      MediaType mediaType = parse(mt);
+      if (mediaType != null) {
+        return mediaType;
+      }
+    }
+    for (String fileExtension in fileExtensions) {
+      MediaType mediaType = filterByFileExtension(fileExtension);
+      if (mediaType != null) {
+        return mediaType;
+      }
+    }
 
     return null;
   }

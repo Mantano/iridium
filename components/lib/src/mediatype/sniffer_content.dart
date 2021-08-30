@@ -22,44 +22,52 @@ abstract class SnifferContent {
 }
 
 class SnifferFileContent extends SnifferContent {
-  final File file;
+  final FileSystemEntity file;
 
   SnifferFileContent(this.file);
 
   @override
   Future<ByteData> read() async {
-    try {
-      // We only read files smaller than 100KB to avoid an [OutOfMemoryError].
-      if (await file.length() > 100000) {
-        return null;
-      } else {
-        return file.readAsBytes().then((bytes) => ByteData.sublistView(bytes));
+    if (file is File) {
+      try {
+        // We only read files smaller than 100KB to avoid an [OutOfMemoryError].
+        if (await (file as File).length() > 100000) {
+          return ByteData(0);
+        } else {
+          return (file as File)
+              .readAsBytes()
+              .then((bytes) => ByteData.sublistView(bytes));
+        }
+      } on Exception catch (ex) {
+        Fimber.e("ERROR reading file: $file", ex: ex);
+        return ByteData(0);
       }
-    } on Exception catch (ex) {
-      Fimber.e("ERROR reading file: $file", ex: ex);
-      return null;
     }
+    return ByteData(0);
   }
 
   @override
   Future<Stream<List<int>>> stream() async {
-    try {
-      return file.openRead();
-    } on Exception catch (ex) {
-      Fimber.e("ERROR reading file: $file", ex: ex);
-      return null;
+    if (file is File) {
+      try {
+        return (file as File).openRead();
+      } on Exception catch (ex) {
+        Fimber.e("ERROR reading file: $file", ex: ex);
+        return Stream.empty();
+      }
     }
+    return Stream.empty();
   }
 }
 
 /// Used to sniff a bytes array.
 class SnifferBytesContent extends SnifferContent {
-  final ByteData Function() bytes;
+  final Future<ByteData> Function() bytes;
   ByteData _byteData;
 
   SnifferBytesContent(this.bytes);
 
-  Future<ByteData> _bytes() async => _byteData ??= bytes();
+  Future<ByteData> _bytes() async => _byteData ??= await bytes();
 
   @override
   Future<ByteData> read() async => _bytes();

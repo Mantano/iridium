@@ -106,7 +106,7 @@ extension ArchiveFileExtension on ArchiveEntry {
             ?.toString());
 
     if (compressedLength != null) {
-      link.addProperties({"compressedLength": compressedLength});
+      link = link.addProperties({"compressedLength": compressedLength});
     }
 
     return link;

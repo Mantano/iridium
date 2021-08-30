@@ -43,15 +43,15 @@ void main() {
   });
 
   test("parse invalid JSON acquisition", () {
-    expect(Acquisition.fromJSON("{}".toJsonOrNull()), null);
+    expect(Acquisition.fromJSON("{}".toJsonOrNull()), isNull);
   });
 
   test("parse null JSON acquisition", () {
-    expect(Acquisition.fromJSON(null), null);
+    expect(Acquisition.fromJSON(null), isNull);
   });
 
   test("parse JSON acquisition requires {type}", () {
-    expect(Acquisition.fromJSON('{"child": []}'.toJsonOrNull()), null);
+    expect(Acquisition.fromJSON('{"child": []}'.toJsonOrNull()), isNull);
   });
 
   test("parse JSON acquisition array", () {

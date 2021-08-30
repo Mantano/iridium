@@ -126,8 +126,7 @@ class Properties with EquatableMixin, JSONable {
         layout: EpubLayout.from(json.optString("layout")),
         overflow: PresentationOverflow.from(json.optString("overflow")),
         spread: PresentationSpread.from(json.optString("spread")),
-        encryption:
-            Encryption.fromJSON(json['encrypted'] as Map<String, dynamic>),
-        otherProperties: json['otherProperties'] as Map<String, dynamic>,
+        encryption: Encryption.fromJSON(json.optJSONObject('encrypted')),
+        otherProperties: json.optJSONObject('otherProperties'),
       );
 }
