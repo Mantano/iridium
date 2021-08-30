@@ -80,13 +80,13 @@ extension MapExtension on Map<String, dynamic> {
   /// Returns true if this object has no mapping for {@code name} or if it has
   /// a mapping whose value is {@link #NULL}.
   bool isNull(String name) {
-    dynamic value = this[name];
+    dynamic value = opt(name);
     return value == null || value == _null;
   }
 
   /// Returns the value mapped by {@code name}, or null if no such mapping
   /// exists.
-  dynamic opt(String name) => this[name];
+  dynamic opt(String name) => (this != null) ? this[name] : null;
 
   void put(String name, dynamic object) => this[name] = object;
 
@@ -191,42 +191,42 @@ extension MapExtension on Map<String, dynamic> {
   /// Returns the value mapped by {@code name} if it exists, coercing it if
   /// necessary, or {@code fallback} if no such mapping exists.
   String optString(String name, {String fallback}) {
-    dynamic object = this[name];
+    dynamic object = opt(name);
     return __toString(object) ?? fallback;
   }
 
   /// Returns the value mapped by {@code name} if it exists and is a boolean or
   /// can be coerced to a boolean, or {@code fallback} otherwise.
   bool optBoolean(String name, {bool fallback}) {
-    dynamic object = this[name];
+    dynamic object = opt(name);
     return _toBoolean(object) ?? fallback;
   }
 
   /// Returns the value mapped by {@code name} if it exists and is an int or
   /// can be coerced to an int, or {@code fallback} otherwise.
   int optInt(String name, {int fallback = 0}) {
-    dynamic object = this[name];
+    dynamic object = opt(name);
     return _toInteger(object) ?? fallback;
   }
 
   /// Returns the value mapped by {@code name} if it exists and is a double or
   /// can be coerced to a double, or {@code fallback} otherwise.
   double optDouble(String name, {double fallback}) {
-    dynamic object = this[name];
+    dynamic object = opt(name);
     return _toDouble(object) ?? fallback;
   }
 
   /// Returns the value mapped by {@code name} if it exists and is a {@code
   /// Map}, or null otherwise.
   Map<String, dynamic> optJSONObject(String name) {
-    dynamic object = this[name];
+    dynamic object = opt(name);
     return object is Map<String, dynamic> ? object : null;
   }
 
   /// Returns the value mapped by {@code name} if it exists and is a {@code
   /// JSONArray}, or null otherwise.
   List<dynamic> optJSONArray(String name) {
-    dynamic object = this[name];
+    dynamic object = opt(name);
     return object is Iterable ? object.toList() : null;
   }
 
@@ -292,7 +292,7 @@ extension MapExtension on Map<String, dynamic> {
   ///
   /// E.g. ["a", "b"] or "a"
   List<String> optStringsFromArrayOrSingle(String name, {bool remove = false}) {
-    dynamic value = (remove) ? this.remove(name) : this[name];
+    dynamic value = (remove) ? this.remove(name) : opt(name);
     switch (value.runtimeType) {
       case Map:
         return (value as Map).values.whereType<String>().toList();

@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:mno_commons_dart/utils/href.dart';
+
 /// A lightweight implementation of URI Template (RFC 6570).
 ///
 /// Only handles simple cases, fitting Readium's use cases.
@@ -39,7 +41,10 @@ class UriTemplate {
       }
     });
 
-    return expanded.replaceAll("~~%20~~", "%2B");
+    return Href(expanded)
+        .percentEncodedString
+        .replaceAll("~~+~~", "%2B")
+        .replaceAll("~~%20~~", "%2B");
   }
 
   String _expandSimpleString(String string, Map<String, String> parameters) =>

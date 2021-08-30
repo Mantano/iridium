@@ -86,5 +86,5 @@ extension QueryParameterExtension on List<QueryParameter> {
       firstWhere((it) => it.name == name, orElse: () => null)?.value;
 
   List<String> allNamed(String name) =>
-      where((it) => it.name == name).mapNotNull((it) => it.value);
+      where((it) => it.name == name).mapNotNull((it) => it.value).toList();
 }
