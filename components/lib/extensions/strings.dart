@@ -32,6 +32,11 @@ extension StringExtension on String {
     return substring(0, pos);
   }
 
+  String substringAfter(String delimiter) {
+    int index = indexOf(delimiter);
+    return (index == -1) ? this : substring(index + delimiter.length, length);
+  }
+
   ByteData toByteData() => this.toUtf8().toByteData();
 
   DateTime iso8601ToDate() {

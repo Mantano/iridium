@@ -21,20 +21,18 @@ extension MapExtension on Map<String, dynamic> {
   static const String _null = "null";
 
   dynamic _wrapJSON(dynamic value) {
-    switch (value.runtimeType) {
-      case JSONable:
-        return (value as JSONable).toJson().takeIf((it) => it.isNotEmpty);
-      case Map:
-        return (value as Map).takeIf((it) => it.isNotEmpty)?.map(
-            (key, value) => MapEntry<dynamic, dynamic>(key, _wrapJSON(value)));
-      case List:
-        return (value as List)
-            .takeIf((it) => it.isNotEmpty)
-            ?.mapNotNull(_wrapJSON)
-            ?.toList();
-      default:
-        return value;
+    if (value is JSONable) {
+      return value.toJson().takeIf((it) => it.isNotEmpty);
+    } else if (value is Map) {
+      return (value).takeIf((it) => it.isNotEmpty)?.map(
+          (key, value) => MapEntry<dynamic, dynamic>(key, _wrapJSON(value)));
+    } else if (value is List) {
+      return (value)
+          .takeIf((it) => it.isNotEmpty)
+          ?.mapNotNull(_wrapJSON)
+          ?.toList();
     }
+    return value;
   }
 
   String __toString(dynamic value) {
@@ -293,13 +291,14 @@ extension MapExtension on Map<String, dynamic> {
   /// E.g. ["a", "b"] or "a"
   List<String> optStringsFromArrayOrSingle(String name, {bool remove = false}) {
     dynamic value = (remove) ? this.remove(name) : opt(name);
-    switch (value.runtimeType) {
-      case Map:
-        return (value as Map).values.whereType<String>().toList();
-      case String:
-        return [value];
-      default:
-        return [];
+    if (value is Map) {
+      return (value).values.whereType<String>().toList();
+    } else if (value is List) {
+      return value.whereType<String>().toList();
+    } else if (value is String) {
+      return [value];
+    } else {
+      return [];
     }
   }
 }
