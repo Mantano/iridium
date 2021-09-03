@@ -77,11 +77,11 @@ class Manifest with EquatableMixin implements JSONable {
     Map<String, dynamic> json = <String, dynamic>{}
       ..putIterableIfNotEmpty("@context", context)
       ..putJSONableIfNotEmpty("metadata", metadata)
-      ..putIterableIfNotEmpty("links", links)
-      ..putIterableIfNotEmpty("readingOrder", readingOrder)
+      ..put("links", links.toJson())
+      ..put("readingOrder", readingOrder.toJson())
       ..putIterableIfNotEmpty("resources", resources)
       ..putIterableIfNotEmpty("toc", tableOfContents);
-    subcollections.appendToJSONObject(json);
+    subcollections.appendToJsonObject(json);
     return json;
   }
 
@@ -96,7 +96,7 @@ class Manifest with EquatableMixin implements JSONable {
   /// If the publication can't be parsed, a warning will be logged with [warnings].
   /// https://readium.org/webpub-manifest/
   /// https://readium.org/webpub-manifest/schema/publication.schema.json
-  factory Manifest.fromJSON(
+  factory Manifest.fromJson(
     Map<String, dynamic> json, {
     bool packaged = false,
   }) {

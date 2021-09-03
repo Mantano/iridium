@@ -6,70 +6,56 @@ import 'package:equatable/equatable.dart';
 import 'package:mno_commons_dart/utils/jsonable.dart';
 
 import 'encryption.dart';
-import 'presentation.dart';
+import 'presentation/presentation.dart';
 
 /// Set of properties associated with a [Link].
 ///
 /// See https://readium.org/webpub-manifest/schema/properties.schema.json
 ///     https://readium.org/webpub-manifest/schema/extensions/epub/properties.schema.json
 class Properties with EquatableMixin, JSONable {
-  Properties(
-      {this.page,
-      this.contains = const [],
-      this.orientation,
-      this.layout,
-      this.overflow,
-      this.spread,
-      Encryption encryption,
-      Map<String, dynamic> otherProperties})
-      : assert(contains != null) {
-    this.otherProperties = otherProperties ?? {};
-    if (encryption != null) {
-      this.otherProperties["encrypted"] = encryption.toJson();
-    }
-  }
+  Properties({Map<String, dynamic> otherProperties})
+      : this.otherProperties = otherProperties ?? {};
 
   /// (Nullable) Indicates how the linked resource should be displayed in a
   /// reading environment that displays synthetic spreads.
-  final PresentationPage page;
+  PresentationPage get page =>
+      PresentationPage.from(otherProperties.optString("page"));
 
   /// Identifies content contained in the linked resource, that cannot be
   /// strictly identified using a media type.
-  final List<String> contains;
+  Set<String> get contains =>
+      otherProperties.optStringsFromArrayOrSingle("contains").toSet();
 
   /// (Nullable) Suggested orientation for the device when displaying the linked
   /// resource.
-  final PresentationOrientation orientation;
+  PresentationOrientation get orientation =>
+      PresentationOrientation.from(otherProperties.optString("orientation"));
 
   /// (Nullable) Hints how the layout of the resource should be presented.
-  final EpubLayout layout;
+  EpubLayout get layout => EpubLayout.from(otherProperties.optString("layout"));
 
   /// (Nullable) Suggested method for handling overflow while displaying the
   /// linked resource.
-  final PresentationOverflow overflow;
+  PresentationOverflow get overflow =>
+      PresentationOverflow.from(otherProperties.optString("overflow"));
 
   /// (Nullable) Indicates the condition to be met for the linked resource to be
   /// rendered within a synthetic spread.
-  final PresentationSpread spread;
+  PresentationSpread get spread =>
+      PresentationSpread.from(otherProperties.optString("spread"));
 
   Map<String, dynamic> otherProperties;
 
   @override
-  List<Object> get props => [
-        orientation,
-        page,
-        contains,
-        layout,
-        overflow,
-        spread,
-        encryption,
-        otherProperties,
-      ];
+  List<Object> get props => [otherProperties];
+
+  dynamic operator [](String name) => otherProperties[name];
 
   /// (Nullable) Indicates that a resource is encrypted/obfuscated and provides
   /// relevant information for decryption.
   Encryption get encryption {
-    if (otherProperties.containsKey("encrypted")) {
+    if (otherProperties.containsKey("encrypted") &&
+        otherProperties["encrypted"] is Map<String, dynamic>) {
       return Encryption.fromJSON(
           otherProperties["encrypted"] as Map<String, dynamic>);
     }
@@ -78,39 +64,14 @@ class Properties with EquatableMixin, JSONable {
 
   /// Serializes a [Properties] to its RWPM JSON representation.
   @override
-  Map<String, dynamic> toJson() => {
-        "orientation": orientation?.value,
-        "page": page?.value,
-        "contains": contains,
-        "layout": layout?.value,
-        "overflow": overflow?.value,
-        "spread": spread?.value,
-        "encryption": encryption?.toJson(),
-        "otherProperties": otherProperties,
-      };
+  Map<String, dynamic> toJson() => otherProperties;
 
   Properties add(Map<String, dynamic> properties) {
     Map<String, dynamic> props = Map.of(otherProperties)..addAll(properties);
     return Properties(otherProperties: props);
   }
 
-  Properties copy(
-          {PresentationPage page,
-          List<String> contains,
-          PresentationOrientation orientation,
-          EpubLayout layout,
-          PresentationOverflow overflow,
-          PresentationSpread spread,
-          Encryption encryption,
-          Map<String, dynamic> otherProperties}) =>
-      Properties(
-        page: page ?? this.page,
-        contains: contains ?? this.contains,
-        orientation: orientation ?? this.orientation,
-        layout: layout ?? this.layout,
-        overflow: overflow ?? this.overflow,
-        spread: spread ?? this.spread,
-        encryption: encryption ?? this.encryption,
+  Properties copy({Map<String, dynamic> otherProperties}) => Properties(
         otherProperties: otherProperties ?? this.otherProperties,
       );
 
@@ -119,14 +80,6 @@ class Properties with EquatableMixin, JSONable {
 
   /// Creates a [Properties] from its RWPM JSON representation.
   static Properties fromJSON(Map<String, dynamic> json) => Properties(
-        page: PresentationPage.from(json.optString("page")),
-        contains: json.optStringsFromArrayOrSingle("contains"),
-        orientation:
-            PresentationOrientation.from(json.optString("orientation")),
-        layout: EpubLayout.from(json.optString("layout")),
-        overflow: PresentationOverflow.from(json.optString("overflow")),
-        spread: PresentationSpread.from(json.optString("spread")),
-        encryption: Encryption.fromJSON(json.optJSONObject('encrypted')),
-        otherProperties: json.optJSONObject('otherProperties'),
+        otherProperties: json ?? {},
       );
 }

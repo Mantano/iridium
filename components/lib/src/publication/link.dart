@@ -186,7 +186,7 @@ class Link with EquatableMixin, JSONable {
 
   /// List of URI template parameter keys, if the [Link] is templated.
   List<String> get templateParameters =>
-      (templated) ? UriTemplate(href).parameters : [];
+      (templated) ? UriTemplate(href).parameters.toList() : [];
 
   /// Expands the HREF by replacing URI template variables by the given parameters.
   ///
@@ -207,21 +207,20 @@ class Link with EquatableMixin, JSONable {
 
   /// Serializes a [Link] to its RWPM JSON representation.
   @override
-  Map<String, dynamic> toJson() => {
-        "href": href,
-        "type": type,
-        "templated": templated,
-        "title": title,
-        if (rels != null) "rel": rels,
-        if (properties != null) "properties": properties.toJson(),
-        "height": height,
-        "width": width,
-        "bitrate": bitrate,
-        "duration": duration,
-        if (languages != null) "language": languages,
-        if (alternates != null) "alternate": alternates,
-        if (children != null) "children": children,
-      };
+  Map<String, dynamic> toJson() => {}
+    ..putOpt("href", href)
+    ..putOpt("type", type)
+    ..putOpt("templated", templated)
+    ..putOpt("title", title)
+    ..putIterableIfNotEmpty("rel", rels)
+    ..putJSONableIfNotEmpty("properties", properties)
+    ..putOpt("height", height)
+    ..putOpt("width", width)
+    ..putOpt("bitrate", bitrate)
+    ..putOpt("duration", duration)
+    ..putIterableIfNotEmpty("language", languages)
+    ..putIterableIfNotEmpty("alternate", alternates)
+    ..putIterableIfNotEmpty("children", children);
 
   /// Makes a copy of this [Link] after merging in the given additional other [properties].
   Link addProperties(Map<String, dynamic> properties) =>

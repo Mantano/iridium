@@ -38,7 +38,7 @@ class PublicationCollection with EquatableMixin implements JSONable {
       "metadata": metadata,
       "links": links.toJson(),
     };
-    subcollections.appendToJSONObject(json);
+    subcollections.appendToJsonObject(json);
     return json;
   }
 

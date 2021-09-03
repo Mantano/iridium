@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
@@ -18,7 +19,7 @@ class Subject with EquatableMixin, JSONable {
       this.localizedSortAs,
       this.scheme,
       this.code,
-      this.links})
+      this.links = const []})
       : assert(localizedName != null);
 
   final LocalizedString localizedName;
@@ -47,8 +48,8 @@ class Subject with EquatableMixin, JSONable {
   Map<String, dynamic> toJson() => {}
     ..putJSONableIfNotEmpty("name", localizedName)
     ..putJSONableIfNotEmpty("sortAs", localizedSortAs)
-    ..put("scheme", scheme)
-    ..put("code", code)
+    ..putOpt("scheme", scheme)
+    ..putOpt("code", code)
     ..putIterableIfNotEmpty("links", links);
 
   /// Parses a [Subject] from its RWPM JSON representation.
@@ -94,11 +95,12 @@ class Subject with EquatableMixin, JSONable {
     if (json is String || json is Map<String, dynamic>) {
       return [json]
           .map((it) => Subject.fromJson(it, normalizeHref: normalizeHref))
-          .where((e) => e != null)
+          .whereNotNull()
           .toList();
     } else if (json is List) {
       return json
           .map((it) => Subject.fromJson(it, normalizeHref: normalizeHref))
+          .whereNotNull()
           .toList();
     }
     return [];

@@ -6,7 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:mno_commons_dart/utils/jsonable.dart';
 import 'package:mno_shared_dart/publication.dart';
 
-import 'link.dart';
+import '../link.dart';
 
 /// The Presentation Hints extension defines a number of hints for User Agents about the way content
 /// should be presented to the user.
@@ -30,20 +30,14 @@ import 'link.dart';
 /// @param [layout] Hints how the layout of the resource should be presented (EPUB extension).
 class Presentation with EquatableMixin, JSONable {
   Presentation({
-    this.layout = EpubLayout.reflowable,
-    this.orientation = PresentationOrientation.auto,
-    this.overflow = PresentationOverflow.auto,
-    this.spread = PresentationSpread.auto,
-    this.fit = PresentationFit.contain,
-    this.clipped = false,
-    this.continuous = true,
-  })  : assert(layout != null),
-        assert(orientation != null),
-        assert(overflow != null),
-        assert(spread != null),
-        assert(fit != null),
-        assert(clipped != null),
-        assert(continuous != null);
+    this.layout,
+    this.orientation,
+    this.overflow,
+    this.spread,
+    this.fit,
+    this.clipped,
+    this.continuous,
+  });
 
   /// Creates a [Properties] from its RWPM JSON representation.
   factory Presentation.fromJson(Map<String, dynamic> json) {
@@ -88,15 +82,14 @@ class Presentation with EquatableMixin, JSONable {
 
   /// Serializes a [Presentation] to its RWPM JSON representation.
   @override
-  Map<String, dynamic> toJson() => {
-        "clipped": clipped,
-        "continuous": continuous,
-        "fit": fit?.value,
-        "orientation": orientation?.value,
-        "overflow": overflow?.value,
-        "spread": spread?.value,
-        "layout": layout?.value,
-      };
+  Map<String, dynamic> toJson() => {}
+    ..putOpt("clipped", clipped)
+    ..putOpt("continuous", continuous)
+    ..putOpt("fit", fit?.value)
+    ..putOpt("orientation", orientation?.value)
+    ..putOpt("overflow", overflow?.value)
+    ..putOpt("spread", spread?.value)
+    ..putOpt("layout", layout?.value);
 
   @override
   String toString() => 'Presentation(${toJson()})';

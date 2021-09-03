@@ -88,11 +88,11 @@ class Publication with EquatableMixin {
       if (metadata.type == "http://schema.org/Audiobook" ||
           readingOrder.allAreAudio) {
         _type = TYPE.audio;
-      }
-      if (readingOrder.allAreBitmap) {
+      } else if (readingOrder.allAreBitmap) {
         _type = TYPE.divina;
+      } else {
+        _type = TYPE.webpub;
       }
-      _type = TYPE.webpub;
     }
     return _type;
   }
@@ -129,6 +129,13 @@ class Publication with EquatableMixin {
 
   /// Finds all [Link]s having the given [rel] in the publications's links.
   List<Link> linksWithRel(String rel) => _manifest.linksWithRel(rel);
+
+  /// Finds the first [Link] to the publication's cover (rel = cover).
+  Link get coverLink => linkWithRel("cover");
+
+  /// Finds the first resource [Link] (asset or [readingOrder] item) at the given relative path.
+  Link resourceWithHref(String href) =>
+      readingOrder.deepLinkWithHref(href) ?? resources.deepLinkWithHref(href);
 
   /// Returns the resource targeted by the given non-templated [link].
   Resource get(Link link) {

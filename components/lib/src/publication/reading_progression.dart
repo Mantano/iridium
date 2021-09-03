@@ -34,8 +34,8 @@ class ReadingProgression with EquatableMixin {
       return ReadingProgression.ltr;
     }
   }
-  factory ReadingProgression.fromValue(String value) =>
-      _values.firstWhere((it) => it.value == value, orElse: () => auto);
+  factory ReadingProgression.fromValue(String value) => _values
+      .firstWhere((it) => it.value == value?.toLowerCase(), orElse: () => auto);
 
   /// Returns the leading [Page] for the [ReadingProgression].
   PresentationPage get leadingPage {

@@ -130,7 +130,7 @@ class SnifferContext {
 
   /// Readium Web Publication Manifest parsed from the content. */
   Future<Manifest> contentAsRwpm() async =>
-      Manifest.fromJSON(await contentAsJson());
+      Manifest.fromJson(await contentAsJson());
 
   /// Returns whether the content is a JSON object containing all of the given root keys.
   Future<bool> containsJsonKeys(List<String> keys) async {

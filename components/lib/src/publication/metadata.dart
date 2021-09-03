@@ -49,7 +49,7 @@ class Metadata with EquatableMixin, JSONable {
       this.belongsToSeries = const [],
       this.readingProgression = ReadingProgression.auto,
       this.rendition,
-      this.otherMetadata})
+      this.otherMetadata = const {}})
       : assert(languages != null),
         assert(subjects != null),
         assert(authors != null),
@@ -60,7 +60,7 @@ class Metadata with EquatableMixin, JSONable {
         assert(readingProgression != null),
         this.belongsTo = belongsTo ?? {} {
     if (belongsToCollections.isNotEmpty) {
-      this.belongsTo["collections"] = belongsToCollections;
+      this.belongsTo["collection"] = belongsToCollections;
     }
     if (belongsToSeries.isNotEmpty) {
       this.belongsTo["series"] = belongsToSeries;
@@ -180,39 +180,36 @@ class Metadata with EquatableMixin, JSONable {
         otherMetadata
       ];
 
-  Presentation get presentation => Presentation.fromJson(this["presentation"]);
-
   /// Serializes a [Metadata] to its RWPM JSON representation.
   @override
-  Map<String, dynamic> toJson() => {
-        "identifier": identifier,
-        "@type": type,
-        if (localizedTitle != null) "title": localizedTitle.toJson(),
-        if (localizedSubtitle != null) "subtitle": localizedSubtitle.toJson(),
-        "modified": modified?.toIso8601String(),
-        "published": published?.toIso8601String(),
-        if (languages != null) "language": languages,
-        if (localizedSortAs != null) "sortAs": localizedSortAs.toJson(),
-        if (subjects != null) "subject": subjects.toJson(),
-        if (authors != null) "author": authors.toJson(),
-        if (translators != null) "translator": translators.toJson(),
-        if (editors != null) "editor": editors.toJson(),
-        if (artists != null) "artist": artists.toJson(),
-        if (illustrators != null) "illustrator": illustrators.toJson(),
-        if (letterers != null) "letterer": letterers.toJson(),
-        if (pencilers != null) "penciler": pencilers.toJson(),
-        if (colorists != null) "colorist": colorists.toJson(),
-        if (inkers != null) "inker": inkers.toJson(),
-        if (narrators != null) "narrator": narrators.toJson(),
-        if (contributors != null) "contributor": contributors.toJson(),
-        if (publishers != null) "publisher": publishers.toJson(),
-        if (imprints != null) "imprint": imprints.toJson(),
-        "readingProgression": readingProgression.value,
-        "description": description,
-        "duration": duration,
-        "numberOfPages": numberOfPages,
-        if (imprints != null) "belongsTo": belongsTo,
-      };
+  Map<String, dynamic> toJson() => Map.from(otherMetadata)
+    ..putOpt("identifier", identifier)
+    ..putOpt("@type", type)
+    ..putJSONableIfNotEmpty("title", localizedTitle)
+    ..putJSONableIfNotEmpty("subtitle", localizedSubtitle)
+    ..putOpt("modified", modified?.toIso8601String())
+    ..putOpt("published", published?.toIso8601String())
+    ..putIterableIfNotEmpty("language", languages)
+    ..putJSONableIfNotEmpty("sortAs", localizedSortAs)
+    ..putIterableIfNotEmpty("subject", subjects)
+    ..putIterableIfNotEmpty("author", authors)
+    ..putIterableIfNotEmpty("translator", translators)
+    ..putIterableIfNotEmpty("editor", editors)
+    ..putIterableIfNotEmpty("artist", artists)
+    ..putIterableIfNotEmpty("illustrator", illustrators)
+    ..putIterableIfNotEmpty("letterer", letterers)
+    ..putIterableIfNotEmpty("penciler", pencilers)
+    ..putIterableIfNotEmpty("colorist", colorists)
+    ..putIterableIfNotEmpty("inker", inkers)
+    ..putIterableIfNotEmpty("narrator", narrators)
+    ..putIterableIfNotEmpty("contributor", contributors)
+    ..putIterableIfNotEmpty("publisher", publishers)
+    ..putIterableIfNotEmpty("imprint", imprints)
+    ..putOpt("readingProgression", readingProgression.value)
+    ..putOpt("description", description)
+    ..putOpt("duration", duration)
+    ..putOpt("numberOfPages", numberOfPages)
+    ..putMapIfNotEmpty("belongsTo", belongsTo);
 
   /// Parses a [Metadata] from its RWPM JSON representation.
   ///
@@ -241,39 +238,39 @@ class Metadata with EquatableMixin, JSONable {
         LocalizedString.fromJson(json.remove("sortAs"));
     List<Subject> subjects = Subject.fromJSONArray(json.remove("subject"),
         normalizeHref: normalizeHref);
-    List<Contributor> authors = Contributor.fromJSONArray(json.remove("author"),
+    List<Contributor> authors = Contributor.fromJsonArray(json.remove("author"),
         normalizeHref: normalizeHref);
-    List<Contributor> translators = Contributor.fromJSONArray(
+    List<Contributor> translators = Contributor.fromJsonArray(
         json.remove("translator"),
         normalizeHref: normalizeHref);
-    List<Contributor> editors = Contributor.fromJSONArray(json.remove("editor"),
+    List<Contributor> editors = Contributor.fromJsonArray(json.remove("editor"),
         normalizeHref: normalizeHref);
-    List<Contributor> artists = Contributor.fromJSONArray(json.remove("artist"),
+    List<Contributor> artists = Contributor.fromJsonArray(json.remove("artist"),
         normalizeHref: normalizeHref);
-    List<Contributor> illustrators = Contributor.fromJSONArray(
+    List<Contributor> illustrators = Contributor.fromJsonArray(
         json.remove("illustrator"),
         normalizeHref: normalizeHref);
-    List<Contributor> letterers = Contributor.fromJSONArray(
+    List<Contributor> letterers = Contributor.fromJsonArray(
         json.remove("letterer"),
         normalizeHref: normalizeHref);
-    List<Contributor> pencilers = Contributor.fromJSONArray(
+    List<Contributor> pencilers = Contributor.fromJsonArray(
         json.remove("penciler"),
         normalizeHref: normalizeHref);
-    List<Contributor> colorists = Contributor.fromJSONArray(
+    List<Contributor> colorists = Contributor.fromJsonArray(
         json.remove("colorist"),
         normalizeHref: normalizeHref);
-    List<Contributor> inkers = Contributor.fromJSONArray(json.remove("inker"),
+    List<Contributor> inkers = Contributor.fromJsonArray(json.remove("inker"),
         normalizeHref: normalizeHref);
-    List<Contributor> narrators = Contributor.fromJSONArray(
+    List<Contributor> narrators = Contributor.fromJsonArray(
         json.remove("narrator"),
         normalizeHref: normalizeHref);
-    List<Contributor> contributors = Contributor.fromJSONArray(
+    List<Contributor> contributors = Contributor.fromJsonArray(
         json.remove("contributor"),
         normalizeHref: normalizeHref);
-    List<Contributor> publishers = Contributor.fromJSONArray(
+    List<Contributor> publishers = Contributor.fromJsonArray(
         json.remove("publisher"),
         normalizeHref: normalizeHref);
-    List<Contributor> imprints = Contributor.fromJSONArray(
+    List<Contributor> imprints = Contributor.fromJsonArray(
         json.remove("imprint"),
         normalizeHref: normalizeHref);
     ReadingProgression readingProgression = ReadingProgression.fromValue(
@@ -291,7 +288,7 @@ class Metadata with EquatableMixin, JSONable {
       if (!belongsToJson.isNull(key)) {
         dynamic value = belongsToJson[key];
         belongsTo[key] =
-            Collection.fromJSONArray(value, normalizeHref: normalizeHref);
+            Contributor.fromJsonArray(value, normalizeHref: normalizeHref);
       }
     }
 

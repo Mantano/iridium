@@ -39,10 +39,10 @@ class Encryption with EquatableMixin, JSONable {
   @override
   Map<String, dynamic> toJson() => {
         "algorithm": algorithm,
-        "compression": compression,
-        "originalLength": originalLength,
-        "profile": profile,
-        "scheme": scheme,
+        if (compression != null) "compression": compression,
+        if (originalLength != null) "originalLength": originalLength,
+        if (profile != null) "profile": profile,
+        if (scheme != null) "scheme": scheme,
       };
 
   /// Creates an [Encryption] from its RWPM JSON representation.

@@ -202,7 +202,7 @@ class Sniffers {
       manifest = await context.contentAsRwpm() ??
           // Archive package
           (await context.readArchiveEntryAt("manifest.json"))
-              ?.let((it) => Manifest.fromJSON(
+              ?.let((it) => Manifest.fromJson(
                   utf8.decode(it.buffer.asUint8List()).toJsonOrNull()))
               ?.also((it) => isManifest = false);
     } on Exception {

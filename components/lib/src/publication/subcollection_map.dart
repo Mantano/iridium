@@ -8,11 +8,11 @@ import 'package:mno_shared_dart/publication.dart';
 
 extension SubcollectionMap on Map<String, List<PublicationCollection>> {
   /// Serializes a map of [PublicationCollection] indexed by their role into a RWPM JSON representation.
-  Map<String, dynamic> toJSONObject() => appendToJSONObject({});
+  Map<String, dynamic> toJsonObject() => appendToJsonObject({});
 
   /// Serializes a map of [PublicationCollection] indexed by their role into a RWPM JSON representation
   /// and add them to the given [jsonObject].
-  Map<String, dynamic> appendToJSONObject(Map<String, dynamic> jsonObject) =>
+  Map<String, dynamic> appendToJsonObject(Map<String, dynamic> jsonObject) =>
       jsonObject.also((it) {
         for (MapEntry<String, List<PublicationCollection>> entry in entries) {
           String role = entry.key;

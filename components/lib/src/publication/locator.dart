@@ -5,11 +5,24 @@
 import 'dart:convert';
 
 import 'package:dfunc/dfunc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
 import 'package:mno_commons_dart/utils/jsonable.dart';
 import 'package:mno_commons_dart/utils/take.dart';
 import 'package:mno_shared_dart/publication.dart';
+
+const int _emptyIntValue = -1;
+const double _emptyDoubleValue = -1;
+
+extension IntCheck on int {
+  int check(int defaultValue) => (this == _emptyIntValue) ? defaultValue : this;
+}
+
+extension DoubleCheck on double {
+  double check(double defaultValue) =>
+      (this == _emptyDoubleValue) ? defaultValue : this;
+}
 
 /// Provides a precise location in a publication in a format that can be stored and shared.
 ///
@@ -21,14 +34,14 @@ import 'package:mno_shared_dart/publication.dart';
 ///  - human-readable (and shareable) reference in a publication
 ///
 /// https://github.com/readium/architecture/tree/master/locators
-class Locator implements JSONable {
+class Locator with EquatableMixin implements JSONable {
   final String href;
   final String type;
   final String title;
   final Locations locations;
   final LocatorText text;
 
-  Locator(
+  const Locator(
       {@required this.href,
       @required this.type,
       this.title,
@@ -58,7 +71,8 @@ class Locator implements JSONable {
   String get json => JsonCodec().encode(toJson());
 
   @override
-  Map<String, dynamic> toJson() => {"href": href, "type": type, "title": title}
+  Map<String, dynamic> toJson() => {"href": href, "type": type}
+    ..putOpt("title", title)
     ..putJSONableIfNotEmpty("locations", locations)
     ..putJSONableIfNotEmpty("text", text);
 
@@ -80,18 +94,21 @@ class Locator implements JSONable {
   /// Shortcut to get a copy of the [Locator] with different [Locations] sub-properties.
   Locator copyWithLocations(
           {List<String> fragments,
-          double progression,
-          int position,
-          double totalProgression,
+          double progression = _emptyDoubleValue,
+          int position = _emptyIntValue,
+          double totalProgression = _emptyDoubleValue,
           Map<String, dynamic> otherLocations}) =>
       copy(
           locations: locations.copy(
         fragments: fragments ?? locations.fragments,
-        progression: progression ?? locations.progression,
-        position: position ?? locations.position,
-        totalProgression: totalProgression ?? locations.totalProgression,
+        progression: progression.check(locations.progression),
+        position: position.check(locations.position),
+        totalProgression: totalProgression.check(locations.totalProgression),
         otherLocations: otherLocations ?? locations.otherLocations,
       ));
+
+  @override
+  List<Object> get props => [href, type, title, locations, text];
 
   @override
   String toString() => 'Locator{href: $href, type: $type, title: $title, '
@@ -107,7 +124,7 @@ class Locator implements JSONable {
 /// @param totalProgression Progression in the publication expressed as a percentage (between 0
 ///        and 1).
 /// @param otherLocations Additional locations for extensions.
-class Locations implements JSONable {
+class Locations with EquatableMixin implements JSONable {
   final int position;
   final double progression;
   final double totalProgression;
@@ -115,23 +132,23 @@ class Locations implements JSONable {
   final Map<String, dynamic> otherLocations;
 
   const Locations({
-    this.position = 0,
-    this.progression = 0,
-    this.totalProgression = 0,
+    this.position,
+    this.progression,
+    this.totalProgression,
     this.fragments = const [],
     this.otherLocations = const {},
   });
 
   Locations copy(
-          {int position,
-          double progression,
-          double totalProgression,
+          {int position = _emptyIntValue,
+          double progression = _emptyDoubleValue,
+          double totalProgression = _emptyDoubleValue,
           List<String> fragments,
           Map<String, dynamic> otherLocations}) =>
       Locations(
-        position: position ?? this.position,
-        progression: progression ?? this.progression,
-        totalProgression: totalProgression ?? this.totalProgression,
+        progression: progression.check(this.progression),
+        position: position.check(this.position),
+        totalProgression: totalProgression.check(this.totalProgression),
         fragments: fragments ?? this.fragments,
         otherLocations: otherLocations ?? this.otherLocations,
       );
@@ -180,9 +197,18 @@ class Locations implements JSONable {
   @override
   Map<String, dynamic> toJson() => Map.of(otherLocations)
     ..putIterableIfNotEmpty("fragments", fragments)
-    ..put("progression", progression)
-    ..put("position", position)
-    ..put("totalProgression", totalProgression);
+    ..putOpt("progression", progression)
+    ..putOpt("position", position)
+    ..putOpt("totalProgression", totalProgression);
+
+  @override
+  List<Object> get props => [
+        position,
+        progression,
+        totalProgression,
+        fragments,
+        otherLocations,
+      ];
 
   @override
   String toString() =>
@@ -199,7 +225,7 @@ class Locations implements JSONable {
 /// @param before The text before the locator.
 /// @param highlight The text at the locator.
 /// @param after The text after the locator.
-class LocatorText implements JSONable {
+class LocatorText with EquatableMixin implements JSONable {
   final String before;
   final String highlight;
   final String after;
@@ -207,11 +233,13 @@ class LocatorText implements JSONable {
   const LocatorText({this.before, this.highlight, this.after});
 
   @override
-  Map<String, dynamic> toJson() => {
-        "before": before,
-        "highlight": highlight,
-        "after": after,
-      };
+  Map<String, dynamic> toJson() => {}
+    ..putOpt("before", before)
+    ..putOpt("highlight", highlight)
+    ..putOpt("after", after);
+
+  @override
+  List<Object> get props => [before, highlight, after];
 
   factory LocatorText.fromJson(Map<String, dynamic> json) => LocatorText(
       before: json?.optNullableString("before"),

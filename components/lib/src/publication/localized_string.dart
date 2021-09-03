@@ -2,29 +2,53 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
+import 'package:dfunc/dfunc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons_dart/utils/jsonable.dart';
 import 'package:universal_io/io.dart';
 
+class Translation {
+  final String string;
+
+  const Translation(this.string);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Translation &&
+          runtimeType == other.runtimeType &&
+          string == other.string;
+
+  @override
+  int get hashCode => string.hashCode;
+
+  @override
+  String toString() => string;
+}
+
 /// A potentially localized (multilingual) string.
 ///
 /// The translations are indexed by a BCP 47 language tag.
 class LocalizedString with EquatableMixin, JSONable {
+  /// BCP-47 tag for an undefined language.
+  static const String undefinedLanguage = "und";
   LocalizedString._(this.translations) : assert(translations.isNotEmpty);
 
   factory LocalizedString(Map<String, String> strings) {
     if (strings == null || strings.isEmpty) {
       return null;
     }
-    return LocalizedString._(strings);
+    return LocalizedString._(
+        strings.map((key, value) => MapEntry(key, Translation(value))));
   }
 
   factory LocalizedString.fromString(String string) {
     if (string == null || string.isEmpty) {
       return null;
     }
-    return LocalizedString._({'en': string});
+    return LocalizedString._({null: Translation(string)});
   }
 
   /// Parses a [LocalizedString] from its RWPM JSON representation.
@@ -74,33 +98,57 @@ class LocalizedString with EquatableMixin, JSONable {
     return LocalizedString(translations);
   }
 
-  final Map<String, String> translations;
+  final Map<String, Translation> translations;
 
-  /// Returns the localized string matching the most the user's locale.
-  String get string => stringForLanguageCode(null);
+  /// The default translation for this localized string.
+  Translation get defaultTranslation =>
+      this.getOrFallback(null) ?? Translation("");
 
-  /// Returns the localized string matching the given language code, or fallback on the user's locale.
-  String stringForLanguageCode(String languageCode) {
-    languageCode = languageCode ?? Platform.localeName ?? 'en';
-    return translations[languageCode]
-        // First string with the language having the locale for prefix.
-        ??
-        translations.entries
-            .firstWhere((e) => e.key?.startsWith(languageCode) == true,
-                orElse: () => null)
-            ?.value ??
-        // First string with the locale having the language for prefix.
-        translations.entries
-            .firstWhere((e) => e.key != null && languageCode.startsWith(e.key),
-                orElse: () => null)
-            ?.value ??
-        translations['en'] ??
-        translations.values.first;
-  }
+  /// The default translation string for this localized string.
+  /// This is a shortcut for apps.
+  String get string => defaultTranslation.string;
+
+  /// Returns the first translation for the given [language] BCP–47 tag.
+  /// If not found, then fallback:
+  ///    1. on the default [Locale]
+  ///    2. on the undefined language
+  ///    3. on the English language
+  ///    4. the first translation found
+  Translation getOrFallback(String language) =>
+      translations[language] ??
+      translations[Platform.localeName] ??
+      translations[null] ??
+      translations[undefinedLanguage] ??
+      translations["en"] ??
+      translations.keys.firstOrNull?.let((it) => translations[it]);
+
+  /// Returns a new [LocalizedString] after adding (or replacing) the translation with the given
+  /// [language].
+  LocalizedString copyWithString(String language, String string) => copy(
+      translations: Map.from(translations)
+        ..putIfAbsent(language, () => Translation(string)));
+
+  /// Returns a new [LocalizedString] after applying the [transform] function to each language.
+  LocalizedString mapLanguages(
+          String Function(String, Translation) transform) =>
+      copy(
+          translations: translations.map((language, translation) =>
+              MapEntry(transform(language, translation), translation)));
+
+  /// Returns a new [LocalizedString] after applying the [transform] function to each translation.
+  LocalizedString mapTranslations(
+          Translation Function(String, Translation) transform) =>
+      copy(
+          translations: translations.map((language, translation) =>
+              MapEntry(language, transform(language, translation))));
+
+  LocalizedString copy({Map<String, Translation> translations}) =>
+      LocalizedString._(translations);
 
   /// Serializes a [LocalizedString] to its RWPM JSON representation.
   @override
-  Map<String, String> toJson() => translations;
+  Map<String, String> toJson() => translations.map((language, translation) =>
+      MapEntry(language ?? undefinedLanguage, translation.string));
 
   @override
   List get props => [translations];

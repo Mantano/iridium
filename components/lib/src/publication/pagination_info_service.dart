@@ -8,6 +8,7 @@ import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:mno_shared_dart/publication.dart';
 import 'package:mno_shared_dart/src/mediatype/mediatype.dart';
+import 'package:mno_shared_dart/src/publication/epub/publication.dart';
 
 import '../../publication.dart';
 
@@ -49,7 +50,4 @@ extension PageLinksPublication on Publication {
     }
     return readingOrder;
   }
-
-  List<Link> get pageList =>
-      subcollections["pageList"]?.let((it) => it.first?.links) ?? [];
 }
