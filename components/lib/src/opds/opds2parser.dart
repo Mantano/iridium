@@ -56,7 +56,7 @@ class OPDS2Parser {
         ? ParseData(feed: parseFeed(json, url), type: 2)
         : ParseData(
             publication:
-                Manifest.fromJSON(json)?.let((it) => Publication(manifest: it)),
+                Manifest.fromJson(json)?.let((it) => Publication(manifest: it)),
             type: 2);
   }
 
@@ -208,7 +208,7 @@ class OPDS2Parser {
   static void parsePublications(Feed feed, List publications) {
     for (int i = 0; i < publications.length; i++) {
       Map<String, dynamic> pubDict = publications[i];
-      Manifest.fromJSON(pubDict)?.let((manifest) {
+      Manifest.fromJson(pubDict)?.let((manifest) {
         feed.publications.add(Publication(manifest: manifest));
       });
     }
@@ -268,7 +268,7 @@ class OPDS2Parser {
         }
         for (int j = 0; j < publications.length; j++) {
           Map<String, dynamic> pubDict = publications[j];
-          Manifest.fromJSON(pubDict)?.let((manifest) {
+          Manifest.fromJson(pubDict)?.let((manifest) {
             group.publications.add(Publication(manifest: manifest));
           });
         }
