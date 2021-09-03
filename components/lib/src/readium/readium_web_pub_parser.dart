@@ -44,7 +44,7 @@ class ReadiumWebPubParser extends PublicationParser
           .get(manifestLink)
           .use((it) => it.readAsJson())
           .then((result) => result.getOrThrow());
-      manifest = Manifest.fromJSON(manifestJson);
+      manifest = Manifest.fromJson(manifestJson);
     } else {
       Link manifestLink = (await fetcher.links())
           .firstOrNullWhere((it) => it.href == "/manifest.json");
@@ -55,7 +55,7 @@ class ReadiumWebPubParser extends PublicationParser
           .get(manifestLink)
           .use((it) => it.readAsJson())
           .then((result) => result.getOrThrow());
-      manifest = Manifest.fromJSON(manifestJson, packaged: true);
+      manifest = Manifest.fromJson(manifestJson, packaged: true);
     }
     if (manifest == null) {
       throw Exception("Failed to parse RWPM.");

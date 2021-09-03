@@ -387,7 +387,7 @@ class PubMetadataAdapter extends MetadataAdapter {
 
   List<Subject> _splitSubject(Subject subject) {
     String lang = subject.localizedName.translations.keys.first;
-    List<String> names = subject.localizedName.translations.values.first
+    List<String> names = subject.localizedName.translations.values.first.string
         .split(RegExp("[,;]"))
         .map((it) => it.trim())
         .filter((it) => it.isNotEmpty)
