@@ -18,11 +18,11 @@ extension FileSystemEntityExtension on FileSystemEntity {
 
   /// Returns a [File] to the first component of the [File]'s path,
   /// regardless of whether it is a directory or a file.
-  File get firstComponent =>
-      parent
-          .takeUnless((it) => it.path == "/")
-          ?.let((it) => it.firstComponent) ??
-      this;
+  File get firstComponent {
+    List<String> elem = split(path);
+    String result = elem.firstWhere((it) => it != "/", orElse: () => path);
+    return File(result);
+  }
 }
 
 extension FileExtension on File {
