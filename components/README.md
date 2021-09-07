@@ -1,3 +1,3 @@
 # mno_commons_dart
 
-This package provide utilities for other r2_xxx_dart packages.
+This package provides utilities for other mno_xxx_dart packages.
