@@ -57,8 +57,10 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
         metadata: Metadata(
           identifier: document.identifier,
           localizedTitle: LocalizedString.fromString(title),
-          authors:
-              [document.author].mapNotNull(Contributor.fromString).toList(),
+          authors: [document.author]
+              .where(((s) => s?.isNotBlank == true))
+              .mapNotNull(Contributor.fromString)
+              .toList(),
           numberOfPages: document.pageCount,
         ),
         readingOrder: [
