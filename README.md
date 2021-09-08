@@ -1,6 +1,8 @@
-# mp-readium, the "Multi-platform Readium"
+# mp-readium, the unofficial "Multi-platform Readium"
 
-Unofficial Dart/Flutter port of some of the Readium 2 components, following the Readium architecture as described [here](https://github.com/readium/architecture)). These modules are extracted from the new Mantano app, written in pure Flutter/Dart (still not publicly released).
+*(Readium is a trademark of the [Readium Foundation](https://readium.org/))*
+
+These repositories provide Mantano's unofficial Dart/Flutter ports of some of the Readium 2 components, following the Readium architecture as described [here](https://github.com/readium/architecture)). These modules are extracted from the new Mantano app, written in pure Flutter/Dart (still not publicly released).
 
 The aim of this effort is to share with the community Mantano's experience in developing "full-Flutter" reading apps. It leverage Flutter's multiplatform capabilities to the limits in order to reach a unified codebase and minimize the platform-specific code. 
 
