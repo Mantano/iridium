@@ -10,7 +10,7 @@ Developed and tested on Android and iOS first, large parts of the code should be
 
 ## Modules
 
-* [mno-shared-dart]() – Shared Publication models and utilities
+* [mno-shared-dart](mno_shared_dart) – Shared Publication models and utilities
 * [mno-streamer-dart]() – Publication parsers
 * [mno-server-dart]() – Local HTTP server
 * [mno-opds-dart]() – Parsers for OPDS catalog feeds
