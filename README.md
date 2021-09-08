@@ -1,4 +1,4 @@
-# mp-readium
+# mp-readium, the "Multi-platform Readium"
 
 Unofficial Dart/Flutter port of some of the Readium 2 components, following the Readium architecture as described [here](https://github.com/readium/architecture)). These modules are extracted from the new Mantano app, written in pure Flutter/Dart (still not publicly released).
 
