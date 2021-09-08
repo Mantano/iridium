@@ -10,11 +10,11 @@ Developed and tested on Android and iOS first, large parts of the code should be
 
 ## Modules
 
-* [mno-shared-dart](mno_shared_dart) – Shared Publication models and utilities
-* [mno-streamer-dart]() – Publication parsers
-* [mno-server-dart]() – Local HTTP server
-* [mno-opds-dart]() – Parsers for OPDS catalog feeds
-* [mno-commons-dart]() – Other misc. utilities (specific to this Flutter port, not found in Readium)
+* [mno-shared-dart](https://github.com/Mantano/mno_shared_dart) – Shared Publication models and utilities
+* [mno-streamer-dart](https://github.com/Mantano/mno_streamer_dart) – Publication parsers
+* [mno-server-dart](https://github.com/Mantano/mno_server_dart) – Local HTTP server
+* [mno-opds-dart](https://github.com/Mantano/mno_opds_dart) – Parsers for OPDS catalog feeds
+* [mno-commons-dart](https://github.com/Mantano/mno_commons_dart) – Other misc. utilities (specific to this Flutter port, not found in Readium)
 
 ## Modules soon available
 
