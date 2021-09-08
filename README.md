@@ -12,10 +12,11 @@ Developed and tested on Android and iOS first, large parts of the code should be
 * [mno-streamer-dart]() – Publication parsers
 * [mno-server-dart]() – Local HTTP server
 * [mno-opds-dart]() – Parsers for OPDS catalog feeds
+* [mno-commons-dart]() – Other misc. utilities (specific to this Flutter port, not found in Readium)
 
-## Modules soon open-sourced
+## Modules soon available
 
-These modules require some cleanup and more testign before being made public:
+These modules require some cleanup and more testing before being made public:
 
 * mno-lcp-dart]() – Service and models for Readium LCP
 * mno-navigator-kotlin – Rendering publications
