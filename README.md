@@ -18,4 +18,4 @@ Developed and tested on Android and iOS first, large parts of the code should be
 
 ## Modules soon available
 
-* mno-lcp-dart] – Service and models for Readium LCP
+* mno-lcp-dart – Service and models for Readium LCP
