@@ -18,7 +18,4 @@ Developed and tested on Android and iOS first, large parts of the code should be
 
 ## Modules soon available
 
-These modules require some cleanup and more testing before being made public:
-
-* mno-lcp-dart]() – Service and models for Readium LCP
-* mno-navigator-kotlin – Rendering publications
+* mno-lcp-dart] – Service and models for Readium LCP
