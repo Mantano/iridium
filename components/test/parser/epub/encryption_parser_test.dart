@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/src/epub/encryption_parser.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/src/epub/encryption_parser.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';

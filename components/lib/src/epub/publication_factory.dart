@@ -4,9 +4,9 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/src/epub/metadata_parser.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/src/epub/metadata_parser.dart';
 
 import 'constants.dart';
 import 'package_document.dart';

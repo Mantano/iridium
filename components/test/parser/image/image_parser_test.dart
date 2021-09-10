@@ -3,10 +3,10 @@
 // found in the LICENSE file.
 
 import 'package:dartx/dartx.dart';
-import 'package:mno_shared_dart/archive.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/parser.dart';
+import 'package:mno_shared/archive.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/parser.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 

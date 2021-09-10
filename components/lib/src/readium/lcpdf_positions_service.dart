@@ -4,10 +4,10 @@
 
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/pdf.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/pdf.dart';
 
 class LcpdfPositionsService extends PositionsService {
   final PdfDocumentFactory pdfFactory;

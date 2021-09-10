@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/src/epub/package_document.dart';
-import 'package:mno_streamer_dart/src/epub/publication_factory.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/src/epub/package_document.dart';
+import 'package:mno_streamer/src/epub/publication_factory.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';

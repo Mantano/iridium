@@ -5,9 +5,9 @@
 import 'dart:typed_data';
 
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/src/epub/epub_deobfuscator.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/src/epub/epub_deobfuscator.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 

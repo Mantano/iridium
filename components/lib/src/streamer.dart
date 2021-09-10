@@ -4,14 +4,14 @@
 
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_commons_dart/utils/try.dart';
-import 'package:mno_shared_dart/archive.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/parser.dart';
-import 'package:mno_streamer_dart/pdf.dart';
-import 'package:mno_streamer_dart/src/readium/readium_web_pub_parser.dart';
+import 'package:mno_commons/utils/try.dart';
+import 'package:mno_shared/archive.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/parser.dart';
+import 'package:mno_streamer/pdf.dart';
+import 'package:mno_streamer/src/readium/readium_web_pub_parser.dart';
 
 class PublicationTry<SuccessT> extends Try<SuccessT, UserException> {
   PublicationTry.success(SuccessT success) : super.success(success);

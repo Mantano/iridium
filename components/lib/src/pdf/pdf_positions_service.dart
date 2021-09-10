@@ -4,8 +4,8 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Creates the [positions] for a PDF [Publication].
 ///

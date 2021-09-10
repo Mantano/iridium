@@ -6,14 +6,14 @@ import 'dart:core';
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/pdf.dart';
-import 'package:mno_streamer_dart/publication_parser.dart';
-import 'package:mno_streamer_dart/src/container/publication_container.dart';
-import 'package:mno_streamer_dart/src/pdf/pdf_positions_service.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/pdf.dart';
+import 'package:mno_streamer/publication_parser.dart';
+import 'package:mno_streamer/src/container/publication_container.dart';
+import 'package:mno_streamer/src/pdf/pdf_positions_service.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' show File;
 

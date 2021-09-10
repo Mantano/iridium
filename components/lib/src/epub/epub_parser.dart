@@ -3,14 +3,14 @@
 // found in the LICENSE file.
 
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_commons_dart/utils/href.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/parser.dart';
-import 'package:mno_streamer_dart/src/container/container.dart';
-import 'package:mno_streamer_dart/src/container/publication_container.dart';
-import 'package:mno_streamer_dart/src/epub/package_document.dart';
+import 'package:mno_commons/utils/href.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/parser.dart';
+import 'package:mno_streamer/src/container/container.dart';
+import 'package:mno_streamer/src/container/publication_container.dart';
+import 'package:mno_streamer/src/epub/package_document.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
 

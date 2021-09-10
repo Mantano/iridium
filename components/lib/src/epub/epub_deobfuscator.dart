@@ -6,8 +6,8 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_shared_dart/fetcher.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_shared/fetcher.dart';
 
 class EpubDeobfuscator {
   final String pubId;

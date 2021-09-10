@@ -4,7 +4,7 @@
 
 import 'package:dfunc/dfunc.dart';
 import 'package:image/image.dart';
-import 'package:mno_streamer_dart/pdf.dart';
+import 'package:mno_streamer/pdf.dart';
 
 abstract class PdfDocument {
   String get identifier;

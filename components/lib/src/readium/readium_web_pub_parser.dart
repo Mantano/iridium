@@ -5,15 +5,15 @@
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_commons_dart/io.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/pdf.dart';
-import 'package:mno_streamer_dart/publication_parser.dart';
-import 'package:mno_streamer_dart/src/container/container.dart';
-import 'package:mno_streamer_dart/src/container/publication_container.dart';
-import 'package:mno_streamer_dart/src/streamer.dart';
+import 'package:mno_commons/io.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/pdf.dart';
+import 'package:mno_streamer/publication_parser.dart';
+import 'package:mno_streamer/src/container/container.dart';
+import 'package:mno_streamer/src/container/publication_container.dart';
+import 'package:mno_streamer/src/streamer.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
 

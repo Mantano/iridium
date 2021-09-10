@@ -4,9 +4,9 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_shared_dart/epub.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/epub.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Positions Service for an EPUB from its [readingOrder] and [fetcher].
 ///
