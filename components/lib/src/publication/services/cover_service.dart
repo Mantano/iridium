@@ -12,17 +12,6 @@ import 'package:mno_shared_dart/fetcher.dart';
 
 import '../../../publication.dart';
 
-class CoverSize {
-  final double width;
-  final double height;
-
-  /// Creates a [CoverSize] with the given [width] and [height].
-  const CoverSize(this.width, this.height);
-
-  @override
-  String toString() => 'CoverSize{width: $width, height: $height}';
-}
-
 /// Provides an easy access to a bitmap version of the publication cover.
 ///
 /// While at first glance, getting the cover could be seen as a helper, the implementation actually
@@ -45,7 +34,7 @@ abstract class CoverService extends PublicationService {
   Future<Image> cover();
 
   ///  Returns the publication cover as a [Bitmap], scaled down to fit the given [maxSize].
-  Future<Image> coverFitting(CoverSize maxSize) async =>
+  Future<Image> coverFitting(ImageSize maxSize) async =>
       cover()?.then((value) => copyResize(value,
           width: maxSize.width.toInt(), height: maxSize.height.toInt()));
 
@@ -81,7 +70,7 @@ extension PublicationCoverExtension on Publication {
   }
 
   /// Returns the publication cover as a [Bitmap], scaled down to fit the given [maxSize].
-  Future<Image> coverFitting(CoverSize maxSize) async {
+  Future<Image> coverFitting(ImageSize maxSize) async {
     Image cover = await findService<CoverService>()?.coverFitting(maxSize);
     if (cover != null) {
       return cover;

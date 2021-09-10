@@ -14,7 +14,7 @@ import '../../publication.dart';
 ///
 /// See https://github.com/readium/webpub-manifest/tree/master/contexts/default#subjects
 class Subject with EquatableMixin, JSONable {
-  Subject(
+  const Subject(
       {@required this.localizedName,
       this.localizedSortAs,
       this.scheme,

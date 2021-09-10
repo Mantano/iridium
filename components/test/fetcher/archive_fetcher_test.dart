@@ -23,7 +23,6 @@ void main() {
 
   test("Link list is correct", () async {
     Link createLink(String href, String type, int compressedLength) => Link(
-          id: href,
           href: href,
           type: type,
           properties: Properties(

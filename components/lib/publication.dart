@@ -34,3 +34,4 @@ export 'src/publication/subcollection_map.dart';
 export 'src/publication/subject.dart';
 export 'src/publication/user_exception.dart';
 export 'src/readium_css.dart';
+export 'src/util/image_size.dart';

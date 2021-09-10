@@ -147,6 +147,12 @@ class Metadata with EquatableMixin, JSONable {
   /// `metadata["layout"] == metadata.otherMetadata["layout"]`
   dynamic operator [](String key) => otherMetadata[key];
 
+  /// Returns the default translation string for the [localizedTitle].
+  String get title => localizedTitle.string;
+
+  /// Returns the default translation string for the [localizedSortAs].
+  String get sortAs => localizedSortAs?.string;
+
   @override
   List<Object> get props => [
         identifier,

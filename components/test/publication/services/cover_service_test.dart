@@ -70,7 +70,7 @@ void main() async {
   });
 
   test("coverFitting helper for Publication works fine", () async {
-    var scaled = await publication.coverFitting(CoverSize(300, 400));
+    var scaled = await publication.coverFitting(ImageSize(300, 400));
     expect(scaled, isNotNull);
     expect(400, scaled.height);
     expect(300, scaled.width);

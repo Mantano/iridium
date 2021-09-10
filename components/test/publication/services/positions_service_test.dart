@@ -50,10 +50,6 @@ void main() async {
 
       var service = MockPositionsService(positions);
 
-      var t = service
-          .get(Link(href: "/~readium/positions"))
-          ?.let((it) => it.readAsString());
-
       var json = await service
           .get(Link(href: "/~readium/positions"))
           ?.let((it) => it.readAsString())

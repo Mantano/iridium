@@ -12,7 +12,7 @@ import 'package:universal_io/io.dart';
 class Translation {
   final String string;
 
-  const Translation(this.string);
+  const Translation(this.string) : assert(string != null);
 
   @override
   bool operator ==(Object other) =>
@@ -40,8 +40,10 @@ class LocalizedString with EquatableMixin, JSONable {
     if (strings == null || strings.isEmpty) {
       return null;
     }
-    return LocalizedString._(
-        strings.map((key, value) => MapEntry(key, Translation(value))));
+
+    return LocalizedString._(strings.map((key, value) =>
+        MapEntry(key, (value != null) ? Translation(value) : null))
+      ..removeWhere((key, value) => value == null));
   }
 
   factory LocalizedString.fromString(String string) {

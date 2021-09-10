@@ -228,7 +228,6 @@ class Link with EquatableMixin, JSONable {
 
   @override
   List<Object> get props => [
-        id,
         href,
         templated,
         type,
