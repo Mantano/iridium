@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:dartx/dartx.dart';
-import 'package:mno_shared_dart/zip.dart';
+import 'package:mno_shared/zip.dart';
 
 import 'stream.dart';
 

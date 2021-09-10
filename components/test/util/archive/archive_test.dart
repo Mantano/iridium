@@ -4,8 +4,8 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_commons_dart/extensions/data.dart';
-import 'package:mno_shared_dart/archive.dart';
+import 'package:mno_commons/extensions/data.dart';
+import 'package:mno_shared/archive.dart';
 import 'package:test/test.dart';
 
 import '../../fixtures.dart';

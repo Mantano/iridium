@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:intl/intl.dart';
-import 'package:mno_shared_dart/i18n/localizations_repository.dart';
+import 'package:mno_shared/i18n/localizations_repository.dart';
 
 class UserException implements Exception {
   final String userMessageId;

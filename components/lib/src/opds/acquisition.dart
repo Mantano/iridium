@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:equatable/equatable.dart';
-import 'package:mno_commons_dart/utils/jsonable.dart';
-import 'package:mno_shared_dart/mediatype.dart';
+import 'package:mno_commons/utils/jsonable.dart';
+import 'package:mno_shared/mediatype.dart';
 
 /// OPDS Acquisition Object.
 ///

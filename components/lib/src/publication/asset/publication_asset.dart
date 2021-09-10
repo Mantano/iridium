@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_commons_dart/utils/try.dart';
-import 'package:mno_shared_dart/archive.dart';
-import 'package:mno_shared_dart/src/mediatype/mediatype.dart';
+import 'package:mno_commons/utils/try.dart';
+import 'package:mno_shared/archive.dart';
+import 'package:mno_shared/src/mediatype/mediatype.dart';
 import 'package:path/path.dart';
 
 import '../../../fetcher.dart';

@@ -7,8 +7,8 @@ import 'dart:typed_data';
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:image/image.dart';
-import 'package:mno_commons_dart/extensions/data.dart';
-import 'package:mno_shared_dart/fetcher.dart';
+import 'package:mno_commons/extensions/data.dart';
+import 'package:mno_shared/fetcher.dart';
 
 import '../../../publication.dart';
 

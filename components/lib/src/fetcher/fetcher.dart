@@ -5,8 +5,8 @@
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
-import 'package:mno_commons_dart/utils/exceptions.dart';
-import 'package:mno_shared_dart/src/util/archive/archive.dart';
+import 'package:mno_commons/utils/exceptions.dart';
+import 'package:mno_shared/src/util/archive/archive.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';

@@ -7,8 +7,8 @@ import 'dart:typed_data';
 import 'package:dfunc/dfunc.dart';
 import 'package:diff_image/diff_image.dart';
 import 'package:image/image.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 

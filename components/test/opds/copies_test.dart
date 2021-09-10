@@ -9,8 +9,8 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_shared_dart/src/opds/copies.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_shared/src/opds/copies.dart';
 import 'package:test/test.dart';
 
 void main() {

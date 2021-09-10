@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared_dart/src/streams/stream.dart';
+import 'package:mno_shared/src/streams/stream.dart';
 
 class ContainerException implements Exception {
   /// A file on the filesystem is not found.

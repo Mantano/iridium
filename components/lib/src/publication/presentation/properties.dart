@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/publication.dart';
 
 extension PresentionPropertiesExtension on Properties {
   /// Specifies whether or not the parts of a linked resource that flow out of the viewport are

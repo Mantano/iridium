@@ -1,4 +1,4 @@
-name: mno_shared_dart
+name: mno_shared
 description: Contains the definitions of the custom types (model) used across the readium-2 Dart projects.
 version: 0.1.0
 homepage: https://github.com/Mantano/mno_shared_dart
@@ -19,7 +19,7 @@ dependencies:
   path: ^1.8.0
   universal_io: ^2.0.4
   xml: ^5.2.0
-  mno_commons_dart:
+  mno_commons:
     path: ../mno_commons_dart
 
 dev_dependencies:

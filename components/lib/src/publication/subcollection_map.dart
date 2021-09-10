@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_commons_dart/utils/jsonable.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_commons/utils/jsonable.dart';
+import 'package:mno_shared/publication.dart';
 
 extension SubcollectionMap on Map<String, List<PublicationCollection>> {
   /// Serializes a map of [PublicationCollection] indexed by their role into a RWPM JSON representation.

@@ -6,7 +6,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
+import 'package:mno_commons/extensions/strings.dart';
 
 import '../../fetcher.dart';
 import '../../publication.dart';

@@ -8,13 +8,13 @@ import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_commons_dart/extensions/data.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_commons_dart/utils/exceptions.dart';
-import 'package:mno_shared_dart/archive.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_shared_dart/streams.dart';
+import 'package:mno_commons/extensions/data.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_commons/utils/exceptions.dart';
+import 'package:mno_shared/archive.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_shared/streams.dart';
 import 'package:xml/xml.dart';
 
 import 'mediatype.dart';

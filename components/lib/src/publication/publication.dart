@@ -9,10 +9,10 @@ import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_commons_dart/extensions/uri.dart';
-import 'package:mno_commons_dart/utils/ref.dart';
-import 'package:mno_shared_dart/src/mediatype/mediatype.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_commons/extensions/uri.dart';
+import 'package:mno_commons/utils/ref.dart';
+import 'package:mno_shared/src/mediatype/mediatype.dart';
 
 import '../../fetcher.dart';
 import '../../publication.dart';

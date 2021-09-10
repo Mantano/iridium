@@ -6,7 +6,7 @@ import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_commons_dart/utils/exceptions.dart';
+import 'package:mno_commons/utils/exceptions.dart';
 import 'package:universal_io/io.dart';
 
 import 'exploded_archive.dart';

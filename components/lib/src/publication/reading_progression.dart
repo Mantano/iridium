@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:equatable/equatable.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Direction of the [Publication] reading progression.
 class ReadingProgression with EquatableMixin {

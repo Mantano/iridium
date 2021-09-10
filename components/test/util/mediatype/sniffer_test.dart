@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_commons_dart/extensions/data.dart';
-import 'package:mno_shared_dart/mediatype.dart';
+import 'package:mno_commons/extensions/data.dart';
+import 'package:mno_shared/mediatype.dart';
 import 'package:test/test.dart';
 
 import '../../fixtures.dart';

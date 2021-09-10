@@ -3,9 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:test/test.dart';
 
 import '../fixtures.dart';

@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_shared_dart/src/opds/holds.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_shared/src/opds/holds.dart';
 import 'package:test/test.dart';
 
 void main() {

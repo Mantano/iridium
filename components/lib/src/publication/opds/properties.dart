@@ -4,9 +4,9 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_commons_dart/utils/take.dart';
-import 'package:mno_shared_dart/opds.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_commons/utils/take.dart';
+import 'package:mno_shared/opds.dart';
+import 'package:mno_shared/publication.dart';
 
 extension OpdsPropertiesExtension on Properties {
   /// Provides a hint about the expected number of items returned.

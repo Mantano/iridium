@@ -5,9 +5,9 @@
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
-import 'package:mno_commons_dart/extensions/data.dart';
-import 'package:mno_shared_dart/src/util/archive/archive.dart';
-import 'package:mno_shared_dart/streams.dart';
+import 'package:mno_commons/extensions/data.dart';
+import 'package:mno_shared/src/util/archive/archive.dart';
+import 'package:mno_shared/streams.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
 

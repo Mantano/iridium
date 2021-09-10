@@ -8,9 +8,9 @@ import 'package:dfunc/dfunc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:meta/meta.dart';
-import 'package:mno_commons_dart/utils/jsonable.dart';
-import 'package:mno_commons_dart/utils/take.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_commons/utils/jsonable.dart';
+import 'package:mno_commons/utils/take.dart';
+import 'package:mno_shared/publication.dart';
 
 const int _emptyIntValue = -1;
 const double _emptyDoubleValue = -1;

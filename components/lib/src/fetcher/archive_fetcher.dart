@@ -7,12 +7,12 @@ import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_commons_dart/utils/exceptions.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_shared_dart/src/mediatype/mediatype.dart';
-import 'package:mno_shared_dart/src/util/archive/archive.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_commons/utils/exceptions.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_shared/src/mediatype/mediatype.dart';
+import 'package:mno_shared/src/util/archive/archive.dart';
 import 'package:universal_io/io.dart';
 
 import 'fetcher.dart';

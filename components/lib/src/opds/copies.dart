@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:equatable/equatable.dart';
-import 'package:mno_commons_dart/utils/jsonable.dart';
+import 'package:mno_commons/utils/jsonable.dart';
 
 /// Library-specific feature that contains information about the copies that a library has acquired.
 ///

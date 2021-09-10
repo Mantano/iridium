@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_shared_dart/src/publication/html/dom_range.dart';
-import 'package:mno_shared_dart/src/publication/html/locator.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_shared/src/publication/html/dom_range.dart';
+import 'package:mno_shared/src/publication/html/locator.dart';
 import 'package:test/test.dart';
 
 void main() {

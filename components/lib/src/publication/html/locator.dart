@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/publication.dart';
 
 import 'dom_range.dart';
 

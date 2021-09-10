@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared_dart/src/streams/stream.dart';
-import 'package:mno_shared_dart/zip.dart';
+import 'package:mno_shared/src/streams/stream.dart';
+import 'package:mno_shared/zip.dart';
 import 'package:universal_io/io.dart';
 
 import '../streams/zip_stream.dart';

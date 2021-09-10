@@ -7,10 +7,10 @@ import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_commons_dart/io.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/src/mediatype/mediatype.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_commons/io.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/src/mediatype/mediatype.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
