@@ -9,10 +9,10 @@ import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:http/http.dart' as http;
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_commons_dart/utils/try.dart';
-import 'package:mno_shared_dart/opds.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_commons/utils/try.dart';
+import 'package:mno_shared/opds.dart';
+import 'package:mno_shared/publication.dart';
 
 class OPDS2ParserError {
   static const OPDS2ParserError metadataNotFound =

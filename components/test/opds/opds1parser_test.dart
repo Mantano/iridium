@@ -2,10 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_opds_dart/opds_parsers.dart';
-import 'package:mno_shared_dart/opds.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_opds/opds_parsers.dart';
+import 'package:mno_shared/opds.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart' hide Link;
 
