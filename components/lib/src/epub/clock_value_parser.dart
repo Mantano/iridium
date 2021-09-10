@@ -12,7 +12,7 @@ class ClockValueParser {
     if (value.contains(":")) {
       return _parseClockValue(value);
     } else {
-      int metricStart = value.indexOf(RegExp(r'[A-Z][a-z]'));
+      int metricStart = value.indexOf(RegExp(r'[A-Za-z]'));
       if (metricStart == -1) {
         return _parseTimeCount(value.toDouble(), "");
       } else {

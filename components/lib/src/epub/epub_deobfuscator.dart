@@ -61,10 +61,10 @@ class DeobfuscatingResource extends ProxyResource {
     IntRange toDeobfuscate =
         IntRange(max(range.first, 0), min(range.last, obfuscationLength - 1));
     for (int i in toDeobfuscate) {
-      bytes.setInt8(
+      bytes.setUint8(
           i,
-          bytes.getInt8(i) ^
-              obfuscationKey.getInt8(i % obfuscationKey.elementSizeInBytes));
+          bytes.getUint8(i) ^
+              obfuscationKey.getUint8(i % obfuscationKey.lengthInBytes));
     }
   }
 

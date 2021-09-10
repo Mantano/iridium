@@ -25,14 +25,14 @@ class EpubPositionsService extends PositionsService {
   final int reflowablePositionLength;
   List<List<Locator>> _positions;
 
-  EpubPositionsService._(
+  EpubPositionsService(
       {this.readingOrder,
       this.presentation,
       this.fetcher,
       this.reflowablePositionLength});
 
   static EpubPositionsService create(PublicationServiceContext context) =>
-      EpubPositionsService._(
+      EpubPositionsService(
           readingOrder: context.manifest.readingOrder,
           presentation: context.manifest.metadata.presentation,
           fetcher: context.fetcher,
@@ -44,31 +44,34 @@ class EpubPositionsService extends PositionsService {
 
   Future<List<List<Locator>>> computePositions() async {
     int lastPositionOfPreviousResource = 0;
-    List<List<Locator>> positions =
-        await Future.wait(readingOrder.map((link) async {
-      List<Locator> positions;
+    List<List<Locator>> positions = [];
+    for (Link link in readingOrder) {
+      List<Locator> locators;
       if (presentation.layoutOf(link) == EpubLayout.fixed) {
-        positions = createFixed(link, lastPositionOfPreviousResource);
+        locators = createFixed(link, lastPositionOfPreviousResource);
       } else {
-        positions = await createReflowable(
+        locators = await createReflowable(
             link, lastPositionOfPreviousResource, fetcher);
       }
-      positions.lastOrNull?.locations?.position
+      locators.lastOrNull?.locations?.position
           ?.let((it) => lastPositionOfPreviousResource = it);
-      return positions;
-    }));
+      positions.add(locators);
+    }
 
     // Calculates [totalProgression].
     int totalPageCount = positions.map((it) => it.length).sum();
-    positions = positions.map((item) => item.map((locator) {
-          int position = locator.locations.position;
-          if (position == null) {
-            return locator;
-          } else {
-            return locator.copyWithLocations(
-                totalProgression: (position - 1) / totalPageCount.toDouble());
-          }
-        }));
+    positions = positions
+        .map((item) => item.map((locator) {
+              int position = locator.locations.position;
+              if (position == null) {
+                return locator;
+              } else {
+                return locator.copyWithLocations(
+                    totalProgression:
+                        (position - 1) / totalPageCount.toDouble());
+              }
+            }).toList())
+        .toList();
 
     return positions;
   }
@@ -88,7 +91,7 @@ class EpubPositionsService extends PositionsService {
       return [];
     }
     int pageCount =
-        (length ~/ reflowablePositionLength.toDouble()).coerceAtLeast(1);
+        (length / reflowablePositionLength.toDouble()).ceil().coerceAtLeast(1);
     return [
       for (int position = 1; position <= pageCount; position++)
         createLocator(link,

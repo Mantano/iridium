@@ -25,9 +25,10 @@ class PublicationFactory {
   PublicationFactory(
       {this.fallbackTitle,
       this.packageDocument,
-      this.navigationData = const {},
+      Map<String, List<Link>> navigationData,
       this.encryptionData = const {},
-      this.displayOptions = const {}});
+      this.displayOptions = const {}})
+      : this.navigationData = navigationData ?? {};
 
   double get _epubVersion => packageDocument.epubVersion;
 
@@ -184,7 +185,7 @@ class PublicationFactory {
       return _itemById[id]?.let((it) {
         Set<String> updatedChain = Set.of(fallbackChain);
         if (item.id != null) {
-          fallbackChain.add(item.id);
+          updatedChain.add(item.id);
         }
         return _computeLink(it, fallbackChain: updatedChain);
       });

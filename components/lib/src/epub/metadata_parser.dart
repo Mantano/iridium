@@ -59,8 +59,8 @@ class MetadataParser {
     List<MetadataItem> metas = elements.item1;
     List<EpubLink> links = elements.item2;
     List<MetadataItem> metaHierarchy = _resolveMetaHierarchy(metas);
-    List<List<MetadataItem>> partitions =
-        metaHierarchy.partition((it) => it.refines == null);
+    List<List<MetadataItem>> partitions = metaHierarchy
+        .partition((it) => it.refines == null || it.refines.isBlank);
     List<MetadataItem> globalMetas = partitions[0];
     List<MetadataItem> refineMetas = partitions[1];
     Map<String, List<MetadataItem>> globalCollection =
@@ -288,16 +288,15 @@ class PubMetadataAdapter extends MetadataAdapter {
         firstValue("calibre:title_sort")
             ?.let((it) => LocalizedString.fromString(it));
 
-    Iterable<Product2<String, Contributor>> allCollections =
+    Iterable<Product2<String, Collection>> allCollections =
         (items[Vocabularies.meta + "belongs-to-collection"] ?? [])
             .map((it) => it.toCollection());
-    List<List<Product2<String, Contributor>>> collectionsPartitions =
+    List<List<Product2<String, Collection>>> collectionsPartitions =
         allCollections.partition((it) => it.item1 == "series");
-    List<Product2<String, Contributor>> seriesMeta = collectionsPartitions[0];
-    List<Product2<String, Contributor>> collectionsMeta =
+    List<Product2<String, Collection>> seriesMeta = collectionsPartitions[0];
+    List<Product2<String, Collection>> collectionsMeta =
         collectionsPartitions[1];
-    belongsToCollections =
-        collectionsMeta.map((it) => it.item2.toCollection()).toList();
+    belongsToCollections = collectionsMeta.map((it) => it.item2).toList();
 
     if (seriesMeta.isNotEmpty) {
       belongsToSeries = seriesMeta.map((it) => it.item2).toList();
@@ -324,11 +323,11 @@ class PubMetadataAdapter extends MetadataAdapter {
         ? _splitSubject(parsedSubjects.first)
         : parsedSubjects.toList();
 
-    List<MetadataItem> contributors = items[Vocabularies.dcterms + "creator"] ??
-        [] + items[Vocabularies.dcterms + "contributor"] ??
-        [] + items[Vocabularies.dcterms + "publisher"] ??
-        [] + items[Vocabularies.media + "narrator"] ??
-        [];
+    List<MetadataItem> contributors =
+        (items[Vocabularies.dcterms + "creator"] ?? []) +
+            (items[Vocabularies.dcterms + "contributor"] ?? []) +
+            (items[Vocabularies.dcterms + "publisher"] ?? []) +
+            (items[Vocabularies.media + "narrator"] ?? []);
     allContributors = contributors
         .map((it) => it.toContributor())
         .groupBy((it) => it.item1)
@@ -351,6 +350,7 @@ class PubMetadataAdapter extends MetadataAdapter {
       belongsToCollections: belongsToCollections,
       belongsToSeries: belongsToSeries,
       otherMetadata: otherMetadata,
+      rendition: presentation,
       authors: contributors("aut"),
       translators: contributors("trl"),
       editors: contributors("edt"),
@@ -552,7 +552,7 @@ class MetadataItem {
     assert(property == Vocabularies.dcterms + "subject");
     LocalizedString values = localizedString();
     LocalizedString localizedSortAs =
-        fileAs?.let((it) => LocalizedString({it.item2: it.item1}));
+        fileAs?.let((it) => LocalizedString({it.item1: it.item2}));
     return Subject(
         localizedName: values,
         localizedSortAs: localizedSortAs,
@@ -564,7 +564,7 @@ class MetadataItem {
     assert(property == Vocabularies.dcterms + "title");
     LocalizedString values = localizedString();
     LocalizedString localizedSortAs =
-        fileAs?.let((it) => LocalizedString({it.item2: it.item1}));
+        fileAs?.let((it) => LocalizedString({it.item1: it.item2}));
     return Title(values, localizedSortAs, titleType, displaySeq);
   }
 
@@ -582,7 +582,7 @@ class MetadataItem {
     };
     LocalizedString names = localizedString();
     LocalizedString localizedSortAs =
-        fileAs?.let((it) => LocalizedString({it.item2: it.item1}));
+        fileAs?.let((it) => LocalizedString({it.item1: it.item2}));
     Set<String> roles =
         role.takeUnless((it) => knownRoles.contains(it))?.let((it) => {it}) ??
             {};
@@ -601,7 +601,7 @@ class MetadataItem {
         type = "nrt";
         break;
       default:
-        role.takeIf((it) =>
+        type = role.takeIf((it) =>
             knownRoles.contains(it)); // Vocabularies.DCTERMS + "contributor"
     }
     Contributor contributor = Contributor(
@@ -614,7 +614,7 @@ class MetadataItem {
     return Product2(type, contributor);
   }
 
-  Product2<String, Contributor> toCollection() =>
+  Product2<String, Collection> toCollection() =>
       toContributor().let((t) => Product2(t.item1, t.item2.toCollection()));
 
   dynamic toMap() {
@@ -664,4 +664,9 @@ class MetadataItem {
   }
 
   String firstValue(String property) => children[property]?.firstOrNull?.value;
+
+  @override
+  String toString() =>
+      'MetadataItem{property: $property, value: $value, lang: $lang, '
+      'scheme: $scheme, refines: $refines, id: $id, children: $children}';
 }

@@ -30,13 +30,15 @@ class NavigationDocumentParser {
     Map<String, String> prefixMap = Map.of(contentReservedPrefixes)
       ..addAll(docPrefixes); // prefix element overrides reserved prefixes
 
-    XmlElement body = document.getElement("body", namespace: Namespaces.xhtml);
+    XmlElement body =
+        document.rootElement.getElement("body", namespace: Namespaces.xhtml);
     if (body == null) {
       return {};
     }
     List<Product2<List<String>, List<Link>>> navs = body
         .findAllElements("nav", namespace: Namespaces.xhtml)
-        .mapNotNull((it) => _parseNavElement(it, filePath, prefixMap));
+        .mapNotNull((it) => _parseNavElement(it, filePath, prefixMap))
+        .toList();
     Map<String, List<Link>> navMap = Map.fromEntries(navs
         .flatMap((nav) => nav.item1.map((type) => MapEntry(type, nav.item2))));
     return navMap.map((key, value) {
@@ -67,7 +69,8 @@ class NavigationDocumentParser {
   static List<Link> _parseOlElement(XmlElement element, String filePath) =>
       element
           .findElements("li", namespace: Namespaces.xhtml)
-          .mapNotNull((it) => _parseLiElement(it, filePath));
+          .mapNotNull((it) => _parseLiElement(it, filePath))
+          .toList();
 
   static Link _parseLiElement(XmlElement element, String filePath) {
     XmlElement first = element.children.whereType<XmlElement>().firstOrNull;

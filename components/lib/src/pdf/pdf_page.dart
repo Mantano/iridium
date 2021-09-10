@@ -2,7 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:bitmap/bitmap.dart';
+import 'dart:typed_data';
+
 import 'package:dfunc/dfunc.dart';
 import 'package:image/image.dart';
 
@@ -19,10 +20,7 @@ abstract class PdfPage {
   Image renderPage(int imageWidth, int imageHeight, int startX, int startY,
       int sizeX, int sizeY);
 
-  Bitmap renderFullPageBitmap(int sizeX, int sizeY) =>
-      renderPageBitmap(sizeX, sizeY, 0, 0, sizeX, sizeY);
-
-  Bitmap renderPageBitmap(int imageWidth, int imageHeight, int startX,
+  Uint8List renderPageBitmap(int imageWidth, int imageHeight, int startX,
       int startY, int sizeX, int sizeY);
 
   Product2<double, double> deviceToPage(int startX, int startY, int sizeX,

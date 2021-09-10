@@ -15,18 +15,20 @@ import 'package:mno_shared_dart/publication.dart';
 class PdfPositionsService extends PositionsService {
   final Link link;
   final int pageCount;
+  final List<Link> tableOfContents;
   List<List<Locator>> _positions;
 
-  PdfPositionsService._({this.link, this.pageCount});
+  PdfPositionsService({this.link, this.pageCount, this.tableOfContents});
 
   static PdfPositionsService create(PublicationServiceContext context) {
     Link link = context.manifest.readingOrder.firstOrNull;
     if (link == null) {
       return null;
     }
-    return PdfPositionsService._(
+    return PdfPositionsService(
       link: link,
       pageCount: context.manifest.metadata.numberOfPages ?? 0,
+      tableOfContents: context.manifest.tableOfContents,
     );
   }
 

@@ -10,5 +10,7 @@ extension XmlNodeExtension on XmlNode {
   String get id => getAttribute("id");
 
   String get lang =>
-      getAttribute("lang", namespace: _xmlNsUri) ?? getAttribute("xml:lang");
+      getAttribute("lang", namespace: _xmlNsUri) ??
+      getAttribute("xml:lang") ??
+      parent?.lang;
 }
