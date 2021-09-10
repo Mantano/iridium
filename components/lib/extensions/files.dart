@@ -7,8 +7,6 @@ import 'package:dfunc/dfunc.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
 
-import '../utils/take.dart';
-
 extension FileSystemEntityExtension on FileSystemEntity {
   String get lowercasedExtension => extension(path).toLowerCase();
 

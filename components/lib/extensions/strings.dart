@@ -47,7 +47,19 @@ extension StringExtension on String {
       // where they are located.
       // For the same reason, the output Date will be in UTC. Apps should convert it to the local
       // time zone for display purposes, or keep it as UTC for storage.
-      return DateTime.tryParse(this);
+      DateTime dateTime = DateTime.parse(this);
+      if (!dateTime.isUtc) {
+        return DateTime.utc(
+            dateTime.year,
+            dateTime.month,
+            dateTime.day,
+            dateTime.hour,
+            dateTime.minute,
+            dateTime.second,
+            dateTime.millisecond,
+            dateTime.microsecond);
+      }
+      return dateTime;
     } on Exception {
       return null;
     }
