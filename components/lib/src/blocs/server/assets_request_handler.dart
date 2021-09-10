@@ -6,8 +6,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:mno_server_dart/server.dart';
-import 'package:mno_shared_dart/mediatype.dart';
+import 'package:mno_server/server.dart';
+import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
