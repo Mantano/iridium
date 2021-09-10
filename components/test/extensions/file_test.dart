@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_commons_dart/extensions/files.dart';
+import 'package:mno_commons/extensions/files.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 

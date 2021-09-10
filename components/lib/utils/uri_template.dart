@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_commons_dart/utils/href.dart';
+import 'package:mno_commons/utils/href.dart';
 
 /// A lightweight implementation of URI Template (RFC 6570).
 ///
