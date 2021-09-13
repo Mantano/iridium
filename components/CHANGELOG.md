@@ -1,3 +1,7 @@
+## 0.1.1
+
+* Fix naming errors
+
 ## 0.1.0
 
 * Contains common utilities:
