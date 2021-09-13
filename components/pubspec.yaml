@@ -12,6 +12,7 @@ dependencies:
   dartx: ^0.7.1
   dfunc: ^0.7.2
   fimber: ^0.6.1
+  meta: ^1.7.0
   path: ^1.8.0
   universal_io: ^2.0.4
 
