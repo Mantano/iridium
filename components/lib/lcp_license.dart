@@ -5,9 +5,9 @@
 import 'dart:async';
 import 'dart:typed_data';
 
-import 'package:mno_commons_dart/utils/try.dart';
-import 'package:mno_lcp_dart/lcp.dart';
-import 'package:mno_shared_dart/publication.dart' as pub;
+import 'package:mno_commons/utils/try.dart';
+import 'package:mno_lcp/lcp.dart';
+import 'package:mno_shared/publication.dart' as pub;
 
 mixin LcpLicense implements pub.UserRights {
   /// License Document information.

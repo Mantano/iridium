@@ -6,8 +6,8 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:fimber/fimber.dart';
-import 'package:mno_commons_dart/utils/try.dart';
-import 'package:mno_shared_dart/mediatype.dart';
+import 'package:mno_commons/utils/try.dart';
+import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 

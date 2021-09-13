@@ -1,4 +1,4 @@
-name: mno_lcp_dart
+name: mno_lcp
 description: This package provide Flutter LCP implementation.
 version: 0.1.0
 homepage: https://github.com/Mantano/mno_commons_dart
@@ -26,9 +26,9 @@ dependencies:
   mno_fsm: ^0.1.0
   dfunc: ^0.7.2
   dartx: ^0.7.1
-  path_provider: ^2.0.2
+  path_provider: ^2.0.3
   url_launcher: ^6.0.10
-  mno_shared_dart:
+  mno_shared:
     path: ../mno_shared_dart
 
 dev_dependencies:

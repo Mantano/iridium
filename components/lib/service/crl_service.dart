@@ -5,7 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:mno_commons_dart/utils/try.dart';
+import 'package:mno_commons/utils/try.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../lcp.dart';

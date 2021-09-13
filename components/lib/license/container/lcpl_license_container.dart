@@ -5,8 +5,8 @@
 import 'dart:typed_data';
 
 import 'package:fimber/fimber.dart';
-import 'package:mno_lcp_dart/lcp.dart';
-import 'package:mno_lcp_dart/license/model/license_document.dart';
+import 'package:mno_lcp/lcp.dart';
+import 'package:mno_lcp/license/model/license_document.dart';
 import 'package:universal_io/io.dart';
 
 import 'license_container.dart';

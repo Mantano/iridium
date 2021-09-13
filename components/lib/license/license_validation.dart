@@ -7,10 +7,10 @@ import 'dart:typed_data';
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/services.dart';
-import 'package:mno_commons_dart/utils/try.dart';
+import 'package:mno_commons/utils/try.dart';
 import 'package:mno_fsm/mno_fsm.dart';
-import 'package:mno_lcp_dart/license/license_validation_state_machine.dart';
-import 'package:mno_shared_dart/mediatype.dart';
+import 'package:mno_lcp/license/license_validation_state_machine.dart';
+import 'package:mno_shared/mediatype.dart';
 
 import '../lcp.dart';
 import 'license_validation_events.dart';
@@ -124,7 +124,7 @@ class LicenseValidation {
 
   Future<bool> _computeIsProduction() async {
     ByteData prodLicenseInput =
-        await rootBundle.load("packages/mno_lcp_dart/assets/prod-license.lcpl");
+        await rootBundle.load("packages/mno_lcp/assets/prod-license.lcpl");
     LicenseDocument prodLicense = LicenseDocument.parse(prodLicenseInput);
     String passphrase =
         "7B7602FEF5DEDA10F768818FFACBC60B173DB223B7E66D8B2221EBE2C635EFAD";

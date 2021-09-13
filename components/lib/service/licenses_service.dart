@@ -7,9 +7,9 @@ import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_commons_dart/utils/try.dart';
-import 'package:mno_lcp_dart/io/file_util.dart';
-import 'package:mno_shared_dart/mediatype.dart';
+import 'package:mno_commons/utils/try.dart';
+import 'package:mno_lcp/io/file_util.dart';
+import 'package:mno_shared/mediatype.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart';
 

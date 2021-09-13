@@ -6,10 +6,10 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
-import 'package:mno_commons_dart/extensions/data.dart';
-import 'package:mno_lcp_dart/lcp.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/publication.dart' as pub;
+import 'package:mno_commons/extensions/data.dart';
+import 'package:mno_lcp/lcp.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart' as pub;
 
 /// Decrypts a resource protected with LCP.
 class LcpDecryptor {

@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:mno_lcp_dart/lcp.dart';
+import 'package:mno_lcp/lcp.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// A default implementation of the [RenewListener] using Chrome Custom Tabs for

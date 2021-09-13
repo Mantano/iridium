@@ -4,8 +4,8 @@
 
 import 'dart:typed_data';
 
-import 'package:mno_lcp_dart/lcp.dart';
-import 'package:mno_shared_dart/mediatype.dart';
+import 'package:mno_lcp/lcp.dart';
+import 'package:mno_shared/mediatype.dart';
 import 'package:universal_io/io.dart';
 
 import 'epub_license_container.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mno_lcp_dart/r2_lcp_flutter.dart';
+import 'package:mno_lcp/r2_lcp_flutter.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('r2_lcp_flutter');

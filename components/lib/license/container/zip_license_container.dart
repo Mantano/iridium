@@ -4,14 +4,14 @@
 
 import 'dart:typed_data';
 
-import 'package:mno_commons_dart/extensions/data.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_lcp_dart/lcp.dart';
-import 'package:mno_lcp_dart/license/model/license_document.dart';
-import 'package:mno_lcp_dart/utils/zip_utils.dart';
-import 'package:mno_shared_dart/container.dart';
-import 'package:mno_shared_dart/streams.dart';
-import 'package:mno_shared_dart/zip.dart';
+import 'package:mno_commons/extensions/data.dart';
+import 'package:mno_lcp/lcp.dart';
+import 'package:mno_lcp/license/model/license_document.dart';
+import 'package:mno_lcp/utils/zip_utils.dart';
+import 'package:mno_shared/container.dart';
+import 'package:mno_shared/streams.dart';
+import 'package:mno_shared/zip.dart';
 import 'package:universal_io/io.dart';
 
 import 'license_container.dart';
