@@ -4,24 +4,19 @@
 
 import 'dart:async';
 
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/locale.dart';
 import 'package:mno_shared/i18n/localizations_repository.dart';
-import 'package:multiple_localization/multiple_localization.dart';
 
-import 'localizations/messages_all.dart';
+import 'localizations/messages_all.dart' as m;
 
 class ReaderSharedLocalizations implements LocalizationsRepository {
-  static const LocalizationsDelegate<ReaderSharedLocalizations> delegate =
+  static const SimpleLocalizationDelegate<ReaderSharedLocalizations> delegate =
       _ReaderSharedLocalizationsDelegate();
 
   ReaderSharedLocalizations(this.locale);
 
   final String locale;
-
-  static ReaderSharedLocalizations of(BuildContext context) =>
-      Localizations.of<ReaderSharedLocalizations>(
-          context, ReaderSharedLocalizations);
 
   @override
   String getMessage(String name, List<dynamic> args) => Intl.message(
@@ -119,17 +114,18 @@ class ReaderSharedLocalizations implements LocalizationsRepository {
 }
 
 class _ReaderSharedLocalizationsDelegate
-    extends LocalizationsDelegate<ReaderSharedLocalizations> {
+    extends SimpleLocalizationDelegate<ReaderSharedLocalizations> {
   const _ReaderSharedLocalizationsDelegate();
-  @override
-  Future<ReaderSharedLocalizations> load(Locale locale) =>
-      MultipleLocalizations.load(
-          initializeMessages, locale, (l) => ReaderSharedLocalizations(l));
 
   @override
-  bool shouldReload(_ReaderSharedLocalizationsDelegate old) => false;
+  FutureOr<ReaderSharedLocalizations> Function(String locale) get builder =>
+      (l) => ReaderSharedLocalizations(l);
 
   @override
   bool isSupported(Locale locale) =>
       ['de', 'en', 'es', 'fr'].contains(locale.languageCode);
+
+  @override
+  Future<bool> initializeMessages(String localeName) =>
+      m.initializeMessages(localeName);
 }

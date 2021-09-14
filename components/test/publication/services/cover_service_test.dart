@@ -5,8 +5,8 @@
 import 'dart:typed_data';
 
 import 'package:dfunc/dfunc.dart';
-import 'package:diff_image/diff_image.dart';
 import 'package:image/image.dart';
+import 'package:image_compare/image_compare.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:test/test.dart';
@@ -49,9 +49,11 @@ void main() async {
     var bytes = (await res.read()).getOrNull();
     expect(bytes, isNotNull);
 
-    var diffImgResult = DiffImage.compareFromMemory(
-        decodeImage(bytes.buffer.asUint8List()), coverBitmap);
-    expect(diffImgResult.diffValue, 0.0);
+    var diffImgResult = await compareImages(
+        src1: decodeImage(bytes.buffer.asUint8List()),
+        src2: coverBitmap,
+        algorithm: PixelMatching());
+    expect(diffImgResult, 0.0);
   });
 
   test("helper for ServicesBuilder works fine", () {
@@ -64,9 +66,11 @@ void main() async {
   });
 
   test("cover helper for Publication works fine", () async {
-    var diffImgResult =
-        DiffImage.compareFromMemory(coverBitmap, await publication.cover());
-    expect(diffImgResult.diffValue, 0.0);
+    var diffImgResult = await compareImages(
+        src1: coverBitmap,
+        src2: await publication.cover(),
+        algorithm: PixelMatching());
+    expect(diffImgResult, 0.0);
   });
 
   test("coverFitting helper for Publication works fine", () async {
