@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:mno_commons/extensions/strings.dart';
-import 'package:mno_opds/opds_parsers.dart';
+import 'package:mno_opds/mno_opds.dart';
 import 'package:mno_shared/opds.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:test/test.dart';
