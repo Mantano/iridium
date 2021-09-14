@@ -18,7 +18,6 @@ dependencies:
   image: ^3.0.2
   intl: ^0.17.0
   meta: ^1.7.0
-  multiple_localization: ^0.2.2
   path: ^1.8.0
   universal_io: ^2.0.4
   xml: ^5.2.0
