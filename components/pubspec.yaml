@@ -2,6 +2,7 @@ name: mno_commons
 description: This package provide utilities for other mno_xxx packages.
 version: 0.1.1
 homepage: https://github.com/Mantano/mno_commons_dart
+publish_to: none
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
