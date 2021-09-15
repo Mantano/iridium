@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:archive/archive_io.dart' as archive;
+import 'package:archive/archive.dart' as archive;
 
 import 'file_buffer.dart';
 import 'lazy_zip_file_header.dart';

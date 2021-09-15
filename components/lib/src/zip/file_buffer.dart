@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:archive/archive_io.dart' as archive;
+import 'package:archive/archive.dart' as archive;
 import 'package:universal_io/io.dart';
 
 /// A simple buffer to read files efficiently.
