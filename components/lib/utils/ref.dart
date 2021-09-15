@@ -7,6 +7,6 @@
 /// Get the reference by calling `ref()`
 /// Conveniently, the reference can be reset by setting the `ref` property.
 class Ref<T> {
-  T ref;
-  T call() => ref;
+  T? ref;
+  T? call() => ref;
 }

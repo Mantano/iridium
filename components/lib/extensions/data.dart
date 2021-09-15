@@ -5,7 +5,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:archive/archive.dart';
+import 'package:archive/archive.dart' as archive;
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
@@ -25,10 +25,12 @@ extension ByteDataExtension on ByteData {
 
   /// Inflates a ZIP-compressed [ByteData].
   ByteData inflate() =>
-      Inflate.buffer(InputStream(buffer.asUint8List())).getBytes().toByteData();
+      archive.Inflate.buffer(archive.InputStream(buffer.asUint8List()))
+          .getBytes()
+          .toByteData();
 
   /// Computes the MD5 hash of the byte array.
-  Future<String> md5() async {
+  Future<String?> md5() async {
     try {
       return await crypto.md5
           .bind(asStream())

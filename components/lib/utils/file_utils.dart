@@ -9,16 +9,16 @@ class FileUtils {
     Directory folder = Directory(directory);
     return folder
         .exists()
-        .then((exists) => (exists) ? folder : folder.create());
+        .then((exists) async => (exists) ? folder : await folder.create());
   }
 
-  static Future deleteDirectory(String directory, {bool recursive}) {
+  static Future deleteDirectory(String directory, {bool recursive = false}) {
     Directory folder = Directory(directory);
     return folder.exists().then(
         (exists) => (exists) ? folder.delete(recursive: recursive) : null);
   }
 
-  static Future emptyDirectory(String directory, {bool recursive}) {
+  static Future emptyDirectory(String directory, {bool recursive = false}) {
     Directory folder = Directory(directory);
     return folder.exists().then((exists) => (exists)
         ? folder.list(recursive: recursive).listen((file) => file.delete())

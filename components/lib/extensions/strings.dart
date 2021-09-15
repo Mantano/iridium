@@ -18,7 +18,7 @@ extension StringExtension on String {
   String ifBlank(String Function() defaultValue) =>
       isBlank ? defaultValue() : this;
 
-  String substringBefore(String separator) {
+  String substringBefore(String? separator) {
     if (isEmpty) {
       return this;
     }
@@ -39,7 +39,7 @@ extension StringExtension on String {
 
   ByteData toByteData() => this.toUtf8().toByteData();
 
-  DateTime iso8601ToDate() {
+  DateTime? iso8601ToDate() {
     try {
       // We assume that a date without a time zone component is in UTC. To handle this properly,
       // we need to set the default time zone of Joda to UTC, since by default it uses the local
@@ -65,7 +65,7 @@ extension StringExtension on String {
     }
   }
 
-  Uri toUrlOrNull({Uri context}) {
+  Uri? toUrlOrNull({Uri? context}) {
     try {
       return (context != null) ? context.resolve(this) : Uri.parse(this);
     } on Exception {
@@ -73,7 +73,7 @@ extension StringExtension on String {
     }
   }
 
-  Map<String, dynamic> toJsonOrNull() {
+  Map<String, dynamic>? toJsonOrNull() {
     try {
       return json.decode(this);
     } on Exception {
@@ -81,7 +81,7 @@ extension StringExtension on String {
     }
   }
 
-  List toJsonArrayOrNull() {
+  List? toJsonArrayOrNull() {
     try {
       return json.decode(this);
     } on Exception {
@@ -89,7 +89,7 @@ extension StringExtension on String {
     }
   }
 
-  bool toBooleanOrNull() {
+  bool? toBooleanOrNull() {
     String normalized = this.toLowerCase();
     if (normalized == "true") {
       return true;
@@ -119,7 +119,7 @@ extension StringHashExtension on String {
   String get sha1 => crypto.sha1.convert(toUtf8()).toString();
 }
 
-extension NullableStringIsNullOrBlankExtension on String {
+extension NullableStringIsNullOrBlankExtension on String? {
   /// Returns `true` if the String is either null or empty.
   bool get isNullOrBlank => this?.isBlank ?? true;
 }
