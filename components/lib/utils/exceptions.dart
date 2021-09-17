@@ -15,11 +15,11 @@ T? tryOr<T>(T? defaultValue, T Function() closure) {
 }
 
 /// Returns the result of the given [closure], or null if an [Exception] was raised.
-Future<T?> waitTryOrNull<T>(Future<T> Function() closure) =>
+Future<T?> waitTryOrNull<T>(Future<T?> Function() closure) =>
     waitTryOr(null, closure);
 
 /// Returns the result of the given [closure], or [default] if an [Exception] was raised.
-Future<T?> waitTryOr<T>(T? defaultValue, Future<T> Function() closure) async {
+Future<T?> waitTryOr<T>(T? defaultValue, Future<T?> Function() closure) async {
   try {
     return await closure();
   } on Exception {

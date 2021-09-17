@@ -311,13 +311,13 @@ extension MapExtension on Map<String, dynamic>? {
 
 extension ListExtension on List<dynamic>? {
   /// Parses a JSONArray of JSONObject into a [List] of models using the given [transform].
-  List<T> parseObjects<T>(T Function(dynamic) transform) {
+  List<T> parseObjects<T>(T? Function(dynamic) transform) {
     if (this == null || this!.isEmpty) {
       return [];
     }
     List<T> models = [];
-    for (T element in this!) {
-      T model = transform(element);
+    for (dynamic element in this!) {
+      T? model = transform(element);
       if (model != null) {
         models.add(model);
       }

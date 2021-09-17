@@ -9,3 +9,6 @@ environment:
 dependencies:
   mno_commons:
     path: ../
+
+dev_dependencies:
+  lints: ^1.0.1
