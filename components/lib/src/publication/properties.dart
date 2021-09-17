@@ -13,12 +13,12 @@ import 'presentation/presentation.dart';
 /// See https://readium.org/webpub-manifest/schema/properties.schema.json
 ///     https://readium.org/webpub-manifest/schema/extensions/epub/properties.schema.json
 class Properties with EquatableMixin, JSONable {
-  Properties({Map<String, dynamic> otherProperties})
+  Properties({Map<String, dynamic>? otherProperties})
       : this.otherProperties = otherProperties ?? {};
 
   /// (Nullable) Indicates how the linked resource should be displayed in a
   /// reading environment that displays synthetic spreads.
-  PresentationPage get page =>
+  PresentationPage? get page =>
       PresentationPage.from(otherProperties.optString("page"));
 
   /// Identifies content contained in the linked resource, that cannot be
@@ -28,20 +28,21 @@ class Properties with EquatableMixin, JSONable {
 
   /// (Nullable) Suggested orientation for the device when displaying the linked
   /// resource.
-  PresentationOrientation get orientation =>
+  PresentationOrientation? get orientation =>
       PresentationOrientation.from(otherProperties.optString("orientation"));
 
   /// (Nullable) Hints how the layout of the resource should be presented.
-  EpubLayout get layout => EpubLayout.from(otherProperties.optString("layout"));
+  EpubLayout? get layout =>
+      EpubLayout.from(otherProperties.optString("layout"));
 
   /// (Nullable) Suggested method for handling overflow while displaying the
   /// linked resource.
-  PresentationOverflow get overflow =>
+  PresentationOverflow? get overflow =>
       PresentationOverflow.from(otherProperties.optString("overflow"));
 
   /// (Nullable) Indicates the condition to be met for the linked resource to be
   /// rendered within a synthetic spread.
-  PresentationSpread get spread =>
+  PresentationSpread? get spread =>
       PresentationSpread.from(otherProperties.optString("spread"));
 
   Map<String, dynamic> otherProperties;
@@ -53,7 +54,7 @@ class Properties with EquatableMixin, JSONable {
 
   /// (Nullable) Indicates that a resource is encrypted/obfuscated and provides
   /// relevant information for decryption.
-  Encryption get encryption {
+  Encryption? get encryption {
     if (otherProperties.containsKey("encrypted") &&
         otherProperties["encrypted"] is Map<String, dynamic>) {
       return Encryption.fromJSON(
@@ -71,7 +72,7 @@ class Properties with EquatableMixin, JSONable {
     return Properties(otherProperties: props);
   }
 
-  Properties copy({Map<String, dynamic> otherProperties}) => Properties(
+  Properties copy({Map<String, dynamic>? otherProperties}) => Properties(
         otherProperties: otherProperties ?? this.otherProperties,
       );
 
@@ -79,7 +80,7 @@ class Properties with EquatableMixin, JSONable {
   String toString() => 'Properties(${toJson()})';
 
   /// Creates a [Properties] from its RWPM JSON representation.
-  static Properties fromJSON(Map<String, dynamic> json) => Properties(
+  static Properties fromJSON(Map<String, dynamic>? json) => Properties(
         otherProperties: json ?? {},
       );
 }

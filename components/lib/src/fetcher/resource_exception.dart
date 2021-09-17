@@ -10,7 +10,7 @@ class ResourceException extends UserException {
       : super(userMessageId, cause: cause);
 
   static BadRequest badRequest(Map<String, String> parameters,
-          {Exception cause}) =>
+          {Exception? cause}) =>
       BadRequest._(parameters, cause: cause);
 
   /// Equivalent to a 404 HTTP error.
@@ -66,6 +66,6 @@ class ResourceException extends UserException {
 class BadRequest extends ResourceException {
   final Map<String, String> parameters;
 
-  BadRequest._(this.parameters, {Exception cause})
+  BadRequest._(this.parameters, {Exception? cause})
       : super._("r2_shared_resource_exception_bad_request", cause: cause);
 }

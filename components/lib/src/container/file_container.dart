@@ -24,7 +24,7 @@ class FileContainer extends Container {
 
   @override
   Future<DataStream> streamAt(String path) async {
-    String filePath = files[path];
+    String? filePath = files[path];
     if (filePath == null) {
       throw ContainerException.resourceNotFound(path);
     }
@@ -38,7 +38,7 @@ class FileContainer extends Container {
 
   @override
   Future<int> resourceLength(String path) async {
-    String filePath = files[path];
+    String? filePath = files[path];
     if (filePath == null) {
       throw ContainerException.resourceNotFound(path);
     }

@@ -20,15 +20,15 @@ class LazyZipDirectory {
   int diskWithTheStartOfTheCentralDirectory = 0; // 2 bytes
   int totalCentralDirectoryEntriesOnThisDisk = 0; // 2 bytes
   int totalCentralDirectoryEntries = 0; // 2 bytes
-  int centralDirectorySize; // 4 bytes
-  int centralDirectoryOffset; // 2 bytes
+  late int centralDirectorySize; // 4 bytes
+  late int centralDirectoryOffset; // 2 bytes
   String zipFileComment = ''; // 2 bytes, n bytes
   // Central Directory
   List<LazyZipFileHeader> fileHeaders = [];
 
   LazyZipDirectory();
 
-  Future<void> load(FileBuffer input, {String password}) async {
+  Future<void> load(FileBuffer input, {String? password}) async {
     filePosition = await _findSignature(input);
     input.position = filePosition;
     int signature = await input.readUint32(); // ignore: unused_local_variable

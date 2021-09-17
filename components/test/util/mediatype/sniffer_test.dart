@@ -28,10 +28,10 @@ void main() {
   });
 
   test("sniff from metadata", () async {
-    expect(await MediaType.of(fileExtensions: null), isNull);
+    expect(await MediaType.ofSingleHint(fileExtension: null), isNull);
     expect(MediaType.readiumAudiobook,
         await MediaType.ofSingleHint(fileExtension: "audiobook"));
-    expect(await MediaType.of(mediaTypes: null), isNull);
+    expect(await MediaType.ofSingleHint(mediaType: null), isNull);
     expect(MediaType.readiumAudiobook,
         await MediaType.ofSingleHint(mediaType: "application/audiobook+zip"));
     expect(MediaType.readiumAudiobook,

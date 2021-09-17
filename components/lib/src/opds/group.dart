@@ -16,18 +16,18 @@ class Group with EquatableMixin {
   List<Link> navigation;
 
   Group({
-    this.title,
-    OpdsMetadata metadata,
-    List<Link> links,
-    List<Publication> publications,
-    List<Link> navigation,
+    required this.title,
+    OpdsMetadata? metadata,
+    List<Link>? links,
+    List<Publication>? publications,
+    List<Link>? navigation,
   })  : this.metadata = metadata ?? OpdsMetadata(title: title),
         this.links = links ?? [],
         this.publications = publications ?? [],
         this.navigation = navigation ?? [];
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         title,
         metadata,
         links,

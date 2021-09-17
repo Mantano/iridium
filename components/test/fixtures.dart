@@ -6,7 +6,7 @@ import 'package:dfunc/dfunc.dart';
 import 'package:universal_io/io.dart';
 
 class Fixtures {
-  final String path;
+  final String? path;
 
   const Fixtures({this.path});
 

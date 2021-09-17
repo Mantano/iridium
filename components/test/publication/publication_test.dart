@@ -35,7 +35,7 @@ void main() {
   var fixtures = Fixtures(path: "test_resources/format");
   Future<Publication> parseAt(String path) async => Publication(
       manifest: Manifest.fromJson(
-          (await fixtures.fileAt(path).readAsString()).toJsonOrNull()));
+          (await fixtures.fileAt(path).readAsString()).toJsonOrNull())!);
 
   Publication createPublication(
           {String title = "Title",
@@ -44,7 +44,7 @@ void main() {
           List<Link> links = const [],
           List<Link> readingOrder = const [],
           List<Link> resources = const [],
-          ServicesBuilder servicesBuilder}) =>
+          ServicesBuilder? servicesBuilder}) =>
       Publication(
           manifest: Manifest(
               metadata: Metadata(

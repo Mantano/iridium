@@ -62,5 +62,8 @@ class ProtectedAsset {
   final Fetcher fetcher;
   final void Function(ServicesBuilder) onCreatePublication;
 
-  ProtectedAsset({this.asset, this.fetcher, this.onCreatePublication});
+  ProtectedAsset(
+      {required this.asset,
+      required this.fetcher,
+      required this.onCreatePublication});
 }

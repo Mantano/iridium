@@ -7,7 +7,6 @@ import 'dart:typed_data';
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:meta/meta.dart';
 import 'package:mno_commons/utils/take.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
@@ -33,8 +32,8 @@ import 'sniffer_context.dart';
 /// @param name A human readable name identifying the media type, which may be presented to the user.
 /// @param fileExtension The default file extension to use for this media type.
 class MediaType {
-  final String name;
-  final String fileExtension;
+  final String? name;
+  final String? fileExtension;
 
   /// The type component, e.g. `application` in `application/epub+zip`.
   final String type;
@@ -48,8 +47,8 @@ class MediaType {
   const MediaType._(
       {this.name,
       this.fileExtension,
-      @required this.type,
-      @required this.subtype,
+      required this.type,
+      required this.subtype,
       this.parameters = const {}});
 
   static const MediaType aac =
@@ -282,7 +281,8 @@ class MediaType {
   ];
 
   /// Creates a [MediaType] from its string representation.
-  static MediaType parse(String string, {String name, String fileExtension}) {
+  static MediaType? parse(String string,
+      {String? name, String? fileExtension}) {
     try {
       return MediaType._create(string,
           name: name, fileExtension: fileExtension);
@@ -293,7 +293,7 @@ class MediaType {
   }
 
   factory MediaType._create(String string,
-      {String name, String fileExtension}) {
+      {String? name, String? fileExtension}) {
     if (string.isEmpty) {
       throw ArgumentError("Invalid media type: $string");
     }
@@ -344,13 +344,13 @@ class MediaType {
   ///
   /// Gives a hint on the underlying structure of this media type.
   /// See. https://tools.ietf.org/html/rfc6838#section-4.2.8
-  String get structuredSyntaxSuffix {
+  String? get structuredSyntaxSuffix {
     List<String> parts = subtype.split("+");
     return (parts.length > 1) ? "+${parts.last}" : null;
   }
 
   /// Encoding as declared in the `charset` parameter, if there's any.
-  String get charset => parameters["charset"];
+  String? get charset => parameters["charset"];
 
   /// Returns the canonical version of this media type, if it is known.
   ///
@@ -385,7 +385,7 @@ class MediaType {
   /// types is a parameterized version of the other one.
   @override
   bool operator ==(Object other) =>
-      toString() == (other as MediaType)?.toString();
+      toString() == (other as MediaType?)?.toString();
 
   @override
   int get hashCode => type.hashCode ^ subtype.hashCode ^ parameters.hashCode;
@@ -399,7 +399,7 @@ class MediaType {
   /// - Order of parameters is ignored.
   /// - Wildcards are supported, meaning that `image/*` contains `image/png` and `*/*` contains
   ///   everything.
-  bool contains(MediaType other) {
+  bool contains(MediaType? other) {
     if (other == null ||
         (type != "*" && type != other.type) ||
         (subtype != "*" && subtype != other.subtype)) {
@@ -414,7 +414,7 @@ class MediaType {
 
   /// Returns whether the given [other] media type is included in this media type.
   bool containsFromName(String other) {
-    MediaType mediaType = MediaType.parse(other);
+    MediaType? mediaType = MediaType.parse(other);
     if (mediaType == null) {
       return false;
     }
@@ -426,12 +426,12 @@ class MediaType {
   ///
   /// For example, `text/html` matches `text/html;charset=utf-8`, but `text/html;charset=ascii`
   /// doesn't. This is basically like `contains`, but working in both direction.
-  bool matches(MediaType other) =>
+  bool matches(MediaType? other) =>
       contains(other) || (other?.contains(this) == true);
 
   /// Returns whether this media type and `other` are the same, ignoring parameters that are not
   /// in both media types.
-  bool matchesFromName(String other) => matches(other?.let((it) => parse(it)));
+  bool matchesFromName(String? other) => matches(other?.let((it) => parse(it)));
 
   /// Returns whether this media type matches any of the `others` media types.
   bool matchesAny(Iterable<MediaType> others) =>
@@ -494,9 +494,9 @@ class MediaType {
 
   /// Resolves a format from a single file extension and media type hint, without checking the actual
   /// content.
-  static Future<MediaType> ofSingleHint(
-          {String mediaType,
-          String fileExtension,
+  static Future<MediaType?> ofSingleHint(
+          {String? mediaType,
+          String? fileExtension,
           List<Sniffer> sniffers = MediaType.sniffers}) =>
       _of(
           content: null,
@@ -506,20 +506,20 @@ class MediaType {
 
   /// Resolves a format from file extension and media type hints, without checking the actual
   /// content.
-  static Future<MediaType> of(
+  static Future<MediaType?> of(
           {List<String> mediaTypes = const [],
           List<String> fileExtensions = const [],
           List<Sniffer> sniffers = MediaType.sniffers}) =>
       _of(
           content: null,
-          mediaTypes: mediaTypes ?? const [],
-          fileExtensions: fileExtensions ?? const [],
+          mediaTypes: mediaTypes,
+          fileExtensions: fileExtensions,
           sniffers: sniffers);
 
   /// Resolves a format from a local file path.
-  static Future<MediaType> ofFileWithSingleHint(FileSystemEntity file,
-          {String mediaType,
-          String fileExtension,
+  static Future<MediaType?> ofFileWithSingleHint(FileSystemEntity file,
+          {String? mediaType,
+          String? fileExtension,
           List<Sniffer> sniffers = MediaType.sniffers}) =>
       ofFile(file,
           mediaTypes: [mediaType].whereNotNull().toList(),
@@ -527,7 +527,7 @@ class MediaType {
           sniffers: sniffers);
 
   /// Resolves a format from a local file path.
-  static Future<MediaType> ofFile(FileSystemEntity file,
+  static Future<MediaType?> ofFile(FileSystemEntity file,
           {List<String> mediaTypes = const [],
           List<String> fileExtensions = const [],
           List<Sniffer> sniffers = MediaType.sniffers}) =>
@@ -538,9 +538,9 @@ class MediaType {
           sniffers: sniffers);
 
   /// Resolves a format from a local file path.
-  static Future<MediaType> ofFilePathWithSingleHint(String path,
-          {String mediaType,
-          String fileExtension,
+  static Future<MediaType?> ofFilePathWithSingleHint(String path,
+          {String? mediaType,
+          String? fileExtension,
           List<Sniffer> sniffers = MediaType.sniffers}) =>
       ofFileWithSingleHint(File(path),
           mediaType: mediaType,
@@ -548,7 +548,7 @@ class MediaType {
           sniffers: sniffers);
 
   /// Resolves a format from a local file path.
-  static Future<MediaType> ofFilePath(String path,
+  static Future<MediaType?> ofFilePath(String path,
           {List<String> mediaTypes = const [],
           List<String> fileExtensions = const [],
           List<Sniffer> sniffers = MediaType.sniffers}) =>
@@ -558,10 +558,10 @@ class MediaType {
           sniffers: sniffers);
 
   /// Resolves a format from bytes, e.g. from an HTTP response.
-  static Future<MediaType> ofBytesWithSingleHint(
+  static Future<MediaType?> ofBytesWithSingleHint(
           Future<ByteData> Function() bytes,
-          {String mediaType,
-          String fileExtension,
+          {String? mediaType,
+          String? fileExtension,
           List<Sniffer> sniffers = MediaType.sniffers}) =>
       ofBytes(bytes,
           mediaTypes: [mediaType].whereNotNull().toList(),
@@ -569,7 +569,7 @@ class MediaType {
           sniffers: sniffers);
 
   /// Resolves a format from bytes, e.g. from an HTTP response.
-  static Future<MediaType> ofBytes(Future<ByteData> Function() bytes,
+  static Future<MediaType?> ofBytes(Future<ByteData> Function() bytes,
           {List<String> mediaTypes = const [],
           List<String> fileExtensions = const [],
           List<Sniffer> sniffers = MediaType.sniffers}) =>
@@ -581,9 +581,9 @@ class MediaType {
 
   /// Resolves a format from a content URI and a [ContentResolver].
   /// Accepts the following URI schemes: content, android.resource, file.
-  static Future<MediaType> ofUriWithSingleHint(Uri uri,
-          {String mediaType,
-          String fileExtension,
+  static Future<MediaType?> ofUriWithSingleHint(Uri uri,
+          {String? mediaType,
+          String? fileExtension,
           List<Sniffer> sniffers = MediaType.sniffers}) =>
       ofUri(uri,
           mediaTypes: [mediaType].whereNotNull().toList(),
@@ -592,7 +592,7 @@ class MediaType {
 
   /// Resolves a format from a content URI and a [ContentResolver].
   /// Accepts the following URI schemes: content, android.resource, file.
-  static Future<MediaType> ofUri(Uri uri,
+  static Future<MediaType?> ofUri(Uri uri,
       {List<String> mediaTypes = const [],
       List<String> fileExtensions = const [],
       List<Sniffer> sniffers = MediaType.sniffers}) {
@@ -619,8 +619,8 @@ class MediaType {
   /// sniffers to return a [MediaType] quickly before inspecting the content itself:
   ///  - Light Sniffing checks only the provided file extension or media type hints.
   ///  - Heavy Sniffing reads the bytes to perform more advanced sniffing.
-  static Future<MediaType> _of(
-      {SnifferContent content,
+  static Future<MediaType?> _of(
+      {SnifferContent? content,
       List<String> mediaTypes = const [],
       List<String> fileExtensions = const [],
       List<Sniffer> sniffers = MediaType.sniffers}) async {
@@ -628,7 +628,7 @@ class MediaType {
     SnifferContext context =
         SnifferContext(mediaTypes: mediaTypes, fileExtensions: fileExtensions);
     for (Sniffer sniffer in sniffers) {
-      MediaType mediaType = await sniffer(context);
+      MediaType? mediaType = await sniffer(context);
       if (mediaType != null) {
         return mediaType;
       }
@@ -641,7 +641,7 @@ class MediaType {
           mediaTypes: mediaTypes,
           fileExtensions: fileExtensions);
       for (Sniffer sniffer in sniffers) {
-        MediaType mediaType = await sniffer(context);
+        MediaType? mediaType = await sniffer(context);
         if (mediaType != null) {
           return mediaType;
         }
@@ -656,13 +656,13 @@ class MediaType {
     //
     // // If nothing else worked, we try to parse the first valid media type hint.
     for (String mt in mediaTypes) {
-      MediaType mediaType = parse(mt);
+      MediaType? mediaType = parse(mt);
       if (mediaType != null) {
         return mediaType;
       }
     }
     for (String fileExtension in fileExtensions) {
-      MediaType mediaType = filterByFileExtension(fileExtension);
+      MediaType? mediaType = filterByFileExtension(fileExtension);
       if (mediaType != null) {
         return mediaType;
       }
@@ -671,7 +671,7 @@ class MediaType {
     return null;
   }
 
-  static MediaType filterByFileExtension(String fileExtension) =>
+  static MediaType? filterByFileExtension(String? fileExtension) =>
       fileExtension?.let((it) {
         for (MediaType mediaType in _values) {
           if (it == mediaType.fileExtension) {

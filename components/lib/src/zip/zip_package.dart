@@ -18,13 +18,15 @@ import 'lazy_zip_decoder.dart';
 import 'zip_header.dart';
 
 class ZipPackage implements JSONable {
-  ZipPackage._(this.file);
+  ZipPackage(this.file);
 
   final File file;
 
-  Map<String, ZipLocalFile> entries;
-  List<ZipCentralDirectory> centralDirectories;
-  ZipEndCentralDirectory cdEnd;
+  Map<String, ZipLocalFile> entries = {};
+  List<ZipCentralDirectory> centralDirectories = [];
+  late ZipEndCentralDirectory cdEnd;
+
+  late int stopOffset;
 
   @override
   Map<String, dynamic> toJson() => {
@@ -36,19 +38,17 @@ class ZipPackage implements JSONable {
       };
 
   ZipLocalFile entry(String path) {
-    ZipLocalFile entry = entries[path];
+    ZipLocalFile? entry = entries[path];
     if (entry == null) {
       throw Exception("No file entry at path $path.");
     }
     return entry;
   }
 
-  int stopOffset;
-
-  static Future<ZipPackage> from(File file) async {
+  static Future<ZipPackage?> from(File file) async {
     if (!(await file.exists())) return null;
 
-    final zp = ZipPackage._(file);
+    final zp = ZipPackage(file);
     final package = await FileBuffer.from(file);
     try {
       final entries = <ZipLocalFile>[];
@@ -62,7 +62,7 @@ class ZipPackage implements JSONable {
         }
 
         final sign = await package.readUint16();
-        final header = await ZipHeader.readNext(package, sign);
+        final ZipHeader? header = await ZipHeader.readNext(package, sign);
 
         /*
         if (sign == 0x0806) {
@@ -93,17 +93,17 @@ class ZipPackage implements JSONable {
         }
 
         if (header.isCentralDirectoryEnd) {
-          zp.cdEnd = header;
+          zp.cdEnd = header as ZipEndCentralDirectory;
           zp.stopOffset = package.position;
           break;
         }
 
         if (header.isLocalFile) {
-          final ZipLocalFile f = header;
+          final ZipLocalFile f = header as ZipLocalFile;
           entries.add(f);
           package.addToPosition(f.compressedSize);
         } else if (header.isCentralDirectory) {
-          final ZipCentralDirectory cd = header;
+          final ZipCentralDirectory cd = header as ZipCentralDirectory;
           cds.add(cd);
         }
       }
@@ -116,9 +116,9 @@ class ZipPackage implements JSONable {
     }
   }
 
-  static Future<ZipPackage> fromArchive(File file) async {
+  static Future<ZipPackage?> fromArchive(File file) async {
     if (!(await file.exists())) return null;
-    final zp = ZipPackage._(file);
+    final zp = ZipPackage(file);
     final entries = <ZipLocalFile>[];
     final cds = <ZipCentralDirectory>[];
 
@@ -169,35 +169,37 @@ class ZipPackage implements JSONable {
 
   static Future<Stream<List<int>>> extract(
     File file, {
-    final int entryStart,
-    final int entryEnd,
-    final int compressionMethod,
-    IntRange range,
+    required final int entryStart,
+    required final int entryEnd,
+    required final int compressionMethod,
+    IntRange? range,
   }) async {
     if (range == null) {
       Stream<List<int>> stream = file.openRead(entryStart, entryEnd);
       if (compressionMethod == 0) return stream;
       if (compressionMethod == 8) return stream.transform(zlibDecoder);
     }
-    if (compressionMethod == 0) {
-      int start = min(entryStart + range.start, entryEnd);
-      int end = min(entryStart + range.length, entryEnd);
-      return file.openRead(start, end);
-    }
-    if (compressionMethod == 8) {
-      return file
-          .openRead(entryStart, entryEnd)
-          .transform(zlibDecoder)
-          .transform(_RangeStreamTransformer(range));
+    if (range != null) {
+      if (compressionMethod == 0) {
+        int start = min(entryStart + range.start, entryEnd);
+        int end = min(entryStart + range.length, entryEnd);
+        return file.openRead(start, end);
+      }
+      if (compressionMethod == 8) {
+        return file
+            .openRead(entryStart, entryEnd)
+            .transform(zlibDecoder)
+            .transform(_RangeStreamTransformer(range));
+      }
     }
     throw UnsupportedError('Unsupported compress method: $compressionMethod');
   }
 
-  static Stream<List<int>> raw(File file, {final int start, final int end}) =>
+  static Stream<List<int>> raw(File file, {int? start, int? end}) =>
       file.openRead(start, end);
 
-  Future<Stream<List<int>>> extractStream(String filename,
-      {IntRange range}) async {
+  Future<Stream<List<int>>?> extractStream(String filename,
+      {IntRange? range}) async {
     final zip = entries[filename];
     return zip == null
         ? null
@@ -208,7 +210,7 @@ class ZipPackage implements JSONable {
             range: range);
   }
 
-  Future<String> extractAsUtf8(String filename) async {
+  Future<String?> extractAsUtf8(String filename) async {
     final stream = await extractStream(filename);
     if (stream == null) return null;
 

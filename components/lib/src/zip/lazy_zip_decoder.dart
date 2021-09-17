@@ -15,12 +15,10 @@ import 'lazy_zip_file_header.dart';
 
 /// Decode a zip formatted buffer into an [Archive] object.
 class LazyZipDecoder {
-  LazyZipDirectory directory;
-
-  Future<LazyArchive> decodeBuffer(File file, {String password}) async {
+  Future<LazyArchive> decodeBuffer(File file, {String? password}) async {
     final fileBuffer = await FileBuffer.from(file);
     LazyArchive _archive = LazyArchive();
-    directory = LazyZipDirectory();
+    LazyZipDirectory directory = LazyZipDirectory();
     return directory.load(fileBuffer, password: password).then((_) {
       for (LazyZipFileHeader zfh in directory.fileHeaders) {
         LazyZipFile zf = zfh.file;
@@ -54,7 +52,6 @@ class LazyZipDecoder {
       return _archive;
     }).catchError((ex, st) {
       Fimber.d("ERROR", ex: ex, stacktrace: st);
-      return null;
     }).whenComplete(fileBuffer.close);
   }
 }

@@ -84,12 +84,12 @@ void main() {
 
   test("parse JSON {templated} defaults: false", () {
     var link = Link.fromJSON('{"href": "a"}'.toJsonOrNull());
-    expect(link.templated, isFalse);
+    expect(link!.templated, isFalse);
   });
 
   test("parse JSON {templated} as false when null", () {
     var link = Link.fromJSON('{"href": "a", "templated": null}'.toJsonOrNull());
-    expect(link.templated, isFalse);
+    expect(link!.templated, isFalse);
   });
 
   test("parse JSON multiple languages", () {
@@ -104,22 +104,22 @@ void main() {
 
   test("parse JSON requires positive width", () {
     var link = Link.fromJSON('{"href": "a", "width": -20}'.toJsonOrNull());
-    expect(link.width, isNull);
+    expect(link!.width, isNull);
   });
 
   test("parse JSON requires positive height", () {
     var link = Link.fromJSON('{"href": "a", "height": -20}'.toJsonOrNull());
-    expect(link.height, isNull);
+    expect(link!.height, isNull);
   });
 
   test("parse JSON requires positive bitrate", () {
     var link = Link.fromJSON('{"href": "a", "bitrate": -20}'.toJsonOrNull());
-    expect(link.bitrate, isNull);
+    expect(link!.bitrate, isNull);
   });
 
   test("parse JSON requires positive duration", () {
     var link = Link.fromJSON('{"href": "a", "duration": -20}'.toJsonOrNull());
-    expect(link.duration, isNull);
+    expect(link!.duration, isNull);
   });
 
   test("parse JSON array", () {

@@ -11,24 +11,24 @@ abstract class ContentProtectionService extends PublicationService {
   bool get isRestricted;
 
   /// The error raised when trying to unlock the [Publication], if any.
-  UserException get error;
+  UserException? get error;
 
   /// Credentials used to unlock this [Publication].
-  String get credentials;
+  String? get credentials;
 
   /// Manages consumption of user rights and permissions.
   UserRights get rights;
 
   /// User-facing name for this Content Protection, e.g. "Readium LCP".
   /// It could be used in a sentence such as "Protected by {name}"
-  LocalizedString get name;
+  LocalizedString? get name;
 
   @override
   List<Link> get links => RouteHandler.links;
 
   @override
-  Resource get(Link link) {
-    RouteHandler route = RouteHandler.route(link);
+  Resource? get(Link link) {
+    RouteHandler? route = RouteHandler.route(link);
     if (route == null) {
       return null;
     }
@@ -126,7 +126,7 @@ class AllRestricted implements UserRights {
 
 extension ServicesBuilderContentProtectionServiceExtension on ServicesBuilder {
   /// Factory to build a [ContentProtectionService].
-  ServiceFactory get contentProtectionServiceFactory =>
+  ServiceFactory? getContentProtectionServiceFactory() =>
       of<ContentProtectionService>();
 
   set contentProtectionServiceFactory(ServiceFactory serviceFactory) =>
@@ -134,8 +134,8 @@ extension ServicesBuilderContentProtectionServiceExtension on ServicesBuilder {
 }
 
 extension PublicationContentProtectionServiceExtension on Publication {
-  ContentProtectionService get protectionService {
-    ContentProtectionService contentProtectionService =
+  ContentProtectionService? get protectionService {
+    ContentProtectionService? contentProtectionService =
         findService<ContentProtectionService>();
     if (contentProtectionService != null) {
       return contentProtectionService;
@@ -154,19 +154,19 @@ extension PublicationContentProtectionServiceExtension on Publication {
   bool get isRestricted => protectionService?.isRestricted ?? false;
 
   /// The error raised when trying to unlock the [Publication], if any.
-  UserException get protectionError => protectionService?.error;
+  UserException? get protectionError => protectionService?.error;
 
   /// Credentials used to unlock this [Publication].
-  String get credentials => protectionService?.credentials;
+  String? get credentials => protectionService?.credentials;
 
   /// Manages consumption of user rights and permissions.
   UserRights get rights => protectionService?.rights ?? Unrestricted();
 
   /// User-facing localized name for this Content Protection, e.g. "Readium LCP".
   /// It could be used in a sentence such as "Protected by {name}".
-  LocalizedString get protectionLocalizedName => protectionService?.name;
+  LocalizedString? get protectionLocalizedName => protectionService?.name;
 
   /// User-facing name for this Content Protection, e.g. "Readium LCP".
   /// It could be used in a sentence such as "Protected by {name}".
-  String get protectionName => protectionLocalizedName?.string;
+  String? get protectionName => protectionLocalizedName?.string;
 }

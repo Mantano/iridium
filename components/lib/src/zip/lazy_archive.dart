@@ -12,7 +12,7 @@ class LazyArchive extends IterableBase<LazyArchiveFile> {
   List<LazyArchiveFile> files = [];
 
   /// A global comment for the archive.
-  String comment;
+  String? comment;
 
   /// Add a file to the archive.
   void addFile(LazyArchiveFile file) {
@@ -28,7 +28,7 @@ class LazyArchive extends IterableBase<LazyArchiveFile> {
 
   /// Find a file with the given [name] in the archive. If the file isn't found,
   /// null will be returned.
-  LazyArchiveFile findFile(String name) {
+  LazyArchiveFile? findFile(String name) {
     for (LazyArchiveFile f in files) {
       if (f.name == name) {
         return f;

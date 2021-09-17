@@ -110,7 +110,7 @@ void main() {
                     }
                 ]
             }"""
-            .toJsonOrNull()));
+            .toJsonOrNull()!));
   });
 
   test("get minimal JSON", () {

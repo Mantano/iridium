@@ -14,17 +14,15 @@ void main() async {
   Fimber.plantTree(DebugTree());
   var fixtures = Fixtures(path: "test_resources/util/archive");
   var epubZip = fixtures.fileAt("epub.epub");
-  assert(epubZip != null);
-  Archive zipArchive = await DefaultArchiveFactory().open(epubZip, null);
+  Archive? zipArchive = await DefaultArchiveFactory().open(epubZip, null);
   assert(zipArchive != null);
 
   var epubExploded = fixtures.fileAt("epub");
-  assert(epubExploded != null);
-  Archive explodedArchive =
+  Archive? explodedArchive =
       await DefaultArchiveFactory().open(epubExploded, null);
   assert(explodedArchive != null);
 
-  List<Archive> archives = [zipArchive, explodedArchive];
+  List<Archive> archives = [zipArchive!, explodedArchive!];
 
   for (Archive archive in archives) {
     group("Test Archive of type: ${archive.runtimeType}", () {

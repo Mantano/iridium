@@ -9,13 +9,13 @@ import 'package:mno_commons/utils/jsonable.dart';
 ///
 /// https://drafts.opds.io/schema/properties.schema.json
 class Holds with EquatableMixin implements JSONable {
-  final int total;
-  final int position;
+  final int? total;
+  final int? position;
 
   Holds({this.total, this.position});
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         total,
         position,
       ];
@@ -28,7 +28,7 @@ class Holds with EquatableMixin implements JSONable {
       };
 
   /// Creates an [Holds] from its JSON representation.
-  factory Holds.fromJSON(Map<String, dynamic> json) {
+  static Holds? fromJSON(Map<String, dynamic>? json) {
     if (json == null) {
       return null;
     }

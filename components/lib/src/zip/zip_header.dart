@@ -23,12 +23,12 @@ abstract class ZipHeader {
 
   Future<void> _read(FileBuffer src);
 
-  int offsetStart, offsetEnd;
+  late int offsetStart, offsetEnd;
 
   @override
   String toString() => jsonEncode(this);
 
-  static Future<ZipHeader> readNext(FileBuffer src, int signature) async {
+  static Future<ZipHeader?> readNext(FileBuffer src, int signature) async {
     if (src.isEnd) return null;
 
     ZipHeader r;
@@ -56,19 +56,19 @@ abstract class ZipHeader {
 class ZipLocalFile extends ZipHeader implements JSONable {
   ZipLocalFile(int signature) : super(signature);
 
-  int versionToExtract; // 2 bytes
-  int generalFlag; // 2 bytes
-  int compressionMethod; // 2 bytes
-  int lastModTime; // 2 bytes
-  int lastModDate; // 2 bytes
-  int crc32; // 4 bytes
-  int compressedSize; // 4 bytes
-  int uncompressedSize; // 4 bytes
-  int filenameSize; // 2 bytes
-  int extraFieldSize; // 2 bytes
+  late int versionToExtract; // 2 bytes
+  late int generalFlag; // 2 bytes
+  late int compressionMethod; // 2 bytes
+  late int lastModTime; // 2 bytes
+  late int lastModDate; // 2 bytes
+  late int crc32; // 4 bytes
+  late int compressedSize; // 4 bytes
+  late int uncompressedSize; // 4 bytes
+  late int filenameSize; // 2 bytes
+  late int extraFieldSize; // 2 bytes
 
-  String filename;
-  List<int> extraField;
+  late String filename;
+  late List<int> extraField;
 
   Future<void> _readLocalFileBase(FileBuffer src) async {
     versionToExtract = await src.readUint16();
@@ -116,15 +116,15 @@ class ZipLocalFile extends ZipHeader implements JSONable {
 
 class ZipCentralDirectory extends ZipLocalFile {
   ZipCentralDirectory(int signature) : super(signature);
-  int versionMade; // 2 bytes
+  late int versionMade; // 2 bytes
 
-  int commentLength; // 2 bytes
-  int diskNumberStart; // 2 bytes
-  int internalAttributes; // 2 bytes
-  int externalAttributes; // 4 bytes
-  int relativeOffset; // 4 bytes
+  late int commentLength; // 2 bytes
+  late int diskNumberStart; // 2 bytes
+  late int internalAttributes; // 2 bytes
+  late int externalAttributes; // 4 bytes
+  late int relativeOffset; // 4 bytes
 
-  String comment;
+  late String comment;
 
   @override
   Future<void> _read(FileBuffer src) async {
@@ -172,15 +172,15 @@ class ZipCentralDirectory extends ZipLocalFile {
 class ZipEndCentralDirectory extends ZipHeader implements JSONable {
   ZipEndCentralDirectory(int signature) : super(signature);
 
-  int numberOfDisk; // 2 bytes
-  int numberOfDiskWithCentralDirectory; // 2 bytes
-  int totalEntriesOfDisk; // 2 bytes
-  int totalEntriesInCentralDirectory; // 2 bytes
-  int centralDirectorySize; // 4 bytes
-  int startOffset; // 4 bytes
-  int commentLength; // 2 bytes
+  late int numberOfDisk; // 2 bytes
+  late int numberOfDiskWithCentralDirectory; // 2 bytes
+  late int totalEntriesOfDisk; // 2 bytes
+  late int totalEntriesInCentralDirectory; // 2 bytes
+  late int centralDirectorySize; // 4 bytes
+  late int startOffset; // 4 bytes
+  late int commentLength; // 2 bytes
 
-  String comment;
+  late String comment;
 
   @override
   Future<void> _read(FileBuffer src) async {

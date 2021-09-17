@@ -11,18 +11,17 @@ import 'package:test/test.dart';
 import 'package:universal_io/io.dart' hide Link;
 
 void main() {
-  ArchiveFetcher fetcher;
+  late ArchiveFetcher fetcher;
 
   setUp(() async {
     var epub = File("test_resources/fetcher/epub.epub");
-    assert(epub != null);
     var zipFetcher = await ArchiveFetcher.fromPath(epub.path);
     assert(zipFetcher != null);
-    fetcher = zipFetcher;
+    fetcher = zipFetcher!;
   });
 
   test("Link list is correct", () async {
-    Link createLink(String href, String type, int compressedLength) => Link(
+    Link createLink(String href, String? type, int? compressedLength) => Link(
           href: href,
           type: type,
           properties: Properties(

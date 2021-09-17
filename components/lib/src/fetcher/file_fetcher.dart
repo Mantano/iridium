@@ -23,7 +23,8 @@ class FileFetcher extends Fetcher {
 
   FileFetcher(this.paths);
 
-  factory FileFetcher.single({String href, FileSystemEntity file}) =>
+  factory FileFetcher.single(
+          {required String href, required FileSystemEntity file}) =>
       FileFetcher({href: file});
 
   @override
@@ -102,7 +103,7 @@ extension FileExtension on FileSystemEntity {
 class FileResource extends Resource {
   final Link _link;
   final File _file;
-  ResourceTry<RandomAccessFile> _randomAccessFile;
+  ResourceTry<RandomAccessFile>? _randomAccessFile;
 
   FileResource(this._link, this._file);
 
@@ -118,7 +119,7 @@ class FileResource extends Resource {
   @override
   Future<void> close() async {
     if (_randomAccessFile != null) {
-      _randomAccessFile.onSuccess((it) {
+      _randomAccessFile!.onSuccess((it) {
         try {
           it.close();
         } on Exception catch (e) {
@@ -129,10 +130,10 @@ class FileResource extends Resource {
   }
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) =>
+  Future<ResourceTry<ByteData>> read({IntRange? range}) =>
       catching(() => _readSync(range));
 
-  Future<ByteData> _readSync(IntRange range) async {
+  Future<ByteData> _readSync(IntRange? range) async {
     if (!await file.exists()) {
       throw FileNotFoundException(file.path);
     }
@@ -153,7 +154,7 @@ class FileResource extends Resource {
 
   @override
   Future<ResourceTry<int>> length() async {
-    int length = await metadataLength;
+    int? length = await metadataLength;
     if (length != null) {
       return ResourceTry.success(length);
     }
@@ -161,11 +162,13 @@ class FileResource extends Resource {
         .then((data) => data.map((byteData) => byteData.lengthInBytes));
   }
 
-  Future<int> get metadataLength {
+  Future<int?> get metadataLength async {
     try {
-      return file.exists().then((exists) => (exists) ? file.length() : null);
+      return file
+          .exists()
+          .then((exists) => (exists) ? file.length() : Future.value());
     } on Exception {
-      return null;
+      return Future.value();
     }
   }
 

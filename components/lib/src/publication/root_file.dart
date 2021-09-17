@@ -6,7 +6,7 @@ class RootFile {
   String rootPath;
   String rootFilePath;
   String mimetype;
-  double version;
+  double? version;
 
   RootFile(
       {this.rootPath = "",

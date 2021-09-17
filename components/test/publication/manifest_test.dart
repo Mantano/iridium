@@ -292,7 +292,7 @@ void main() {
         .toJsonOrNull();
 
     expect("/chap1.html",
-        Manifest.fromJson(json, packaged: true)?.readingOrder?.first?.href);
+        Manifest.fromJson(json, packaged: true)?.readingOrder.first.href);
   });
 
   test("href are resolved: self link when parsing a remote manifest", () {
@@ -308,6 +308,6 @@ void main() {
         .toJsonOrNull();
 
     expect("http://example.com/directory/chap1.html",
-        Manifest.fromJson(json)?.readingOrder?.first?.href);
+        Manifest.fromJson(json)?.readingOrder.first.href);
   });
 }

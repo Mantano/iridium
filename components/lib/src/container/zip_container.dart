@@ -11,7 +11,7 @@ import 'container.dart';
 
 /// [Container] providing access to ZIP archives.
 class ZipContainer extends Container {
-  ZipContainer(this.path) : assert(path != null && path.isNotEmpty);
+  ZipContainer(this.path) : assert(path.isNotEmpty);
 
   /// Absolute path to the ZIP archive.
   final String path;
@@ -20,34 +20,29 @@ class ZipContainer extends Container {
   String get identifier => path;
 
   /// ZIP archive holder.
-  Future<ZipPackage> get archive async {
+  Future<ZipPackage?> get archive async {
     if (_archive == null) {
       File file = File(path);
       if (!await file.exists()) {
-        throw ContainerException.fileNotFound(path);
+        return null;
       }
       _archive = await ZipPackage.fromArchive(file);
-      if (_archive == null) {
-        throw ContainerException("Can't read ZIP archive at `$path`");
-      }
     }
     return _archive;
   }
 
-  ZipPackage _archive;
+  ZipPackage? _archive;
 
   @override
-  Future<bool> existsAt(String path) async {
-    assert(path != null);
-    return (await archive).entries[path] != null;
-  }
+  Future<bool> existsAt(String path) async =>
+      (await archive)?.entries[path] != null;
 
   @override
   Future<DataStream> streamAt(String path) async {
-    assert(path != null);
-    ZipPackage package = await archive;
-    ZipLocalFile entry = package.entries[path];
-    if (entry == null) {
+    ZipPackage? package =
+        await archive.catchError((e, st) => ZipPackage(File("")));
+    ZipLocalFile? entry = package?.entries[path];
+    if (package == null || entry == null) {
       throw ContainerException.resourceNotFound(path);
     }
     return ZipStream(package, entry);
@@ -55,9 +50,8 @@ class ZipContainer extends Container {
 
   @override
   Future<int> resourceLength(String path) async {
-    assert(path != null);
-    ZipPackage package = await archive;
-    ZipLocalFile entry = package.entries[path];
+    ZipPackage? package = await archive;
+    ZipLocalFile? entry = package?.entries[path];
     if (entry == null) {
       throw ContainerException.resourceNotFound(path);
     }

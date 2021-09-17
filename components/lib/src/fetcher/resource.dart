@@ -26,7 +26,7 @@ class ResourceTry<SuccessT> extends Try<SuccessT, ResourceException> {
     if (isSuccess) {
       return ResourceTry.success(transform(getOrThrow()));
     } else {
-      return ResourceTry.failure(exceptionOrNull());
+      return ResourceTry.failure(exceptionOrNull()!);
     }
   }
 
@@ -61,7 +61,7 @@ class ResourceTry<SuccessT> extends Try<SuccessT, ResourceException> {
     if (isSuccess) {
       return transform(getOrThrow());
     } else {
-      return ResourceTry.failure(exceptionOrNull());
+      return ResourceTry.failure(exceptionOrNull()!);
     }
   }
 
@@ -89,7 +89,7 @@ abstract class Resource {
   /// with streams. However, [file] is not guaranteed to be set, for example if the resource
   /// underwent transformations or is being read from an archive. Therefore, consumers should
   /// always fallback on regular stream reading, using [read] or [ResourceInputStream].
-  File get file => null;
+  File? get file => null;
 
   /// Returns the link from which the resource was retrieved.
   ///
@@ -107,13 +107,13 @@ abstract class Resource {
   ///
   /// When [range] is null, the whole content is returned. Out-of-range indexes are clamped to the
   /// available length automatically.
-  Future<ResourceTry<ByteData>> read({IntRange range});
+  Future<ResourceTry<ByteData>> read({IntRange? range});
 
   /// Reads the full content as a [String].
   ///
   /// If [charset] is null, then it is parsed from the `charset` parameter of link().type,
   /// or falls back on UTF-8.
-  Future<ResourceTry<String>> readAsString({String charset}) async {
+  Future<ResourceTry<String>> readAsString({String? charset}) async {
     charset = charset ?? (await link()).mediaType.charset ?? Charsets.utf8;
     return read().then((st) => st.mapCatching((data) {
           Encoding encoding = Encoding.getByName(charset) ?? utf8;
@@ -170,7 +170,7 @@ class FailureResource extends Resource {
   Future<Link> link() async => _link;
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) async =>
+  Future<ResourceTry<ByteData>> read({IntRange? range}) async =>
       ResourceTry.failure(error);
 
   @override
@@ -201,7 +201,7 @@ abstract class ProxyResource extends Resource {
   Future<Link> link() => resource.link();
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) =>
+  Future<ResourceTry<ByteData>> read({IntRange? range}) =>
       resource.read(range: range);
 
   @override
@@ -216,9 +216,9 @@ abstract class ProxyResource extends Resource {
 /// So this is not appropriate for large resources.
 class CachingResource extends Resource {
   final Resource resource;
-  Link _link;
-  ResourceTry<int> _length;
-  ResourceTry<ByteData> _bytes;
+  Link? _link;
+  ResourceTry<int>? _length;
+  ResourceTry<ByteData>? _bytes;
 
   CachingResource(this.resource);
 
@@ -229,23 +229,23 @@ class CachingResource extends Resource {
   Future<ResourceTry<int>> length() async {
     if (_length == null) {
       if (_bytes != null) {
-        _length = _bytes.map((it) => it.lengthInBytes);
+        _length = _bytes!.map((it) => it.lengthInBytes);
       } else {
         _length = await resource.length();
       }
     }
-    return _length;
+    return _length!;
   }
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) async {
+  Future<ResourceTry<ByteData>> read({IntRange? range}) async {
     _bytes ??= await resource.read();
 
     if (range == null) {
-      return _bytes;
+      return _bytes!;
     }
 
-    return _bytes.map((value) {
+    return _bytes!.map((value) {
       IntRange range2 =
           IntRange(max(0, range.first), min(range.last, value.lengthInBytes));
       return value.buffer.asByteData(range2.first, range2.length);
@@ -274,7 +274,7 @@ abstract class TransformingResource extends ProxyResource {
       transform(await resource.read());
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) async =>
+  Future<ResourceTry<ByteData>> read({IntRange? range}) async =>
       (await bytes()).map((value) {
         if (range == null) {
           return value;
@@ -294,7 +294,7 @@ abstract class TransformingResource extends ProxyResource {
 /// Wraps a [Resource] which will be created only when first accessing one of its members.
 class LazyResource extends Resource {
   final Future<Resource> Function() factory;
-  Resource _resource;
+  Resource? _resource;
 
   LazyResource(this.factory);
 
@@ -307,7 +307,7 @@ class LazyResource extends Resource {
   Future<ResourceTry<int>> length() => _getResource().then((r) => r.length());
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) =>
+  Future<ResourceTry<ByteData>> read({IntRange? range}) =>
       _getResource().then((r) => r.read(range: range));
 
   @override

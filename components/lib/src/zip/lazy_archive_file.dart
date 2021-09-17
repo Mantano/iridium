@@ -23,8 +23,7 @@ class LazyArchiveFile {
   String nameOfLinkedFile = "";
 
   /// The crc32 checksum of the uncompressed content.
-  int crc32;
-  String comment;
+  late int crc32;
 
   /// If false, this file will not be compressed when encoded to an archive
   /// format such as zip.

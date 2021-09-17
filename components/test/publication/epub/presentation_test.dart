@@ -7,11 +7,10 @@ import 'package:mno_shared/publication.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Link createLink(EpubLayout layout) => Link(
+  Link createLink(EpubLayout? layout) => Link(
       href: "res",
       properties: Properties(
-          otherProperties:
-              layout?.let((it) => {"layout": layout?.value}) ?? {}));
+          otherProperties: layout?.let((it) => {"layout": it.value}) ?? {}));
 
   test("Get the layout of a reflowable resource", () {
     expect(EpubLayout.reflowable,

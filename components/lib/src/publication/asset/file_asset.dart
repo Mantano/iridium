@@ -17,9 +17,9 @@ import 'publication_asset.dart';
 /// @param file File on the file system.
 class FileAsset extends PublicationAsset {
   final FileSystemEntity file;
-  final MediaType knownMediaType;
-  final String mediaTypeHint;
-  MediaType _mediaType;
+  final MediaType? knownMediaType;
+  final String? mediaTypeHint;
+  MediaType? _mediaType;
 
   /// Creates a [FileAsset] from a [File] and an optional media type, when known or an optional media type hint.
   /// Providing a media type hint will improve performances when sniffing the media type.
@@ -29,15 +29,15 @@ class FileAsset extends PublicationAsset {
   String get name => basename(file.path);
 
   @override
-  Future<MediaType> get mediaType async => _mediaType ??= knownMediaType ??
+  Future<MediaType> get mediaType async => _mediaType ??= (knownMediaType ??
       (await MediaType.ofFileWithSingleHint(file, mediaType: mediaTypeHint)) ??
-      MediaType.binary;
+      MediaType.binary);
 
   @override
   Future<Try<Fetcher, OpeningException>> createFetcher(
       PublicationAssetDependencies dependencies, String credentials) async {
     try {
-      Fetcher fetcher;
+      Fetcher? fetcher;
       if (await FileSystemEntity.isDirectory(file.path)) {
         fetcher = FileFetcher.single(href: "/", file: file);
       } else if (await file.exists()) {
@@ -51,8 +51,6 @@ class FileAsset extends PublicationAsset {
         throw FileNotFoundException(file.path);
       }
       return Try.success(fetcher);
-      // } on SecurityException catch (e) {
-      //   return Try.failure(OpeningException.forbidden(e));
     } on FileNotFoundException {
       return Try.failure(OpeningException.notFound);
     }

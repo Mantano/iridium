@@ -31,25 +31,25 @@ abstract class CoverService extends PublicationService {
   /// Returns the publication cover as a [Bitmap] at its maximum size.
   ///
   /// If the cover is not a bitmap format (e.g. SVG), it should be scaled down to fit the screen.
-  Future<Image> cover();
+  Future<Image?> cover();
 
   ///  Returns the publication cover as a [Bitmap], scaled down to fit the given [maxSize].
-  Future<Image> coverFitting(ImageSize maxSize) async =>
-      cover()?.then((value) => copyResize(value,
-          width: maxSize.width.toInt(), height: maxSize.height.toInt()));
+  Future<Image?> coverFitting(ImageSize maxSize) async =>
+      cover().then((value) => value?.let((it) => copyResize(it,
+          width: maxSize.width.toInt(), height: maxSize.height.toInt())));
 
   @override
   Type get serviceType => CoverService;
 }
 
 extension PublicationCoverExtension on Publication {
-  Future<Image> _coverFromManifest() async {
+  Future<Image?> _coverFromManifest() async {
     for (Link link in linksWithRel("cover")) {
-      ByteData data = (await get(link).read()).getOrNull();
+      ByteData? data = (await get(link).read()).getOrNull();
       if (data == null) {
         continue;
       }
-      Image cover = decodeImage(data.buffer.asUint8List());
+      Image? cover = decodeImage(data.buffer.asUint8List());
       if (cover != null) {
         return cover;
       }
@@ -58,10 +58,10 @@ extension PublicationCoverExtension on Publication {
   }
 
   /// Returns the publication cover as a [Bitmap] at its maximum size.
-  Future<Image> cover() async {
+  Future<Image?> cover() async {
     final coverService = findService<CoverService>();
     Fimber.d("coverService: $coverService");
-    Image cover = await coverService?.cover();
+    Image? cover = await coverService?.cover();
     Fimber.d("cover: $cover");
     if (cover != null) {
       return cover;
@@ -70,19 +70,22 @@ extension PublicationCoverExtension on Publication {
   }
 
   /// Returns the publication cover as a [Bitmap], scaled down to fit the given [maxSize].
-  Future<Image> coverFitting(ImageSize maxSize) async {
-    Image cover = await findService<CoverService>()?.coverFitting(maxSize);
+  Future<Image?> coverFitting(ImageSize maxSize) async {
+    Image? cover = await findService<CoverService>()?.coverFitting(maxSize);
     if (cover != null) {
       return cover;
     }
-    return _coverFromManifest()?.then((value) => copyResize(value,
-        width: maxSize.width.toInt(), height: maxSize.height.toInt()));
+    return _coverFromManifest().then((value) => value?.let((it) => copyResize(
+        it,
+        width: maxSize.width.toInt(),
+        height: maxSize.height.toInt())));
   }
 }
 
 extension ServicesBuilderExtension on ServicesBuilder {
   /// Factory to build a [CoverService].
-  ServiceFactory get coverServiceFactory => of<CoverService>();
+  ServiceFactory? getCoverServiceFactory() => of<CoverService>();
+
   set coverServiceFactory(ServiceFactory serviceFactory) =>
       set<CoverService>(serviceFactory);
 }
@@ -93,23 +96,24 @@ abstract class GeneratedCoverService extends CoverService {
       Link(href: "/~readium/cover", type: "image/png", rels: {"cover"});
 
   @override
-  Future<Image> cover();
+  Future<Image?> cover();
 
   @override
   List<Link> get links => [coverLink];
 
   @override
-  Resource get(Link link) {
+  Resource? get(Link link) {
     if (link.href != coverLink.href) {
       return null;
     }
     return LazyResource(() async {
-      Image image = await cover();
-      List<int> png = encodePng(image);
-      if (png == null) {
-        Exception error = Exception("Unable to convert cover to PNG.");
+      Image? image = await cover();
+      if (image == null) {
+        ResourceException error = ResourceException.other(
+            Exception("Unable to convert cover to PNG."));
         return FailureResource(coverLink, error);
       } else {
+        List<int> png = encodePng(image);
         Link link = coverLink.copy(width: image.width, height: image.height);
         return BytesResource(link, () async => png.toByteData());
       }
@@ -119,12 +123,13 @@ abstract class GeneratedCoverService extends CoverService {
 
 /// A [CoverService] which uses a provided in-memory bitmap.
 class InMemoryCoverService extends GeneratedCoverService {
-  final Image _cover;
+  final Image? _cover;
+
   InMemoryCoverService(this._cover);
 
   static ServiceFactory createFactory(Image cover) =>
-      (context) => cover?.let((it) => InMemoryCoverService(it));
+      (context) => InMemoryCoverService(cover);
 
   @override
-  Future<Image> cover() async => _cover;
+  Future<Image?> cover() async => _cover;
 }

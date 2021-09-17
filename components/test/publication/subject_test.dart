@@ -106,7 +106,7 @@ void main() {
     expect(
         "Hello world",
         Subject(
-            localizedName: LocalizedString(
+            localizedName: LocalizedString.fromStrings(
                 {"en": "Hello world", "fr": "Salut le monde"})).name);
   });
 

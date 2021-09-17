@@ -12,7 +12,7 @@ import 'package:universal_io/io.dart';
 class Translation {
   final String string;
 
-  const Translation(this.string) : assert(string != null);
+  const Translation(this.string);
 
   @override
   bool operator ==(Object other) =>
@@ -34,24 +34,14 @@ class Translation {
 class LocalizedString with EquatableMixin, JSONable {
   /// BCP-47 tag for an undefined language.
   static const String undefinedLanguage = "und";
-  LocalizedString._(this.translations) : assert(translations.isNotEmpty);
+  LocalizedString._(this.translations);
 
-  factory LocalizedString(Map<String, String> strings) {
-    if (strings == null || strings.isEmpty) {
-      return null;
-    }
+  static LocalizedString fromStrings(Map<String?, String> strings) =>
+      LocalizedString._(
+          strings.map((key, value) => MapEntry(key, Translation(value))));
 
-    return LocalizedString._(strings.map((key, value) =>
-        MapEntry(key, (value != null) ? Translation(value) : null))
-      ..removeWhere((key, value) => value == null));
-  }
-
-  factory LocalizedString.fromString(String string) {
-    if (string == null || string.isEmpty) {
-      return null;
-    }
-    return LocalizedString._({null: Translation(string)});
-  }
+  static LocalizedString fromString(String string) =>
+      LocalizedString._({null: Translation(string)});
 
   /// Parses a [LocalizedString] from its RWPM JSON representation.
   /// If the localized string can't be parsed, a warning will be logged with [warnings].
@@ -72,14 +62,14 @@ class LocalizedString with EquatableMixin, JSONable {
   ///     "minProperties": 1
   ///   }
   /// ]
-  factory LocalizedString.fromJson(dynamic json) {
+  static LocalizedString? fromJson(dynamic json) {
     if (json == null) {
       return null;
     }
     if (json is String) {
       return LocalizedString.fromString(json);
     }
-    if (json is Map) {
+    if (json is Map<String, dynamic>) {
       return LocalizedString._fromJSONObject(json);
     }
     Fimber.i("invalid localized string object");
@@ -87,9 +77,9 @@ class LocalizedString with EquatableMixin, JSONable {
   }
 
   factory LocalizedString._fromJSONObject(Map<String, dynamic> json) {
-    Map<String, String> translations = {};
+    Map<String?, String> translations = {};
     for (String key in json.keys) {
-      String string = json.optNullableString(key);
+      String? string = json.optNullableString(key);
       if (string == null) {
         Fimber.i("invalid localized string object $json");
       } else {
@@ -97,10 +87,10 @@ class LocalizedString with EquatableMixin, JSONable {
       }
     }
 
-    return LocalizedString(translations);
+    return LocalizedString.fromStrings(translations);
   }
 
-  final Map<String, Translation> translations;
+  final Map<String?, Translation> translations;
 
   /// The default translation for this localized string.
   Translation get defaultTranslation =>
@@ -116,7 +106,7 @@ class LocalizedString with EquatableMixin, JSONable {
   ///    2. on the undefined language
   ///    3. on the English language
   ///    4. the first translation found
-  Translation getOrFallback(String language) =>
+  Translation? getOrFallback(String? language) =>
       translations[language] ??
       translations[Platform.localeName] ??
       translations[null] ??
@@ -132,20 +122,20 @@ class LocalizedString with EquatableMixin, JSONable {
 
   /// Returns a new [LocalizedString] after applying the [transform] function to each language.
   LocalizedString mapLanguages(
-          String Function(String, Translation) transform) =>
+          String Function(String?, Translation) transform) =>
       copy(
           translations: translations.map((language, translation) =>
               MapEntry(transform(language, translation), translation)));
 
   /// Returns a new [LocalizedString] after applying the [transform] function to each translation.
   LocalizedString mapTranslations(
-          Translation Function(String, Translation) transform) =>
+          Translation Function(String?, Translation) transform) =>
       copy(
           translations: translations.map((language, translation) =>
               MapEntry(language, transform(language, translation))));
 
-  LocalizedString copy({Map<String, Translation> translations}) =>
-      LocalizedString._(translations);
+  LocalizedString copy({Map<String?, Translation>? translations}) =>
+      LocalizedString._(translations ?? {});
 
   /// Serializes a [LocalizedString] to its RWPM JSON representation.
   @override

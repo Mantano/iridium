@@ -15,7 +15,7 @@ class ExplodedArchiveFactory implements ArchiveFactory {
   const ExplodedArchiveFactory();
 
   @override
-  Future<Archive> open(FileSystemEntity file, String password) async =>
+  Future<Archive?> open(FileSystemEntity file, String? password) async =>
       ExplodedArchive(Directory(file.path));
 }
 
@@ -52,17 +52,17 @@ class ExplodedEntry extends ArchiveEntry {
   ExplodedEntry(this.file, this.directory);
 
   @override
-  int get compressedLength => null;
+  int? get compressedLength => null;
 
   @override
-  int get length => file.lengthSync();
+  int? get length => file.lengthSync();
 
   @override
   String get path =>
       relative(file.path, from: directory.path).replaceAll("\\", "/");
 
   @override
-  Future<ByteData> read({IntRange range}) async => FileStream.fromFile(file)
+  Future<ByteData> read({IntRange? range}) async => FileStream.fromFile(file)
       .then((stream) =>
           stream.readData(start: range?.start, length: range?.length))
       .then((data) => data.toByteData());

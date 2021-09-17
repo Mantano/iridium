@@ -14,7 +14,7 @@ import 'zip_archive.dart';
 
 mixin ArchiveFactory {
   /// Opens an archive from a local [file].
-  Future<Archive> open(FileSystemEntity file, String password);
+  Future<Archive?> open(FileSystemEntity file, String? password);
 }
 
 class DefaultArchiveFactory implements ArchiveFactory {
@@ -27,7 +27,7 @@ class DefaultArchiveFactory implements ArchiveFactory {
 
   /// Opens a ZIP or exploded archive.
   @override
-  Future<Archive> open(FileSystemEntity file, String password) async =>
+  Future<Archive?> open(FileSystemEntity file, String? password) async =>
       waitTryOrNull(() async {
         if (await FileSystemEntity.isDirectory(file.path)) {
           return explodedArchiveFactory.open(file, password);
@@ -60,15 +60,15 @@ abstract class ArchiveEntry {
   String get path;
 
   /// Uncompressed data length.
-  int get length;
+  int? get length;
 
   ///  Compressed data length.
-  int get compressedLength;
+  int? get compressedLength;
 
   /// Reads the whole content of this entry.
   /// When [range] is null, the whole content is returned. Out-of-range indexes are clamped to the
   /// available length automatically.
-  Future<ByteData> read({IntRange range});
+  Future<ByteData> read({IntRange? range});
 
   /// Closes any pending resources for this entry.
   Future<void> close();

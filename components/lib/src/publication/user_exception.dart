@@ -7,9 +7,9 @@ import 'package:mno_shared/i18n/localizations_repository.dart';
 
 class UserException implements Exception {
   final String userMessageId;
-  final List<dynamic> args;
-  final int quantity;
-  final Object cause;
+  final List<Object> args;
+  final int? quantity;
+  final Object? cause;
 
   const UserException(this.userMessageId,
       {this.args = const [], this.quantity, this.cause});
@@ -20,7 +20,7 @@ class UserException implements Exception {
   String getUserMessage(LocalizationsRepository localizationsRepository,
       {bool includesCauses = true}) {
     // Convert complex objects to strings, such as Date, to be interpolated.
-    List<dynamic> _args = args.map((arg) {
+    List<Object> _args = args.map((arg) {
       if (arg is DateTime) {
         return DateFormat.d().add_MMM().add_y().format(arg);
       } else {

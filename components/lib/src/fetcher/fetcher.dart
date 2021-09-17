@@ -40,13 +40,13 @@ abstract class Fetcher {
   /// If the Fetcher is already closed then invoking this method has no effect.
   Future<void> close();
 
-  Future<String> guessTitle() async {
+  Future<String?> guessTitle() async {
     List<Link> links = await this.links();
-    Link firstLink = (links).firstOrNull;
+    Link? firstLink = (links).firstOrNull;
     if (firstLink == null) {
       return null;
     }
-    File commonFirstComponent = links.hrefCommonFirstComponent();
+    File? commonFirstComponent = links.hrefCommonFirstComponent();
     if (commonFirstComponent == null) {
       return null;
     }
@@ -66,19 +66,19 @@ abstract class Fetcher {
       .use((it) => it.read().then((data) => data.getOrThrow()));
 
   /// Returns the resource data as an XML Document at the given [href], or null.
-  Future<XmlDocument> readAsXmlOrNull(String href) => getWithHref(href)
+  Future<XmlDocument?> readAsXmlOrNull(String href) => getWithHref(href)
       .use((it) => it.readAsXml().then((xml) => xml.getOrNull()));
 
   /// Returns the resource data as a JSON object at the given [href], or null.
-  Future<Map<String, dynamic>> readAsJsonOrNull(String href) =>
+  Future<Map<String, dynamic>?> readAsJsonOrNull(String href) =>
       getWithHref(href)
           .use((it) => it.readAsJson().then((json) => json.getOrNull()));
 
   /// Creates a [Fetcher] from either an archive file, or an exploded directory.
-  static Future<Fetcher> fromArchiveOrDirectory(String path,
+  static Future<Fetcher?> fromArchiveOrDirectory(String path,
       {ArchiveFactory archiveFactory = const DefaultArchiveFactory()}) async {
     File file = File(path);
-    bool isDirectory = tryOrNull(() => FileSystemEntity.isDirectorySync(path));
+    bool? isDirectory = tryOrNull(() => FileSystemEntity.isDirectorySync(path));
     if (isDirectory == null) {
       return null;
     }

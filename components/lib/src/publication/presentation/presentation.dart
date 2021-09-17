@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_shared/publication.dart';
@@ -40,7 +41,7 @@ class Presentation with EquatableMixin, JSONable {
   });
 
   /// Creates a [Properties] from its RWPM JSON representation.
-  factory Presentation.fromJson(Map<String, dynamic> json) {
+  factory Presentation.fromJson(Map<String, dynamic>? json) {
     if (json == null) {
       return Presentation();
     }
@@ -56,23 +57,23 @@ class Presentation with EquatableMixin, JSONable {
   }
 
   /// Hints how the layout of the resource should be presented.
-  final EpubLayout layout;
+  final EpubLayout? layout;
 
   /// Suggested orientation for the device when displaying the linked resource.
-  final PresentationOrientation orientation;
+  final PresentationOrientation? orientation;
 
   /// Suggested method for handling overflow while displaying the linked resource.
-  final PresentationOverflow overflow;
+  final PresentationOverflow? overflow;
 
   /// Indicates the condition to be met for the linked resource to be rendered within a synthetic spread.
-  final PresentationSpread spread;
+  final PresentationSpread? spread;
 
-  final PresentationFit fit;
-  final bool clipped;
-  final bool continuous;
+  final PresentationFit? fit;
+  final bool? clipped;
+  final bool? continuous;
 
   @override
-  List<Object> get props =>
+  List<Object?> get props =>
       [layout, orientation, overflow, spread, fit, clipped, continuous];
 
   /// Determines the layout of the given resource in this publication.
@@ -110,8 +111,8 @@ class PresentationFit with EquatableMixin {
   @override
   List<Object> get props => [value];
 
-  static PresentationFit from(String value) => _values
-      .firstWhere((element) => element.value == value, orElse: () => null);
+  static PresentationFit? from(String? value) =>
+      _values.firstOrNullWhere((element) => element.value == value);
 }
 
 /// Hints how the layout of the resource should be presented.
@@ -129,8 +130,8 @@ class EpubLayout with EquatableMixin {
   @override
   List<Object> get props => [value];
 
-  static EpubLayout from(String value) => _values
-      .firstWhere((element) => element.value == value, orElse: () => null);
+  static EpubLayout? from(String? value) =>
+      _values.firstOrNullWhere((element) => element.value == value);
 }
 
 /// Suggested orientation for the device when displaying the linked resource.
@@ -158,8 +159,8 @@ class PresentationOrientation with EquatableMixin {
   @override
   List<Object> get props => [value];
 
-  static PresentationOrientation from(String value) => _values
-      .firstWhere((element) => element.value == value, orElse: () => null);
+  static PresentationOrientation? from(String? value) =>
+      _values.firstOrNullWhere((element) => element.value == value);
 }
 
 /// Suggested method for handling overflow while displaying the linked resource.
@@ -183,8 +184,8 @@ class PresentationOverflow with EquatableMixin {
   @override
   List<Object> get props => [value];
 
-  static PresentationOverflow from(String value) => _values
-      .firstWhere((element) => element.value == value, orElse: () => null);
+  static PresentationOverflow? from(String? value) =>
+      _values.firstOrNullWhere((element) => element.value == value);
 }
 
 /// Indicates how the linked resource should be displayed in a reading
@@ -202,8 +203,8 @@ class PresentationPage with EquatableMixin {
   @override
   List<Object> get props => [value];
 
-  static PresentationPage from(String value) => _values
-      .firstWhere((element) => element.value == value, orElse: () => null);
+  static PresentationPage? from(String? value) =>
+      _values.firstOrNullWhere((element) => element.value == value);
 }
 
 /// Indicates the condition to be met for the linked resource to be rendered within a synthetic spread.
@@ -225,6 +226,6 @@ class PresentationSpread with EquatableMixin {
   @override
   List<Object> get props => [value];
 
-  static PresentationSpread from(String value) => _values
-      .firstWhere((element) => element.value == value, orElse: () => null);
+  static PresentationSpread? from(String? value) =>
+      _values.firstOrNullWhere((element) => element.value == value);
 }

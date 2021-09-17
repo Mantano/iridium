@@ -4,7 +4,6 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:meta/meta.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 
 import '../../publication.dart';
@@ -21,11 +20,11 @@ import '../../publication.dart';
 /// @param links Used to retrieve similar publications for the given contributor.
 class Contributor extends Collection {
   Contributor({
-    @required LocalizedString localizedName,
-    String identifier,
-    LocalizedString localizedSortAs,
+    required LocalizedString localizedName,
+    String? identifier,
+    LocalizedString? localizedSortAs,
     Set<String> roles = const {},
-    double position,
+    double? position,
     List<Link> links = const [],
   }) : super(
           localizedName: localizedName,
@@ -45,13 +44,13 @@ class Contributor extends Collection {
   /// The [links]' href and their children's will be normalized recursively using the
   /// provided [normalizeHref] closure.
   /// If the contributor can't be parsed, a warning will be logged with [warnings].
-  factory Contributor.fromJson(dynamic json,
+  static Contributor? fromJson(dynamic json,
       {LinkHrefNormalizer normalizeHref = linkHrefNormalizerIdentity}) {
     if (json == null) {
       return null;
     }
 
-    LocalizedString localizedName;
+    LocalizedString? localizedName;
     if (json is String) {
       localizedName = LocalizedString.fromJson(json);
     } else if (json is Map<String, dynamic>) {

@@ -26,9 +26,9 @@ import 'package:mno_commons/utils/jsonable.dart';
 /// @param end A serializable representation of the "end" boundary point of the DOM Range.
 class DomRange with EquatableMixin implements JSONable {
   final Point start;
-  final Point end;
+  final Point? end;
 
-  DomRange({this.start, this.end});
+  DomRange({required this.start, this.end});
 
   @override
   Map<String, dynamic> toJson() => <String, dynamic>{}.also((json) {
@@ -37,10 +37,10 @@ class DomRange with EquatableMixin implements JSONable {
       });
 
   @override
-  List<Object> get props => [start, end];
+  List<Object?> get props => [start, end];
 
-  static DomRange fromJson(Map<String, dynamic> json) {
-    Point start = Point.fromJson(json?.optJSONObject("start"));
+  static DomRange? fromJson(Map<String, dynamic>? json) {
+    Point? start = Point.fromJson(json?.optJSONObject("start"));
     if (start == null) {
       return null;
     }
@@ -66,9 +66,12 @@ class DomRange with EquatableMixin implements JSONable {
 class Point with EquatableMixin implements JSONable {
   final String cssSelector;
   final int textNodeIndex;
-  final int charOffset;
+  final int? charOffset;
 
-  Point({this.cssSelector, this.textNodeIndex, this.charOffset});
+  Point(
+      {required this.cssSelector,
+      required this.textNodeIndex,
+      this.charOffset});
 
   @override
   Map<String, dynamic> toJson() => <String, dynamic>{}.also((json) {
@@ -78,11 +81,11 @@ class Point with EquatableMixin implements JSONable {
       });
 
   @override
-  List<Object> get props => [cssSelector, textNodeIndex, charOffset];
+  List<Object?> get props => [cssSelector, textNodeIndex, charOffset];
 
-  static Point fromJson(Map<String, dynamic> json) {
-    String cssSelector = json?.optNullableString("cssSelector");
-    int textNodeIndex = json?.optPositiveInt("textNodeIndex");
+  static Point? fromJson(Map<String, dynamic>? json) {
+    String? cssSelector = json?.optNullableString("cssSelector");
+    int? textNodeIndex = json?.optPositiveInt("textNodeIndex");
     if (cssSelector == null || textNodeIndex == null) {
       return null;
     }

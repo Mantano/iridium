@@ -6,15 +6,15 @@ import 'package:equatable/equatable.dart';
 
 class OpdsMetadata with EquatableMixin {
   String title;
-  int numberOfItems;
-  int itemsPerPage;
-  int currentPage;
-  DateTime modified;
-  int position;
-  String rdfType;
+  int? numberOfItems;
+  int? itemsPerPage;
+  int? currentPage;
+  DateTime? modified;
+  int? position;
+  String? rdfType;
 
   OpdsMetadata(
-      {this.title,
+      {required this.title,
       this.numberOfItems,
       this.itemsPerPage,
       this.currentPage,
@@ -23,7 +23,7 @@ class OpdsMetadata with EquatableMixin {
       this.rdfType});
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         title,
         numberOfItems,
         itemsPerPage,

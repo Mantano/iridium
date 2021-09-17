@@ -24,7 +24,7 @@ class Manifest with EquatableMixin implements JSONable {
 
   Manifest(
       {this.context = const [],
-      this.metadata,
+      required this.metadata,
       this.links = const [],
       this.readingOrder = const [],
       this.resources = const [],
@@ -32,13 +32,13 @@ class Manifest with EquatableMixin implements JSONable {
       this.subcollections = const {}});
 
   Manifest copy({
-    List<String> context,
-    Metadata metadata,
-    List<Link> links,
-    List<Link> readingOrder,
-    List<Link> resources,
-    List<Link> tableOfContents,
-    Map<String, List<PublicationCollection>> subcollections,
+    List<String>? context,
+    Metadata? metadata,
+    List<Link>? links,
+    List<Link>? readingOrder,
+    List<Link>? resources,
+    List<Link>? tableOfContents,
+    Map<String, List<PublicationCollection>>? subcollections,
   }) =>
       Manifest(
         context: context ?? this.context,
@@ -62,7 +62,7 @@ class Manifest with EquatableMixin implements JSONable {
       ];
 
   /// Finds the first [Link] with the given relation in the manifest's links.
-  Link linkWithRel(String rel) =>
+  Link? linkWithRel(String rel) =>
       readingOrder.firstWithRel(rel) ??
       resources.firstWithRel(rel) ??
       links.firstWithRel(rel);
@@ -96,8 +96,8 @@ class Manifest with EquatableMixin implements JSONable {
   /// If the publication can't be parsed, a warning will be logged with [warnings].
   /// https://readium.org/webpub-manifest/
   /// https://readium.org/webpub-manifest/schema/publication.schema.json
-  factory Manifest.fromJson(
-    Map<String, dynamic> json, {
+  static Manifest? fromJson(
+    Map<String, dynamic>? json, {
     bool packaged = false,
   }) {
     if (json == null) {
@@ -107,26 +107,26 @@ class Manifest with EquatableMixin implements JSONable {
     if (packaged) {
       baseUrl = "/";
     } else {
-      String href = Link.fromJSONArray(json.optJSONArray("links"))
+      String? href = Link.fromJSONArray(json.optJSONArray("links"))
           .firstWithRel("self")
           ?.href;
       baseUrl = href?.let(
-              (it) => Uri.tryParse(it)?.removeLastComponent()?.toString()) ??
+              (it) => Uri.tryParse(it)?.removeLastComponent().toString()) ??
           "/";
     }
 
     List<String> context =
         json.optStringsFromArrayOrSingle("@context", remove: true);
-    Metadata metadata = Metadata.fromJson(
-        json.remove("metadata") as Map<String, dynamic>,
+    Metadata? metadata = Metadata.fromJson(
+        json.remove("metadata") as Map<String, dynamic>?,
         normalizeHref: normalizeHref(baseUrl));
     if (metadata == null) {
       Fimber.i("[metadata] is required $json");
       return null;
     }
 
-    Iterable<Link> links = Link.fromJSONArray(
-            json.remove("links") as List<dynamic>,
+    List<Link> links = Link.fromJSONArray(
+            json.remove("links") as List<dynamic>?,
             normalizeHref: normalizeHref(baseUrl))
         .map((it) => (!packaged || !it.rels.contains("self"))
             ? it
@@ -136,21 +136,21 @@ class Manifest with EquatableMixin implements JSONable {
                   ..add("alternate")))
         .toList();
     // [readingOrder] used to be [spine], so we parse [spine] as a fallback.
-    List<dynamic> readingOrderJSON =
-        (json.remove("readingOrder") ?? json.remove("spine")) as List<dynamic>;
-    Iterable<Link> readingOrder = Link.fromJSONArray(readingOrderJSON,
+    List<dynamic>? readingOrderJSON =
+        (json.remove("readingOrder") ?? json.remove("spine")) as List<dynamic>?;
+    List<Link> readingOrder = Link.fromJSONArray(readingOrderJSON,
             normalizeHref: normalizeHref(baseUrl))
         .where((it) => it.type != null)
         .toList();
 
-    Iterable<Link> resources = Link.fromJSONArray(
-            json.remove("resources") as List<dynamic>,
+    List<Link> resources = Link.fromJSONArray(
+            json.remove("resources") as List<dynamic>?,
             normalizeHref: normalizeHref(baseUrl))
         .where((it) => it.type != null)
         .toList();
 
-    Iterable<Link> tableOfContents = Link.fromJSONArray(
-        json.remove("toc") as List<dynamic>,
+    List<Link> tableOfContents = Link.fromJSONArray(
+        json.remove("toc") as List<dynamic>?,
         normalizeHref: normalizeHref(baseUrl));
 
     // Parses subcollections from the remaining JSON properties.

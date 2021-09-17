@@ -14,12 +14,11 @@ import 'package:universal_io/io.dart';
 
 class MockCoverService extends CoverService {
   @override
-  Future<Image> cover() => null;
+  Future<Image?> cover() async => null;
 }
 
 void main() async {
   File cover = File("test_resources/publication/services/cover.jpg");
-  assert(cover != null);
   Uint8List coverBytes = (await cover.readAsBytes());
   Image coverBitmap = readJpg(coverBytes);
   String coverPath = cover.path;
@@ -44,13 +43,13 @@ void main() async {
             width: 598,
             height: 800,
             rels: {"cover"}),
-        await res.link());
+        await res!.link());
 
     var bytes = (await res.read()).getOrNull();
     expect(bytes, isNotNull);
 
     var diffImgResult = await compareImages(
-        src1: decodeImage(bytes.buffer.asUint8List()),
+        src1: decodeImage(bytes!.buffer.asUint8List()),
         src2: coverBitmap,
         algorithm: PixelMatching());
     expect(diffImgResult, 0.0);
@@ -62,7 +61,7 @@ void main() async {
         factory,
         ServicesBuilder.create()
             .also((it) => it.coverServiceFactory = factory)
-            .coverServiceFactory);
+            .getCoverServiceFactory());
   });
 
   test("cover helper for Publication works fine", () async {
@@ -76,7 +75,7 @@ void main() async {
   test("coverFitting helper for Publication works fine", () async {
     var scaled = await publication.coverFitting(ImageSize(300, 400));
     expect(scaled, isNotNull);
-    expect(400, scaled.height);
+    expect(400, scaled!.height);
     expect(300, scaled.width);
   });
 }

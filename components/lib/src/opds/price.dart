@@ -16,7 +16,7 @@ class Price with EquatableMixin implements JSONable {
   final String currency;
   final double value;
 
-  Price({this.currency, this.value});
+  Price({required this.currency, required this.value});
 
   @override
   List<Object> get props => [
@@ -27,18 +27,18 @@ class Price with EquatableMixin implements JSONable {
   /// Serializes an [Price] to its JSON representation.
   @override
   Map<String, dynamic> toJson() => {
-        if (currency != null) "currency": currency,
-        if (value != null) "value": value,
+        "currency": currency,
+        "value": value,
       };
 
   /// Creates an [Price] from its JSON representation.
   /// If the price can't be parsed, a warning will be logged with [warnings].
-  factory Price.fromJSON(Map<String, dynamic> json) {
+  static Price? fromJSON(Map<String, dynamic>? json) {
     if (json == null) {
       return null;
     }
-    String currency = json?.optNullableString("currency");
-    double value = json?.optPositiveDouble("value");
+    String? currency = json.optNullableString("currency");
+    double? value = json.optPositiveDouble("value");
     if (currency == null || value == null) {
       return null;
     }

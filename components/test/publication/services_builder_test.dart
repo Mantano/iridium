@@ -4,6 +4,7 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
+import 'package:mno_commons/utils/ref.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:test/test.dart';
@@ -18,7 +19,7 @@ class FooServiceA extends FooService {}
 class FooServiceB extends FooService {}
 
 class FooServiceC extends FooService {
-  final FooService wrapped;
+  final FooService? wrapped;
 
   FooServiceC(this.wrapped);
 }
@@ -31,12 +32,13 @@ class BarService extends PublicationService {
 class BarServiceA extends BarService {}
 
 var context = PublicationServiceContext(
-    null,
-    Manifest(metadata: Metadata(localizedTitle: LocalizedString({}))),
+    Ref<Publication>(),
+    Manifest(
+        metadata: Metadata(localizedTitle: LocalizedString.fromStrings({}))),
     EmptyFetcher());
 
 extension PublicationServiceFind on List<PublicationService> {
-  T find<T>() => whereType<T>().firstOrNull;
+  T? find<T>() => whereType<T>().firstOrNull;
 }
 
 void main() {

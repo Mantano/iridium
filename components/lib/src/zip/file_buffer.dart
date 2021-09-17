@@ -17,7 +17,7 @@ class FileBuffer {
       file.open(),
       file.length(),
     ]);
-    return FileBuffer._(args[0], args[1]);
+    return FileBuffer._(args[0] as RandomAccessFile, args[1] as int);
   }
 
   static const _blockShift = 14; // 16KB
@@ -117,7 +117,7 @@ class FileBuffer {
     return result;
   }
 
-  Future<archive.InputStream> subset([int position, int length]) async {
+  Future<archive.InputStream> subset(int position, [int length = 1]) async {
     _position = position;
     List<int> bytes = await read(length);
     return archive.InputStream(bytes, start: 0, length: length);

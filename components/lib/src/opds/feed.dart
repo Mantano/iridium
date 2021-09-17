@@ -25,13 +25,13 @@ class Feed with EquatableMixin {
     this.title,
     this.type,
     this.href, {
-    OpdsMetadata metadata,
-    List<Link> links,
-    List<Facet> facets,
-    List<Group> groups,
-    List<Publication> publications,
-    List<Link> navigation,
-    List<String> context,
+    OpdsMetadata? metadata,
+    List<Link>? links,
+    List<Facet>? facets,
+    List<Group>? groups,
+    List<Publication>? publications,
+    List<Link>? navigation,
+    List<String>? context,
   })  : this.metadata = metadata ?? OpdsMetadata(title: title),
         this.links = links ?? [],
         this.facets = facets ?? [],
@@ -41,7 +41,7 @@ class Feed with EquatableMixin {
         this.context = context ?? [];
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         title,
         type,
         href,
@@ -63,14 +63,14 @@ class Feed with EquatableMixin {
 }
 
 class ParseData with EquatableMixin {
-  final Feed feed;
-  final Publication publication;
+  final Feed? feed;
+  final Publication? publication;
   final int type;
 
-  ParseData({this.feed, this.publication, this.type});
+  ParseData({this.feed, this.publication, required this.type});
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         feed,
         publication,
         type,

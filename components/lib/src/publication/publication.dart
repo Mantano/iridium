@@ -35,18 +35,18 @@ class Publication with EquatableMixin {
 
   // FIXME: To refactor after specifying the User and Rendition Settings API
   Map<ReadiumCSSName, bool> userSettingsUIPreset;
-  String cssStyle;
+  String? cssStyle;
 
-  List<PublicationService> _services;
-  Manifest _manifest;
-  TYPE _type;
-  int nbPages;
-  Map<Link, LinkPagination> paginationInfo;
+  late List<PublicationService> _services;
+  late Manifest _manifest;
+  TYPE? _type;
+  int nbPages = 0;
+  Map<Link, LinkPagination> paginationInfo = {};
 
   Publication({
-    this.manifest,
+    required this.manifest,
     this.fetcher = const EmptyFetcher(),
-    ServicesBuilder servicesBuilder,
+    ServicesBuilder? servicesBuilder,
     this.userSettingsUIPreset = const {},
     this.cssStyle,
   }) {
@@ -94,7 +94,7 @@ class Publication with EquatableMixin {
         _type = TYPE.webpub;
       }
     }
-    return _type;
+    return _type!;
   }
 
   set type(TYPE type) => _type = type;
@@ -104,7 +104,7 @@ class Publication with EquatableMixin {
       JsonCodec().encode(_manifest.toJson()).replaceAll("\\/", "/");
 
   /// The URL where this publication is served, computed from the [Link] with `self` relation.
-  Uri get baseUrl => links
+  Uri? get baseUrl => links
       .firstWithRel("self")
       ?.let((it) => it.href.toUrlOrNull()?.removeLastComponent());
 
@@ -115,8 +115,8 @@ class Publication with EquatableMixin {
   ///
   /// If there's no match, try again after removing any query parameter and anchor from the
   /// given [href].
-  Link linkWithHref(String href) {
-    Link find(String href) =>
+  Link? linkWithHref(String href) {
+    Link? find(String href) =>
         readingOrder.deepLinkWithHref(href) ??
         resources.deepLinkWithHref(href) ??
         links.deepLinkWithHref(href);
@@ -125,22 +125,22 @@ class Publication with EquatableMixin {
   }
 
   /// Finds the first [Link] having the given [rel] in the publications's links.
-  Link linkWithRel(String rel) => _manifest.linkWithRel(rel);
+  Link? linkWithRel(String rel) => _manifest.linkWithRel(rel);
 
   /// Finds all [Link]s having the given [rel] in the publications's links.
   List<Link> linksWithRel(String rel) => _manifest.linksWithRel(rel);
 
   /// Finds the first [Link] to the publication's cover (rel = cover).
-  Link get coverLink => linkWithRel("cover");
+  Link? get coverLink => linkWithRel("cover");
 
   /// Finds the first resource [Link] (asset or [readingOrder] item) at the given relative path.
-  Link resourceWithHref(String href) =>
+  Link? resourceWithHref(String href) =>
       readingOrder.deepLinkWithHref(href) ?? resources.deepLinkWithHref(href);
 
   /// Returns the resource targeted by the given non-templated [link].
   Resource get(Link link) {
     for (PublicationService service in _services) {
-      Resource r = service.get(link);
+      Resource? r = service.get(link);
       if (r != null) {
         return r;
       }
@@ -165,7 +165,7 @@ class Publication with EquatableMixin {
   }
 
   /// Returns the first publication service that is an instance of [Type].
-  T findService<T extends PublicationService>() =>
+  T? findService<T extends PublicationService>() =>
       findServices<T>().firstOrNull;
 
   /// Returns all the publication services that are instances of [Type].
@@ -189,7 +189,7 @@ class Publication with EquatableMixin {
       subcollections[role]?.firstOrNull?.links ?? [];
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         manifest,
         cssStyle,
         nbPages,
@@ -242,8 +242,8 @@ class EXTENSION {
 
   const EXTENSION._(this.value);
 
-  static EXTENSION fromString(String type) => _values
-      .firstWhere((element) => element.value == type, orElse: () => null);
+  static EXTENSION? fromString(String type) =>
+      _values.firstOrNullWhere((element) => element.value == type);
 }
 
 /// Base interface to be implemented by all publication services.
@@ -281,7 +281,7 @@ abstract class PublicationService {
   ///
   /// @return The [Resource] containing the response, or null if the service doesn't recognize
   ///         this request.
-  Resource get(Link link) => null;
+  Resource? get(Link link) => null;
 
   /// Closes any opened file handles, removes temporary files, etc.
   void close() {}
@@ -311,16 +311,17 @@ class ServicesBuilder {
   const ServicesBuilder._(this.serviceFactories);
 
   factory ServicesBuilder.create(
-          {ServiceFactory contentProtection,
-          ServiceFactory cover,
-          ServiceFactory locator = _defaultLocator,
-          ServiceFactory positions}) =>
+          {ServiceFactory? contentProtection,
+          ServiceFactory? cover,
+          ServiceFactory? locator = _defaultLocator,
+          ServiceFactory? positions}) =>
       ServicesBuilder._({
-        ContentProtectionService: contentProtection,
-        CoverService: cover,
-        LocatorService: locator,
-        PositionsService: positions
-      }..removeWhere((key, value) => value == null));
+        if (contentProtection != null)
+          ContentProtectionService: contentProtection,
+        if (cover != null) CoverService: cover,
+        if (locator != null) LocatorService: locator,
+        if (positions != null) PositionsService: positions
+      });
 
   static LocatorService _defaultLocator(PublicationServiceContext context) =>
       DefaultLocatorService.create(
@@ -334,10 +335,10 @@ class ServicesBuilder {
           .toList();
 
   /// Gets the publication service factory for the given service type.
-  ServiceFactory of<T extends PublicationService>() => serviceFactories[T];
+  ServiceFactory? of<T extends PublicationService>() => serviceFactories[T];
 
   /// Sets the publication service factory for the given service type.
-  void set<T>(ServiceFactory factory) {
+  void set<T>(ServiceFactory? factory) {
     if (factory != null) {
       serviceFactories[T] = factory;
     } else {
@@ -351,7 +352,7 @@ class ServicesBuilder {
   /// Replaces the service factory associated with the given service type with the result of
   /// [transform].
   void decorate(Type serviceType,
-          ServiceFactory Function(ServiceFactory) transform) =>
+          ServiceFactory Function(ServiceFactory?) transform) =>
       serviceFactories[serviceType] = transform(serviceFactories[serviceType]);
 }
 
@@ -364,7 +365,11 @@ class PublicationBuilder {
   Fetcher fetcher;
   ServicesBuilder servicesBuilder;
 
-  PublicationBuilder({this.manifest, this.fetcher, this.servicesBuilder});
+  PublicationBuilder(
+      {required this.manifest,
+      required this.fetcher,
+      ServicesBuilder? servicesBuilder})
+      : this.servicesBuilder = servicesBuilder ?? ServicesBuilder.create();
 
   Publication build() => Publication(
       manifest: manifest, fetcher: fetcher, servicesBuilder: servicesBuilder);

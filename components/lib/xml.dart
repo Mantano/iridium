@@ -7,9 +7,8 @@ import 'package:xml/xml.dart' as xml;
 /// Wrapper around the XML package that adds a better API, basic XPath queries
 /// handling namespace prefixes.
 abstract class XmlNode<Node extends xml.XmlNode> {
-  XmlNode(this._node, {Map<String, String> prefixes})
-      : assert(_node != null),
-        prefixes = prefixes ?? {};
+  XmlNode(this._node, {Map<String, String>? prefixes})
+      : prefixes = prefixes ?? {};
 
   final Node _node;
 
@@ -18,7 +17,7 @@ abstract class XmlNode<Node extends xml.XmlNode> {
 
   List<XmlElement> xpath(String xpath) => _xpathString(xpath);
 
-  XmlElement firstXPath(String xpath) {
+  XmlElement? firstXPath(String xpath) {
     List<XmlElement> elements = _xpathString(xpath, onlyFirst: true);
     return (elements.isEmpty) ? null : elements.first;
   }
@@ -30,8 +29,6 @@ abstract class XmlNode<Node extends xml.XmlNode> {
 
   List<XmlElement> _xpath(List<String> paths,
       {bool relative = true, bool onlyFirst = false}) {
-    assert(paths != null);
-    assert(relative != null);
     if (paths.isEmpty) {
       return [if (this is XmlElement) this as XmlElement];
     }
@@ -40,13 +37,13 @@ abstract class XmlNode<Node extends xml.XmlNode> {
       return _xpath(paths, relative: false, onlyFirst: onlyFirst);
     }
 
-    RegExpMatch match = RegExp(r'(?:([-\w]+)\:)?([-\w\*]+)').firstMatch(path);
+    RegExpMatch? match = RegExp(r'(?:([-\w]+)\:)?([-\w\*]+)').firstMatch(path);
     if (match == null) {
       return [];
     }
-    String prefix = match.group(1);
-    String tag = match.group(2);
-    String namespace = prefixes[prefix];
+    String prefix = match.group(1)!;
+    String tag = match.group(2)!;
+    String? namespace = prefixes[prefix];
 
     Iterable<xml.XmlElement> elements = relative
         ? _node.findElements(tag, namespace: namespace)
@@ -63,7 +60,7 @@ abstract class XmlNode<Node extends xml.XmlNode> {
 }
 
 class XmlDocument extends XmlNode<xml.XmlDocument> {
-  XmlDocument(xml.XmlDocument _node, {Map<String, String> prefixes})
+  XmlDocument(xml.XmlDocument _node, {Map<String, String>? prefixes})
       : super(_node, prefixes: prefixes);
 
   factory XmlDocument.parse(String input) =>
@@ -71,15 +68,15 @@ class XmlDocument extends XmlNode<xml.XmlDocument> {
 }
 
 class XmlElement extends XmlNode<xml.XmlElement> {
-  XmlElement(xml.XmlElement _node, {Map<String, String> prefixes})
+  XmlElement(xml.XmlElement _node, {Map<String, String>? prefixes})
       : super(_node, prefixes: prefixes);
 
   String get name => _node.name.local;
   String get text => _node.text;
 
-  String operator [](String name) => getAttribute(name);
+  String? operator [](String name) => getAttribute(name);
 
-  String getAttribute(String name, {String namespace}) {
+  String? getAttribute(String name, {String? namespace}) {
     namespace = prefixes[namespace] ?? namespace;
     return _node.getAttribute(name, namespace: namespace);
   }

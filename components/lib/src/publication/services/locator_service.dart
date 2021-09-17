@@ -17,10 +17,10 @@ import 'package:mno_shared/publication.dart';
 ///     order. For example, when downloading a streamed manifest or offloading a package.
 abstract class LocatorService extends PublicationService {
   /// Locates the target of the given [locator].
-  Future<Locator> locate(Locator locator);
+  Future<Locator?> locate(Locator locator);
 
   /// Locates the target at the given [totalProgression] relative to the whole publication.
-  Future<Locator> locateProgression(double totalProgression);
+  Future<Locator?> locateProgression(double totalProgression);
 
   @override
   void close() {}
@@ -37,22 +37,22 @@ class DefaultLocatorService extends LocatorService {
 
   factory DefaultLocatorService.create(
           List<Link> readingOrder, Ref<Publication> publication) =>
-      DefaultLocatorService(
-          readingOrder, () => publication()?.positionsByReadingOrder() ?? []);
+      DefaultLocatorService(readingOrder,
+          () => publication()?.positionsByReadingOrder() ?? Future.value([]));
 
   @override
-  Future<Locator> locate(Locator locator) async =>
+  Future<Locator?> locate(Locator locator) async =>
       locator.takeIf((it) => readingOrder.firstWithHref(locator.href) != null);
 
   @override
-  Future<Locator> locateProgression(double totalProgression) async {
+  Future<Locator?> locateProgression(double totalProgression) async {
     if (totalProgression < 0.0 || 1.0 < totalProgression) {
       Fimber.e(
           "Progression must be between 0.0 and 1.0, received $totalProgression)");
       return null;
     }
     List<List<Locator>> positions = await positionsByReadingOrder();
-    _Position position = _findClosestTo(totalProgression, positions);
+    _Position? position = _findClosestTo(totalProgression, positions);
     if (position == null) {
       return null;
     }
@@ -67,30 +67,30 @@ class DefaultLocatorService extends LocatorService {
 
   /// Finds the [Locator] in the given [positions] which is the closest to the given
   /// [totalProgression], without exceeding it.
-  _Position _findClosestTo(
+  _Position? _findClosestTo(
       double totalProgression, List<List<Locator>> positions) {
-    _Match<Locator> lastPosition = _findLast(positions);
+    _Match<Locator>? lastPosition = _findLast(positions);
     if (lastPosition == null) {
       return null;
     }
-    double lastProgression = lastPosition.item.locations.totalProgression;
+    double? lastProgression = lastPosition.item.locations.totalProgression;
     if (lastProgression != null && totalProgression >= lastProgression) {
       return _Position(lastPosition.x, lastPosition.item);
     }
 
     bool inBetween(Locator first, Locator second) {
-      double prog1 = first.locations.totalProgression;
+      double? prog1 = first.locations.totalProgression;
       if (prog1 == null) {
         return false;
       }
-      double prog2 = second.locations.totalProgression;
+      double? prog2 = second.locations.totalProgression;
       if (prog2 == null) {
         return false;
       }
       return prog1 <= totalProgression && totalProgression < prog2;
     }
 
-    _Match<Locator> position = _findFirstByPair(positions, inBetween);
+    _Match<Locator>? position = _findFirstByPair(positions, inBetween);
     if (position == null) {
       return null;
     }
@@ -99,11 +99,11 @@ class DefaultLocatorService extends LocatorService {
 
   /// Computes the progression relative to a reading order resource at the given index, from its
   /// [totalProgression] relative to the whole publication.
-  double _resourceProgressionFor(
+  double? _resourceProgressionFor(
       double totalProgression, List<List<Locator>> positions,
-      {int readingOrderIndex}) {
-    double startProgression =
-        positions[readingOrderIndex].firstOrNull?.locations?.totalProgression;
+      {required int readingOrderIndex}) {
+    double? startProgression =
+        positions[readingOrderIndex].firstOrNull?.locations.totalProgression;
     if (startProgression == null) {
       return null;
     }
@@ -111,7 +111,7 @@ class DefaultLocatorService extends LocatorService {
             .elementAtOrNull(readingOrderIndex + 1)
             ?.firstOrNull
             ?.locations
-            ?.totalProgression ??
+            .totalProgression ??
         1.0;
     if (totalProgression <= startProgression) {
       return 0.0;
@@ -124,9 +124,9 @@ class DefaultLocatorService extends LocatorService {
   }
 
   /// Finds the first item matching the given condition when paired with its successor.
-  _Match<T> _findFirstByPair<T>(
+  _Match<T>? _findFirstByPair<T>(
       List<List<T>> items, bool Function(T, T) condition) {
-    _Match<T> previous;
+    _Match<T>? previous;
     for (int x = 0; x < items.length; x++) {
       List<T> section = items[x];
       for (int y = 0; y < section.length; y++) {
@@ -143,8 +143,8 @@ class DefaultLocatorService extends LocatorService {
   }
 
   /// Finds the last item in the last non-empty list of [items].
-  _Match<T> _findLast<T>(List<List<T>> items) {
-    _Match<T> last;
+  _Match<T>? _findLast<T>(List<List<T>> items) {
+    _Match<T>? last;
 
     for (int x = 0; x < items.length; x++) {
       List<T> section = items[x];
@@ -175,7 +175,7 @@ class _Match<T> {
   final int y;
   final T item;
 
-  _Match({this.x, this.y, this.item});
+  _Match({required this.x, required this.y, required this.item});
 
   @override
   String toString() => '_Match{x: $x, y: $y, item: $item}';
@@ -183,16 +183,16 @@ class _Match<T> {
 
 extension PublicationLocatorExtension on Publication {
   /// Locates the target of the given [locator].
-  Future<Locator> locate(Locator locator) =>
-      findService<LocatorService>()?.locate(locator);
+  Future<Locator?> locate(Locator locator) async =>
+      await findService<LocatorService>()?.locate(locator);
 
   /// Locates the target at the given [progression] relative to the whole publication.
-  Future<Locator> locateProgression(double totalProgression) =>
-      findService<LocatorService>()?.locateProgression(totalProgression);
+  Future<Locator?> locateProgression(double totalProgression) async =>
+      await findService<LocatorService>()?.locateProgression(totalProgression);
 }
 
 extension ServicesBuilderLocatorExtension on ServicesBuilder {
-  ServiceFactory get locatorServiceFactory => of<LocatorService>();
+  ServiceFactory? getLocatorServiceFactory() => of<LocatorService>();
 
   set locatorServiceFactory(ServiceFactory serviceFactory) =>
       set<LocatorService>(serviceFactory);

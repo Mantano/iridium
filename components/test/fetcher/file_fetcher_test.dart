@@ -11,17 +11,10 @@ import 'package:test/test.dart';
 import 'package:universal_io/io.dart' hide Link;
 
 void main() {
-  Directory directory;
-  FileFetcher fetcher;
-
-  setUp(() async {
-    // Fimber.plantTree(DebugTree());
-    var text = File("test_resources/fetcher/text.txt");
-    assert(text != null);
-    directory = Directory("test_resources/fetcher/directory");
-    assert(directory != null);
-    fetcher = FileFetcher({"/file_href": text, "/dir_href": directory});
-  });
+  File text = File("test_resources/fetcher/text.txt");
+  Directory directory = Directory("test_resources/fetcher/directory");
+  FileFetcher fetcher =
+      FileFetcher({"/file_href": text, "/dir_href": directory});
 
   test("Computing length for a missing file returns NotFound", () {
     var resource = fetcher.get(Link(href: "/unknown"));

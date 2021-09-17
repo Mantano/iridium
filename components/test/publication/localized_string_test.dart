@@ -15,7 +15,7 @@ void main() {
 
   test("parse JSON localized strings", () {
     expect(
-        LocalizedString({"en": "a string", "fr": "une chaîne"}),
+        LocalizedString.fromStrings({"en": "a string", "fr": "une chaîne"}),
         LocalizedString.fromJson("""{
                 "en": "a string",
                 "fr": "une chaîne"
@@ -42,7 +42,7 @@ void main() {
 
   test("get JSON", () {
     expect(
-        LocalizedString({
+        LocalizedString.fromStrings({
           "en": "a string",
           "fr": "une chaîne",
           LocalizedString.undefinedLanguage: "Surgh"
@@ -58,19 +58,21 @@ void main() {
   test("get the default translation", () {
     expect(
         Translation("a string"),
-        LocalizedString({"en": "a string", "fr": "une chaîne"})
+        LocalizedString.fromStrings({"en": "a string", "fr": "une chaîne"})
             .defaultTranslation);
   });
 
   test("get the default translation's string", () {
-    expect("a string",
-        LocalizedString({"en": "a string", "fr": "une chaîne"}).string);
+    expect(
+        "a string",
+        LocalizedString.fromStrings({"en": "a string", "fr": "une chaîne"})
+            .string);
   });
 
   test("find translation by language", () {
     expect(
         Translation("une chaîne"),
-        LocalizedString({"en": "a string", "fr": "une chaîne"})
+        LocalizedString.fromStrings({"en": "a string", "fr": "une chaîne"})
             .getOrFallback("fr"));
   });
 
@@ -78,21 +80,23 @@ void main() {
     var language = Platform.localeName;
     expect(
         Translation("a string"),
-        LocalizedString({language: "a string", "foobar": "une chaîne"})
+        LocalizedString.fromStrings(
+                {language: "a string", "foobar": "une chaîne"})
             .getOrFallback(null));
   });
 
   test("find translation by language defaults: null", () {
     expect(
         Translation("Surgh"),
-        LocalizedString({"foo": "a string", "bar": "une chaîne", null: "Surgh"})
+        LocalizedString.fromStrings(
+                {"foo": "a string", "bar": "une chaîne", null: "Surgh"})
             .getOrFallback(null));
   });
 
   test("find translation by language defaults: undefined", () {
     expect(
         Translation("Surgh"),
-        LocalizedString({
+        LocalizedString.fromStrings({
           "foo": "a string",
           "bar": "une chaîne",
           LocalizedString.undefinedLanguage: "Surgh"
@@ -102,34 +106,36 @@ void main() {
   test("find translation by language defaults: English", () {
     expect(
         Translation("a string"),
-        LocalizedString({"en": "a string", "fr": "une chaîne"})
+        LocalizedString.fromStrings({"en": "a string", "fr": "une chaîne"})
             .getOrFallback(null));
   });
 
   test("find translation by language defaults: the first found translation",
       () {
     expect(Translation("une chaîne"),
-        LocalizedString({"fr": "une chaîne"}).getOrFallback(null));
+        LocalizedString.fromStrings({"fr": "une chaîne"}).getOrFallback(null));
   });
 
   test("maps the languages", () {
     expect(
-        LocalizedString({"en": "a string", "fr": "une chaîne"}),
-        LocalizedString({null: "a string", "fr": "une chaîne"}).mapLanguages(
-            (language, translation) =>
-                (translation.string == "a string") ? "en" : language));
+        LocalizedString.fromStrings({"en": "a string", "fr": "une chaîne"}),
+        LocalizedString.fromStrings({null: "a string", "fr": "une chaîne"})
+            .mapLanguages((language, translation) =>
+                (translation.string == "a string") ? "en" : language!));
   });
 
   test("maps the translations", () {
     expect(
-        LocalizedString({"en": "a string", "fr": "une chaîne"}),
-        LocalizedString({"en": "Surgh", "fr": "une chaîne"}).mapTranslations(
-            (language, translation) =>
+        LocalizedString.fromStrings({"en": "a string", "fr": "une chaîne"}),
+        LocalizedString.fromStrings({"en": "Surgh", "fr": "une chaîne"})
+            .mapTranslations((language, translation) =>
                 (language == "en") ? Translation("a string") : translation));
   });
 
   test("add or replace a new translation", () {
-    expect(LocalizedString({"en": "a string", "fr": "une chaîne"}),
-        LocalizedString({"en": "a string"}).copyWithString("fr", "une chaîne"));
+    expect(
+        LocalizedString.fromStrings({"en": "a string", "fr": "une chaîne"}),
+        LocalizedString.fromStrings({"en": "a string"})
+            .copyWithString("fr", "une chaîne"));
   });
 }
