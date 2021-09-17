@@ -1,3 +1,4 @@
-## [0.0.1] - TODO: Add release date.
+## 0.1.0
 
-* TODO: Describe initial release.
+* Contains the server functions to serve resources in the webview.
+* Support null-safety

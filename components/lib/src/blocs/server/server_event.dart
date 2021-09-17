@@ -6,13 +6,19 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 import 'request_handler.dart';
+import 'server_bloc.dart';
 
+/// Root class for [ServerBloc] events.
 @immutable
 abstract class ServerEvent extends Equatable {}
 
+/// This event is sent to start the server.
 class StartServer extends ServerEvent {
+  /// List of [RequestHandler] that will be used by the server to send back
+  /// resources.
   final List<RequestHandler> handlers;
 
+  /// Creates a [StartServer] instance with [handlers].
   StartServer(this.handlers);
 
   @override
@@ -22,6 +28,7 @@ class StartServer extends ServerEvent {
   String toString() => 'StartServer';
 }
 
+/// This event is sent to shutdown the server.
 class ShutdownServer extends ServerEvent {
   @override
   List<Object> get props => [];

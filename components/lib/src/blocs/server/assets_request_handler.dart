@@ -4,31 +4,45 @@
 
 import 'dart:typed_data';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:mno_server/server.dart';
+import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
+import 'asset_provider.dart';
+
+/// Function to transform a response data based on href provided.
+typedef TransformData = Uint8List Function(String href, Uint8List data);
+
+Uint8List _defaultTransformData(String href, Uint8List data) => data;
+
+/// This [RequestHandler] is used to provide access to assets
 class AssetsRequestHandler extends RequestHandler {
   /// Folder containing the assets, relative to the root bundle.
   final String path;
-  final Uint8List Function(String, Uint8List) transformData;
 
+  /// The [assetProvider] implementation may depend on the platform
+  /// (Native or JS).
+  final AssetProvider assetProvider;
+
+  /// This function is able to modify a resource based on the [String] param.
+  final TransformData transformData;
+
+  /// Creates an instance of [AssetsRequestHandler] with a root [path] and an [assetProvider].
+  ///
+  /// A [transformData] parameter is optional.
   AssetsRequestHandler(
     this.path, {
-    this.transformData,
-  });
+    required this.assetProvider,
+    TransformData? transformData,
+  }) : this.transformData = transformData ?? _defaultTransformData;
 
   @override
   Future<bool> handle(int requestId, HttpRequest request, String href) async {
     try {
       Uint8List uint8List =
-          (await rootBundle.load(p.join(path, href))).buffer.asUint8List();
-      if (transformData != null) {
-        uint8List = transformData(href, uint8List);
-      }
+          (await assetProvider.load(p.join(path, href))).buffer.asUint8List();
+      uint8List = transformData(href, uint8List);
 
       await sendData(
         request,
@@ -37,7 +51,7 @@ class AssetsRequestHandler extends RequestHandler {
             await MediaType.ofSingleHint(fileExtension: href.extension()),
       );
       return true;
-    } on FlutterError catch (ex, _) {
+    } on Error catch (ex, _) {
       // For debugging
 //      Fimber.d("Error loading: $href", ex: ex, stacktrace: stacktrace);
       return false;
