@@ -28,15 +28,16 @@ class DeobfuscatingResource extends ProxyResource {
   DeobfuscatingResource(Resource resource, this.pubId) : super(resource);
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) async {
-    String algorithm = (await resource.link()).properties.encryption?.algorithm;
+  Future<ResourceTry<ByteData>> read({IntRange? range}) async {
+    String? algorithm =
+        (await resource.link()).properties.encryption?.algorithm;
 
     if (!_algorithm2length.containsKey(algorithm)) {
       return resource.read(range: range);
     }
 
     return (await resource.read(range: range)).mapCatching((it) {
-      int obfuscationLength = _algorithm2length[algorithm];
+      int obfuscationLength = _algorithm2length[algorithm]!;
       ByteData obfuscationKey;
       switch (algorithm) {
         case "http://ns.adobe.com/pdf/enc#RC":
@@ -51,7 +52,7 @@ class DeobfuscatingResource extends ProxyResource {
     });
   }
 
-  void _deobfuscate(ByteData bytes, IntRange range, ByteData obfuscationKey,
+  void _deobfuscate(ByteData bytes, IntRange? range, ByteData obfuscationKey,
       int obfuscationLength) {
     range ??= IntRange(0, bytes.lengthInBytes - 1);
     if (range.first >= obfuscationLength) {

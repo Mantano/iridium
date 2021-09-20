@@ -25,30 +25,26 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
   PdfParser(this.pdfFactory);
 
   @override
-  Future<PublicationBuilder> parseFile(
+  Future<PublicationBuilder?> parseFile(
           PublicationAsset asset, Fetcher fetcher) =>
       _parseFile(asset, fetcher, asset.toTitle());
 
   String get _rootHref => "/$_publicationFileName";
 
-  Future<PublicationBuilder> _parseFile(
+  Future<PublicationBuilder?> _parseFile(
       PublicationAsset asset, Fetcher fetcher, String fallbackTitle) async {
-    if (pdfFactory == null) {
-      throw Exception("No pdfFactory was provided.");
-    }
     if ((await asset.mediaType) != MediaType.pdf) {
       return null;
     }
 
-    Link pdfLink = (await fetcher.links())
-        .firstWhere((it) => it.mediaType == MediaType.pdf, orElse: () => null);
+    Link? pdfLink = (await fetcher.links())
+        .firstOrNullWhere((it) => it.mediaType == MediaType.pdf);
     if (pdfLink == null) {
       throw Exception("Unable to find PDF file.");
     }
 
-    File pdfFile = fetcher.get(pdfLink).file;
-    PdfDocument document = await pdfFactory.openFile(pdfFile.path);
-    String title = document.title?.ifBlank(() => null) ?? fallbackTitle;
+    PdfDocument document = await pdfFactory.openResource(fetcher.get(pdfLink));
+    String title = document.title.ifBlank(() => null) ?? fallbackTitle;
 
     // TODO implement lookup the table of content
     // List<Link> tableOfContents = document.outline.toLinks(fileHref);
@@ -58,7 +54,7 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
           identifier: document.identifier,
           localizedTitle: LocalizedString.fromString(title),
           authors: [document.author]
-              .where(((s) => s?.isNotBlank == true))
+              .where(((s) => s.isNotBlank == true))
               .mapNotNull(Contributor.fromString)
               .toList(),
           numberOfPages: document.pageCount,
@@ -96,12 +92,12 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
   }
 
   @override
-  Future<PubBox> parseWithFallbackTitle(
+  Future<PubBox?> parseWithFallbackTitle(
       String fileAtPath, String fallbackTitle) async {
     FileAsset file = FileAsset(File(fileAtPath));
     FileFetcher baseFetcher =
         FileFetcher.single(href: "/${file.name}", file: file.file);
-    PublicationBuilder builder;
+    PublicationBuilder? builder;
     try {
       builder = await _parseFile(file, baseFetcher, fallbackTitle);
     } catch (e) {

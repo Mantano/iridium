@@ -20,7 +20,7 @@ class CbzParserException implements Exception {
   factory CbzParserException.invalidCbz(String message) =>
       CbzParserException("Invalid CBZ: $message");
 
-  const CbzParserException(this.message) : assert(message != null);
+  const CbzParserException(this.message);
 
   final String message;
 }
@@ -32,16 +32,16 @@ class CBZParser extends PublicationParser {
   final ImageParser imageParser = ImageParser();
 
   @override
-  Future<PubBox> parseWithFallbackTitle(
+  Future<PubBox?> parseWithFallbackTitle(
       String fileAtPath, String fallbackTitle) async {
     File file = File(fileAtPath);
 
-    Fetcher fetcher = await Fetcher.fromArchiveOrDirectory(fileAtPath);
+    Fetcher? fetcher = await Fetcher.fromArchiveOrDirectory(fileAtPath);
     if (fetcher == null) {
       throw ContainerError.missingFile(fileAtPath);
     }
 
-    Publication publication =
+    Publication? publication =
         (await imageParser.parseFile(FileAsset(file), fetcher))
             ?.let((builder) {
               LocalizedString title = LocalizedString.fromString(fallbackTitle);
@@ -53,8 +53,8 @@ class CBZParser extends PublicationParser {
                   fetcher: builder.fetcher,
                   servicesBuilder: builder.servicesBuilder);
             })
-            ?.build()
-            ?.also((pub) {
+            .build()
+            .also((pub) {
               pub.type = TYPE.cbz;
             });
     if (publication == null) {

@@ -13,14 +13,14 @@ import 'constants.dart';
 
 class NcxParser {
   static Map<String, List<Link>> parse(XmlElement document, String filePath) {
-    MapEntry<String, List<Link>> toc = document
+    MapEntry<String, List<Link>>? toc = document
         .getElement("navMap", namespace: Namespaces.ncx)
         ?.let((it) => _parseNavMapElement(it, filePath))
-        ?.let((it) => MapEntry("toc", it));
-    MapEntry<String, List<Link>> pageList = document
+        .let((it) => MapEntry("toc", it));
+    MapEntry<String, List<Link>>? pageList = document
         .getElement("pageList", namespace: Namespaces.ncx)
         ?.let((it) => _parsePageListElement(it, filePath))
-        ?.let((it) => MapEntry("page-list", it));
+        .let((it) => MapEntry("page-list", it));
     return Map.fromEntries([toc, pageList].whereNotNull());
   }
 
@@ -35,16 +35,16 @@ class NcxParser {
       element
           .findElements("pageTarget", namespace: Namespaces.ncx)
           .mapNotNull((it) {
-        String href = _extractHref(it, filePath);
-        String title = _extractTitle(it);
+        String? href = _extractHref(it, filePath);
+        String? title = _extractTitle(it);
         return (href.isNullOrBlank || title.isNullOrBlank)
             ? null
-            : Link(title: title, href: href);
+            : Link(title: title, href: href!);
       }).toList();
 
-  static Link _parseNavPointElement(XmlElement element, String filePath) {
-    String title = _extractTitle(element);
-    String href = _extractHref(element, filePath);
+  static Link? _parseNavPointElement(XmlElement element, String filePath) {
+    String? title = _extractTitle(element);
+    String? href = _extractHref(element, filePath);
     List<Link> children = element
         .findElements("navPoint", namespace: Namespaces.ncx)
         .mapNotNull((it) => _parseNavPointElement(it, filePath))
@@ -54,15 +54,15 @@ class NcxParser {
         : Link(title: title, href: href ?? "#", children: children);
   }
 
-  static String _extractTitle(XmlElement element) => element
+  static String? _extractTitle(XmlElement element) => element
       .getElement("navLabel", namespace: Namespaces.ncx)
       ?.getElement("text", namespace: Namespaces.ncx)
       ?.text
-      ?.replaceAll(RegExp("\\s+"), " ")
-      ?.trim()
-      ?.ifBlank(() => null);
+      .replaceAll(RegExp("\\s+"), " ")
+      .trim()
+      .ifBlank(() => null);
 
-  static String _extractHref(XmlElement element, String filePath) => element
+  static String? _extractHref(XmlElement element, String filePath) => element
       .getElement("content", namespace: Namespaces.ncx)
       ?.getAttribute("src")
       ?.ifBlank(() => null)

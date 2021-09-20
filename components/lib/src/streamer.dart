@@ -43,15 +43,15 @@ class Streamer {
   final ArchiveFactory archiveFactory;
   final PdfDocumentFactory pdfFactory;
   final OnCreatePublication onCreatePublication;
-  List<StreamPublicationParser> _defaultParsers;
+  List<StreamPublicationParser>? _defaultParsers;
 
   Streamer(
       {List<StreamPublicationParser> parsers = const [],
       this.ignoreDefaultParsers = false,
       this.contentProtections = const [],
       this.archiveFactory = const DefaultArchiveFactory(),
-      this.pdfFactory,
-      OnCreatePublication onCreatePublication})
+      required this.pdfFactory,
+      OnCreatePublication? onCreatePublication})
       : _parsers = parsers,
         this.onCreatePublication =
             onCreatePublication ?? _emptyOnCreatePublication;
@@ -87,9 +87,9 @@ class Streamer {
   Future<PublicationTry<Publication>> open(
     PublicationAsset asset,
     bool allowUserInteraction, {
-    String credentials,
+    String? credentials,
     dynamic sender,
-    OnCreatePublication onCreatePublication,
+    OnCreatePublication? onCreatePublication,
   }) async {
     onCreatePublication ??= _emptyOnCreatePublication;
     try {
@@ -97,21 +97,23 @@ class Streamer {
               PublicationAssetDependencies(archiveFactory), credentials))
           .getOrThrow();
 
-      Try<ProtectedAsset, UserException> protectedAssetResult =
+      Try<ProtectedAsset, UserException>? protectedAssetResult =
           (await contentProtections.lazyMapFirstNotNullOrNull((it) => it.open(
               asset, fetcher, credentials, allowUserInteraction, sender)));
 
-      if (allowUserInteraction && protectedAssetResult?.isFailure == true) {
-        throw protectedAssetResult.failure;
+      if (allowUserInteraction &&
+          protectedAssetResult != null &&
+          protectedAssetResult.isFailure) {
+        throw protectedAssetResult.failure!;
       }
 
-      ProtectedAsset protectedAsset = protectedAssetResult?.getOrNull();
+      ProtectedAsset? protectedAsset = protectedAssetResult?.getOrNull();
       if (protectedAsset != null) {
         asset = protectedAsset.asset;
         fetcher = protectedAsset.fetcher;
       }
 
-      PublicationBuilder builder =
+      PublicationBuilder? builder =
           (await parsers.lazyMapFirstNotNullOrNull((it) {
         try {
           return it.parseFile(asset, fetcher).catchError((e, st) => null);
@@ -158,10 +160,10 @@ class Streamer {
 }
 
 extension LazyMapFirstNotNullOrNullList<T> on List<T> {
-  Future<R> lazyMapFirstNotNullOrNull<R>(
-      Future<R> Function(T) transform) async {
+  Future<R?> lazyMapFirstNotNullOrNull<R>(
+      Future<R?> Function(T) transform) async {
     for (T it in this) {
-      R result = await transform(it);
+      R? result = await transform(it);
       if (result != null) {
         return result;
       }

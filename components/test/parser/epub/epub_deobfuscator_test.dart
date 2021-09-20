@@ -24,9 +24,8 @@ Future<void> main() async {
   assert(fontResult.isSuccess);
   ByteData font = fontResult.getOrThrow();
 
-  Resource deobfuscate(String href, String algorithm) {
-    var encryption =
-        algorithm?.let((it) => Encryption(algorithm: algorithm).toJson());
+  Resource deobfuscate(String href, String? algorithm) {
+    var encryption = algorithm?.let((it) => Encryption(algorithm: it).toJson());
     var properties = encryption?.let((it) => {"encrypted": it}) ?? {};
 
     var obfuscatedRes = fetcher.get(
@@ -39,7 +38,7 @@ Future<void> main() async {
     var deobfuscatedRes = (await deobfuscate("/deobfuscation/cut-cut.obf.woff",
                 "http://www.idpf.org/2008/embedding")
             .read())
-        .getOrNull();
+        .getOrNull()!;
     expect(deobfuscatedRes.buffer.asUint8List(), font.buffer.asUint8List());
   });
 
@@ -48,7 +47,7 @@ Future<void> main() async {
     var deobfuscatedRes = (await deobfuscate("/deobfuscation/cut-cut.adb.woff",
                 "http://ns.adobe.com/pdf/enc#RC")
             .read())
-        .getOrNull();
+        .getOrNull()!;
     expect(deobfuscatedRes.buffer.asUint8List(), font.buffer.asUint8List());
   });
 
@@ -57,7 +56,7 @@ Future<void> main() async {
       () async {
     var deobfuscatedRes =
         (await deobfuscate("/deobfuscation/cut-cut.woff", null).read())
-            .getOrNull();
+            .getOrNull()!;
     expect(deobfuscatedRes.buffer.asUint8List(), font.buffer.asUint8List());
   });
 
@@ -65,7 +64,7 @@ Future<void> main() async {
     var deobfuscatedRes =
         (await deobfuscate("/deobfuscation/cut-cut.woff", "unknown algorithm")
                 .read())
-            .getOrNull();
+            .getOrNull()!;
     expect(deobfuscatedRes.buffer.asUint8List(), font.buffer.asUint8List());
   });
 }

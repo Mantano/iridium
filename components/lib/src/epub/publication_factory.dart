@@ -23,9 +23,9 @@ class PublicationFactory {
   final Map<String, String> displayOptions;
 
   PublicationFactory(
-      {this.fallbackTitle,
-      this.packageDocument,
-      Map<String, List<Link>> navigationData,
+      {required this.fallbackTitle,
+      required this.packageDocument,
+      Map<String, List<Link>>? navigationData,
       this.encryptionData = const {},
       this.displayOptions = const {}})
       : this.navigationData = navigationData ?? {};
@@ -50,7 +50,7 @@ class PublicationFactory {
       packageDocument.metadata.refine.map((key, value) =>
           MapEntry(key, LinkMetadataAdapter(_epubVersion, value)));
 
-  Map<String, Item> get _itemById =>
+  Map<String?, Item> get _itemById =>
       _manifest.where((it) => it.id != null).associateBy((it) => it.id);
 
   Map<String, Itemref> get _itemrefByIdref =>
@@ -123,7 +123,7 @@ class PublicationFactory {
   Set<String> _computeFallbackChain(String id) {
     // The termination has already been checked while computing links
     Set<String> ids = {};
-    Item item = _itemById[id];
+    Item? item = _itemById[id];
     item?.id?.let(ids.add);
     item?.fallback?.let((it) => ids.addAll(_computeFallbackChain(it)));
     return ids;
@@ -146,7 +146,7 @@ class PublicationFactory {
   }
 
   Product2<Set<String>, Properties> _computePropertiesAndRels(
-      Item item, Itemref itemref) {
+      Item item, Itemref? itemref) {
     Map<String, dynamic> properties = {};
     Set<String> rels = {};
     Product3<List<String>, List<String>, List<String>> parsedItemProperties =
@@ -165,7 +165,7 @@ class PublicationFactory {
       properties.addAll(_parseItemrefProperties(itemref.properties));
     }
 
-    String coverId = _pubMetadata.cover;
+    String? coverId = _pubMetadata.cover;
     if (coverId != null && item.id == coverId) {
       rels.add("cover");
     }
@@ -178,19 +178,17 @@ class PublicationFactory {
 
   /// Compute alternate links for [item], checking for an infinite recursion
   List<Link> _computeAlternates(Item item, Set<String> fallbackChain) {
-    Link fallback = item.fallback?.let((id) {
+    Link? fallback = item.fallback?.let((id) {
       if (fallbackChain.contains(id)) {
         return null;
       }
       return _itemById[id]?.let((it) {
         Set<String> updatedChain = Set.of(fallbackChain);
-        if (item.id != null) {
-          updatedChain.add(item.id);
-        }
+        item.id?.let(updatedChain.add);
         return _computeLink(it, fallbackChain: updatedChain);
       });
     });
-    Link mediaOverlays =
+    Link? mediaOverlays =
         item.mediaOverlay?.let((id) => _itemById[id]?.let(_computeLink));
     return [fallback, mediaOverlays].filterNotNull().toList();
   }
@@ -248,7 +246,7 @@ class PublicationFactory {
     return linkProperties;
   }
 
-  String _parsePage(String property) {
+  String? _parsePage(String property) {
     switch (property) {
       case Vocabularies.rendition + "page-spread-center":
         return "center";
@@ -263,7 +261,7 @@ class PublicationFactory {
     }
   }
 
-  String _parseSpread(String property) {
+  String? _parseSpread(String property) {
     switch (property) {
       case Vocabularies.rendition + "spread-node":
         return "none";
@@ -279,7 +277,7 @@ class PublicationFactory {
     }
   }
 
-  String _parseLayout(String property) {
+  String? _parseLayout(String property) {
     switch (property) {
       case Vocabularies.rendition + "layout-reflowable":
         return "reflowable";
@@ -290,7 +288,7 @@ class PublicationFactory {
     }
   }
 
-  String _parseOrientation(String property) {
+  String? _parseOrientation(String property) {
     switch (property) {
       case Vocabularies.rendition + "orientation-auto":
         return "auto";
@@ -303,7 +301,7 @@ class PublicationFactory {
     }
   }
 
-  String _parseOverflow(String property) {
+  String? _parseOverflow(String property) {
     switch (property) {
       case Vocabularies.rendition + "flow-auto":
         return "auto";

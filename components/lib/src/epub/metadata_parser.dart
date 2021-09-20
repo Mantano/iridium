@@ -17,9 +17,9 @@ import 'extensions/xml_node.dart';
 
 class Title {
   final LocalizedString value;
-  final LocalizedString fileAs;
-  final String type;
-  final int displaySeq;
+  final LocalizedString? fileAs;
+  final String? type;
+  final int? displaySeq;
 
   Title(this.value, this.fileAs, this.type, this.displaySeq);
 }
@@ -27,8 +27,8 @@ class Title {
 class EpubLink {
   final String href;
   final Set<String> rels;
-  final String mediaType;
-  final String refines;
+  final String? mediaType;
+  final String? refines;
   final List<String> properties;
 
   EpubLink(this.href, this.rels, this.mediaType, this.refines, this.properties);
@@ -48,8 +48,8 @@ class MetadataParser {
 
   MetadataParser(this.epubVersion, this.prefixMap);
 
-  EpubMetadata parse(XmlNode document, String filePath) {
-    XmlElement metadata =
+  EpubMetadata? parse(XmlNode document, String filePath) {
+    XmlElement? metadata =
         document.getElement("metadata", namespace: Namespaces.opf);
     if (metadata == null) {
       return null;
@@ -59,14 +59,14 @@ class MetadataParser {
     List<MetadataItem> metas = elements.item1;
     List<EpubLink> links = elements.item2;
     List<MetadataItem> metaHierarchy = _resolveMetaHierarchy(metas);
-    List<List<MetadataItem>> partitions = metaHierarchy
-        .partition((it) => it.refines == null || it.refines.isBlank);
+    List<List<MetadataItem>> partitions =
+        metaHierarchy.partition((it) => it.refines.isNullOrBlank);
     List<MetadataItem> globalMetas = partitions[0];
     List<MetadataItem> refineMetas = partitions[1];
     Map<String, List<MetadataItem>> globalCollection =
         globalMetas.groupBy((it) => it.property);
     Map<String, Map<String, List<MetadataItem>>> refineCollections =
-        (refineMetas.groupBy((it) => it.refines)).map(
+        (refineMetas.groupBy((it) => it.refines!)).map(
             (key, value) => MapEntry(key, value.groupBy((it) => it.property)));
     return EpubMetadata(globalCollection, refineCollections, links);
   }
@@ -95,8 +95,8 @@ class MetadataParser {
     return Product2(metas, links);
   }
 
-  EpubLink _parseLinkElement(XmlElement element, String filePath) {
-    String href = element.getAttribute("href");
+  EpubLink? _parseLinkElement(XmlElement element, String filePath) {
+    String? href = element.getAttribute("href");
     if (href == null) {
       return null;
     }
@@ -110,23 +110,21 @@ class MetadataParser {
         .mapNotNull((it) =>
             resolveProperty(it, prefixMap, defaultVocab: DefaultVocab.link))
         .toList();
-    String mediaType = element.getAttribute("media-type");
-    String refines = element.getAttribute("refines")?.removePrefix("#");
+    String? mediaType = element.getAttribute("media-type");
+    String? refines = element.getAttribute("refines")?.removePrefix("#");
     return EpubLink(Href(href, baseHref: filePath).string, rel, mediaType,
         refines, properties);
   }
 
-  MetadataItem _parseMetaElement(XmlElement element) {
+  MetadataItem? _parseMetaElement(XmlElement element) {
     if (element.getAttribute("property") == null) {
-      String name =
-          element.getAttribute("name")?.trim()?.takeIf((it) => it.isNotEmpty);
+      String? name =
+          element.getAttribute("name")?.trim().takeIf((it) => it.isNotEmpty);
       if (name == null) {
         return null;
       }
-      String content = element
-          .getAttribute("content")
-          ?.trim()
-          ?.takeIf((it) => it.isNotEmpty);
+      String? content =
+          element.getAttribute("content")?.trim().takeIf((it) => it.isNotEmpty);
       if (content == null) {
         return null;
       }
@@ -134,25 +132,25 @@ class MetadataParser {
       return MetadataItem(resolvedName, content,
           lang: element.lang, id: element.id);
     } else {
-      String propName = element
+      String? propName = element
           .getAttribute("property")
           ?.trim()
-          ?.takeIf((it) => it.isNotEmpty);
+          .takeIf((it) => it.isNotEmpty);
       if (propName == null) {
         return null;
       }
-      String propValue = element.text?.trim()?.takeIf((it) => it.isNotEmpty);
+      String? propValue = element.text.trim().takeIf((it) => it.isNotEmpty);
       if (propValue == null) {
         return null;
       }
       String resolvedProp =
           resolveProperty(propName, prefixMap, defaultVocab: DefaultVocab.meta);
-      String resolvedScheme = element
+      String? resolvedScheme = element
           .getAttribute("scheme")
           ?.trim()
-          ?.takeIf((it) => it.isNotEmpty)
+          .takeIf((it) => it.isNotEmpty)
           ?.let((it) => resolveProperty(it, prefixMap));
-      String refines = element.getAttribute("refines")?.removePrefix("#");
+      String? refines = element.getAttribute("refines")?.removePrefix("#");
       return MetadataItem(resolvedProp, propValue,
           lang: element.lang,
           scheme: resolvedScheme,
@@ -161,8 +159,8 @@ class MetadataParser {
     }
   }
 
-  MetadataItem _parseDcElement(XmlElement element) {
-    String propValue = element.text?.trim()?.takeIf((it) => it.isNotEmpty);
+  MetadataItem? _parseDcElement(XmlElement element) {
+    String? propValue = element.text.trim().takeIf((it) => it.isNotEmpty);
     if (propValue == null) {
       return null;
     }
@@ -182,11 +180,11 @@ class MetadataParser {
 
   MetadataItem _contributorWithLegacyAttr(
       XmlElement element, String name, String value) {
-    MetadataItem fileAs = element
+    MetadataItem? fileAs = element
         .getAttribute("file-as", namespace: Namespaces.opf)
         ?.let((it) => MetadataItem(Vocabularies.meta + "file-as", it,
             lang: element.lang, id: element.id));
-    MetadataItem role = element
+    MetadataItem? role = element
         .getAttribute("role", namespace: Namespaces.opf)
         ?.let((it) => MetadataItem(Vocabularies.meta + "role", it,
             lang: element.lang, id: element.id));
@@ -198,7 +196,8 @@ class MetadataParser {
 
   MetadataItem _dateWithLegacyAttr(
       XmlElement element, String name, String value) {
-    String eventAttr = element.getAttribute("event", namespace: Namespaces.opf);
+    String? eventAttr =
+        element.getAttribute("event", namespace: Namespaces.opf);
     String propName = (eventAttr == "modification")
         ? Vocabularies.dcterms + "modified"
         : name;
@@ -209,7 +208,7 @@ class MetadataParser {
     Iterable<String> metadataIds = items.mapNotNull((it) => it.id);
     Iterable<MetadataItem> rootExpr = items.filter(
         (it) => it.refines == null || !metadataIds.contains(it.refines));
-    Map<String, List<MetadataItem>> exprByRefines =
+    Map<String?, List<MetadataItem>> exprByRefines =
         items.groupBy((it) => it.refines);
     return rootExpr
         .map((it) => _computeMetaItem(it, exprByRefines, {}))
@@ -217,13 +216,15 @@ class MetadataParser {
   }
 
   MetadataItem _computeMetaItem(MetadataItem expr,
-      Map<String, List<MetadataItem>> metas, Set<String> chain) {
-    Set<String> updatedChain = (expr.id == null) ? chain : chain
-      ..add(expr.id);
+      Map<String?, List<MetadataItem>> metas, Set<String> chain) {
+    Set<String> updatedChain = chain;
+    if (expr.id != null) {
+      updatedChain.add(expr.id!);
+    }
     List<MetadataItem> refinedBy = expr.id
             ?.let((it) => metas[it])
             ?.filter((it) => !chain.contains(it.id))
-            ?.toList() ??
+            .toList() ??
         [];
     Iterable<MetadataItem> newChildren =
         refinedBy.map((it) => _computeMetaItem(it, metas, updatedChain));
@@ -239,10 +240,10 @@ class MetadataAdapter {
 
   MetadataAdapter(this.epubVersion, this.items);
 
-  double get duration => firstValue(Vocabularies.media + "duration")
+  double? get duration => firstValue(Vocabularies.media + "duration")
       ?.let((it) => ClockValueParser.parse(it));
 
-  String firstValue(String property) => items[property]?.firstOrNull?.value;
+  String? firstValue(String property) => items[property]?.firstOrNull?.value;
 }
 
 class LinkMetadataAdapter extends MetadataAdapter {
@@ -252,16 +253,16 @@ class LinkMetadataAdapter extends MetadataAdapter {
 
 class PubMetadataAdapter extends MetadataAdapter {
   final String fallbackTitle;
-  final String uniqueIdentifierId;
+  final String? uniqueIdentifierId;
   final ReadingProgression readingProgression;
   final Map<String, String> displayOptions;
-  LocalizedString localizedTitle;
-  LocalizedString localizedSubtitle;
-  LocalizedString localizedSortAs;
-  List<Collection> belongsToSeries;
-  List<Collection> belongsToCollections;
-  List<Subject> subjects;
-  Map<String, List<Contributor>> allContributors;
+  late LocalizedString localizedTitle;
+  LocalizedString? localizedSubtitle;
+  LocalizedString? localizedSortAs;
+  late List<Collection> belongsToSeries;
+  late List<Collection> belongsToCollections;
+  late List<Subject> subjects;
+  late Map<String?, List<Contributor>> allContributors;
 
   PubMetadataAdapter(
       double epubVersion,
@@ -273,28 +274,28 @@ class PubMetadataAdapter extends MetadataAdapter {
       : super(epubVersion, items) {
     List<Title> titles = items[Vocabularies.dcterms + "title"]
             ?.map((it) => it.toTitle())
-            ?.toList() ??
+            .toList() ??
         [];
-    Title mainTitle = titles.firstWhere((it) => it.type == "main",
-        orElse: () => titles.firstOrNull);
+    Title? mainTitle = titles.firstOrNullWhere((it) => it.type == "main") ??
+        titles.firstOrNull;
     localizedTitle =
         mainTitle?.value ?? LocalizedString.fromString(fallbackTitle);
     localizedSubtitle = titles
         .filter((it) => it.type == "subtitle")
-        .sortedBy((it) => it.displaySeq)
+        .sortedBy((it) => it.displaySeq ?? 0)
         .firstOrNull
         ?.value;
     localizedSortAs = mainTitle?.fileAs ??
         firstValue("calibre:title_sort")
             ?.let((it) => LocalizedString.fromString(it));
 
-    Iterable<Product2<String, Collection>> allCollections =
+    Iterable<Product2<String?, Collection>> allCollections =
         (items[Vocabularies.meta + "belongs-to-collection"] ?? [])
             .map((it) => it.toCollection());
-    List<List<Product2<String, Collection>>> collectionsPartitions =
+    List<List<Product2<String?, Collection>>> collectionsPartitions =
         allCollections.partition((it) => it.item1 == "series");
-    List<Product2<String, Collection>> seriesMeta = collectionsPartitions[0];
-    List<Product2<String, Collection>> collectionsMeta =
+    List<Product2<String?, Collection>> seriesMeta = collectionsPartitions[0];
+    List<Product2<String?, Collection>> collectionsMeta =
         collectionsPartitions[1];
     belongsToCollections = collectionsMeta.map((it) => it.item2).toList();
 
@@ -302,8 +303,9 @@ class PubMetadataAdapter extends MetadataAdapter {
       belongsToSeries = seriesMeta.map((it) => it.item2).toList();
     } else {
       belongsToSeries = items["calibre:series"]?.firstOrNull?.let((it) {
-            LocalizedString name = LocalizedString({it.lang: it.value});
-            double position =
+            LocalizedString name =
+                LocalizedString.fromStrings({it.lang: it.value});
+            double? position =
                 firstValue("calibre:series_index")?.toDoubleOrNull();
             return [(Collection(localizedName: name, position: position))];
           }) ??
@@ -361,7 +363,7 @@ class PubMetadataAdapter extends MetadataAdapter {
       narrators: contributors("nrt"),
       contributors: contributors(null));
 
-  String get identifier {
+  String? get identifier {
     Map<String, String> identifiers = items[Vocabularies.dcterms + "identifier"]
             ?.associate((it) => MapEntry(it.property, it.value)) ??
         {};
@@ -372,39 +374,40 @@ class PubMetadataAdapter extends MetadataAdapter {
   List<String> get languages =>
       items[Vocabularies.dcterms + "language"]
           ?.map((it) => it.value)
-          ?.toList() ??
+          .toList() ??
       [];
 
-  DateTime get published =>
+  DateTime? get published =>
       firstValue(Vocabularies.dcterms + "date")?.iso8601ToDate();
 
-  DateTime get modified =>
+  DateTime? get modified =>
       firstValue(Vocabularies.dcterms + "modified")?.iso8601ToDate();
 
-  String get description => firstValue(Vocabularies.dcterms + "description");
+  String? get description => firstValue(Vocabularies.dcterms + "description");
 
-  String get cover => firstValue("cover");
+  String? get cover => firstValue("cover");
 
   List<Subject> _splitSubject(Subject subject) {
-    String lang = subject.localizedName.translations.keys.first;
+    String? lang = subject.localizedName.translations.keys.first;
     List<String> names = subject.localizedName.translations.values.first.string
         .split(RegExp("[,;]"))
         .map((it) => it.trim())
         .filter((it) => it.isNotEmpty)
         .toList();
     return names.map((it) {
-      LocalizedString newName = LocalizedString({lang: it});
+      LocalizedString newName = LocalizedString.fromStrings({lang: it});
       return Subject(localizedName: newName);
     }).toList();
   }
 
-  List<Contributor> contributors(String role) => allContributors[role] ?? [];
+  List<Contributor> contributors(String? role) => allContributors[role] ?? [];
 
   Presentation get presentation {
-    String flowProp = firstValue(Vocabularies.rendition + "flow");
-    String spreadProp = firstValue(Vocabularies.rendition + "spread");
-    String orientationProp = firstValue(Vocabularies.rendition + "orientation");
-    String layoutProp;
+    String? flowProp = firstValue(Vocabularies.rendition + "flow");
+    String? spreadProp = firstValue(Vocabularies.rendition + "spread");
+    String? orientationProp =
+        firstValue(Vocabularies.rendition + "orientation");
+    String? layoutProp;
     if (epubVersion < 3.0) {
       layoutProp = (displayOptions["fixed-layout"] == "true")
           ? "pre-paginated"
@@ -517,26 +520,26 @@ class MetadataItem {
   final String property;
   final String value;
   final String lang;
-  final String scheme;
-  final String refines;
-  final String id;
+  final String? scheme;
+  final String? refines;
+  final String? id;
   final Map<String, List<MetadataItem>> children;
 
   MetadataItem(this.property, this.value,
-      {this.lang,
+      {required this.lang,
       this.scheme,
       this.refines,
       this.id,
       this.children = const {}});
 
   MetadataItem copy({
-    String property,
-    String value,
-    String lang,
-    String scheme,
-    String refines,
-    String id,
-    Map<String, List<MetadataItem>> children,
+    String? property,
+    String? value,
+    String? lang,
+    String? scheme,
+    String? refines,
+    String? id,
+    Map<String, List<MetadataItem>>? children,
   }) =>
       MetadataItem(
         property ?? this.property,
@@ -551,8 +554,8 @@ class MetadataItem {
   Subject toSubject() {
     assert(property == Vocabularies.dcterms + "subject");
     LocalizedString values = localizedString();
-    LocalizedString localizedSortAs =
-        fileAs?.let((it) => LocalizedString({it.item1: it.item2}));
+    LocalizedString? localizedSortAs =
+        fileAs?.let((it) => LocalizedString.fromStrings({it.item1: it.item2}));
     return Subject(
         localizedName: values,
         localizedSortAs: localizedSortAs,
@@ -563,12 +566,12 @@ class MetadataItem {
   Title toTitle() {
     assert(property == Vocabularies.dcterms + "title");
     LocalizedString values = localizedString();
-    LocalizedString localizedSortAs =
-        fileAs?.let((it) => LocalizedString({it.item1: it.item2}));
+    LocalizedString? localizedSortAs =
+        fileAs?.let((it) => LocalizedString.fromStrings({it.item1: it.item2}));
     return Title(values, localizedSortAs, titleType, displaySeq);
   }
 
-  Product2<String, Contributor> toContributor() {
+  Product2<String?, Contributor> toContributor() {
     assert(contributorProperties.contains(property));
     Set<String> knownRoles = {
       "aut",
@@ -581,12 +584,12 @@ class MetadataItem {
       "nrt"
     };
     LocalizedString names = localizedString();
-    LocalizedString localizedSortAs =
-        fileAs?.let((it) => LocalizedString({it.item1: it.item2}));
+    LocalizedString? localizedSortAs =
+        fileAs?.let((it) => LocalizedString.fromStrings({it.item1: it.item2}));
     Set<String> roles =
         role.takeUnless((it) => knownRoles.contains(it))?.let((it) => {it}) ??
             {};
-    String type;
+    String? type;
     switch (property) {
       case Vocabularies.meta + "belongs-to-collection":
         type = collectionType;
@@ -614,7 +617,7 @@ class MetadataItem {
     return Product2(type, contributor);
   }
 
-  Product2<String, Collection> toCollection() =>
+  Product2<String?, Collection> toCollection() =>
       toContributor().let((t) => Product2(t.item1, t.item2.toCollection()));
 
   dynamic toMap() {
@@ -629,41 +632,41 @@ class MetadataItem {
     }
   }
 
-  Product2<String, String> get fileAs => children[Vocabularies.meta + "file-as"]
-      ?.firstOrNull
-      ?.let((it) => Product2(it.lang.takeUnless((it) => it == ""), it.value));
+  Product2<String?, String>? get fileAs =>
+      children[Vocabularies.meta + "file-as"]?.firstOrNull?.let(
+          (it) => Product2(it.lang.takeUnless((it) => it == ""), it.value));
 
-  String get titleType => firstValue(Vocabularies.meta + "title-type");
+  String? get titleType => firstValue(Vocabularies.meta + "title-type");
 
-  int get displaySeq =>
+  int? get displaySeq =>
       firstValue(Vocabularies.meta + "display-seq")?.toIntOrNull();
 
-  String get authority => firstValue(Vocabularies.meta + "authority");
+  String? get authority => firstValue(Vocabularies.meta + "authority");
 
-  String get term => firstValue(Vocabularies.meta + "term");
+  String? get term => firstValue(Vocabularies.meta + "term");
 
   Map<String, String> get alternateScript =>
       children[Vocabularies.meta + "alternate-script"]
           ?.associate((it) => MapEntry(it.lang, it.value)) ??
       {};
 
-  String get collectionType =>
+  String? get collectionType =>
       firstValue(Vocabularies.meta + "collection-type");
 
-  double get groupPosition =>
+  double? get groupPosition =>
       firstValue(Vocabularies.meta + "group-position")?.toDoubleOrNull();
 
-  String get identifier => firstValue(Vocabularies.dcterms + "identifier");
+  String? get identifier => firstValue(Vocabularies.dcterms + "identifier");
 
-  String get role => firstValue(Vocabularies.meta + "role");
+  String? get role => firstValue(Vocabularies.meta + "role");
 
   LocalizedString localizedString() {
-    Map<String, String> values = {lang.takeUnless((it) => it == ""): value}
+    Map<String?, String> values = {lang.takeUnless((it) => it == ""): value}
       ..addAll(alternateScript);
-    return LocalizedString(values);
+    return LocalizedString.fromStrings(values);
   }
 
-  String firstValue(String property) => children[property]?.firstOrNull?.value;
+  String? firstValue(String property) => children[property]?.firstOrNull?.value;
 
   @override
   String toString() =>

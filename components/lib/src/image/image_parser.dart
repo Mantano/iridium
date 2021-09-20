@@ -11,7 +11,7 @@ import 'package:universal_io/io.dart';
 
 class ImageParser implements StreamPublicationParser {
   @override
-  Future<PublicationBuilder> parseFile(
+  Future<PublicationBuilder?> parseFile(
       PublicationAsset asset, Fetcher fetcher) async {
     if (!await _accepts(asset, fetcher)) {
       return null;
@@ -51,7 +51,7 @@ class ImageParser implements StreamPublicationParser {
     if ((await fetcher.links())
         .where((it) => !File(it.href).isHiddenOrThumbs)
         .every((it) =>
-            it.mediaType?.isBitmap == true ||
+            it.mediaType.isBitmap ||
             allowedExtensions.contains(File(it.href).lowercasedExtension))) {
       return true;
     }

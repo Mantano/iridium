@@ -18,7 +18,7 @@ import 'package:mno_shared/publication.dart';
 /// @func dataInputStream : return the InputStream of content
 abstract class Container {
   RootFile get rootFile;
-  Drm get drm;
+  Drm? get drm;
 }
 
 class ContainerError implements Exception {

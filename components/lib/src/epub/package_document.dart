@@ -16,37 +16,37 @@ import 'property_data_type.dart';
 class PackageDocument {
   final String path;
   final double epubVersion;
-  final String uniqueIdentifierId;
+  final String? uniqueIdentifierId;
   final EpubMetadata metadata;
   final List<Item> manifest;
   final Spine spine;
 
   PackageDocument(
-      {this.path,
-      this.epubVersion,
+      {required this.path,
+      required this.epubVersion,
       this.uniqueIdentifierId,
-      this.metadata,
-      this.manifest,
-      this.spine});
+      required this.metadata,
+      required this.manifest,
+      required this.spine});
 
-  static PackageDocument parse(XmlElement document, String filePath) {
+  static PackageDocument? parse(XmlElement document, String filePath) {
     Map<String, String> packagePrefixes =
         document.getAttribute("prefix")?.let((it) => parsePrefixes(it)) ?? {};
     Map<String, String> prefixMap = Map.of(packageReservedPrefixes)
       ..addAll(packagePrefixes); // prefix element overrides reserved prefixes
     double epubVersion =
         document.getAttribute("version")?.toDoubleOrNull() ?? 1.2;
-    EpubMetadata metadata =
+    EpubMetadata? metadata =
         MetadataParser(epubVersion, prefixMap).parse(document, filePath);
     if (metadata == null) {
       return null;
     }
-    XmlElement manifestElement =
+    XmlElement? manifestElement =
         document.getElement("manifest", namespace: Namespaces.opf);
     if (manifestElement == null) {
       return null;
     }
-    XmlElement spineElement =
+    XmlElement? spineElement =
         document.getElement("spine", namespace: Namespaces.opf);
     if (spineElement == null) {
       return null;
@@ -67,23 +67,23 @@ class PackageDocument {
 
 class Item {
   final String href;
-  final String id;
-  final String fallback;
-  final String mediaOverlay;
-  final String mediaType;
+  final String? id;
+  final String? fallback;
+  final String? mediaOverlay;
+  final String? mediaType;
   final List<String> properties;
 
   Item(
-      {this.href,
+      {required this.href,
       this.id,
       this.fallback,
       this.mediaOverlay,
       this.mediaType,
-      this.properties});
+      required this.properties});
 
-  static Item parse(
+  static Item? parse(
       XmlNode element, String filePath, Map<String, String> prefixMap) {
-    String href = element
+    String? href = element
         .getAttribute("href")
         ?.let((it) => Href(it, baseHref: filePath).string);
     if (href == null) {
@@ -111,7 +111,7 @@ class Item {
 class Spine {
   final List<Itemref> itemrefs;
   final ReadingProgression direction;
-  final String toc;
+  final String? toc;
 
   const Spine(this.itemrefs, this.direction, this.toc);
 
@@ -132,7 +132,7 @@ class Spine {
       default:
         pageProgressionDirection = ReadingProgression.auto; // null or "default"
     }
-    String ncx = (epubVersion >= 3.0) ? element.getAttribute("toc") : null;
+    String? ncx = (epubVersion >= 3.0) ? element.getAttribute("toc") : null;
     return Spine(itemrefs, pageProgressionDirection, ncx);
   }
 }
@@ -144,8 +144,8 @@ class Itemref {
 
   const Itemref(this.idref, this.linear, this.properties);
 
-  static Itemref parse(XmlNode element, Map<String, String> prefixMap) {
-    String idref = element.getAttribute("idref");
+  static Itemref? parse(XmlNode element, Map<String, String> prefixMap) {
+    String? idref = element.getAttribute("idref");
     if (idref == null) {
       return null;
     }

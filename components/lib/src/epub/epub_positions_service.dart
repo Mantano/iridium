@@ -23,13 +23,13 @@ class EpubPositionsService extends PositionsService {
   final Presentation presentation;
   final Fetcher fetcher;
   final int reflowablePositionLength;
-  List<List<Locator>> _positions;
+  List<List<Locator>>? _positions;
 
   EpubPositionsService(
-      {this.readingOrder,
-      this.presentation,
-      this.fetcher,
-      this.reflowablePositionLength});
+      {required this.readingOrder,
+      required this.presentation,
+      required this.fetcher,
+      required this.reflowablePositionLength});
 
   static EpubPositionsService create(PublicationServiceContext context) =>
       EpubPositionsService(
@@ -53,7 +53,7 @@ class EpubPositionsService extends PositionsService {
         locators = await createReflowable(
             link, lastPositionOfPreviousResource, fetcher);
       }
-      locators.lastOrNull?.locations?.position
+      locators.lastOrNull?.locations.position
           ?.let((it) => lastPositionOfPreviousResource = it);
       positions.add(locators);
     }
@@ -62,7 +62,7 @@ class EpubPositionsService extends PositionsService {
     int totalPageCount = positions.map((it) => it.length).sum();
     positions = positions
         .map((item) => item.map((locator) {
-              int position = locator.locations.position;
+              int? position = locator.locations.position;
               if (position == null) {
                 return locator;
               } else {
@@ -83,7 +83,7 @@ class EpubPositionsService extends PositionsService {
       Link link, int startPosition, Fetcher fetcher) async {
     // If the resource is encrypted, we use the `originalLength` declared in `encryption.xml`
     // instead of the ZIP entry length.
-    int length = link.properties.encryption?.originalLength ??
+    int? length = link.properties.encryption?.originalLength ??
         await fetcher
             .get(link)
             .use((it) async => (await it.length()).getOrNull());
@@ -100,7 +100,8 @@ class EpubPositionsService extends PositionsService {
     ];
   }
 
-  Locator createLocator(Link link, {double progression, int position}) =>
+  Locator createLocator(Link link,
+          {required double progression, required int position}) =>
       Locator(
           href: link.href,
           type: link.type ?? "text/html",

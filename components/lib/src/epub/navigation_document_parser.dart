@@ -30,7 +30,7 @@ class NavigationDocumentParser {
     Map<String, String> prefixMap = Map.of(contentReservedPrefixes)
       ..addAll(docPrefixes); // prefix element overrides reserved prefixes
 
-    XmlElement body =
+    XmlElement? body =
         document.rootElement.getElement("body", namespace: Namespaces.xhtml);
     if (body == null) {
       return {};
@@ -48,9 +48,9 @@ class NavigationDocumentParser {
     });
   }
 
-  static Product2<List<String>, List<Link>> _parseNavElement(
+  static Product2<List<String>, List<Link>>? _parseNavElement(
       XmlElement nav, String filePath, Map<String, String> prefixMap) {
-    String typeAttr = nav.getAttribute("type", namespace: Namespaces.ops);
+    String? typeAttr = nav.getAttribute("type", namespace: Namespaces.ops);
     if (typeAttr == null) {
       return null;
     }
@@ -58,10 +58,10 @@ class NavigationDocumentParser {
         .mapNotNull((it) =>
             resolveProperty(it, prefixMap, defaultVocab: DefaultVocab.type))
         .toList();
-    List<Link> links = nav
+    List<Link>? links = nav
         .getElement("ol", namespace: Namespaces.xhtml)
         ?.let((it) => _parseOlElement(it, filePath));
-    return (types.isNotEmpty && (links?.isNotEmpty ?? false))
+    return (types.isNotEmpty && links != null && links.isNotEmpty)
         ? Product2(types, links)
         : null;
   }
@@ -72,17 +72,17 @@ class NavigationDocumentParser {
           .mapNotNull((it) => _parseLiElement(it, filePath))
           .toList();
 
-  static Link _parseLiElement(XmlElement element, String filePath) {
-    XmlElement first = element.children.whereType<XmlElement>().firstOrNull;
+  static Link? _parseLiElement(XmlElement element, String filePath) {
+    XmlElement? first = element.children.whereType<XmlElement>().firstOrNull;
     if (first == null) {
       return null; // should be <a>,  <span>, or <ol>
     }
     String title = (first.name.local == "ol")
         ? ""
         : first.text.replaceAll(RegExp("\\s+"), " ").trim();
-    String rawHref = first.getAttribute("href");
+    String? rawHref = first.getAttribute("href");
     String href = (first.name.local == "a" && !rawHref.isNullOrBlank)
-        ? Href(rawHref, baseHref: filePath).string
+        ? Href(rawHref!, baseHref: filePath).string
         : "#";
     List<Link> children = element
             .getElement("ol", namespace: Namespaces.xhtml)

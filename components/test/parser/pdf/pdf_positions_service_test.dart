@@ -7,7 +7,7 @@ import 'package:mno_streamer/src/pdf/pdf_positions_service.dart';
 import 'package:test/test.dart';
 
 void main() {
-  PdfPositionsService createService({Link link, int pageCount}) =>
+  PdfPositionsService createService({Link? link, required int pageCount}) =>
       PdfPositionsService(
           link: link ?? Link(href: "/publication.pdf"),
           pageCount: pageCount,

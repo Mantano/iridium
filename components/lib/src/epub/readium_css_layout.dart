@@ -41,7 +41,8 @@ class ReadiumCssLayout {
   /// [readingProgression].
   /// Defaults to [ltr].
   static ReadiumCssLayout find(
-      {List<String> languages, ReadingProgression readingProgression}) {
+      {required List<String> languages,
+      required ReadingProgression readingProgression}) {
     bool isCjk;
     if (languages.length == 1) {
       String language = languages[0].split("-")[0]; // Remove region

@@ -40,7 +40,7 @@ Future<void> main() async {
   test("readingOrder is sorted alphabetically", () async {
     var builder = await parser.parseFile(cbzAsset, cbzFetcher);
     expect(builder, isNotNull);
-    var readingOrder = builder.manifest.readingOrder.map((it) => it.href
+    var readingOrder = builder!.manifest.readingOrder.map((it) => it.href
         .removePrefix("/Cory Doctorow's Futuristic Tales of the Here and Now"));
     expect(
         readingOrder,
@@ -52,13 +52,13 @@ Future<void> main() async {
     var builder = await parser.parseFile(cbzAsset, cbzFetcher);
     expect(builder, isNotNull);
     expect("/Cory Doctorow's Futuristic Tales of the Here and Now/a-fc.jpg",
-        builder.manifest.readingOrder.firstWithRel("cover")?.href);
+        builder!.manifest.readingOrder.firstWithRel("cover")?.href);
   });
 
   test("title is based on archive's root directory when any", () async {
     var builder = await parser.parseFile(cbzAsset, cbzFetcher);
     expect(builder, isNotNull);
     expect("Cory Doctorow's Futuristic Tales of the Here and Now",
-        builder.manifest.metadata.title);
+        builder!.manifest.metadata.title);
   });
 }

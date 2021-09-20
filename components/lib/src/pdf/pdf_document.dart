@@ -29,7 +29,7 @@ abstract class PdfDocument {
 
   Product2<double, double> getPageSizeByIndex(int pageIndex);
 
-  Image get cover;
+  Image? get cover;
 
   PdfPage loadPage(int pageIndex);
 

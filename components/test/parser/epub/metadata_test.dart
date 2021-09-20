@@ -11,8 +11,8 @@ import 'package_document_test.dart';
 
 void main() async {
   group("ContributorParsingTest", () {
-    Metadata epub2Metadata;
-    Metadata epub3Metadata;
+    late Metadata epub2Metadata;
+    late Metadata epub3Metadata;
     setUp(() async {
       epub2Metadata =
           (await parsePackageDocument("package/contributors-epub2.opf"))
@@ -61,7 +61,7 @@ void main() async {
 
     test("Localized contributors are rightly parsed (epub3 only)", () {
       var contributor = Contributor(
-          localizedName: LocalizedString(
+          localizedName: LocalizedString.fromStrings(
               {null: "Contributor 4", "fr": "Contributeur 4 en français"}));
       expect(epub3Metadata.contributors, contains(contributor));
     });
@@ -151,8 +151,8 @@ void main() async {
     });
   });
   group("TitleTest", () {
-    Metadata epub2Metadata;
-    Metadata epub3Metadata;
+    late Metadata epub2Metadata;
+    late Metadata epub3Metadata;
     setUp(() async {
       epub2Metadata =
           (await parsePackageDocument("package/titles-epub2.opf")).metadata;
@@ -165,7 +165,7 @@ void main() async {
           LocalizedString.fromString("Alice's Adventures in Wonderland"));
       expect(
           epub3Metadata.localizedTitle,
-          LocalizedString({
+          LocalizedString.fromStrings({
             null: "Alice's Adventures in Wonderland",
             "fr": "Les Aventures d'Alice au pays des merveilles"
           }));
@@ -174,7 +174,7 @@ void main() async {
     test("Subtitle is rightly parsed (epub3 only)", () {
       expect(
           epub3Metadata.localizedSubtitle,
-          LocalizedString({
+          LocalizedString.fromStrings({
             "en-GB":
                 "Alice returns to the magical world from her childhood adventure",
             "fr":
@@ -205,7 +205,7 @@ void main() async {
     });
   });
   group("SubjectTest", () {
-    Metadata complexMetadata;
+    late Metadata complexMetadata;
     setUp(() async {
       complexMetadata =
           (await parsePackageDocument("package/subjects-complex.opf")).metadata;
@@ -216,7 +216,7 @@ void main() async {
       expect(subject, isNotNull);
       expect(
           subject.localizedName,
-          LocalizedString({
+          LocalizedString.fromStrings({
             "en": "FICTION / Occult & Supernatural",
             "fr": "FICTION / Occulte & Surnaturel"
           }));
@@ -264,8 +264,8 @@ void main() async {
     });
   });
   group("DateTest", () {
-    Metadata epub2Metadata;
-    Metadata epub3Metadata;
+    late Metadata epub2Metadata;
+    late Metadata epub3Metadata;
     setUp(() async {
       epub2Metadata =
           (await parsePackageDocument("package/dates-epub2.opf")).metadata;
@@ -299,7 +299,7 @@ void main() async {
       var presentation =
           (await parsePackageDocument("package/presentation-metadata.opf"))
               .metadata
-              .rendition;
+              .rendition!;
       expect(presentation.continuous, false);
       expect(presentation.overflow, PresentationOverflow.scrolled);
       expect(presentation.spread, PresentationSpread.both);
@@ -309,7 +309,7 @@ void main() async {
 
     test("Cover link is rightly identified", () async {
       var expected =
-          Link(href: "OEBPS/cover.jpg", type: "image/jpeg", rels: {"cover"});
+          Link(href: "/OEBPS/cover.jpg", type: "image/jpeg", rels: {"cover"});
       expect(
           (await parsePackageDocument("package/cover-epub2.opf"))
               .resources
@@ -366,8 +366,8 @@ void main() async {
     });
   });
   group("CollectionTest", () {
-    Metadata epub2Metadata;
-    Metadata epub3Metadata;
+    late Metadata epub2Metadata;
+    late Metadata epub3Metadata;
     setUp(() async {
       epub2Metadata =
           (await parsePackageDocument("package/collections-epub2.opf"))
@@ -381,7 +381,8 @@ void main() async {
       expect(
           epub3Metadata.belongsToCollections,
           contains(Collection(
-              localizedName: LocalizedString({"en": "Collection B"}))));
+              localizedName:
+                  LocalizedString.fromStrings({"en": "Collection B"}))));
     });
 
     test(
@@ -390,11 +391,13 @@ void main() async {
       expect(
           epub3Metadata.belongsToCollections,
           contains(Collection(
-              localizedName: LocalizedString({"en": "Collection A"}))));
+              localizedName:
+                  LocalizedString.fromStrings({"en": "Collection A"}))));
     });
 
     test("Localized series are rightly parsed (epub3 only)", () {
-      var names = LocalizedString({"en": "Series A", "fr": "Série A"});
+      var names =
+          LocalizedString.fromStrings({"en": "Series A", "fr": "Série A"});
       expect(
           epub3Metadata.belongsToSeries,
           contains(Collection(
@@ -403,7 +406,8 @@ void main() async {
 
     test("Series with position are rightly computed", () {
       var expected = Collection(
-          localizedName: LocalizedString({"en": "Series B"}), position: 1.5);
+          localizedName: LocalizedString.fromStrings({"en": "Series B"}),
+          position: 1.5);
       expect(epub2Metadata.belongsToSeries, contains(expected));
       expect(epub3Metadata.belongsToSeries, contains(expected));
     });

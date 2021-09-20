@@ -16,12 +16,15 @@ class PdfPositionsService extends PositionsService {
   final Link link;
   final int pageCount;
   final List<Link> tableOfContents;
-  List<List<Locator>> _positions;
+  List<List<Locator>>? _positions;
 
-  PdfPositionsService({this.link, this.pageCount, this.tableOfContents});
+  PdfPositionsService(
+      {required this.link,
+      required this.pageCount,
+      required this.tableOfContents});
 
-  static PdfPositionsService create(PublicationServiceContext context) {
-    Link link = context.manifest.readingOrder.firstOrNull;
+  static PdfPositionsService? create(PublicationServiceContext context) {
+    Link? link = context.manifest.readingOrder.firstOrNull;
     if (link == null) {
       return null;
     }

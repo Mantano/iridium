@@ -10,10 +10,10 @@ import 'src/container/container.dart' as c;
 
 ///  Parses a Publication from a file.
 abstract class PublicationParser {
-  Future<PubBox> parse(String fileAtPath) =>
+  Future<PubBox?> parse(String fileAtPath) =>
       parseWithFallbackTitle(fileAtPath, basename(fileAtPath));
 
-  Future<PubBox> parseWithFallbackTitle(
+  Future<PubBox?> parseWithFallbackTitle(
       String fileAtPath, String fallbackTitle);
 }
 
@@ -30,7 +30,8 @@ abstract class StreamPublicationParser {
   /// @param warnings Used to report non-fatal parsing warnings, such as publication authoring
   /// mistakes. This is useful to warn users of potential rendering issues or help authors
   /// debug their publications.
-  Future<PublicationBuilder> parseFile(PublicationAsset asset, Fetcher fetcher);
+  Future<PublicationBuilder?> parseFile(
+      PublicationAsset asset, Fetcher fetcher);
 }
 
 class PubBox {

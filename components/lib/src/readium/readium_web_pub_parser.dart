@@ -21,12 +21,12 @@ import 'lcpdf_positions_service.dart';
 
 class ReadiumWebPubParser extends PublicationParser
     implements StreamPublicationParser {
-  final PdfDocumentFactory pdfFactory;
+  final PdfDocumentFactory? pdfFactory;
 
   ReadiumWebPubParser(this.pdfFactory);
 
   @override
-  Future<PublicationBuilder> parseFile(
+  Future<PublicationBuilder?> parseFile(
       PublicationAsset asset, Fetcher fetcher) async {
     MediaType mediaType = await asset.mediaType;
     Fimber.d("mediaType: $mediaType");
@@ -34,9 +34,9 @@ class ReadiumWebPubParser extends PublicationParser
       return null;
     }
 
-    Manifest manifest;
+    Manifest? manifest;
     if (mediaType.isRwpm) {
-      Link manifestLink = (await fetcher.links()).firstOrNull;
+      Link? manifestLink = (await fetcher.links()).firstOrNull;
       if (manifestLink == null) {
         throw Exception("Empty fetcher.");
       }
@@ -46,7 +46,7 @@ class ReadiumWebPubParser extends PublicationParser
           .then((result) => result.getOrThrow());
       manifest = Manifest.fromJson(manifestJson);
     } else {
-      Link manifestLink = (await fetcher.links())
+      Link? manifestLink = (await fetcher.links())
           .firstOrNullWhere((it) => it.href == "/manifest.json");
       if (manifestLink == null) {
         throw Exception("Unable to find a manifest link.");
@@ -72,8 +72,8 @@ class ReadiumWebPubParser extends PublicationParser
       throw Exception("Invalid LCP Protected PDF.");
     }
 
-    ServiceFactory positionsServiceFactory;
-    ServiceFactory coverServiceFactory;
+    ServiceFactory? positionsServiceFactory;
+    ServiceFactory? coverServiceFactory;
     if (mediaType == MediaType.lcpProtectedPdf) {
       positionsServiceFactory =
           pdfFactory?.let((it) => LcpdfPositionsService.create(it));
@@ -83,12 +83,12 @@ class ReadiumWebPubParser extends PublicationParser
           PdfDocument document = await it.openResource(fetcher.get(link));
           coverServiceFactory =
               document.cover?.let(InMemoryCoverService.createFactory);
-          manifest = manifest.copy(
-            metadata: manifest.metadata.copy(
+          manifest = manifest!.copy(
+            metadata: manifest!.metadata.copy(
               numberOfPages: document.pageCount,
             ),
           );
-          manifest.subcollections["pageList"] = [
+          manifest!.subcollections["pageList"] = [
             PublicationCollection(
                 links: List.generate(
                     document.pageCount,
@@ -96,7 +96,7 @@ class ReadiumWebPubParser extends PublicationParser
                           id: "${link.href}?page=$index",
                           href: "${link.href}?page=$index",
                           type: MediaType.pdf.toString(),
-                          title: manifest.metadata.localizedTitle.string,
+                          title: manifest!.metadata.localizedTitle.string,
                         )))
           ];
         } on Exception catch (e) {
@@ -119,18 +119,20 @@ class ReadiumWebPubParser extends PublicationParser
     );
 
     return PublicationBuilder(
-        manifest: manifest, fetcher: fetcher, servicesBuilder: servicesBuilder);
+        manifest: manifest!,
+        fetcher: fetcher,
+        servicesBuilder: servicesBuilder);
   }
 
   @override
-  Future<PubBox> parseWithFallbackTitle(
+  Future<PubBox?> parseWithFallbackTitle(
       String fileAtPath, String fallbackTitle) async {
     File file = File(fileAtPath);
     FileAsset asset = FileAsset(file);
     MediaType mediaType = await asset.mediaType;
     Fetcher baseFetcher;
     try {
-      baseFetcher = ArchiveFetcher.fromPath(file.path) ??
+      baseFetcher = await ArchiveFetcher.fromPath(file.path) ??
           FileFetcher.single(href: "/${basename(fileAtPath)}", file: file);
     } on FileNotFoundException {
       throw ContainerError.missingFile(fileAtPath);
@@ -138,8 +140,8 @@ class ReadiumWebPubParser extends PublicationParser
       return null;
     }
 
-    Drm drm = (await baseFetcher._isProtectedWithLcp()) ? Drm.lcp : null;
-    PublicationBuilder builder;
+    Drm? drm = (await baseFetcher._isProtectedWithLcp()) ? Drm.lcp : null;
+    PublicationBuilder? builder;
     try {
       builder = await parseFile(asset, baseFetcher);
     } on Exception {

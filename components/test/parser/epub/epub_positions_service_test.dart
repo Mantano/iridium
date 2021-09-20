@@ -32,8 +32,8 @@ class MockResource extends Resource {
 
   MockResource(this.fetcher, this._link);
 
-  Product2<int, Link> findResource(String relativePath) => fetcher.readingOrder
-      .firstWhere((it) => it.item2.href == relativePath, orElse: () => null);
+  Product2<int, Link>? findResource(String relativePath) => fetcher.readingOrder
+      .firstOrNullWhere((it) => it.item2.href == relativePath);
 
   @override
   Future<void> close() async {}
@@ -47,14 +47,14 @@ class MockResource extends Resource {
   Future<Link> link() async => _link;
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) async =>
+  Future<ResourceTry<ByteData>> read({IntRange? range}) async =>
       ResourceTry.success(ByteData(0));
 }
 
 void main() {
   EpubPositionsService createService(
-          {EpubLayout layout,
-          List<Product2<int, Link>> readingOrder,
+          {EpubLayout? layout,
+          required List<Product2<int, Link>> readingOrder,
           int reflowablePositionLength = 50}) =>
       EpubPositionsService(
           readingOrder: readingOrder.map((it) => it.item2).toList(),
@@ -63,13 +63,14 @@ void main() {
           reflowablePositionLength: reflowablePositionLength);
 
   Properties createProperties(
-      {EpubLayout layout, int encryptedOriginalLength}) {
+      {EpubLayout? layout, int? encryptedOriginalLength}) {
     var properties = {
       if (layout != null) "layout": layout.value,
-      "encrypted": {
-        "algorithm": "algo",
-        "originalLength": encryptedOriginalLength
-      },
+      if (encryptedOriginalLength != null)
+        "encrypted": {
+          "algorithm": "algo",
+          "originalLength": encryptedOriginalLength
+        },
     };
     return Properties(otherProperties: properties);
   }

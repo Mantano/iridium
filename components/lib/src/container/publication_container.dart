@@ -14,9 +14,13 @@ class PublicationContainer extends Container {
   final String path;
   final MediaType mediaType;
   @override
-  final Drm drm;
+  final Drm? drm;
 
-  PublicationContainer({this.publication, this.path, this.mediaType, this.drm});
+  PublicationContainer(
+      {required this.publication,
+      required this.path,
+      required this.mediaType,
+      this.drm});
 
   @override
   RootFile get rootFile =>

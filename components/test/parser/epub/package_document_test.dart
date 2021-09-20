@@ -3,23 +3,22 @@
 // found in the LICENSE file.
 import 'package:dfunc/dfunc.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:mno_streamer/src/epub/package_document.dart';
-import 'package:mno_streamer/src/epub/publication_factory.dart';
+import 'package:mno_streamer/parser.dart';
 import 'package:test/test.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
 
 Future<Manifest> parsePackageDocument(String resource,
-    {String displayOptions}) async {
+    {String? displayOptions}) async {
   String path = "test_resources/epub/" + resource;
   var document = XmlDocument.parse(await File(path).readAsString());
   var pub = document
-      ?.let((it) => PackageDocument.parse(it.rootElement, "OEBPS/content.opf"))
+      .let((it) => PackageDocument.parse(it.rootElement, "OEBPS/content.opf"))
       ?.let((it) => PublicationFactory(
           fallbackTitle: "fallback title", packageDocument: it))
-      ?.create();
+      .create();
   assert(pub != null);
-  return pub;
+  return pub!;
 }
 
 void main() {
@@ -58,7 +57,7 @@ void main() {
   });
 
   group("LinkPropertyTest", () {
-    Manifest propertiesPub;
+    late Manifest propertiesPub;
     setUp(() async => propertiesPub =
         (await parsePackageDocument("package/links-properties.opf")));
 
@@ -122,7 +121,7 @@ void main() {
   });
 
   group("LinkTest", () {
-    Manifest resourcesPub;
+    late Manifest resourcesPub;
     setUp(() async =>
         resourcesPub = (await parsePackageDocument("package/links.opf")));
 
@@ -130,8 +129,8 @@ void main() {
       expect(
           resourcesPub.readingOrder,
           containsAll([
-            Link(href: "titlepage.xhtml", type: "application/xhtml+xml"),
-            Link(href: "OEBPS/chapter01.xhtml", type: "application/xhtml+xml")
+            Link(href: "/titlepage.xhtml", type: "application/xhtml+xml"),
+            Link(href: "/OEBPS/chapter01.xhtml", type: "application/xhtml+xml")
           ]));
     });
 
@@ -140,25 +139,25 @@ void main() {
           resourcesPub.resources,
           containsAll([
             Link(
-                href: "OEBPS/fonts/MinionPro.otf",
+                href: "/OEBPS/fonts/MinionPro.otf",
                 type: "application/vnd.ms-opentype"),
             Link(
-                href: "OEBPS/nav.xhtml",
+                href: "/OEBPS/nav.xhtml",
                 type: "application/xhtml+xml",
                 rels: {"contents"}),
-            Link(href: "style.css", type: "text/css"),
-            Link(href: "OEBPS/chapter01.smil", type: "application/smil+xml"),
+            Link(href: "/style.css", type: "text/css"),
+            Link(href: "/OEBPS/chapter01.smil", type: "application/smil+xml"),
             Link(
-                href: "OEBPS/chapter02.smil",
+                href: "/OEBPS/chapter02.smil",
                 type: "application/smil+xml",
                 duration: 1949.0),
             Link(
-                href: "OEBPS/images/alice01a.png",
+                href: "/OEBPS/images/alice01a.png",
                 type: "image/png",
                 rels: {"cover"}),
-            Link(href: "OEBPS/images/alice02a.gif", type: "image/gif"),
-            Link(href: "OEBPS/chapter02.xhtml", type: "application/xhtml+xml"),
-            Link(href: "OEBPS/nomediatype.txt")
+            Link(href: "/OEBPS/images/alice02a.gif", type: "image/gif"),
+            Link(href: "/OEBPS/chapter02.xhtml", type: "application/xhtml+xml"),
+            Link(href: "/OEBPS/nomediatype.txt")
           ]));
     });
   });
@@ -168,15 +167,15 @@ void main() {
       expect(
           (await parsePackageDocument("package/fallbacks.opf")).resources,
           contains(Link(
-              href: "OEBPS/chap1_docbook.xml",
+              href: "/OEBPS/chap1_docbook.xml",
               type: "application/docbook+xml",
               alternates: [
                 Link(
-                    href: "OEBPS/chap1.xml",
+                    href: "/OEBPS/chap1.xml",
                     type: "application/z3998-auth+xml",
                     alternates: [
                       Link(
-                          href: "OEBPS/chap1.xhtml",
+                          href: "/OEBPS/chap1.xhtml",
                           type: "application/xhtml+xml")
                     ])
               ])));

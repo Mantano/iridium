@@ -16,32 +16,32 @@ class EncryptionParser {
           .findAllElements("EncryptedData", namespace: Namespaces.enc)
           .mapNotNull(_parseEncryptedData));
 
-  static MapEntry<String, Encryption> _parseEncryptedData(XmlElement node) {
-    String resourceURI = node
+  static MapEntry<String, Encryption>? _parseEncryptedData(XmlElement node) {
+    String? resourceURI = node
         .getElement("CipherData", namespace: Namespaces.enc)
         ?.getElement("CipherReference", namespace: Namespaces.enc)
         ?.getAttribute("URI");
     if (resourceURI == null) {
       return null;
     }
-    String retrievalMethod = node
+    String? retrievalMethod = node
         .getElement("KeyInfo", namespace: Namespaces.sig)
         ?.getElement("RetrievalMethod", namespace: Namespaces.sig)
         ?.getAttribute("URI");
-    String scheme = (retrievalMethod == "license.lcpl#/encryption/content_key")
+    String? scheme = (retrievalMethod == "license.lcpl#/encryption/content_key")
         ? Drm.lcp.scheme
         : null;
-    String algorithm = node
+    String? algorithm = node
         .getElement("EncryptionMethod", namespace: Namespaces.enc)
         ?.getAttribute("Algorithm");
     if (algorithm == null) {
       return null;
     }
-    Product2<int, String> compression = node
+    Product2<int, String>? compression = node
         .getElement("EncryptionProperties", namespace: Namespaces.enc)
         ?.let(_parseEncryptionProperties);
-    int originalLength = compression?.item1;
-    String compressionMethod = compression?.item2;
+    int? originalLength = compression?.item1;
+    String? compressionMethod = compression?.item2;
     Encryption enc = Encryption(
         scheme: scheme,
         /* profile: drm?.license?.encryptionProfile,
@@ -52,14 +52,14 @@ class EncryptionParser {
     return MapEntry(Href(resourceURI).string, enc);
   }
 
-  static Product2<int, String> _parseEncryptionProperties(
+  static Product2<int, String>? _parseEncryptionProperties(
       XmlElement encryptionProperties) {
     for (XmlElement encryptionProperty in encryptionProperties
         .findElements("EncryptionProperty", namespace: Namespaces.enc)) {
-      XmlElement compressionElement = encryptionProperty
+      XmlElement? compressionElement = encryptionProperty
           .getElement("Compression", namespace: Namespaces.comp);
       if (compressionElement != null) {
-        Product2<int, String> compression =
+        Product2<int, String>? compression =
             _parseCompressionElement(compressionElement);
         if (compression != null) {
           return compression;
@@ -69,14 +69,14 @@ class EncryptionParser {
     return null;
   }
 
-  static Product2<int, String> _parseCompressionElement(
+  static Product2<int, String>? _parseCompressionElement(
       XmlElement compressionElement) {
-    int originalLength =
+    int? originalLength =
         compressionElement.getAttribute("OriginalLength")?.toIntOrNull();
     if (originalLength == null) {
       return null;
     }
-    String method = compressionElement.getAttribute("Method");
+    String? method = compressionElement.getAttribute("Method");
     if (method == null) {
       return null;
     }
