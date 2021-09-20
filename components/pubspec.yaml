@@ -11,10 +11,10 @@ dependencies:
   dartx: ^0.7.1
   dfunc: ^0.7.2
   fimber: ^0.6.1
-  image: ^3.0.2
+  image: ^3.0.4
   path: ^1.8.0
   universal_io: ^2.0.4
-  xml: ^5.2.0
+  xml: ^5.3.0
   mno_commons:
     path: ../mno_commons_dart
   mno_shared:
