@@ -15,7 +15,7 @@ extension StringExtension on String {
   /// Otherwise, returns a copy of this string after adding the [prefix].
   String addPrefix(String prefix) => startsWith(prefix) ? this : "$prefix$this";
 
-  String ifBlank(String Function() defaultValue) =>
+  String? ifBlank(String? Function() defaultValue) =>
       isBlank ? defaultValue() : this;
 
   String substringBefore(String? separator) {
