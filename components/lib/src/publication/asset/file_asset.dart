@@ -35,7 +35,7 @@ class FileAsset extends PublicationAsset {
 
   @override
   Future<Try<Fetcher, OpeningException>> createFetcher(
-      PublicationAssetDependencies dependencies, String credentials) async {
+      PublicationAssetDependencies dependencies, String? credentials) async {
     try {
       Fetcher? fetcher;
       if (await FileSystemEntity.isDirectory(file.path)) {

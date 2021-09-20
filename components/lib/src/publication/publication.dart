@@ -18,7 +18,8 @@ import '../../fetcher.dart';
 import '../../publication.dart';
 import '../readium_css.dart';
 
-typedef ServiceFactory = PublicationService Function(PublicationServiceContext);
+typedef ServiceFactory = PublicationService? Function(
+    PublicationServiceContext);
 
 /// The Publication shared model is the entry-point for all the metadata and services
 /// related to a Readium publication.

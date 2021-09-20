@@ -413,8 +413,8 @@ class MediaType {
   }
 
   /// Returns whether the given [other] media type is included in this media type.
-  bool containsFromName(String other) {
-    MediaType? mediaType = MediaType.parse(other);
+  bool containsFromName(String? other) {
+    MediaType? mediaType = other?.let((it) => MediaType.parse(it));
     if (mediaType == null) {
       return false;
     }

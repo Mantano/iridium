@@ -27,10 +27,10 @@ mixin ContentProtection {
   /// @return A [ProtectedAsset] in case of success, null if the file is not protected by this
   /// technology or a [UserException] if the file can't be successfully opened,
   /// even in restricted mode.
-  Future<Try<ProtectedAsset, UserException>> open(
+  Future<Try<ProtectedAsset, UserException>?> open(
       PublicationAsset asset,
       Fetcher fetcher,
-      String credentials,
+      String? credentials,
       bool allowUserInteraction,
       Object sender);
 }
