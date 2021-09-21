@@ -7,11 +7,20 @@ import 'package:universal_io/io.dart';
 
 import 'request_handler.dart';
 
+/// A [RequestController] is used to process each request received by the
+/// server.
 class RequestController {
-  final List<RequestHandler> _handlers;
+  /// List of [RequestHandler].
+  final List<RequestHandler> handlers;
 
-  RequestController(this._handlers) : assert(_handlers != null);
+  /// Creates a [RequestController] instance with [handlers].
+  RequestController(this.handlers);
 
+  /// This method process the [request].
+  ///
+  /// It will try each [RequestHandler] from [handlers] to provide a response.
+  /// If the [request] is not handled by any [handlers], it will send back a
+  /// [HttpStatus.notFound] error.
   void onRequest(int requestId, HttpRequest request) async {
     HttpResponse response = request.response;
     String href = Uri.decodeFull(request.uri.toString());
@@ -20,7 +29,7 @@ class RequestController {
     }
 
     try {
-      for (RequestHandler handler in _handlers) {
+      for (RequestHandler handler in handlers) {
         if (await handler.handle(requestId, request, href)) {
           return;
         }
