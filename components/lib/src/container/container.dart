@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Container of a publication
 ///
@@ -18,7 +18,7 @@ import 'package:mno_shared_dart/publication.dart';
 /// @func dataInputStream : return the InputStream of content
 abstract class Container {
   RootFile get rootFile;
-  Drm get drm;
+  Drm? get drm;
 }
 
 class ContainerError implements Exception {

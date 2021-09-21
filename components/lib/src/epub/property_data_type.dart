@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_streamer_dart/src/epub/constants.dart';
+import 'package:mno_streamer/src/epub/constants.dart';
 
 const Map<String, String> packageReservedPrefixes = {
   "dcterms": Vocabularies.dcterms,
@@ -32,13 +32,13 @@ class DefaultVocab {
 }
 
 String resolveProperty(String property, Map<String, String> prefixMap,
-    {DefaultVocab defaultVocab}) {
+    {DefaultVocab? defaultVocab}) {
   List<String> splitted =
       property.split(":").where((it) => it.isNotEmpty).toList();
   if (splitted.length == 1 && defaultVocab != null) {
     return defaultVocab.iri + splitted[0];
   } else if (splitted.length == 2 && prefixMap[splitted[0]] != null) {
-    return prefixMap[splitted[0]] + splitted[1];
+    return prefixMap[splitted[0]]! + splitted[1];
   } else {
     return property;
   }
@@ -46,8 +46,8 @@ String resolveProperty(String property, Map<String, String> prefixMap,
 
 Map<String, String> parsePrefixes(String prefixes) => Map.fromEntries(
         RegExp("\\s*(\\w+):\\s*(\\S+)").allMatches(prefixes).map((it) {
-      String prefixGroup = it.group(1);
-      String iriGroup = it.group(2);
+      String prefixGroup = it.group(1)!;
+      String iriGroup = it.group(2)!;
       return MapEntry(prefixGroup, iriGroup);
     }));
 

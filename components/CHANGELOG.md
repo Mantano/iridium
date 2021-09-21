@@ -1,3 +1,4 @@
-## [0.1.0] - July 6, 2021.
+## 0.1.0
 
-* Initial release.
+* Include Streamer that has the capability to parse CBZ, epub, image, PDF and Readium publications
+* Support null-safety

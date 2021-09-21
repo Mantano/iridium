@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
 
 import 'container.dart';
 
@@ -14,9 +14,13 @@ class PublicationContainer extends Container {
   final String path;
   final MediaType mediaType;
   @override
-  final Drm drm;
+  final Drm? drm;
 
-  PublicationContainer({this.publication, this.path, this.mediaType, this.drm});
+  PublicationContainer(
+      {required this.publication,
+      required this.path,
+      required this.mediaType,
+      this.drm});
 
   @override
   RootFile get rootFile =>

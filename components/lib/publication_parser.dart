@@ -2,18 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:path/path.dart';
 
 import 'src/container/container.dart' as c;
 
 ///  Parses a Publication from a file.
 abstract class PublicationParser {
-  Future<PubBox> parse(String fileAtPath) =>
+  Future<PubBox?> parse(String fileAtPath) =>
       parseWithFallbackTitle(fileAtPath, basename(fileAtPath));
 
-  Future<PubBox> parseWithFallbackTitle(
+  Future<PubBox?> parseWithFallbackTitle(
       String fileAtPath, String fallbackTitle);
 }
 
@@ -30,7 +30,8 @@ abstract class StreamPublicationParser {
   /// @param warnings Used to report non-fatal parsing warnings, such as publication authoring
   /// mistakes. This is useful to warn users of potential rendering issues or help authors
   /// debug their publications.
-  Future<PublicationBuilder> parseFile(PublicationAsset asset, Fetcher fetcher);
+  Future<PublicationBuilder?> parseFile(
+      PublicationAsset asset, Fetcher fetcher);
 }
 
 class PubBox {

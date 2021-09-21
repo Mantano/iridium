@@ -6,8 +6,8 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
-import 'package:mno_commons_dart/extensions/strings.dart';
-import 'package:mno_shared_dart/fetcher.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_shared/fetcher.dart';
 
 class EpubDeobfuscator {
   final String pubId;
@@ -28,15 +28,16 @@ class DeobfuscatingResource extends ProxyResource {
   DeobfuscatingResource(Resource resource, this.pubId) : super(resource);
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) async {
-    String algorithm = (await resource.link()).properties.encryption?.algorithm;
+  Future<ResourceTry<ByteData>> read({IntRange? range}) async {
+    String? algorithm =
+        (await resource.link()).properties.encryption?.algorithm;
 
     if (!_algorithm2length.containsKey(algorithm)) {
       return resource.read(range: range);
     }
 
     return (await resource.read(range: range)).mapCatching((it) {
-      int obfuscationLength = _algorithm2length[algorithm];
+      int obfuscationLength = _algorithm2length[algorithm]!;
       ByteData obfuscationKey;
       switch (algorithm) {
         case "http://ns.adobe.com/pdf/enc#RC":
@@ -51,7 +52,7 @@ class DeobfuscatingResource extends ProxyResource {
     });
   }
 
-  void _deobfuscate(ByteData bytes, IntRange range, ByteData obfuscationKey,
+  void _deobfuscate(ByteData bytes, IntRange? range, ByteData obfuscationKey,
       int obfuscationLength) {
     range ??= IntRange(0, bytes.lengthInBytes - 1);
     if (range.first >= obfuscationLength) {
@@ -61,10 +62,10 @@ class DeobfuscatingResource extends ProxyResource {
     IntRange toDeobfuscate =
         IntRange(max(range.first, 0), min(range.last, obfuscationLength - 1));
     for (int i in toDeobfuscate) {
-      bytes.setInt8(
+      bytes.setUint8(
           i,
-          bytes.getInt8(i) ^
-              obfuscationKey.getInt8(i % obfuscationKey.elementSizeInBytes));
+          bytes.getUint8(i) ^
+              obfuscationKey.getUint8(i % obfuscationKey.lengthInBytes));
     }
   }
 

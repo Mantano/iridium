@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/publication.dart';
 
 class ReadiumCssLayout {
 // Right to left
@@ -41,7 +41,8 @@ class ReadiumCssLayout {
   /// [readingProgression].
   /// Defaults to [ltr].
   static ReadiumCssLayout find(
-      {List<String> languages, ReadingProgression readingProgression}) {
+      {required List<String> languages,
+      required ReadingProgression readingProgression}) {
     bool isCjk;
     if (languages.length == 1) {
       String language = languages[0].split("-")[0]; // Remove region

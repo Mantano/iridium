@@ -4,18 +4,21 @@
 
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/pdf.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/pdf.dart';
 
 class LcpdfPositionsService extends PositionsService {
   final PdfDocumentFactory pdfFactory;
   final List<Link> readingOrder;
   final Fetcher fetcher;
-  List<List<Locator>> _positions;
+  List<List<Locator>>? _positions;
 
-  LcpdfPositionsService._({this.pdfFactory, this.readingOrder, this.fetcher});
+  LcpdfPositionsService._(
+      {required this.pdfFactory,
+      required this.readingOrder,
+      required this.fetcher});
 
   static ServiceFactory create(PdfDocumentFactory pdfFactory) =>
       (PublicationServiceContext context) => LcpdfPositionsService._(
@@ -43,7 +46,7 @@ class LcpdfPositionsService extends PositionsService {
 
     int lastPositionOfPreviousResource = 0;
     return resources.map((it) {
-      int pageCount = it.item1;
+      int? pageCount = it.item1;
       Link link = it.item2;
       List<Locator> positions = createPositionsOf(link,
           pageCount: pageCount,
@@ -55,7 +58,9 @@ class LcpdfPositionsService extends PositionsService {
   }
 
   List<Locator> createPositionsOf(Link link,
-      {int pageCount, int totalPageCount, int startPosition}) {
+      {required int pageCount,
+      required int totalPageCount,
+      required int startPosition}) {
     if (pageCount <= 0 || totalPageCount <= 0) {
       return [];
     }
@@ -81,7 +86,7 @@ class LcpdfPositionsService extends PositionsService {
             position: startPosition + position));
   }
 
-  Future<PdfDocument> openPdfAt(Link link) {
+  Future<PdfDocument?> openPdfAt(Link link) async {
     try {
       return pdfFactory.openResource(fetcher.get(link), password: null);
     } on Exception catch (e) {

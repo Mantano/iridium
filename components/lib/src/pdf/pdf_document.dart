@@ -2,10 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:bitmap/bitmap.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:image/image.dart';
-import 'package:mno_streamer_dart/pdf.dart';
+import 'package:mno_streamer/pdf.dart';
 
 abstract class PdfDocument {
   String get identifier;
@@ -30,9 +29,7 @@ abstract class PdfDocument {
 
   Product2<double, double> getPageSizeByIndex(int pageIndex);
 
-  Image get cover;
-
-  Bitmap get coverBitmap;
+  Image? get cover;
 
   PdfPage loadPage(int pageIndex);
 

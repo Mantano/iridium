@@ -2,15 +2,16 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_commons_dart/utils/href.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
-import 'package:mno_streamer_dart/parser.dart';
-import 'package:mno_streamer_dart/src/container/container.dart';
-import 'package:mno_streamer_dart/src/container/publication_container.dart';
-import 'package:mno_streamer_dart/src/epub/package_document.dart';
+import 'package:mno_commons/utils/href.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/parser.dart';
+import 'package:mno_streamer/src/container/container.dart';
+import 'package:mno_streamer/src/container/publication_container.dart';
+import 'package:mno_streamer/src/epub/package_document.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
 
@@ -24,38 +25,36 @@ import 'publication_factory.dart';
 import 'readium_css_layout.dart';
 
 class EPUBConstant {
-  static Map<ReadiumCSSName, bool> get ltrPreset => {
-        ReadiumCSSName.from("hyphens"): false,
-        ReadiumCSSName.from("ligatures"): false
-      };
+  static Map<ReadiumCSSName, bool> get ltrPreset =>
+      {ReadiumCSSName.hyphens: false, ReadiumCSSName.ligatures: false};
 
   static Map<ReadiumCSSName, bool> get rtlPreset => {
-        ReadiumCSSName.from("hyphens"): false,
-        ReadiumCSSName.from("wordSpacing"): false,
-        ReadiumCSSName.from("letterSpacing"): false,
-        ReadiumCSSName.from("ligatures"): true
+        ReadiumCSSName.hyphens: false,
+        ReadiumCSSName.wordSpacing: false,
+        ReadiumCSSName.letterSpacing: false,
+        ReadiumCSSName.ligatures: true
       };
 
   static Map<ReadiumCSSName, bool> get cjkHorizontalPreset => {
-        ReadiumCSSName.from("textAlignment"): false,
-        ReadiumCSSName.from("hyphens"): false,
-        ReadiumCSSName.from("paraIndent"): false,
-        ReadiumCSSName.from("wordSpacing"): false,
-        ReadiumCSSName.from("letterSpacing"): false
+        ReadiumCSSName.textAlignment: false,
+        ReadiumCSSName.hyphens: false,
+        ReadiumCSSName.paraIndent: false,
+        ReadiumCSSName.wordSpacing: false,
+        ReadiumCSSName.letterSpacing: false
       };
 
   static Map<ReadiumCSSName, bool> get cjkVerticalPreset => {
-        ReadiumCSSName.from("scroll"): true,
-        ReadiumCSSName.from("columnCount"): false,
-        ReadiumCSSName.from("textAlignment"): false,
-        ReadiumCSSName.from("hyphens"): false,
-        ReadiumCSSName.from("paraIndent"): false,
-        ReadiumCSSName.from("wordSpacing"): false,
-        ReadiumCSSName.from("letterSpacing"): false
+        ReadiumCSSName.scroll: true,
+        ReadiumCSSName.columnCount: false,
+        ReadiumCSSName.textAlignment: false,
+        ReadiumCSSName.hyphens: false,
+        ReadiumCSSName.paraIndent: false,
+        ReadiumCSSName.wordSpacing: false,
+        ReadiumCSSName.letterSpacing: false
       };
 
   static Map<ReadiumCSSName, bool> get forceScrollPreset =>
-      {ReadiumCSSName.from("scroll"): true};
+      {ReadiumCSSName.scroll: true};
 }
 
 class EpubParserException implements Exception {
@@ -63,7 +62,7 @@ class EpubParserException implements Exception {
   factory EpubParserException.invalidEpub(String message) =>
       EpubParserException("Invalid EPUB: $message");
 
-  const EpubParserException(this.message) : assert(message != null);
+  const EpubParserException(this.message);
 
   final String message;
 }
@@ -71,11 +70,11 @@ class EpubParserException implements Exception {
 /// Parses a Publication from an EPUB publication.
 class EpubParser extends PublicationParser implements StreamPublicationParser {
   @override
-  Future<PublicationBuilder> parseFile(
+  Future<PublicationBuilder?> parseFile(
           PublicationAsset asset, Fetcher fetcher) =>
       _parse(asset, fetcher, asset.name);
 
-  Future<PublicationBuilder> _parse(
+  Future<PublicationBuilder?> _parse(
       PublicationAsset asset, Fetcher fetcher, String fallbackTitle) async {
     if (await asset.mediaType != MediaType.epub) {
       return null;
@@ -83,8 +82,8 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
     String opfPath = await getRootFilePath(fetcher);
     XmlDocument opfXmlDocument =
         (await fetcher.getWithHref(opfPath).readAsXml()).getOrThrow();
-    PackageDocument packageDocument =
-        PackageDocument.parse(opfXmlDocument.firstElementChild, opfPath);
+    PackageDocument? packageDocument =
+        PackageDocument.parse(opfXmlDocument.firstElementChild!, opfPath);
     if (packageDocument == null) {
       throw Exception("Invalid OPF file.");
     }
@@ -112,18 +111,18 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
   }
 
   @override
-  Future<PubBox> parseWithFallbackTitle(
+  Future<PubBox?> parseWithFallbackTitle(
       String fileAtPath, String fallbackTitle) async {
     File file = File(fileAtPath);
     FileAsset asset = FileAsset(file);
 
-    Fetcher fetcher = await Fetcher.fromArchiveOrDirectory(fileAtPath);
+    Fetcher? fetcher = await Fetcher.fromArchiveOrDirectory(fileAtPath);
     if (fetcher == null) {
       throw ContainerError.missingFile(fileAtPath);
     }
 
-    Drm drm = (await fetcher.isProtectedWithLcp()) ? Drm.lcp : null;
-    PublicationBuilder builder;
+    Drm? drm = (await fetcher.isProtectedWithLcp()) ? Drm.lcp : null;
+    PublicationBuilder? builder;
     try {
       builder = await _parse(asset, fetcher, fallbackTitle);
     } on Exception {
@@ -151,7 +150,7 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
   }
 
   Future<String> getRootFilePath(Fetcher fetcher) async {
-    String path = (await fetcher.readAsXmlOrNull("/META-INF/container.xml"))
+    String? path = (await fetcher.readAsXmlOrNull("/META-INF/container.xml"))
         ?.firstElementChild
         ?.getElement("rootfiles", namespace: Namespaces.opc)
         ?.getElement("rootfile", namespace: Namespaces.opc)
@@ -170,31 +169,31 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
   Future<Map<String, List<Link>>> _parseNavigationData(
       PackageDocument packageDocument, Fetcher fetcher) async {
     if (packageDocument.epubVersion < 3.0) {
-      Item ncxItem = packageDocument.manifest.firstWhere(
-          (it) => MediaType.ncx.containsFromName(it.mediaType),
-          orElse: () => null);
+      Item? ncxItem = packageDocument.manifest.firstOrNullWhere(
+          (it) => MediaType.ncx.containsFromName(it.mediaType));
       return await ncxItem?.let((it) async {
             String ncxPath = Href(it.href).string;
             return (await fetcher.readAsXmlOrNull(ncxPath))
-                ?.let((it) => NcxParser.parse(it.rootElement, ncxPath));
+                    ?.let((it) => NcxParser.parse(it.rootElement, ncxPath)) ??
+                {};
           }) ??
           {};
     } else {
-      Item navItem = packageDocument.manifest.firstWhere(
-          (it) => it.properties.contains(Vocabularies.item + "nav"),
-          orElse: () => null);
+      Item? navItem = packageDocument.manifest.firstOrNullWhere(
+          (it) => it.properties.contains(Vocabularies.item + "nav"));
       return await navItem?.let((it) async {
             String navPath =
                 Href(navItem.href, baseHref: packageDocument.path).string;
-            return (await fetcher.readAsXmlOrNull(navPath))
-                ?.let((it) => NavigationDocumentParser.parse(it, navPath));
+            return (await fetcher.readAsXmlOrNull(navPath))?.let(
+                    (it) => NavigationDocumentParser.parse(it, navPath)) ??
+                {};
           }) ??
           {};
     }
   }
 
   Future<Map<String, String>> _parseDisplayOptions(Fetcher fetcher) async {
-    XmlDocument displayOptionsXml = await fetcher.readAsXmlOrNull(
+    XmlDocument? displayOptionsXml = await fetcher.readAsXmlOrNull(
             "/META-INF/com.apple.ibooks.display-options.xml") ??
         await fetcher
             .readAsXmlOrNull("/META-INF/com.kobobooks.display-options.xml");
@@ -202,13 +201,13 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
     return displayOptionsXml
             ?.getElement("platform", namespace: "")
             ?.findElements("option", namespace: "")
-            ?.map((element) {
-          String optName = element.getAttribute("name");
-          String optVal = element.text;
-          return (optName != null && optVal != null)
-              ? MapEntry(optName, optVal)
-              : null;
-        })?.let((entries) => Map.fromEntries(entries)) ??
+            .map((element) {
+              String? optName = element.getAttribute("name");
+              String optVal = element.text;
+              return (optName != null) ? MapEntry(optName, optVal) : null;
+            })
+            .whereNotNull()
+            .let((entries) => Map.fromEntries(entries)) ??
         {};
   }
 }

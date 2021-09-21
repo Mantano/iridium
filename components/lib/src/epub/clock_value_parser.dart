@@ -7,16 +7,16 @@ import 'package:dartx/dartx.dart';
 /// Parse clock values as defined in
 /// https://www.w3.org/TR/SMIL/smil-timing.html#q22
 class ClockValueParser {
-  static double parse(String rawValue) {
+  static double? parse(String rawValue) {
     String value = rawValue.trim();
     if (value.contains(":")) {
       return _parseClockValue(value);
     } else {
-      int metricStart = value.indexOf(RegExp(r'[A-Z][a-z]'));
+      int metricStart = value.indexOf(RegExp(r'[A-Za-z]'));
       if (metricStart == -1) {
         return _parseTimeCount(value.toDouble(), "");
       } else {
-        double count = value.substring(0, metricStart).toDoubleOrNull();
+        double? count = value.substring(0, metricStart).toDoubleOrNull();
         if (count == null) {
           return null;
         }
@@ -26,19 +26,20 @@ class ClockValueParser {
     }
   }
 
-  static double _parseClockValue(String value) {
-    List<double> parts =
+  static double? _parseClockValue(String value) {
+    List<double?> rawParts =
         value.split(":").map((it) => it.toDoubleOrNull()).toList();
-    if (parts.contains(null)) {
+    if (rawParts.contains(null)) {
       return null;
     }
+    List<double> parts = rawParts.whereType<double>().toList();
     double minSec = parts.last + parts[parts.length - 2] * 60;
     return (parts.length > 2)
         ? minSec + parts[parts.length - 3] * 3600
         : minSec;
   }
 
-  static double _parseTimeCount(double value, String metric) {
+  static double? _parseTimeCount(double value, String metric) {
     switch (metric) {
       case "h":
         return value * 3600;

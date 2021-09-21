@@ -4,9 +4,9 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
-import 'package:mno_shared_dart/epub.dart';
-import 'package:mno_shared_dart/fetcher.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/epub.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Positions Service for an EPUB from its [readingOrder] and [fetcher].
 ///
@@ -23,16 +23,16 @@ class EpubPositionsService extends PositionsService {
   final Presentation presentation;
   final Fetcher fetcher;
   final int reflowablePositionLength;
-  List<List<Locator>> _positions;
+  List<List<Locator>>? _positions;
 
-  EpubPositionsService._(
-      {this.readingOrder,
-      this.presentation,
-      this.fetcher,
-      this.reflowablePositionLength});
+  EpubPositionsService(
+      {required this.readingOrder,
+      required this.presentation,
+      required this.fetcher,
+      required this.reflowablePositionLength});
 
   static EpubPositionsService create(PublicationServiceContext context) =>
-      EpubPositionsService._(
+      EpubPositionsService(
           readingOrder: context.manifest.readingOrder,
           presentation: context.manifest.metadata.presentation,
           fetcher: context.fetcher,
@@ -44,31 +44,34 @@ class EpubPositionsService extends PositionsService {
 
   Future<List<List<Locator>>> computePositions() async {
     int lastPositionOfPreviousResource = 0;
-    List<List<Locator>> positions =
-        await Future.wait(readingOrder.map((link) async {
-      List<Locator> positions;
+    List<List<Locator>> positions = [];
+    for (Link link in readingOrder) {
+      List<Locator> locators;
       if (presentation.layoutOf(link) == EpubLayout.fixed) {
-        positions = createFixed(link, lastPositionOfPreviousResource);
+        locators = createFixed(link, lastPositionOfPreviousResource);
       } else {
-        positions = await createReflowable(
+        locators = await createReflowable(
             link, lastPositionOfPreviousResource, fetcher);
       }
-      positions.lastOrNull?.locations?.position
+      locators.lastOrNull?.locations.position
           ?.let((it) => lastPositionOfPreviousResource = it);
-      return positions;
-    }));
+      positions.add(locators);
+    }
 
     // Calculates [totalProgression].
     int totalPageCount = positions.map((it) => it.length).sum();
-    positions = positions.map((item) => item.map((locator) {
-          int position = locator.locations.position;
-          if (position == null) {
-            return locator;
-          } else {
-            return locator.copyWithLocations(
-                totalProgression: (position - 1) / totalPageCount.toDouble());
-          }
-        }));
+    positions = positions
+        .map((item) => item.map((locator) {
+              int? position = locator.locations.position;
+              if (position == null) {
+                return locator;
+              } else {
+                return locator.copyWithLocations(
+                    totalProgression:
+                        (position - 1) / totalPageCount.toDouble());
+              }
+            }).toList())
+        .toList();
 
     return positions;
   }
@@ -80,7 +83,7 @@ class EpubPositionsService extends PositionsService {
       Link link, int startPosition, Fetcher fetcher) async {
     // If the resource is encrypted, we use the `originalLength` declared in `encryption.xml`
     // instead of the ZIP entry length.
-    int length = link.properties.encryption?.originalLength ??
+    int? length = link.properties.encryption?.originalLength ??
         await fetcher
             .get(link)
             .use((it) async => (await it.length()).getOrNull());
@@ -88,7 +91,7 @@ class EpubPositionsService extends PositionsService {
       return [];
     }
     int pageCount =
-        (length ~/ reflowablePositionLength.toDouble()).coerceAtLeast(1);
+        (length / reflowablePositionLength.toDouble()).ceil().coerceAtLeast(1);
     return [
       for (int position = 1; position <= pageCount; position++)
         createLocator(link,
@@ -97,7 +100,8 @@ class EpubPositionsService extends PositionsService {
     ];
   }
 
-  Locator createLocator(Link link, {double progression, int position}) =>
+  Locator createLocator(Link link,
+          {required double progression, required int position}) =>
       Locator(
           href: link.href,
           type: link.type ?? "text/html",

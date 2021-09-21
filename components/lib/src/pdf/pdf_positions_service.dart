@@ -4,8 +4,8 @@
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_shared_dart/mediatype.dart';
-import 'package:mno_shared_dart/publication.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Creates the [positions] for a PDF [Publication].
 ///
@@ -15,18 +15,23 @@ import 'package:mno_shared_dart/publication.dart';
 class PdfPositionsService extends PositionsService {
   final Link link;
   final int pageCount;
-  List<List<Locator>> _positions;
+  final List<Link> tableOfContents;
+  List<List<Locator>>? _positions;
 
-  PdfPositionsService._({this.link, this.pageCount});
+  PdfPositionsService(
+      {required this.link,
+      required this.pageCount,
+      required this.tableOfContents});
 
-  static PdfPositionsService create(PublicationServiceContext context) {
-    Link link = context.manifest.readingOrder.firstOrNull;
+  static PdfPositionsService? create(PublicationServiceContext context) {
+    Link? link = context.manifest.readingOrder.firstOrNull;
     if (link == null) {
       return null;
     }
-    return PdfPositionsService._(
+    return PdfPositionsService(
       link: link,
       pageCount: context.manifest.metadata.numberOfPages ?? 0,
+      tableOfContents: context.manifest.tableOfContents,
     );
   }
 
