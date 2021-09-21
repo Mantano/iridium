@@ -53,7 +53,7 @@ void main() {
             [true, 42, "world"]
         ]"""
         .toJsonArrayOrNull();
-    expect(sut.toList(), [
+    expect(sut!.toList(), [
       1,
       {"b.1": "hello"},
       [true, 42, "world"]

@@ -3,8 +3,8 @@
 // found in the LICENSE file.
 
 class Try<Success, Failure extends Exception> {
-  final Success success;
-  final Failure failure;
+  final Success? success;
+  final Failure? failure;
 
   Try.success(this.success) : failure = null;
 
@@ -18,25 +18,25 @@ class Try<Success, Failure extends Exception> {
   /// or throws the encapsulated Throwable exception if it is failure.
   Success getOrThrow() {
     if (isSuccess) {
-      return success;
+      return success!;
     }
-    throw failure;
+    throw failure!;
   }
 
   @override
   String toString() => '$runtimeType{success: $success, failure: $failure}';
 
   /// Returns the encapsulated value if this instance represents success or null if it is failure. */
-  Success getOrNull() => success;
+  Success? getOrNull() => success;
 
   /// Returns the encapsulated [Throwable] exception if this instance represents failure or null if it is success. */
-  Failure exceptionOrNull() => failure;
+  Failure? exceptionOrNull() => failure;
 
   Success getOrElse(Success Function(Failure) onFailure) {
     if (isSuccess) {
       return getOrThrow();
     } else {
-      return onFailure(exceptionOrNull());
+      return onFailure(exceptionOrNull()!);
     }
   }
 
@@ -53,7 +53,7 @@ class Try<Success, Failure extends Exception> {
   /// Returns the original [Try] unchanged.
   Try<Success, Failure> onFailure(void Function(Failure) action) {
     if (isFailure) {
-      action(exceptionOrNull());
+      action(exceptionOrNull()!);
     }
     return this;
   }

@@ -25,5 +25,5 @@ extension FileSystemEntityExtension on FileSystemEntity {
 
 extension FileExtension on File {
   Future<String> get md5 =>
-      crypto.md5.bind(this.openRead()).map((value) => value?.toString()).first;
+      crypto.md5.bind(this.openRead()).map((value) => value.toString()).first;
 }

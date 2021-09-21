@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 extension Take<T> on T {
-  T takeIf(bool Function(T) predicate) => (predicate(this)) ? this : null;
+  T? takeIf(bool Function(T) predicate) => (predicate(this)) ? this : null;
 
-  T takeUnless(bool Function(T) predicate) => (!predicate(this)) ? this : null;
+  T? takeUnless(bool Function(T) predicate) => (!predicate(this)) ? this : null;
 }

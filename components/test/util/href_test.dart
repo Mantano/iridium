@@ -146,10 +146,10 @@ void main() {
 
   test("get first parameter named x", () {
     var params = [
-      QueryParameter(name: "query", value: "param"),
-      QueryParameter(name: "fruit", value: "banana"),
-      QueryParameter(name: "query", value: "other"),
-      QueryParameter(name: "empty", value: null)
+      QueryParameter("query", value: "param"),
+      QueryParameter("fruit", value: "banana"),
+      QueryParameter("query", value: "other"),
+      QueryParameter("empty", value: null)
     ];
 
     expect(params.firstNamedOrNull("query"), "param");
@@ -160,10 +160,10 @@ void main() {
 
   test("get all parameters named x", () {
     var params = [
-      QueryParameter(name: "query", value: "param"),
-      QueryParameter(name: "fruit", value: "banana"),
-      QueryParameter(name: "query", value: "other"),
-      QueryParameter(name: "empty", value: null)
+      QueryParameter("query", value: "param"),
+      QueryParameter("fruit", value: "banana"),
+      QueryParameter("query", value: "other"),
+      QueryParameter("empty", value: null)
     ];
 
     expect(params.allNamed("query"), ["param", "other"]);

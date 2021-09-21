@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 
 extension UriExtension on Uri {
   Uri removeLastComponent() {
-    String lastPathComponent =
+    String? lastPathComponent =
         path.split("/").lastOrNullWhere((it) => it.isNotEmpty);
     if (lastPathComponent == null) {
       return this;

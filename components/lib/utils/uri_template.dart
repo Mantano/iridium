@@ -19,7 +19,7 @@ class UriTemplate {
   Iterable<String> get parameters => RegExp("\\{\\??([^}]+)\\}")
       .allMatches(uri)
       .toList()
-      .expand((it) => it.group(1).split(","))
+      .expand((it) => it.group(1)!.split(","))
       .toSet();
 
   /// Expands the HREF by replacing URI template variables by the given parameters.
@@ -34,10 +34,10 @@ class UriTemplate {
     // Escaping the last } is somehow required, otherwise the regex can't be parsed on a Pixel
     // 3a. However, without it works with the unit tests.
     String expanded = uri.replaceAllMapped(RegExp("\\{(\\??)([^}]+)\\}"), (it) {
-      if (it.group(1).isEmpty) {
-        return _expandSimpleString(it.group(2), params);
+      if (it.group(1)?.isEmpty == true) {
+        return _expandSimpleString(it.group(2)!, params);
       } else {
-        return _expandFormStyle(it.group(2), params);
+        return _expandFormStyle(it.group(2)!, params);
       }
     });
 

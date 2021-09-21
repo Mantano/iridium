@@ -6,7 +6,6 @@ import 'dart:convert';
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:meta/meta.dart';
 
 import '../extensions/strings.dart';
 
@@ -30,8 +29,7 @@ class Href {
     try {
       Uri absoluteUri = Uri.parse(baseHref).resolve(href);
       String absoluteString = absoluteUri.toString(); // This is percent-decoded
-      bool addSlash =
-          absoluteUri.scheme == null && !absoluteString.startsWith("/");
+      bool addSlash = !absoluteUri.hasScheme && !absoluteString.startsWith("/");
       resolved = ((addSlash) ? "/" : "") + absoluteString;
     } on Exception {
       if (href.startsWith("http://") || href.startsWith("https://")) {
@@ -68,22 +66,23 @@ class Href {
   List<QueryParameter> get queryParameters => Uri.parse(percentEncodedString)
       .queryParameters
       .entries
-      .map((it) => QueryParameter(name: it.key, value: it.value));
+      .map((it) => QueryParameter(it.key, value: it.value))
+      .toList();
 }
 
 class QueryParameter {
   final String name;
-  final String value;
+  final String? value;
 
-  QueryParameter({@required this.name, this.value});
+  QueryParameter(this.name, {this.value});
 
   @override
   String toString() => 'QueryParameter{name: $name, value: $value}';
 }
 
 extension QueryParameterExtension on List<QueryParameter> {
-  String firstNamedOrNull(String name) =>
-      firstWhere((it) => it.name == name, orElse: () => null)?.value;
+  String? firstNamedOrNull(String name) =>
+      firstOrNullWhere((it) => it.name == name)?.value;
 
   List<String> allNamed(String name) =>
       where((it) => it.name == name).mapNotNull((it) => it.value).toList();
