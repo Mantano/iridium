@@ -10,7 +10,9 @@ import 'package:xml/xml.dart';
 
 import 'constants.dart';
 
+/// Parser for encryption.xml file.
 class EncryptionParser {
+  /// Parse encryption.xml file.
   static Map<String, Encryption> parse(XmlDocument document) =>
       Map.fromEntries(document
           .findAllElements("EncryptedData", namespace: Namespaces.enc)

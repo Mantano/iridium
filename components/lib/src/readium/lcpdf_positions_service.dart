@@ -9,6 +9,8 @@ import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/pdf.dart';
 
+/// Creates the [positions] for an LCP protected PDF [Publication] from its [readingOrder] and
+/// [fetcher].
 class LcpdfPositionsService extends PositionsService {
   final PdfDocumentFactory pdfFactory;
   final List<Link> readingOrder;
@@ -20,6 +22,8 @@ class LcpdfPositionsService extends PositionsService {
       required this.readingOrder,
       required this.fetcher});
 
+  /// Create a [ServiceFactory] that will provide a [LcpdfPositionsService]
+  /// instance.
   static ServiceFactory create(PdfDocumentFactory pdfFactory) =>
       (PublicationServiceContext context) => LcpdfPositionsService._(
             pdfFactory: pdfFactory,
@@ -29,13 +33,13 @@ class LcpdfPositionsService extends PositionsService {
 
   @override
   Future<List<List<Locator>>> positionsByReadingOrder() async =>
-      _positions ??= await computePositions();
+      _positions ??= await _computePositions();
 
-  Future<List<List<Locator>>> computePositions() async {
+  Future<List<List<Locator>>> _computePositions() async {
     // Calculates the page count of each resource from the reading order.
     List<Product2<int, Link>> resources =
         await Future.wait(readingOrder.map((link) async {
-      int pageCount = (await openPdfAt(link))?.pageCount ?? 0;
+      int pageCount = (await _openPdfAt(link))?.pageCount ?? 0;
       return Product2(pageCount, link);
     }));
 
@@ -48,7 +52,7 @@ class LcpdfPositionsService extends PositionsService {
     return resources.map((it) {
       int? pageCount = it.item1;
       Link link = it.item2;
-      List<Locator> positions = createPositionsOf(link,
+      List<Locator> positions = _createPositionsOf(link,
           pageCount: pageCount,
           totalPageCount: totalPageCount,
           startPosition: lastPositionOfPreviousResource);
@@ -57,7 +61,7 @@ class LcpdfPositionsService extends PositionsService {
     }).toList();
   }
 
-  List<Locator> createPositionsOf(Link link,
+  List<Locator> _createPositionsOf(Link link,
       {required int pageCount,
       required int totalPageCount,
       required int startPosition}) {
@@ -86,7 +90,7 @@ class LcpdfPositionsService extends PositionsService {
             position: startPosition + position));
   }
 
-  Future<PdfDocument?> openPdfAt(Link link) async {
+  Future<PdfDocument?> _openPdfAt(Link link) async {
     try {
       return pdfFactory.openResource(fetcher.get(link), password: null);
     } on Exception catch (e) {

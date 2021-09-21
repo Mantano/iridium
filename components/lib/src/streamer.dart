@@ -13,12 +13,15 @@ import 'package:mno_streamer/parser.dart';
 import 'package:mno_streamer/pdf.dart';
 import 'package:mno_streamer/src/readium/readium_web_pub_parser.dart';
 
+/// Subclass of [Try<SuccessT, UserException>] that is useful when parsing a
+/// [Publication].
 class PublicationTry<SuccessT> extends Try<SuccessT, UserException> {
   PublicationTry.success(SuccessT success) : super.success(success);
 
   PublicationTry.failure(UserException failure) : super.failure(failure);
 }
 
+/// Definition of the [OnCreatePublication] callback.
 typedef OnCreatePublication = void Function(PublicationBuilder);
 
 OnCreatePublication get _emptyOnCreatePublication => (pb) {};
@@ -38,13 +41,27 @@ OnCreatePublication get _emptyOnCreatePublication => (pb) {};
 ///   the [Manifest], the root [Fetcher] or the list of service factories of a [Publication].
 class Streamer {
   final List<StreamPublicationParser> _parsers;
+
+  /// This property indicate that it should ignore default parsers when parsing
+  /// a publication.
   final bool ignoreDefaultParsers;
+
+  /// List of the [ContentProtection] implementation that are supported.
   final List<ContentProtection> contentProtections;
+
+  /// The [archiveFactory] instance that can create an [Archive] corresponding to
+  /// the actual file.
   final ArchiveFactory archiveFactory;
+
+  /// [pdfFactory] provide a way to create [PdfDocument] instance.
   final PdfDocumentFactory pdfFactory;
+
+  /// [onCreatePublication] is a callback that is called after the
+  /// [PublicationBuilder] is created.
   final OnCreatePublication onCreatePublication;
   List<StreamPublicationParser>? _defaultParsers;
 
+  /// Creates an instance of [Streamer].
   Streamer(
       {List<StreamPublicationParser> parsers = const [],
       this.ignoreDefaultParsers = false,
@@ -114,7 +131,7 @@ class Streamer {
       }
 
       PublicationBuilder? builder =
-          (await parsers.lazyMapFirstNotNullOrNull((it) {
+          (await _getParsers().lazyMapFirstNotNullOrNull((it) {
         try {
           return it.parseFile(asset, fetcher).catchError((e, st) => null);
         } on Exception catch (e) {
@@ -148,18 +165,18 @@ class Streamer {
     }
   }
 
-  List<StreamPublicationParser> get defaultParsers => _defaultParsers ??= [
+  List<StreamPublicationParser> _getDefaultParsers() => _defaultParsers ??= [
         EpubParser(),
         PdfParser(pdfFactory),
         ImageParser(),
         ReadiumWebPubParser(pdfFactory),
       ];
 
-  List<StreamPublicationParser> get parsers =>
-      List.of(_parsers)..addAll((!ignoreDefaultParsers) ? defaultParsers : []);
+  List<StreamPublicationParser> _getParsers() => List.of(_parsers)
+    ..addAll((!ignoreDefaultParsers) ? _getDefaultParsers() : []);
 }
 
-extension LazyMapFirstNotNullOrNullList<T> on List<T> {
+extension _LazyMapFirstNotNullOrNullList<T> on List<T> {
   Future<R?> lazyMapFirstNotNullOrNull<R>(
       Future<R?> Function(T) transform) async {
     for (T it in this) {
@@ -172,7 +189,7 @@ extension LazyMapFirstNotNullOrNullList<T> on List<T> {
   }
 }
 
-extension AddLegacyPropertiesPublication on Publication {
+extension _AddLegacyPropertiesPublication on Publication {
   void addLegacyProperties(MediaType mediaType) {
     type = mediaType.toPublicationType();
 
@@ -182,7 +199,9 @@ extension AddLegacyPropertiesPublication on Publication {
   }
 }
 
+/// Extension on MediaType adding [toPublicationType] method.
 extension ToPublicationTypeMediaType on MediaType {
+  /// Convert [MediaType] to [TYPE]
   TYPE toPublicationType() {
     if ([
       MediaType.readiumAudiobook,

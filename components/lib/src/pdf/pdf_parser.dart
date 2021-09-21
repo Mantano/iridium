@@ -17,11 +17,14 @@ import 'package:mno_streamer/src/pdf/pdf_positions_service.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart' show File;
 
+/// Parser for PDF file.
 class PdfParser extends PublicationParser implements StreamPublicationParser {
   static const String _publicationFileName = "publication.pdf";
 
+  /// [pdfFactory] is an implementation that can open PDF files.
   final PdfDocumentFactory pdfFactory;
 
+  /// Creates an instance of [PdfParser] that requires a [pdfFactory].
   PdfParser(this.pdfFactory);
 
   @override
@@ -109,9 +112,7 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
     Publication publication = builder.build();
 
     PublicationContainer container = PublicationContainer(
-        publication: publication,
-        path: p.canonicalize(fileAtPath),
-        mediaType: MediaType.pdf);
+        path: p.canonicalize(fileAtPath), mediaType: MediaType.pdf);
 
     return PubBox(publication, container);
   }

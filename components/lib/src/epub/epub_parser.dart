@@ -24,10 +24,13 @@ import 'ncx_parser.dart';
 import 'publication_factory.dart';
 import 'readium_css_layout.dart';
 
+/// Constants settings for EPUB publication.
 class EPUBConstant {
+  /// Left-to-right preset.
   static Map<ReadiumCSSName, bool> get ltrPreset =>
       {ReadiumCSSName.hyphens: false, ReadiumCSSName.ligatures: false};
 
+  /// Right-to-left preset.
   static Map<ReadiumCSSName, bool> get rtlPreset => {
         ReadiumCSSName.hyphens: false,
         ReadiumCSSName.wordSpacing: false,
@@ -35,6 +38,7 @@ class EPUBConstant {
         ReadiumCSSName.ligatures: true
       };
 
+  /// CJK horizontal preset.
   static Map<ReadiumCSSName, bool> get cjkHorizontalPreset => {
         ReadiumCSSName.textAlignment: false,
         ReadiumCSSName.hyphens: false,
@@ -43,6 +47,7 @@ class EPUBConstant {
         ReadiumCSSName.letterSpacing: false
       };
 
+  /// CJK vertical preset.
   static Map<ReadiumCSSName, bool> get cjkVerticalPreset => {
         ReadiumCSSName.scroll: true,
         ReadiumCSSName.columnCount: false,
@@ -53,10 +58,12 @@ class EPUBConstant {
         ReadiumCSSName.letterSpacing: false
       };
 
+  /// Force scroll preset.
   static Map<ReadiumCSSName, bool> get forceScrollPreset =>
       {ReadiumCSSName.scroll: true};
 }
 
+/// Errors related to EPUB parser.
 class EpubParserException implements Exception {
   /// Invalid EPUB package.
   factory EpubParserException.invalidEpub(String message) =>
@@ -79,7 +86,7 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
     if (await asset.mediaType != MediaType.epub) {
       return null;
     }
-    String opfPath = await getRootFilePath(fetcher);
+    String opfPath = await _getRootFilePath(fetcher);
     XmlDocument opfXmlDocument =
         (await fetcher.getWithHref(opfPath).readAsXml()).getOrThrow();
     PackageDocument? packageDocument =
@@ -140,16 +147,13 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
     });
 
     PublicationContainer container = PublicationContainer(
-        publication: publication,
-        path: file.canonicalPath,
-        mediaType: MediaType.epub,
-        drm: drm);
-    container.rootFile.rootFilePath = await getRootFilePath(fetcher);
+        path: file.canonicalPath, mediaType: MediaType.epub, drm: drm);
+    container.rootFile.rootFilePath = await _getRootFilePath(fetcher);
 
     return PubBox(publication, container);
   }
 
-  Future<String> getRootFilePath(Fetcher fetcher) async {
+  Future<String> _getRootFilePath(Fetcher fetcher) async {
     String? path = (await fetcher.readAsXmlOrNull("/META-INF/container.xml"))
         ?.firstElementChild
         ?.getElement("rootfiles", namespace: Namespaces.opc)
@@ -212,7 +216,10 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
   }
 }
 
+/// Extension that adds [setLayoutStyle] on [Publication].
 extension PublicationLayoutStyle on Publication {
+  /// Update [cssStyle] and [userSettingsUIPreset] based on the publication
+  /// metadata.
   void setLayoutStyle() {
     ReadiumCssLayout layout = ReadiumCssLayout.findWithMetadata(metadata);
     cssStyle = layout.cssId;
@@ -233,7 +240,7 @@ extension PublicationLayoutStyle on Publication {
   }
 }
 
-extension FetcherProtectedWithLcp on Fetcher {
+extension _FetcherProtectedWithLcp on Fetcher {
   Future<bool> isProtectedWithLcp() async =>
       await getWithHref("/META-INF/license.lcpl")
           .use((it) async => (await it.length()).isSuccess);

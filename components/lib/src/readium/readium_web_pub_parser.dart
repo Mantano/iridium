@@ -19,11 +19,13 @@ import 'package:universal_io/io.dart';
 
 import 'lcpdf_positions_service.dart';
 
+/// Parses any Readium Web Publication package or manifest, e.g. WebPub, Audiobook, DiViNa, LCPDF...
 class ReadiumWebPubParser extends PublicationParser
     implements StreamPublicationParser {
-  final PdfDocumentFactory? pdfFactory;
+  final PdfDocumentFactory? _pdfFactory;
 
-  ReadiumWebPubParser(this.pdfFactory);
+  /// Creates a [ReadiumWebPubParser] instance.
+  ReadiumWebPubParser(this._pdfFactory);
 
   @override
   Future<PublicationBuilder?> parseFile(
@@ -76,8 +78,8 @@ class ReadiumWebPubParser extends PublicationParser
     ServiceFactory? coverServiceFactory;
     if (mediaType == MediaType.lcpProtectedPdf) {
       positionsServiceFactory =
-          pdfFactory?.let((it) => LcpdfPositionsService.create(it));
-      await pdfFactory?.let((it) async {
+          _pdfFactory?.let((it) => LcpdfPositionsService.create(it));
+      await _pdfFactory?.let((it) async {
         Link link = readingOrder.first;
         try {
           PdfDocument document = await it.openResource(fetcher.get(link));
@@ -156,10 +158,7 @@ class ReadiumWebPubParser extends PublicationParser
     });
 
     PublicationContainer container = PublicationContainer(
-            publication: publication,
-            path: file.canonicalPath,
-            mediaType: mediaType,
-            drm: drm)
+            path: file.canonicalPath, mediaType: mediaType, drm: drm)
         .also((it) {
       if (!mediaType.isRwpm) {
         it.rootFile.rootFilePath = "manifest.json";
@@ -170,13 +169,13 @@ class ReadiumWebPubParser extends PublicationParser
   }
 }
 
-extension FetcherIsProtectedWithLcp on Fetcher {
+extension _FetcherIsProtectedWithLcp on Fetcher {
   Future<bool> _isProtectedWithLcp() => getWithHref("license.lcpl")
       .use((it) => it.length())
       .then((result) => result.isSuccess);
 }
 
-extension MediaTypeIsReadiumWebPubProfile on MediaType {
+extension _MediaTypeIsReadiumWebPubProfile on MediaType {
   /// Returns whether this media type is of a Readium Web Publication profile.
   bool get _isReadiumWebPubProfile => matchesAny([
         MediaType.readiumWebpub,

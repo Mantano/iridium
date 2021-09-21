@@ -11,7 +11,9 @@ import 'package:xml/xml.dart';
 
 import 'constants.dart';
 
+/// Parser for NCX files that describes the table of content and page list.
 class NcxParser {
+  /// Parse the Xml document for table of content and page list.
   static Map<String, List<Link>> parse(XmlElement document, String filePath) {
     MapEntry<String, List<Link>>? toc = document
         .getElement("navMap", namespace: Namespaces.ncx)

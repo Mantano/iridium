@@ -15,13 +15,15 @@ import 'package:universal_io/io.dart';
 
 import '../../publication_parser.dart';
 
+/// Errors related to CBZ parser.
 class CbzParserException implements Exception {
   /// Invalid EPUB package.
   factory CbzParserException.invalidCbz(String message) =>
-      CbzParserException("Invalid CBZ: $message");
+      CbzParserException._("Invalid CBZ: $message");
 
-  const CbzParserException(this.message);
+  const CbzParserException._(this.message);
 
+  /// Message describing the error
   final String message;
 }
 
@@ -29,7 +31,7 @@ class CbzParserException implements Exception {
 ///                  get name of the resource, creating the Publication
 ///                  for rendering
 class CBZParser extends PublicationParser {
-  final ImageParser imageParser = ImageParser();
+  final ImageParser _imageParser = ImageParser();
 
   @override
   Future<PubBox?> parseWithFallbackTitle(
@@ -42,7 +44,7 @@ class CBZParser extends PublicationParser {
     }
 
     Publication? publication =
-        (await imageParser.parseFile(FileAsset(file), fetcher))
+        (await _imageParser.parseFile(FileAsset(file), fetcher))
             ?.let((builder) {
               LocalizedString title = LocalizedString.fromString(fallbackTitle);
               Metadata metadata =
@@ -62,9 +64,7 @@ class CBZParser extends PublicationParser {
     }
 
     PublicationContainer container = PublicationContainer(
-        publication: publication,
-        path: file.canonicalPath,
-        mediaType: MediaType.cbz);
+        path: file.canonicalPath, mediaType: MediaType.cbz);
 
     return PubBox(publication, container);
   }

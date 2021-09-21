@@ -12,6 +12,9 @@ import 'package:xml/xml.dart';
 import 'constants.dart';
 import 'property_data_type.dart';
 
+/// Parser for navigation document that describes navigation tables.
+///
+/// The navigation tables are: toc, page-list, landmarks, lot, loi, loa, lov.
 class NavigationDocumentParser {
   static const List<String> _keys = [
     "toc",
@@ -22,6 +25,8 @@ class NavigationDocumentParser {
     "loa",
     "lov"
   ];
+
+  /// Parse the Xml document for navigation tables.
   static Map<String, List<Link>> parse(XmlDocument document, String filePath) {
     Map<String, String> docPrefixes = document
             .getAttribute("prefix", namespace: Namespaces.ops)

@@ -4,21 +4,27 @@
 
 import 'package:mno_shared/publication.dart';
 
+/// Readium CSS layout.
 class ReadiumCssLayout {
-// Right to left
+  /// Right to left
   static const ReadiumCssLayout rtl = ReadiumCssLayout._("rtl");
-// Left to right
+
+  /// Left to right
   static const ReadiumCssLayout ltr = ReadiumCssLayout._("ltr");
-// Asian language, vertically laid out
+
+  /// Asian language, vertically laid out
   static const ReadiumCssLayout cjkVertical =
       ReadiumCssLayout._("cjk-vertical");
-// Asian language, horizontally laid out
+
+  /// Asian language, horizontally laid out
   static const ReadiumCssLayout cjkHorizontal =
       ReadiumCssLayout._("cjk-horizontal");
 
+  /// [cssId] that correspond to a particular [ReadiumCssLayout].
   final String cssId;
   const ReadiumCssLayout._(this.cssId);
 
+  /// Returns the readium CSS path.
   String get readiumCSSPath {
     switch (this) {
       case ltr:
@@ -33,6 +39,7 @@ class ReadiumCssLayout {
     return "";
   }
 
+  /// Determines the [ReadiumCssLayout] for the given [metadata].
   static ReadiumCssLayout findWithMetadata(Metadata metadata) => find(
       languages: metadata.languages,
       readingProgression: metadata.effectiveReadingProgression);

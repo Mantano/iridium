@@ -9,6 +9,7 @@ import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/publication_parser.dart';
 import 'package:universal_io/io.dart';
 
+/// Parser that supports a collection of images.
 class ImageParser implements StreamPublicationParser {
   @override
   Future<PublicationBuilder?> parseFile(
