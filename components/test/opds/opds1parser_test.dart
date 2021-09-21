@@ -309,7 +309,7 @@ void main() {
   });
 }
 
-ParseData parse(String filename, {Uri url}) => Opds1Parser.parse(
+ParseData parse(String filename, {Uri? url}) => Opds1Parser.parse(
     File(filename).readAsStringSync(), url ?? Uri.parse("https://example.com"));
 
-DateTime parseDate(String string) => string.iso8601ToDate();
+DateTime? parseDate(String string) => string.iso8601ToDate();

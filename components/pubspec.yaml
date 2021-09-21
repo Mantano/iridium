@@ -4,7 +4,7 @@ version: 0.1.0
 homepage: https://github.com/Mantano/mno_opds_dart
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   dartx: ^0.7.1
@@ -12,9 +12,9 @@ dependencies:
   fimber: ^0.6.1
   http: ^0.13.3
   universal_io: ^2.0.4
-  xml: ^5.2.0
-  mno_commons: ^0.1.1
-  mno_shared: ^0.1.1
+  xml: ^5.3.0
+  mno_commons: ^0.1.2
+  mno_shared: ^0.1.2
 
 dev_dependencies:
   lints: ^1.0.1

@@ -14,16 +14,28 @@ import 'package:mno_commons/utils/try.dart';
 import 'package:mno_shared/opds.dart';
 import 'package:mno_shared/publication.dart';
 
+/// Errors related to OPDS2 parser
 class OPDS2ParserError {
+  /// Metadata not found.
   static const OPDS2ParserError metadataNotFound =
       OPDS2ParserError._("metadataNotFound");
+
+  /// Invalid link.
   static const OPDS2ParserError invalidLink = OPDS2ParserError._("invalidLink");
+
+  /// Missing title
   static const OPDS2ParserError missingTitle =
       OPDS2ParserError._("missingTitle");
+
+  /// Invalid facet
   static const OPDS2ParserError invalidFacet =
       OPDS2ParserError._("invalidFacet");
+
+  /// Invalid group
   static const OPDS2ParserError invalidGroup =
       OPDS2ParserError._("invalidGroup");
+
+  /// Name describing the error
   final String name;
   const OPDS2ParserError._(this.name);
 
@@ -31,52 +43,57 @@ class OPDS2ParserError {
   String toString() => 'OPDS2ParserError{name: $name}';
 }
 
+/// This parser supports the OPDS2 spec.
 class OPDS2Parser {
+  /// Parse an OPDS2 feed or entry with a [url] and optional [headers].
   static Future<Try<ParseData, Exception>> parseURL(Uri url,
-      {Map<String, String> headers}) async {
+      {Map<String, String>? headers}) async {
     try {
       return http.get(url, headers: headers).then((response) {
         int status = response.statusCode;
         if (status >= 400) {
-          return Try.failure(Exception("Connection error"));
+          return Try<ParseData, Exception>.failure(
+              Exception("Connection error"));
         } else {
           ParseData data = parse(response.body, url);
-          return Try.success(data);
+          return Try<ParseData, Exception>.success(data);
         }
-      }).onError((error, stackTrace) => Try.failure(error));
+      }).onError<Exception>(
+          (error, stackTrace) => Try<ParseData, Exception>.failure(error));
     } on Exception catch (e, stacktrace) {
       Fimber.e("download ERROR", ex: e, stacktrace: stacktrace);
       return Try.failure(Exception("Connection error"));
     }
   }
 
+  /// Parse an OPDS2 feed or entry with [jsonData] and [url] as context.
   static ParseData parse(String jsonData, Uri url) {
-    Map<String, dynamic> json = jsonData.toJsonOrNull();
-    return (isFeed(json))
-        ? ParseData(feed: parseFeed(json, url), type: 2)
+    Map<String, dynamic> json = jsonData.toJsonOrNull()!;
+    return (_isFeed(json))
+        ? ParseData(feed: _parseFeed(json, url), type: 2)
         : ParseData(
             publication:
                 Manifest.fromJson(json)?.let((it) => Publication(manifest: it)),
             type: 2);
   }
 
-  static bool isFeed(Map<String, dynamic> json) =>
-      json?.let((it) => (it.containsKey("navigation") ||
+  static bool _isFeed(Map<String, dynamic> json) =>
+      json.let((it) => (it.containsKey("navigation") ||
           it.containsKey("groups") ||
           it.containsKey("publications") ||
           it.containsKey("facets")));
 
-  static Feed parseFeed(Map<String, dynamic> topLevelDict, Uri url) {
-    Map<String, dynamic> metadataDict = topLevelDict["metadata"];
+  static Feed _parseFeed(Map<String, dynamic> topLevelDict, Uri url) {
+    Map<String, dynamic>? metadataDict = topLevelDict["metadata"];
     if (metadataDict == null) {
       throw Exception(OPDS2ParserError.metadataNotFound.name);
     }
-    String title = metadataDict["title"] as String;
+    String? title = metadataDict["title"] as String?;
     if (title == null) {
       throw Exception(OPDS2ParserError.missingTitle.name);
     }
     Feed feed = Feed(title, 2, url);
-    parseFeedMetadata(opdsMetadata: feed.metadata, metadataDict: metadataDict);
+    _parseFeedMetadata(opdsMetadata: feed.metadata, metadataDict: metadataDict);
     if (topLevelDict.containsKey("@context")) {
       if (topLevelDict["@context"] is Map<String, dynamic>) {
         feed.context
@@ -91,58 +108,59 @@ class OPDS2Parser {
 
     if (topLevelDict.containsKey("links")) {
       topLevelDict["links"].let((it) {
-        var links = it as List;
+        List? links = it as List?;
         if (links == null) {
           throw Exception(OPDS2ParserError.invalidLink.name);
         }
-        parseLinks(feed, links);
+        _parseLinks(feed, links);
       });
     }
 
     if (topLevelDict.containsKey("facets")) {
       topLevelDict["facets"].let((it) {
-        List facets = it as List;
+        List? facets = it as List?;
         if (facets == null) {
           throw Exception(OPDS2ParserError.invalidLink.name);
         }
-        parseFacets(feed, facets);
+        _parseFacets(feed, facets);
       });
     }
 
     if (topLevelDict.containsKey("publications")) {
       topLevelDict["publications"].let((it) {
-        var publications = it as List;
+        List? publications = it as List?;
         if (publications == null) {
           throw Exception(OPDS2ParserError.invalidLink.name);
         }
-        parsePublications(feed, publications);
+        _parsePublications(feed, publications);
       });
     }
 
     if (topLevelDict.containsKey("navigation")) {
       topLevelDict["navigation"].let((it) {
-        var navigation = it as List;
+        List? navigation = it as List?;
         if (navigation == null) {
           throw Exception(OPDS2ParserError.invalidLink.name);
         }
-        parseNavigation(feed, navigation);
+        _parseNavigation(feed, navigation);
       });
     }
 
     if (topLevelDict.containsKey("groups")) {
       topLevelDict["groups"].let((it) {
-        var groups = it as List;
+        List? groups = it as List?;
         if (groups == null) {
           throw Exception(OPDS2ParserError.invalidLink.name);
         }
-        parseGroups(feed, groups);
+        _parseGroups(feed, groups);
       });
     }
     return feed;
   }
 
-  static void parseFeedMetadata(
-      {OpdsMetadata opdsMetadata, Map<String, dynamic> metadataDict}) {
+  static void _parseFeedMetadata(
+      {required OpdsMetadata opdsMetadata,
+      required Map<String, dynamic> metadataDict}) {
     if (metadataDict.containsKey("title")) {
       metadataDict["title"].let((it) => opdsMetadata.title = it.toString());
     }
@@ -167,21 +185,21 @@ class OPDS2Parser {
     }
   }
 
-  static void parseFacets(Feed feed, List facets) {
+  static void _parseFacets(Feed feed, List facets) {
     for (int i = 0; i < facets.length; i++) {
       Map<String, dynamic> facetDict = facets[i];
-      Map<String, dynamic> metadata = facetDict["metadata"];
+      Map<String, dynamic>? metadata = facetDict["metadata"];
       if (metadata == null) {
         throw Exception(OPDS2ParserError.invalidFacet.name);
       }
-      String title = metadata["title"] as String;
+      String? title = metadata["title"] as String?;
       if (title == null) {
         throw Exception(OPDS2ParserError.invalidFacet.name);
       }
       Facet facet = Facet(title: title);
-      parseFeedMetadata(opdsMetadata: facet.metadata, metadataDict: metadata);
+      _parseFeedMetadata(opdsMetadata: facet.metadata, metadataDict: metadata);
       if (facetDict.containsKey("links")) {
-        List links = facetDict["links"] as List;
+        List? links = facetDict["links"] as List?;
         if (links == null) {
           throw Exception(OPDS2ParserError.invalidFacet.name);
         }
@@ -196,7 +214,7 @@ class OPDS2Parser {
     }
   }
 
-  static void parseLinks(Feed feed, List links) {
+  static void _parseLinks(Feed feed, List links) {
     for (int i = 0; i < links.length; i++) {
       Map<String, dynamic> linkDict = links[i];
       Link.fromJSON(linkDict)?.let((it) {
@@ -205,7 +223,7 @@ class OPDS2Parser {
     }
   }
 
-  static void parsePublications(Feed feed, List publications) {
+  static void _parsePublications(Feed feed, List publications) {
     for (int i = 0; i < publications.length; i++) {
       Map<String, dynamic> pubDict = publications[i];
       Manifest.fromJson(pubDict)?.let((manifest) {
@@ -214,7 +232,7 @@ class OPDS2Parser {
     }
   }
 
-  static void parseNavigation(Feed feed, List navLinks) {
+  static void _parseNavigation(Feed feed, List navLinks) {
     for (int i = 0; i < navLinks.length; i++) {
       Map<String, dynamic> navDict = navLinks[i];
       Link.fromJSON(navDict)?.let((link) {
@@ -223,22 +241,22 @@ class OPDS2Parser {
     }
   }
 
-  static void parseGroups(Feed feed, List groups) {
+  static void _parseGroups(Feed feed, List groups) {
     for (int i = 0; i < groups.length; i++) {
       Map<String, dynamic> groupDict = groups[i];
-      Map<String, dynamic> metadata = groupDict["metadata"];
+      Map<String, dynamic>? metadata = groupDict["metadata"];
       if (metadata == null) {
         throw Exception(OPDS2ParserError.invalidGroup.name);
       }
-      String title = metadata["title"] as String;
+      String? title = metadata["title"] as String?;
       if (title == null) {
         throw Exception(OPDS2ParserError.invalidGroup.name);
       }
       Group group = Group(title: title);
-      parseFeedMetadata(opdsMetadata: group.metadata, metadataDict: metadata);
+      _parseFeedMetadata(opdsMetadata: group.metadata, metadataDict: metadata);
 
       if (groupDict.containsKey("links")) {
-        List links = groupDict["links"];
+        List? links = groupDict["links"] as List?;
         if (links == null) {
           throw Exception(OPDS2ParserError.invalidGroup.name);
         }
@@ -250,7 +268,7 @@ class OPDS2Parser {
         }
       }
       if (groupDict.containsKey("navigation")) {
-        List links = groupDict["navigation"];
+        List? links = groupDict["navigation"] as List?;
         if (links == null) {
           throw Exception(OPDS2ParserError.invalidGroup.name);
         }
@@ -262,7 +280,7 @@ class OPDS2Parser {
         }
       }
       if (groupDict.containsKey("publications")) {
-        List publications = groupDict["publications"];
+        List? publications = groupDict["publications"] as List?;
         if (publications == null) {
           throw Exception(OPDS2ParserError.invalidGroup.name);
         }
