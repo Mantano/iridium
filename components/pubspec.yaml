@@ -9,8 +9,12 @@ environment:
 
 dependencies:
   bloc: ^7.1.0
+  dartx: ^0.7.1
+  equatable: ^2.0.3
   fimber: ^0.6.1
-  pedantic: ^1.11.1
+  intl: ^0.17.0
+  meta: ^1.7.0
+  path: ^1.8.0
   rxdart: ^0.27.2
   universal_io: ^2.0.4
   mno_commons:
