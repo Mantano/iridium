@@ -63,7 +63,7 @@ class SnifferFileContent extends SnifferContent {
 /// Used to sniff a bytes array.
 class SnifferBytesContent extends SnifferContent {
   final Future<ByteData> Function() bytes;
-  ByteData _byteData;
+  ByteData? _byteData;
 
   SnifferBytesContent(this.bytes);
 

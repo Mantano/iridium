@@ -13,24 +13,23 @@ import '../../publication.dart';
 
 extension LinkListExtension on List<Link> {
   /// Returns the first [Link] with the given [href], or null if not found.
-  int indexOfFirstWithHref(String href) =>
+  int? indexOfFirstWithHref(String href) =>
       indexWhere((it) => it.href == href).takeUnless((it) => it == -1);
 
   /// Finds the first link matching the given HREF.
-  Link firstWithHref(String href) =>
-      firstWhere((it) => it.href == href, orElse: () => null);
+  Link? firstWithHref(String href) => firstOrNullWhere((it) => it.href == href);
 
   /// Finds the first link with the given relation.
-  Link firstWithRel(String rel) =>
-      firstWhere((it) => it.rels.contains(rel), orElse: () => null);
+  Link? firstWithRel(String rel) =>
+      firstOrNullWhere((it) => it.rels.contains(rel));
 
   /// Finds all the links with the given relation.
   List<Link> filterByRel(String rel) =>
       where((it) => it.rels.contains(rel)).toList();
 
   /// Finds the first link matching the given media type.
-  Link firstWithMediaType(MediaType mediaType) =>
-      firstWhere((it) => it.mediaType.matches(mediaType), orElse: () => null);
+  Link? firstWithMediaType(MediaType mediaType) =>
+      firstOrNullWhere((it) => it.mediaType.matches(mediaType));
 
   /// Finds all the links matching the given media type.
   List<Link> filterByMediaType(MediaType mediaType) =>
@@ -63,17 +62,17 @@ extension LinkListExtension on List<Link> {
       every((it) =>
           mediaTypes.any((mediaType) => mediaType.matches(it.mediaType)));
 
-  Link deepLinkWithHref(String href) {
+  Link? deepLinkWithHref(String href) {
     for (Link l in this) {
       if (l.href.toLowerCase() == href.toLowerCase() ||
           l.href.toLowerCase() == '/' + href.toLowerCase()) {
         return l;
       } else {
-        Link alternate = l.alternates.deepLinkWithHref(href);
+        Link? alternate = l.alternates.deepLinkWithHref(href);
         if (alternate != null) {
           return alternate;
         }
-        Link child = l.children.deepLinkWithHref(href);
+        Link? child = l.children.deepLinkWithHref(href);
         if (child != null) {
           return child;
         }
@@ -83,7 +82,7 @@ extension LinkListExtension on List<Link> {
   }
 
   /// Returns a [File] to the directory containing all links, if there is such a directory.
-  File hrefCommonFirstComponent() => this
+  File? hrefCommonFirstComponent() => this
       .map((it) => it.href.removePrefix("/").substringBefore("/"))
       .distinct()
       .takeIf((it) => it.length == 1)

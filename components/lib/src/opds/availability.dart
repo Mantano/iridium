@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/jsonable.dart';
@@ -14,13 +15,13 @@ import 'package:mno_commons/utils/jsonable.dart';
 /// @param until Timestamp for the next state change.
 class Availability with EquatableMixin implements JSONable {
   final AvailabilityState state;
-  final DateTime since;
-  final DateTime until;
+  final DateTime? since;
+  final DateTime? until;
 
-  Availability({this.state, this.since, this.until});
+  Availability({required this.state, this.since, this.until});
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         state,
         since,
         until,
@@ -29,15 +30,15 @@ class Availability with EquatableMixin implements JSONable {
   /// Serializes an [Availability] to its JSON representation.
   @override
   Map<String, dynamic> toJson() => {
-        if (state != null) "state": state.value,
+        "state": state.value,
         if (since != null) "since": since?.toIso8601String(),
         if (until != null) "until": until?.toIso8601String(),
       };
 
   /// Creates an [Availability] from its JSON representation.
   /// If the availability can't be parsed, a warning will be logged with [warnings].
-  factory Availability.fromJSON(Map<String, dynamic> json) {
-    AvailabilityState state =
+  static Availability? fromJSON(Map<String, dynamic>? json) {
+    AvailabilityState? state =
         AvailabilityState.from(json?.optNullableString("state"));
     if (state == null) {
       return null;
@@ -65,6 +66,6 @@ class AvailabilityState {
 
   const AvailabilityState._(this.value);
 
-  static AvailabilityState from(String value) =>
-      _values.firstWhere((state) => state.value == value, orElse: () => null);
+  static AvailabilityState? from(String? value) =>
+      _values.firstOrNullWhere((state) => state.value == value);
 }

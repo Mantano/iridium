@@ -19,7 +19,7 @@ import 'sniffer_context.dart';
 /// Determines if the provided content matches a known MediaType.
 ///
 /// @param context Holds the file metadata and cached content, which are shared among the sniffers.
-typedef Sniffer = Future<MediaType> Function(SnifferContext context);
+typedef Sniffer = Future<MediaType?> Function(SnifferContext context);
 
 /// Default MediaType sniffers provided by Readium.
 class Sniffers {
@@ -39,16 +39,16 @@ class Sniffers {
   ];
 
   /// Sniffs an HTML document.
-  static Future<MediaType> html(SnifferContext context) async {
+  static Future<MediaType?> html(SnifferContext context) async {
     if (context.hasFileExtension(["htm", "html", "xht", "xhtml"]) ||
         context.hasAnyOfMediaTypes(["text/html", "application/xhtml+xml"])) {
       return MediaType.html;
     }
     // [contentAsXml] will fail if the HTML is not a proper XML document, hence the doctype check.
-    if ((await context.contentAsXml())?.name?.local?.toLowerCase() == "html" ||
+    if ((await context.contentAsXml())?.name.local.toLowerCase() == "html" ||
         (await context.contentAsString())
                 ?.trimLeft()
-                ?.startsWith("<!DOCTYPE html>") ==
+                .startsWith("<!DOCTYPE html>") ==
             true) {
       return MediaType.html;
     }
@@ -56,7 +56,7 @@ class Sniffers {
   }
 
   /// Sniffs an OPDS document.
-  static Future<MediaType> opds(SnifferContext context) async {
+  static Future<MediaType?> opds(SnifferContext context) async {
     // OPDS 1
     if (context
         .hasMediaType("application/atom+xml;type=entry;profile=opds-catalog")) {
@@ -65,7 +65,7 @@ class Sniffers {
     if (context.hasMediaType("application/atom+xml;profile=opds-catalog")) {
       return MediaType.opds1;
     }
-    MediaType xmlMediaType = (await context.contentAsXml())?.let((xml) {
+    MediaType? xmlMediaType = (await context.contentAsXml())?.let((xml) {
       if (xml.name.namespaceUri == "http://www.w3.org/2005/Atom") {
         if (xml.name.local == "feed") {
           return MediaType.opds1;
@@ -86,11 +86,11 @@ class Sniffers {
     if (context.hasMediaType("application/opds-publication+json")) {
       return MediaType.opds2Publication;
     }
-    MediaType rwpmMediaType = (await context.contentAsRwpm())?.let((rwpm) {
+    MediaType? rwpmMediaType = (await context.contentAsRwpm())?.let((rwpm) {
       if (rwpm
               .linkWithRel("self")
               ?.mediaType
-              ?.matchesFromName("application/opds+json") ==
+              .matchesFromName("application/opds+json") ==
           true) {
         return MediaType.opds2;
       }
@@ -120,7 +120,7 @@ class Sniffers {
   }
 
   /// Sniffs an LCP License Document.
-  static Future<MediaType> lcpLicense(SnifferContext context) async {
+  static Future<MediaType?> lcpLicense(SnifferContext context) async {
     if (context.hasFileExtension(["lcpl"]) ||
         context.hasMediaType("application/vnd.readium.lcp.license.v1.0+json")) {
       return MediaType.lcpLicenseDocument;
@@ -133,7 +133,7 @@ class Sniffers {
   }
 
   /// Sniffs a bitmap image.
-  static Future<MediaType> bitmap(SnifferContext context) async {
+  static Future<MediaType?> bitmap(SnifferContext context) async {
     if (context.hasFileExtension(["bmp", "dib"]) ||
         context.hasAnyOfMediaTypes(["image/bmp", "image/x-bmp"])) {
       return MediaType.bmp;
@@ -163,7 +163,7 @@ class Sniffers {
   }
 
   /// Sniffs a Readium Web Publication, protected or not by LCP.
-  static Future<MediaType> webpub(SnifferContext context) async {
+  static Future<MediaType?> webpub(SnifferContext context) async {
     if (context.hasFileExtension(["audiobook"]) ||
         context.hasMediaType("application/audiobook+zip")) {
       return MediaType.readiumAudiobook;
@@ -196,7 +196,7 @@ class Sniffers {
     // Reads a RWPM, either from a manifest.json file, or from a manifest.json archive entry, if
     // the file is an archive.
     bool isManifest = true;
-    Manifest manifest;
+    Manifest? manifest;
     try {
       // manifest.json
       manifest = await context.contentAsRwpm() ??
@@ -233,7 +233,7 @@ class Sniffers {
       if (manifest
               .linkWithRel("self")
               ?.mediaType
-              ?.matchesFromName("application/webpub+json") ==
+              .matchesFromName("application/webpub+json") ==
           true) {
         return (isManifest)
             ? MediaType.readiumWebpubManifest
@@ -243,7 +243,7 @@ class Sniffers {
     return null;
   }
 
-  static Future<MediaType> w3cWPUB(SnifferContext context) async {
+  static Future<MediaType?> w3cWPUB(SnifferContext context) async {
     // Somehow, [JSONObject] can't access JSON-LD keys such as `@context`.
     String content = (await context.contentAsString()) ?? "";
     if (content.contains("@context") &&
@@ -257,13 +257,13 @@ class Sniffers {
   /// Sniffs an EPUB publication.
   ///
   /// Reference: https://www.w3.org/publishing/epub3/epub-ocf.html#sec-zip-container-mime
-  static Future<MediaType> epub(SnifferContext context) async {
+  static Future<MediaType?> epub(SnifferContext context) async {
     if (context.hasFileExtension(["epub"]) ||
         context.hasMediaType("application/epub+zip")) {
       return MediaType.epub;
     }
 
-    String mimetype = (await context.readArchiveEntryAt("mimetype"))
+    String? mimetype = (await context.readArchiveEntryAt("mimetype"))
         ?.let((it) => ascii.decode(it.buffer.asUint8List()).trim());
     if (mimetype == "application/epub+zip") {
       return MediaType.epub;
@@ -276,7 +276,7 @@ class Sniffers {
   /// References:
   ///  - https://www.w3.org/TR/lpf/
   ///  - https://www.w3.org/TR/pub-manifest/
-  static Future<MediaType> lpf(SnifferContext context) async {
+  static Future<MediaType?> lpf(SnifferContext context) async {
     if (context.hasFileExtension(["lpf"]) ||
         context.hasMediaType("application/lpf+zip")) {
       return MediaType.lpf;
@@ -286,9 +286,10 @@ class Sniffers {
     }
 
     // Somehow, [JSONObject] can't access JSON-LD keys such as `@context`.
-    MediaType mediaType = (await context.readArchiveEntryAt("publication.json"))
-        ?.let((it) => utf8.decode(it.buffer.asUint8List()))
-        ?.let((manifest) {
+    MediaType? mediaType =
+        (await context.readArchiveEntryAt("publication.json"))
+            ?.let((it) => utf8.decode(it.buffer.asUint8List()))
+            .let((manifest) {
       if (manifest.contains("@context") &&
           manifest.contains("https://www.w3.org/ns/pub-context")) {
         return MediaType.lpf;
@@ -322,7 +323,7 @@ class Sniffers {
   /// Sniffs a simple Archive-based MediaType, like Comic Book Archive or Zipped Audio Book.
   ///
   /// Reference: https://wiki.mobileread.com/wiki/CBR_and_CBZ
-  static Future<MediaType> archive(SnifferContext context) async {
+  static Future<MediaType?> archive(SnifferContext context) async {
     if (context.hasFileExtension(["cbz"]) ||
         context.hasAnyOfMediaTypes([
           "application/vnd.comicbook+zip",
@@ -335,7 +336,7 @@ class Sniffers {
       return MediaType.zab;
     }
 
-    if (context.contentAsArchive() != null) {
+    if (await context.contentAsArchive() != null) {
       bool isIgnored(ArchiveEntry entry, File file) => basename(file.path)
           .let((name) => name.startsWith(".") || name == "Thumbs.db");
 
@@ -345,8 +346,7 @@ class Sniffers {
             File file = File(entry.path);
             return isIgnored(entry, file) ||
                 fileExtensions.contains(file.path.extension().toLowerCase());
-          }) ??
-          false;
+          });
       if (await archiveContainsOnlyExtensions(cbzExtensions)) {
         return MediaType.cbz;
       }
@@ -360,7 +360,7 @@ class Sniffers {
   /// Sniffs a PDF document.
   ///
   /// Reference: https://www.loc.gov/preservation/digital/MediaTypes/fdd/fdd000123.shtml
-  static Future<MediaType> pdf(SnifferContext context) async {
+  static Future<MediaType?> pdf(SnifferContext context) async {
     if (context.hasFileExtension(["pdf"]) ||
         context.hasMediaType("application/pdf")) {
       return MediaType.pdf;
@@ -374,6 +374,6 @@ class Sniffers {
 
 extension ListLinkFirstWithRelMatching on List<Link> {
   /// Finds the first [Link] having a relation matching the given [predicate].
-  Link _firstWithRelMatching(bool Function(String) predicate) =>
-      firstWhere((it) => it.rels.any(predicate), orElse: () => null);
+  Link? _firstWithRelMatching(bool Function(String) predicate) =>
+      firstOrNullWhere((it) => it.rels.any(predicate));
 }

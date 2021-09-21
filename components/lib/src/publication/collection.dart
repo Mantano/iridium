@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 
 import '../../publication.dart';
@@ -23,45 +22,36 @@ class Collection with EquatableMixin, JSONable {
   final LocalizedString localizedName;
 
   /// (Nullable) An unambiguous reference to this contributor.
-  final String identifier;
+  final String? identifier;
 
   /// (Nullable) The string used to sort the name of the contributor.
-  final LocalizedString localizedSortAs;
+  final LocalizedString? localizedSortAs;
 
   /// The role of the contributor in the publication making.
   final Set<String> roles;
 
   /// (Nullable) The position of the publication in this collection/series, when the contributor represents a collection.
-  final double position;
+  final double? position;
   final List<Link> links;
 
   /// Returns the default translation string for the [localizedName].
   String get name => localizedName.string;
 
   /// Returns the default translation string for the [localizedSortAs].
-  String get sortAs => localizedSortAs?.string;
+  String? get sortAs => localizedSortAs?.string;
 
   Collection({
-    @required this.localizedName,
+    required this.localizedName,
     this.identifier,
     this.localizedSortAs,
     this.roles = const {},
     this.position,
     this.links = const [],
-  })  : assert(localizedName != null),
-        assert(roles != null);
+  });
 
   @override
-  List<Object> get props =>
+  List<Object?> get props =>
       [localizedName, identifier, localizedSortAs, roles, position, links];
-
-  // @override
-  // bool operator ==(Object other) =>
-  //     identical(this, other) ||
-  //     other is EquatableMixin && equals(props, other.props);
-  //
-  // @override
-  // int get hashCode => mapPropsToHashCode(props);
 
   @override
   String toString() => '$runtimeType($props)';
@@ -82,7 +72,7 @@ class Collection with EquatableMixin, JSONable {
   /// The [links]' href and their children's will be normalized recursively using the
   /// provided [normalizeHref] closure.
   /// If the contributor can't be parsed, a warning will be logged with [warnings].
-  factory Collection.fromJson(dynamic json,
+  static Collection? fromJson(dynamic json,
           {LinkHrefNormalizer normalizeHref = linkHrefNormalizerIdentity}) =>
       Contributor.fromJson(json, normalizeHref: normalizeHref)?.toCollection();
 

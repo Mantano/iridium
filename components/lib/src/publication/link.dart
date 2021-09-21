@@ -6,7 +6,6 @@ import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
-import 'package:meta/meta.dart';
 import 'package:mno_commons/utils/href.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_commons/utils/uri_template.dart';
@@ -27,7 +26,7 @@ const LinkHrefNormalizer linkHrefNormalizerIdentity = identity;
 class Link with EquatableMixin, JSONable {
   Link(
       {this.id,
-      @required this.href,
+      required this.href,
       this.templated = false,
       this.type,
       this.title,
@@ -40,13 +39,7 @@ class Link with EquatableMixin, JSONable {
       this.languages = const [],
       this.alternates = const [],
       this.children = const []})
-      : assert(href != null),
-        assert(templated != null),
-        assert(rels != null),
-        assert(languages != null),
-        assert(alternates != null),
-        assert(children != null),
-        properties = properties ?? Properties() {
+      : properties = properties ?? Properties() {
     List<String> parts = href.split('#');
     _hrefPart = parts[0];
     _elementId = (parts.length > 1) ? parts[1] : null;
@@ -56,9 +49,9 @@ class Link with EquatableMixin, JSONable {
   /// It's [href] and its children's recursively will be normalized using the provided
   /// [normalizeHref] closure.
   /// If the link can't be parsed, a warning will be logged with [warnings].
-  factory Link.fromJSON(Map<String, dynamic> json,
+  static Link? fromJSON(Map<String, dynamic>? json,
       {LinkHrefNormalizer normalizeHref = linkHrefNormalizerIdentity}) {
-    String href = json?.optNullableString("href");
+    String? href = json?.optNullableString("href");
     if (href == null) {
       Fimber.i("[href] is required: $json");
       return null;
@@ -86,13 +79,14 @@ class Link with EquatableMixin, JSONable {
   /// It's [href] and its children's recursively will be normalized using the provided
   /// [normalizeHref] closure.
   /// If a link can't be parsed, a warning will be logged with [warnings].
-  static List<Link> fromJSONArray(List<dynamic> json,
+  static List<Link> fromJSONArray(List<dynamic>? json,
           {LinkHrefNormalizer normalizeHref = linkHrefNormalizerIdentity}) =>
-      (json ?? []).parseObjects(
-          (it) => Link.fromJSON(it as Map, normalizeHref: normalizeHref));
+      (json ?? []).parseObjects((it) => Link.fromJSON(
+          it as Map<String, dynamic>?,
+          normalizeHref: normalizeHref));
 
   /// (Nullable) Unique identifier for this link in the [Publication].
-  final String id;
+  final String? id;
 
   /// URI or URI template of the linked resource.
   final String href; // URI
@@ -101,10 +95,10 @@ class Link with EquatableMixin, JSONable {
   final bool templated;
 
   /// (Nullable) MIME type of the linked resource.
-  final String type;
+  final String? type;
 
   /// (Nullable) Title of the linked resource.
-  final String title;
+  final String? title;
 
   /// Relations between the linked resource and its containing collection.
   final Set<String> rels;
@@ -113,16 +107,16 @@ class Link with EquatableMixin, JSONable {
   final Properties properties;
 
   /// (Nullable) Height of the linked resource in pixels.
-  final int height;
+  final int? height;
 
   /// (Nullable) Width of the linked resource in pixels.
-  final int width;
+  final int? width;
 
   /// (Nullable) Bitrate of the linked resource in kbps.
-  final double bitrate;
+  final double? bitrate;
 
   /// (Nullable) Length of the linked resource in seconds.
-  final double duration;
+  final double? duration;
 
   /// Expected language of the linked resource.
   final List<String> languages; // BCP 47 tag
@@ -134,29 +128,29 @@ class Link with EquatableMixin, JSONable {
   /// given collection role.
   final List<Link> children;
 
-  String _hrefPart;
+  late String _hrefPart;
 
-  String _elementId;
+  String? _elementId;
 
   String get hrefPart => _hrefPart;
 
-  String get elementId => _elementId;
+  String? get elementId => _elementId;
 
   Link copy({
-    String id,
-    String href,
-    bool templated,
-    String type,
-    String title,
-    Set<String> rels,
-    Properties properties,
-    int height,
-    int width,
-    double bitrate,
-    double duration,
-    List<String> languages,
-    List<Link> alternates,
-    List<Link> children,
+    String? id,
+    String? href,
+    bool? templated,
+    String? type,
+    String? title,
+    Set<String>? rels,
+    Properties? properties,
+    int? height,
+    int? width,
+    double? bitrate,
+    double? duration,
+    List<String>? languages,
+    List<Link>? alternates,
+    List<Link>? children,
   }) =>
       Link(
         id: id ?? this.id,
@@ -177,8 +171,8 @@ class Link with EquatableMixin, JSONable {
 
   /// Media type of the linked resource.
   MediaType get mediaType {
-    if (type != null && type.isNotEmpty) {
-      return MediaType.parse(type) ?? MediaType.binary;
+    if (type != null && type!.isNotEmpty) {
+      return MediaType.parse(type!) ?? MediaType.binary;
     } else {
       return MediaType.binary;
     }
@@ -197,7 +191,7 @@ class Link with EquatableMixin, JSONable {
   /// Computes an absolute URL to the link, relative to the given [baseUrl].
   ///
   /// If the link's [href] is already absolute, the [baseUrl] is ignored.
-  String toUrl(String baseUrl) {
+  String? toUrl(String? baseUrl) {
     String href = this.href.removePrefix("/");
     if (href.isBlank) {
       return null;
@@ -227,7 +221,7 @@ class Link with EquatableMixin, JSONable {
       copy(properties: this.properties.add(properties));
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         href,
         templated,
         type,

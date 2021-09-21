@@ -8,7 +8,7 @@ import 'stream.dart';
 
 /// Simple in-memory data stream.
 class RawDataStream extends DataStream {
-  RawDataStream(this._data) : assert(_data != null);
+  RawDataStream(this._data);
   final List<int> _data;
 
   factory RawDataStream.fromString(String contents,
@@ -19,7 +19,7 @@ class RawDataStream extends DataStream {
   int get length => _data.length;
 
   @override
-  Future<Stream<List<int>>> read({int start, int length}) async {
+  Future<Stream<List<int>>> read({int? start, int? length}) async {
     List<int> range = validateRange(start, length);
     start = range[0];
     length = range[1];

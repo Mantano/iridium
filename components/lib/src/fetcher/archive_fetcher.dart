@@ -25,8 +25,11 @@ class ArchiveFetcher extends Fetcher {
 
   @override
   Future<List<Link>> links() async =>
-      waitTryOr(<ArchiveEntry>[], () => archive.entries()).then(
-          (entries) => Future.wait(entries.map((value) => value.toLink())));
+      waitTryOr(<ArchiveEntry>[], () => archive.entries()).then((entries) =>
+          entries
+              ?.map((value) => value.toLink())
+              .let((links) => Future.wait(links)) ??
+          []);
 
   @override
   Resource get(Link link) => EntryResource(link, archive);
@@ -34,17 +37,17 @@ class ArchiveFetcher extends Fetcher {
   @override
   Future<void> close() => archive.close();
 
-  static Future<ArchiveFetcher> fromPath(String path,
+  static Future<ArchiveFetcher?> fromPath(String path,
           {ArchiveFactory archiveFactory = const DefaultArchiveFactory()}) =>
       waitTryOrNull(() async => await archiveFactory
           .open(File(path), null)
-          ?.then((archive) => archive?.let((it) => ArchiveFetcher(it))));
+          .then((archive) => archive?.let((it) => ArchiveFetcher(it))));
 }
 
 class EntryResource extends Resource {
   final Link _originalLink;
   final Archive _archive;
-  ResourceTry<ArchiveEntry> _entry;
+  ResourceTry<ArchiveEntry>? _entry;
 
   EntryResource(this._originalLink, this._archive);
 
@@ -58,12 +61,12 @@ class EntryResource extends Resource {
         _entry = ResourceTry.failure(ResourceException.notFound);
       }
     }
-    return _entry;
+    return _entry!;
   }
 
   @override
   Future<Link> link() async {
-    int compressedLength =
+    int? compressedLength =
         (await entry()).map((it) => it.compressedLength).getOrNull();
     if (compressedLength == null) {
       return _originalLink;
@@ -73,12 +76,12 @@ class EntryResource extends Resource {
   }
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) async =>
+  Future<ResourceTry<ByteData>> read({IntRange? range}) async =>
       (await entry()).mapWait((it) => it.read(range: range));
 
   @override
   Future<ResourceTry<int>> length() async {
-    int length = await _metadataLength();
+    int? length = await _metadataLength();
     if (length != null) {
       return ResourceTry.success(length);
     }
@@ -89,7 +92,7 @@ class EntryResource extends Resource {
   @override
   Future<void> close() async {}
 
-  Future<int> _metadataLength() =>
+  Future<int?> _metadataLength() =>
       entry().then((entry) => entry.getOrNull()?.length);
 
   @override

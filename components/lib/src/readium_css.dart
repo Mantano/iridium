@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
+
 const String fontSizeRef = "fontSize";
 const String fontFamilyRef = "fontFamily";
 const String fontOverrideRef = "fontOverride";
@@ -84,6 +86,6 @@ class ReadiumCSSName {
 
   const ReadiumCSSName._(this.name, this.ref);
 
-  static ReadiumCSSName from(String name) =>
-      _values.firstWhere((element) => element.name == name, orElse: () => null);
+  static ReadiumCSSName? from(String name) =>
+      _values.firstOrNullWhere((element) => element.name == name);
 }

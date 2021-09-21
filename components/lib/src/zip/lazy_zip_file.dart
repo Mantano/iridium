@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:archive/archive_io.dart' as archive;
+import 'package:archive/archive.dart' as archive;
 
 import 'file_buffer.dart';
 import 'lazy_zip_file_header.dart';
@@ -14,67 +14,65 @@ class LazyZipFile {
 
   static const int zipSignature = 0x04034b50;
 
-  int offsetStart, offsetEnd;
+  late int offsetStart, offsetEnd;
   int signature = zipSignature; // 4 bytes
   int version = 0; // 2 bytes
   int flags = 0; // 2 bytes
   int compressionMethod = 0; // 2 bytes
   int lastModFileTime = 0; // 2 bytes
   int lastModFileDate = 0; // 2 bytes
-  int crc32; // 4 bytes
-  int compressedSize; // 4 bytes
-  int uncompressedSize; // 4 bytes
+  late int crc32; // 4 bytes
+  late int compressedSize; // 4 bytes
+  late int uncompressedSize; // 4 bytes
   String filename = ''; // 2 bytes length, n-bytes data
   List<int> extraField = []; // 2 bytes length, n-bytes data
   LazyZipFileHeader header;
-  String password;
+  String? password;
 
   LazyZipFile(this.header, this.password);
 
   Future<void> load(FileBuffer input) async {
-    if (input != null) {
-      offsetStart = input.position;
-      signature = await input.readUint32();
-      if (signature != zipSignature) {
-        throw archive.ArchiveException('Invalid Zip Signature');
+    offsetStart = input.position;
+    signature = await input.readUint32();
+    if (signature != zipSignature) {
+      throw archive.ArchiveException('Invalid Zip Signature');
+    }
+
+    version = await input.readUint16();
+    flags = await input.readUint16();
+    compressionMethod = await input.readUint16();
+    lastModFileTime = await input.readUint16();
+    lastModFileDate = await input.readUint16();
+    crc32 = await input.readUint32();
+    compressedSize = await input.readUint32();
+    uncompressedSize = await input.readUint32();
+    int fnLen = await input.readUint16();
+    int exLen = await input.readUint16();
+    filename = await input.readString(fnLen);
+    extraField = await input.read(exLen);
+    // Read compressedSize bytes for the compressed data.
+    offsetEnd = input.position;
+
+    if (password != null) {
+      _initKeys(password!);
+      _isEncrypted = true;
+    }
+
+    // If bit 3 (0x08) of the flags field is set, then the CRC-32 and file
+    // sizes are not known when the header is written. The fields in the
+    // local header are filled with zero, and the CRC-32 and size are
+    // appended in a 12-byte structure (optionally preceded by a 4-byte
+    // signature) immediately after the compressed data:
+    if (flags & 0x08 != 0) {
+      int sigOrCrc = await input.readUint32();
+      if (sigOrCrc == 0x08074b50) {
+        crc32 = await input.readUint32();
+      } else {
+        crc32 = sigOrCrc;
       }
 
-      version = await input.readUint16();
-      flags = await input.readUint16();
-      compressionMethod = await input.readUint16();
-      lastModFileTime = await input.readUint16();
-      lastModFileDate = await input.readUint16();
-      crc32 = await input.readUint32();
       compressedSize = await input.readUint32();
       uncompressedSize = await input.readUint32();
-      int fnLen = await input.readUint16();
-      int exLen = await input.readUint16();
-      filename = await input.readString(fnLen);
-      extraField = await input.read(exLen);
-      // Read compressedSize bytes for the compressed data.
-      offsetEnd = input.position;
-
-      if (password != null) {
-        _initKeys(password);
-        _isEncrypted = true;
-      }
-
-      // If bit 3 (0x08) of the flags field is set, then the CRC-32 and file
-      // sizes are not known when the header is written. The fields in the
-      // local header are filled with zero, and the CRC-32 and size are
-      // appended in a 12-byte structure (optionally preceded by a 4-byte
-      // signature) immediately after the compressed data:
-      if (flags & 0x08 != 0) {
-        int sigOrCrc = await input.readUint32();
-        if (sigOrCrc == 0x08074b50) {
-          crc32 = await input.readUint32();
-        } else {
-          crc32 = sigOrCrc;
-        }
-
-        compressedSize = await input.readUint32();
-        uncompressedSize = await input.readUint32();
-      }
     }
   }
 

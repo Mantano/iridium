@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/jsonable.dart';
@@ -22,8 +23,8 @@ abstract class RouteHandler {
 
   static List<Link> get links => handlers.map((it) => it.link).toList();
 
-  static RouteHandler route(Link link) =>
-      handlers.firstWhere((it) => it.acceptRequest(link), orElse: () => null);
+  static RouteHandler? route(Link link) =>
+      handlers.firstOrNullWhere((it) => it.acceptRequest(link));
 
   bool acceptRequest(Link link);
 
@@ -64,7 +65,7 @@ class _RightsCopyHandler extends RouteHandler {
   @override
   Resource handleRequest(Link link, ContentProtectionService service) {
     Map<String, String> parameters = link.href.queryParameters();
-    String text = parameters["text"];
+    String? text = parameters["text"];
     if (text == null) {
       return FailureResource(
           link,
@@ -72,7 +73,7 @@ class _RightsCopyHandler extends RouteHandler {
               cause: Exception("'text' parameter is required")));
     }
 
-    bool peek = (parameters["peek"] ?? "false").toBooleanOrNull();
+    bool? peek = (parameters["peek"] ?? "false").toBooleanOrNull();
     if (peek == null) {
       return FailureResource(
           link,
@@ -101,7 +102,7 @@ class _RightsPrintHandler extends RouteHandler {
   @override
   Resource handleRequest(Link link, ContentProtectionService service) {
     Map<String, String> parameters = link.href.queryParameters();
-    String pageCountString = parameters["pageCount"];
+    String? pageCountString = parameters["pageCount"];
     if (pageCountString == null) {
       return FailureResource(
           link,
@@ -109,14 +110,14 @@ class _RightsPrintHandler extends RouteHandler {
               cause: Exception("'pageCount' parameter is required")));
     }
 
-    int pageCount = int.tryParse(pageCountString)?.takeIf((it) => it >= 0);
-    if (pageCountString == null) {
+    int? pageCount = int.tryParse(pageCountString)?.takeIf((it) => it >= 0);
+    if (pageCount == null) {
       return FailureResource(
           link,
           ResourceException.badRequest(parameters,
               cause: Exception("'pageCount' must be a positive integer")));
     }
-    bool peek = (parameters["peek"] ?? "false").toBooleanOrNull();
+    bool? peek = (parameters["peek"] ?? "false").toBooleanOrNull();
     if (peek == null) {
       return FailureResource(
           link,

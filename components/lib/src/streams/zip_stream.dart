@@ -9,9 +9,7 @@ import 'stream.dart';
 
 /// Random access stream to a file compressed in a ZIP archive.
 class ZipStream extends DataStream {
-  ZipStream(this._package, this._entry)
-      : assert(_package != null),
-        assert(_entry != null);
+  ZipStream(this._package, this._entry);
 
   final ZipPackage _package;
   final ZipLocalFile _entry;
@@ -20,13 +18,13 @@ class ZipStream extends DataStream {
   int get length => _entry.uncompressedSize;
 
   @override
-  Future<Stream<List<int>>> read({int start, int length}) async {
+  Future<Stream<List<int>>> read({int? start, int? length}) async {
     List<int> validatedRange = validateRange(start, length);
     start = validatedRange[0];
     length = validatedRange[1];
     IntRange range = IntRange(start, start + length - 1);
 
-    Stream<List<int>> stream =
+    Stream<List<int>>? stream =
         await _package.extractStream(_entry.filename, range: range);
     if (stream == null) {
       throw DataStreamException.readError(

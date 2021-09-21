@@ -30,7 +30,7 @@ abstract class PositionsService extends PublicationService {
   List<Link> get links => [_positionsLink];
 
   @override
-  Resource get(Link link) {
+  Resource? get(Link link) {
     if (link.href != _positionsLink.href) {
       return null;
     }
@@ -56,7 +56,8 @@ class PerResourcePositionsService extends PositionsService {
   final List<Link> readingOrder;
   final String fallbackMediaType;
 
-  PerResourcePositionsService({this.readingOrder, this.fallbackMediaType});
+  PerResourcePositionsService(
+      {required this.readingOrder, required this.fallbackMediaType});
 
   @override
   Future<List<List<Locator>>> positionsByReadingOrder() async {
@@ -75,14 +76,14 @@ class PerResourcePositionsService extends PositionsService {
         .toList();
   }
 
-  static ServiceFactory createFactory({String fallbackMediaType}) =>
+  static ServiceFactory createFactory({required String fallbackMediaType}) =>
       (context) => PerResourcePositionsService(
           readingOrder: context.manifest.readingOrder,
           fallbackMediaType: fallbackMediaType);
 }
 
 extension ServicesBuilderPositionExtension on ServicesBuilder {
-  ServiceFactory get positionsServiceFactory => of<PositionsService>();
+  ServiceFactory? getPositionsServiceFactory() => of<PositionsService>();
 
   set positionsServiceFactory(ServiceFactory serviceFactory) =>
       set<PositionsService>(serviceFactory);
@@ -90,28 +91,28 @@ extension ServicesBuilderPositionExtension on ServicesBuilder {
 
 extension PublicationExtension on Publication {
   Future<List<Locator>> positionsFromManifest() async {
-    ResourceTry<String> resourceString = await links
+    ResourceTry<String?>? resourceString = await links
         .firstWithMediaType(_positionsLink.mediaType)
         ?.let((it) => get(it))
-        ?.readAsString();
+        .readAsString();
     return resourceString
             ?.getOrNull()
             ?.toJsonOrNull()
             ?.optJSONArray("positions")
-            ?.mapNotNull(
-                (it) => Locator.fromJson(it as Map<String, dynamic>)) ??
+            ?.mapNotNull((it) => Locator.fromJson(it as Map<String, dynamic>))
+            .toList() ??
         [];
   }
 
   /// Returns the list of all the positions in the publication, grouped by the resource reading order index.
   Future<List<List<Locator>>> positionsByReadingOrder() async {
-    PositionsService service = findService<PositionsService>();
+    PositionsService? service = findService<PositionsService>();
     if (service != null) {
       return service.positionsByReadingOrder();
     }
     Map<String, List<Locator>> locators =
         (await positionsFromManifest()).groupBy((Locator it) => it.href);
-    return readingOrder.map((it) => locators[it.href] ?? []);
+    return readingOrder.map((it) => locators[it.href] ?? []).toList();
   }
 
   /// Returns the list of all the positions in the publication.

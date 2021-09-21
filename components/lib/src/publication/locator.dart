@@ -4,10 +4,10 @@
 
 import 'dart:convert';
 
+import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
-import 'package:meta/meta.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_commons/utils/take.dart';
 import 'package:mno_shared/publication.dart';
@@ -15,12 +15,13 @@ import 'package:mno_shared/publication.dart';
 const int _emptyIntValue = -1;
 const double _emptyDoubleValue = -1;
 
-extension IntCheck on int {
-  int check(int defaultValue) => (this == _emptyIntValue) ? defaultValue : this;
+extension IntCheck on int? {
+  int? check(int? defaultValue) =>
+      (this == _emptyIntValue) ? defaultValue : this;
 }
 
-extension DoubleCheck on double {
-  double check(double defaultValue) =>
+extension DoubleCheck on double? {
+  double? check(double? defaultValue) =>
       (this == _emptyDoubleValue) ? defaultValue : this;
 }
 
@@ -37,25 +38,25 @@ extension DoubleCheck on double {
 class Locator with EquatableMixin implements JSONable {
   final String href;
   final String type;
-  final String title;
+  final String? title;
   final Locations locations;
   final LocatorText text;
 
   const Locator(
-      {@required this.href,
-      @required this.type,
+      {required this.href,
+      required this.type,
       this.title,
       this.locations = const Locations(),
       this.text = const LocatorText()});
 
-  factory Locator.json(String jsonString) {
+  static Locator? fromJsonString(String jsonString) {
     Map<String, dynamic> json = JsonCodec().decode(jsonString);
     return Locator.fromJson(json);
   }
 
-  factory Locator.fromJson(Map<String, dynamic> json) {
-    String href = json?.optNullableString("href");
-    String type = json?.optNullableString("type");
+  static Locator? fromJson(Map<String, dynamic>? json) {
+    String? href = json?.optNullableString("href");
+    String? type = json?.optNullableString("type");
     if (href == null || type == null) {
       Fimber.i("[href] and [type] are required $json");
       return null;
@@ -77,11 +78,11 @@ class Locator with EquatableMixin implements JSONable {
     ..putJSONableIfNotEmpty("text", text);
 
   Locator copy({
-    String href,
-    String type,
-    String title,
-    Locations locations,
-    LocatorText text,
+    String? href,
+    String? type,
+    String? title,
+    Locations? locations,
+    LocatorText? text,
   }) =>
       Locator(
         href: href ?? this.href,
@@ -93,11 +94,11 @@ class Locator with EquatableMixin implements JSONable {
 
   /// Shortcut to get a copy of the [Locator] with different [Locations] sub-properties.
   Locator copyWithLocations(
-          {List<String> fragments,
-          double progression = _emptyDoubleValue,
-          int position = _emptyIntValue,
-          double totalProgression = _emptyDoubleValue,
-          Map<String, dynamic> otherLocations}) =>
+          {List<String>? fragments,
+          double? progression = _emptyDoubleValue,
+          int? position = _emptyIntValue,
+          double? totalProgression = _emptyDoubleValue,
+          Map<String, dynamic>? otherLocations}) =>
       copy(
           locations: locations.copy(
         fragments: fragments ?? locations.fragments,
@@ -108,7 +109,7 @@ class Locator with EquatableMixin implements JSONable {
       ));
 
   @override
-  List<Object> get props => [href, type, title, locations, text];
+  List<Object?> get props => [href, type, title, locations, text];
 
   @override
   String toString() => 'Locator{href: $href, type: $type, title: $title, '
@@ -125,9 +126,9 @@ class Locator with EquatableMixin implements JSONable {
 ///        and 1).
 /// @param otherLocations Additional locations for extensions.
 class Locations with EquatableMixin implements JSONable {
-  final int position;
-  final double progression;
-  final double totalProgression;
+  final int? position;
+  final double? progression;
+  final double? totalProgression;
   final List<String> fragments;
   final Map<String, dynamic> otherLocations;
 
@@ -140,11 +141,11 @@ class Locations with EquatableMixin implements JSONable {
   });
 
   Locations copy(
-          {int position = _emptyIntValue,
-          double progression = _emptyDoubleValue,
-          double totalProgression = _emptyDoubleValue,
-          List<String> fragments,
-          Map<String, dynamic> otherLocations}) =>
+          {int? position = _emptyIntValue,
+          double? progression = _emptyDoubleValue,
+          double? totalProgression = _emptyDoubleValue,
+          List<String>? fragments,
+          Map<String, dynamic>? otherLocations}) =>
       Locations(
         progression: progression.check(this.progression),
         position: position.check(this.position),
@@ -166,21 +167,21 @@ class Locations with EquatableMixin implements JSONable {
   /// `locations["cssSelector"] == locations.otherLocations["cssSelector"]`
   dynamic operator [](String key) => otherLocations[key];
 
-  factory Locations.fromJson(Map<String, dynamic> json) {
+  factory Locations.fromJson(Map<String, dynamic>? json) {
     List<String> fragments = json
             ?.optStringsFromArrayOrSingle("fragments", remove: true)
-            ?.takeIf((it) => it.isNotEmpty) ??
+            .takeIf((it) => it.isNotEmpty) ??
         json?.optStringsFromArrayOrSingle("fragment", remove: true) ??
         [];
 
-    double progression = json
+    double? progression = json
         ?.optNullableDouble("progression", remove: true)
         ?.takeIf((it) => 0.0 <= it && it <= 1.0);
 
-    int position =
+    int? position =
         json?.optNullableInt("position", remove: true)?.takeIf((it) => it > 0);
 
-    double totalProgression = json
+    double? totalProgression = json
         ?.optNullableDouble("totalProgression", remove: true)
         ?.takeIf((it) => 0.0 <= it && it <= 1.0);
 
@@ -202,7 +203,7 @@ class Locations with EquatableMixin implements JSONable {
     ..putOpt("totalProgression", totalProgression);
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         position,
         progression,
         totalProgression,
@@ -226,9 +227,9 @@ class Locations with EquatableMixin implements JSONable {
 /// @param highlight The text at the locator.
 /// @param after The text after the locator.
 class LocatorText with EquatableMixin implements JSONable {
-  final String before;
-  final String highlight;
-  final String after;
+  final String? before;
+  final String? highlight;
+  final String? after;
 
   const LocatorText({this.before, this.highlight, this.after});
 
@@ -239,9 +240,9 @@ class LocatorText with EquatableMixin implements JSONable {
     ..putOpt("after", after);
 
   @override
-  List<Object> get props => [before, highlight, after];
+  List<Object?> get props => [before, highlight, after];
 
-  factory LocatorText.fromJson(Map<String, dynamic> json) => LocatorText(
+  factory LocatorText.fromJson(Map<String, dynamic>? json) => LocatorText(
       before: json?.optNullableString("before"),
       highlight: json?.optNullableString("highlight"),
       after: json?.optNullableString("after"));
@@ -251,9 +252,9 @@ extension LinkLocator on Link {
   /// Creates a [Locator] from a reading order [Link].
   Locator toLocator() {
     List<String> components = href.split("#");
-    String fragment = (components.length > 1) ? components[1] : null;
+    String? fragment = (components.length > 1) ? components[1] : null;
     return Locator(
-      href: components.firstWhere((it) => it != null, orElse: () => href),
+      href: components.firstOrDefault(href),
       type: type ?? "",
       title: title,
       locations: Locations(fragments: fragment?.let((it) => [it]) ?? []),

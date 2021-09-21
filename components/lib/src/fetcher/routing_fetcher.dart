@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
 
@@ -35,8 +36,7 @@ class RoutingFetcher extends Fetcher {
 
   @override
   Resource get(Link link) {
-    Route route =
-        routes.firstWhere((it) => it.accepts(link), orElse: () => null);
+    Route? route = routes.firstOrNullWhere((it) => it.accepts(link));
     if (route != null) {
       return route.fetcher.get(link);
     }
@@ -57,6 +57,6 @@ class Route {
   final Fetcher fetcher;
   final AcceptLink accepts;
 
-  Route(this.fetcher, {AcceptLink accepts})
+  Route(this.fetcher, {AcceptLink? accepts})
       : this.accepts = accepts ?? _defaultAcceptLink;
 }

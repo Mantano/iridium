@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/jsonable.dart';
@@ -47,20 +48,20 @@ class PublicationCollection with EquatableMixin implements JSONable {
   /// If the collection can't be parsed, a warning will be logged with [warnings].
   /// The [links]' href and their children's will be normalized recursively using the
   /// provided [normalizeHref] closure.
-  factory PublicationCollection.fromJSON(dynamic json,
+  static PublicationCollection? fromJSON(dynamic json,
       {LinkHrefNormalizer normalizeHref = linkHrefNormalizerIdentity}) {
     if (json == null) {
       return null;
     }
     List<Link> links;
-    Map<String, dynamic> metadata;
-    Map<String, List<PublicationCollection>> subcollections;
+    Map<String, dynamic>? metadata;
+    Map<String, List<PublicationCollection>>? subcollections;
 
     // Parses a sub-collection object.
     if (json is Map<String, dynamic>) {
-      links = Link.fromJSONArray(json.remove("links") as List,
+      links = Link.fromJSONArray(json.remove("links") as List<dynamic>?,
           normalizeHref: normalizeHref);
-      metadata = (json.remove("metadata") as Map<String, dynamic>);
+      metadata = (json.remove("metadata") as Map<String, dynamic>?);
       subcollections = collectionsFromJSON(json, normalizeHref: normalizeHref);
     }
     // Parses an array of links.
@@ -95,7 +96,7 @@ class PublicationCollection with EquatableMixin implements JSONable {
       dynamic subJSON = json[role];
 
       // Parses a list of links or a single collection object.
-      PublicationCollection collection =
+      PublicationCollection? collection =
           PublicationCollection.fromJSON(subJSON, normalizeHref: normalizeHref);
       if (collection != null) {
         collections.putIfAbsent(role, () => []).add(collection);
@@ -104,7 +105,7 @@ class PublicationCollection with EquatableMixin implements JSONable {
         Iterable<PublicationCollection> subcollections = subJSON
             .map((it) => PublicationCollection.fromJSON(it,
                 normalizeHref: normalizeHref))
-            .where((element) => element != null);
+            .whereNotNull();
         collections.putIfAbsent(role, () => []).addAll(subcollections);
       }
     }

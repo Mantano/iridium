@@ -9,13 +9,13 @@ import 'package:mno_commons/utils/jsonable.dart';
 ///
 /// https://drafts.opds.io/schema/properties.schema.json
 class Copies with EquatableMixin implements JSONable {
-  final int total;
-  final int available;
+  final int? total;
+  final int? available;
 
   Copies({this.total, this.available});
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         total,
         available,
       ];
@@ -28,7 +28,7 @@ class Copies with EquatableMixin implements JSONable {
       };
 
   /// Creates an [Copies] from its JSON representation.
-  factory Copies.fromJSON(Map<String, dynamic> json) {
+  static Copies? fromJSON(Map<String, dynamic>? json) {
     if (json == null) {
       return null;
     }

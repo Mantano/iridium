@@ -21,7 +21,7 @@ class Metadata with EquatableMixin, JSONable {
   Metadata(
       {this.identifier,
       this.type,
-      this.localizedTitle,
+      required this.localizedTitle,
       this.localizedSubtitle,
       this.modified,
       this.published,
@@ -44,21 +44,13 @@ class Metadata with EquatableMixin, JSONable {
       this.description,
       this.duration,
       this.numberOfPages,
-      Map<String, List<Collection>> belongsTo,
+      Map<String, List<Collection>>? belongsTo,
       this.belongsToCollections = const [],
       this.belongsToSeries = const [],
       this.readingProgression = ReadingProgression.auto,
       this.rendition,
       this.otherMetadata = const {}})
-      : assert(languages != null),
-        assert(subjects != null),
-        assert(authors != null),
-        assert(contributors != null),
-        assert(publishers != null),
-        assert(belongsToCollections != null),
-        assert(belongsToSeries != null),
-        assert(readingProgression != null),
-        this.belongsTo = belongsTo ?? {} {
+      : this.belongsTo = belongsTo ?? {} {
     if (belongsToCollections.isNotEmpty) {
       this.belongsTo["collection"] = belongsToCollections;
     }
@@ -68,22 +60,22 @@ class Metadata with EquatableMixin, JSONable {
   }
 
   /// An URI used as the unique identifier for this [Publication].
-  final String identifier; // nullable
-  final String type; // nullable
+  final String? identifier; // nullable
+  final String? type; // nullable
 
   final LocalizedString localizedTitle;
-  final LocalizedString localizedSubtitle; // nullable
-  final DateTime modified; // nullable
-  final DateTime published; // nullable
+  final LocalizedString? localizedSubtitle; // nullable
+  final DateTime? modified; // nullable
+  final DateTime? published; // nullable
 
   /// Languages used in the publication.
   final List<String> languages; // BCP 47 tag
 
   /// (Nullable) First language in the publication.
-  String get language => (languages.isNotEmpty ? languages.first : null);
+  String? get language => (languages.isNotEmpty ? languages.first : null);
 
   /// Alternative title to be used for sorting the publication in the library.
-  final LocalizedString localizedSortAs; // nullable
+  final LocalizedString? localizedSortAs; // nullable
 
   /// Themes/subjects of the publication.
   final List<Subject> subjects;
@@ -102,11 +94,11 @@ class Metadata with EquatableMixin, JSONable {
   final List<Contributor> narrators;
   final List<Contributor> imprints;
 
-  final String description; // nullable
-  final double duration; // nullable
+  final String? description; // nullable
+  final double? duration; // nullable
 
   /// Number of pages in the publication, if available.
-  final int numberOfPages; // nullable
+  final int? numberOfPages; // nullable
 
   final Map<String, List<Collection>> belongsTo;
   final List<Collection> belongsToCollections;
@@ -116,7 +108,7 @@ class Metadata with EquatableMixin, JSONable {
   final ReadingProgression readingProgression;
 
   /// Information about the contents rendition.
-  final Presentation rendition; // nullable if not an EPUB [Publication]
+  final Presentation? rendition; // nullable if not an EPUB [Publication]
   final Map<String, dynamic> otherMetadata;
 
   ReadingProgression get effectiveReadingProgression {
@@ -151,10 +143,10 @@ class Metadata with EquatableMixin, JSONable {
   String get title => localizedTitle.string;
 
   /// Returns the default translation string for the [localizedSortAs].
-  String get sortAs => localizedSortAs?.string;
+  String? get sortAs => localizedSortAs?.string;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         identifier,
         type,
         localizedTitle,
@@ -220,27 +212,28 @@ class Metadata with EquatableMixin, JSONable {
   /// Parses a [Metadata] from its RWPM JSON representation.
   ///
   /// If the metadata can't be parsed, a warning will be logged with [warnings].
-  factory Metadata.fromJson(Map<String, dynamic> json,
+  static Metadata? fromJson(Map<String, dynamic>? json,
       {LinkHrefNormalizer normalizeHref = linkHrefNormalizerIdentity}) {
     if (json == null) {
       return null;
     }
-    LocalizedString localizedTitle =
+    LocalizedString? localizedTitle =
         LocalizedString.fromJson(json.remove("title"));
     if (localizedTitle == null) {
       Fimber.i("[title] is required $json");
       return null;
     }
-    String identifier = json.remove("identifier") as String;
-    String type = json.remove("@type") as String;
-    LocalizedString localizedSubtitle =
+    String? identifier = json.remove("identifier") as String?;
+    String? type = json.remove("@type") as String?;
+    LocalizedString? localizedSubtitle =
         LocalizedString.fromJson(json.remove("subtitle"));
-    DateTime modified = (json.remove("modified") as String)?.iso8601ToDate();
-    DateTime published = (json.remove("published") as String)?.iso8601ToDate();
+    DateTime? modified = (json.remove("modified") as String?)?.iso8601ToDate();
+    DateTime? published =
+        (json.remove("published") as String?)?.iso8601ToDate();
 
     List<String> languages =
         json.optStringsFromArrayOrSingle("language", remove: true);
-    LocalizedString localizedSortAs =
+    LocalizedString? localizedSortAs =
         LocalizedString.fromJson(json.remove("sortAs"));
     List<Subject> subjects = Subject.fromJSONArray(json.remove("subject"),
         normalizeHref: normalizeHref);
@@ -280,14 +273,14 @@ class Metadata with EquatableMixin, JSONable {
         json.remove("imprint"),
         normalizeHref: normalizeHref);
     ReadingProgression readingProgression = ReadingProgression.fromValue(
-        json.remove("readingProgression") as String);
-    String description = json.remove("description") as String;
-    double duration = json.optPositiveDouble("duration", remove: true);
-    int numberOfPages = json.optPositiveInt("numberOfPages", remove: true);
+        json.remove("readingProgression") as String?);
+    String? description = json.remove("description") as String?;
+    double? duration = json.optPositiveDouble("duration", remove: true);
+    int? numberOfPages = json.optPositiveInt("numberOfPages", remove: true);
 
     Map<String, dynamic> belongsToJson =
-        (json.remove("belongsTo") as Map<String, dynamic> ??
-            json.remove("belongs_to") as Map<String, dynamic> ??
+        (json.remove("belongsTo") as Map<String, dynamic>? ??
+            json.remove("belongs_to") as Map<String, dynamic>? ??
             {});
     Map<String, List<Collection>> belongsTo = {};
     for (String key in belongsToJson.keys) {
@@ -331,35 +324,35 @@ class Metadata with EquatableMixin, JSONable {
   }
 
   Metadata copy({
-    String identifier,
-    String type,
-    LocalizedString localizedTitle,
-    LocalizedString localizedSubtitle,
-    DateTime modified,
-    DateTime published,
-    List<String> languages,
-    LocalizedString localizedSortAs,
-    List<Subject> subjects,
-    List<Contributor> authors,
-    List<Contributor> publishers,
-    List<Contributor> contributors,
-    List<Contributor> translators,
-    List<Contributor> editors,
-    List<Contributor> artists,
-    List<Contributor> illustrators,
-    List<Contributor> letterers,
-    List<Contributor> pencilers,
-    List<Contributor> colorists,
-    List<Contributor> inkers,
-    List<Contributor> narrators,
-    List<Contributor> imprints,
-    String description,
-    double duration,
-    int numberOfPages,
-    Map<String, List<Collection>> belongsTo,
-    ReadingProgression readingProgression,
-    Presentation rendition,
-    Map<String, dynamic> otherMetadata,
+    String? identifier,
+    String? type,
+    LocalizedString? localizedTitle,
+    LocalizedString? localizedSubtitle,
+    DateTime? modified,
+    DateTime? published,
+    List<String>? languages,
+    LocalizedString? localizedSortAs,
+    List<Subject>? subjects,
+    List<Contributor>? authors,
+    List<Contributor>? publishers,
+    List<Contributor>? contributors,
+    List<Contributor>? translators,
+    List<Contributor>? editors,
+    List<Contributor>? artists,
+    List<Contributor>? illustrators,
+    List<Contributor>? letterers,
+    List<Contributor>? pencilers,
+    List<Contributor>? colorists,
+    List<Contributor>? inkers,
+    List<Contributor>? narrators,
+    List<Contributor>? imprints,
+    String? description,
+    double? duration,
+    int? numberOfPages,
+    Map<String, List<Collection>>? belongsTo,
+    ReadingProgression? readingProgression,
+    Presentation? rendition,
+    Map<String, dynamic>? otherMetadata,
   }) =>
       Metadata(
         identifier: identifier ?? this.identifier,

@@ -13,7 +13,7 @@ class Acquisition with EquatableMixin implements JSONable {
   final String type;
   final List<Acquisition> children;
 
-  Acquisition({this.type, this.children = const []});
+  Acquisition({required this.type, this.children = const []});
 
   /// Media type of the resource to acquire. */
   MediaType get mediaType => MediaType.parse(type) ?? MediaType.binary;
@@ -30,14 +30,14 @@ class Acquisition with EquatableMixin implements JSONable {
   /// Serializes an [Acquisition] to its JSON representation.
   @override
   Map<String, dynamic> toJson() => {
-        if (type != null) "type": type,
+        "type": type,
         if (children.isNotEmpty) "child": children,
       };
 
   /// Creates an [Acquisition] from its JSON representation.
   /// If the acquisition can't be parsed, a warning will be logged with [warnings].
-  factory Acquisition.fromJSON(Map<String, dynamic> json) {
-    String type = json?.optNullableString("type");
+  static Acquisition? fromJSON(Map<String, dynamic>? json) {
+    String? type = json?.optNullableString("type");
     if (type == null) {
       return null;
     }
@@ -50,6 +50,8 @@ class Acquisition with EquatableMixin implements JSONable {
 
   /// Creates a list of [Acquisition] from its JSON representation.
   /// If an acquisition can't be parsed, a warning will be logged with [warnings].
-  static List<Acquisition> fromJSONArray(List<dynamic> json) =>
-      json.parseObjects((it) => Acquisition.fromJSON(it as Map));
+  static List<Acquisition> fromJSONArray(List<dynamic>? json) =>
+      json?.parseObjects(
+          (it) => Acquisition.fromJSON(it as Map<String, dynamic>?)) ??
+      [];
 }

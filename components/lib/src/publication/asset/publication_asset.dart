@@ -24,7 +24,7 @@ abstract class PublicationAsset {
 
   /// Creates a fetcher used to access the asset's content.
   Future<Try<Fetcher, OpeningException>> createFetcher(
-      PublicationAssetDependencies dependencies, String credentials);
+      PublicationAssetDependencies dependencies, String? credentials);
 }
 
 class PublicationAssetDependencies {

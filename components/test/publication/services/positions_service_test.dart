@@ -53,12 +53,12 @@ void main() async {
       var json = await service
           .get(Link(href: "/~readium/positions"))
           ?.let((it) => it.readAsString())
-          ?.then(
-              (result) => result?.getOrNull()?.let((it) => it.toJsonOrNull()));
+          .then((result) => result.getOrNull()?.let((it) => it.toJsonOrNull()));
 
       var total = json?.optNullableInt("total");
       var locators = json?.optJSONArray("positions")?.mapNotNull((locator) =>
-          (locator as Map<String, dynamic>)?.let((it) => Locator.fromJson(it)));
+          (locator as Map<String, dynamic>?)
+              ?.let((it) => Locator.fromJson(it)));
 
       expect(positions.flatten().length, total);
       expect(positions.flatten(), locators);
@@ -70,7 +70,7 @@ void main() async {
           factory,
           ServicesBuilder.create()
               .also((it) => it.positionsServiceFactory = factory)
-              .positionsServiceFactory);
+              .getPositionsServiceFactory());
     });
   });
 

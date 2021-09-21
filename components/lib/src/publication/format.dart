@@ -18,17 +18,16 @@ class PublicationFormat extends Equatable {
   List<Object> get props => [value];
 
   /// Finds the [PublicationFormat] for the given [mimetype], or fallback on a [fileExtension].
-  factory PublicationFormat.fromMIMEType(String mimetype,
-      {String fileExtension}) {
-    List<String> mimetypes = [if (mimetype != null) mimetype];
+  static PublicationFormat? fromMIMEType(String mimetype,
+      {String? fileExtension}) {
+    List<String> mimetypes = [mimetype];
     return PublicationFormat.fromMIMETypes(mimetypes,
         fileExtension: fileExtension);
   }
 
   /// Finds the [PublicationFormat] from a list of possible [mimetypes] or fallback on a [fileExtension].
-  factory PublicationFormat.fromMIMETypes(List<String> mimetypes,
-      {String fileExtension}) {
-    assert(mimetypes != null);
+  static PublicationFormat? fromMIMETypes(List<String> mimetypes,
+      {String? fileExtension}) {
     for (String mimetype in mimetypes) {
       // FIXME: video MIME types?
       switch (mimetype) {
@@ -50,8 +49,8 @@ class PublicationFormat extends Equatable {
   }
 
   /// Finds the [PublicationFormat] of the file at the given [path], using an optionally provided [mimetype].
-  factory PublicationFormat.fromPath(String path, {String mimetype}) {
-    String extension = p.extension(path);
+  static PublicationFormat? fromPath(String path, {required String mimetype}) {
+    String? extension = p.extension(path);
     if (extension.length > 1) {
       // Removes the dot.
       extension = extension.substring(1);

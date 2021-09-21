@@ -1,3 +1,7 @@
+## 0.1.2
+
+* Migration to null-safety
+
 ## 0.1.1
 
 * Removed unused dependency

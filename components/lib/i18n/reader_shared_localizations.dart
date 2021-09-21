@@ -19,7 +19,7 @@ class ReaderSharedLocalizations implements LocalizationsRepository {
   final String locale;
 
   @override
-  String getMessage(String name, List<dynamic> args) => Intl.message(
+  String getMessage(String name, List<Object>? args) => Intl.message(
         name,
         name: name,
         args: args,

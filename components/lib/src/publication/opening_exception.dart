@@ -9,7 +9,7 @@ class OpeningException extends UserException {
   //(@StringRes userMessageId: Int, cause: Throwable? = null)
 
   //(userMessageId, cause = cause)
-  OpeningException._(String userMessageId, {Exception cause})
+  OpeningException._(String userMessageId, {Exception? cause})
       : super(userMessageId, cause: cause);
 
   /// The file format could not be recognized by any parser.

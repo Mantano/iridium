@@ -28,13 +28,13 @@ class ReadingProgression with EquatableMixin {
 
   /// Creates from a BCP 47 language.
   factory ReadingProgression.fromLanguage(String language) {
-    if (['ar', 'fa', 'he'].contains(language?.toLowerCase())) {
+    if (['ar', 'fa', 'he'].contains(language.toLowerCase())) {
       return ReadingProgression.rtl;
     } else {
       return ReadingProgression.ltr;
     }
   }
-  factory ReadingProgression.fromValue(String value) => _values
+  factory ReadingProgression.fromValue(String? value) => _values
       .firstWhere((it) => it.value == value?.toLowerCase(), orElse: () => auto);
 
   /// Returns the leading [Page] for the [ReadingProgression].

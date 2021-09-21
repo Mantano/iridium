@@ -18,7 +18,7 @@ class DataStreamException implements Exception {
   factory DataStreamException.outOfRange(int start, int length) =>
       DataStreamException("Read out of range (start: $start, length: $length)");
 
-  const DataStreamException(this.message) : assert(message != null);
+  const DataStreamException(this.message);
   final String message;
 
   @override
@@ -34,10 +34,10 @@ abstract class DataStream {
   /// Reads from [start] offset a maximum amount of [length] bytes. If [start]
   /// is null, then starts from the beginning of the data. If [length] is null,
   /// then reads up to the end.
-  Future<Stream<List<int>>> read({int start, int length});
+  Future<Stream<List<int>>> read({int? start, int? length});
 
   /// Read the bytes as a data buffer.
-  Future<List<int>> readData({int start, int length}) async =>
+  Future<List<int>> readData({int? start, int? length}) async =>
       (await read(start: start, length: length)).expand((b) => b).toList();
 
   /// Returns the data as text contents, decoded with the given [encoding]
@@ -54,7 +54,7 @@ abstract class DataStream {
   /// Validates the given [start] and [length] range components and return them
   /// (or the default ones if null). Throws an exception if the range is not
   /// valid.
-  List<int> validateRange(int start, int length) {
+  List<int> validateRange(int? start, int? length) {
     start = max(0, start ?? 0);
     length = min(this.length, length ?? this.length - start);
     // if (start < 0 ||

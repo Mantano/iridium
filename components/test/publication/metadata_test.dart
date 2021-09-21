@@ -8,7 +8,8 @@ import 'package:test/test.dart';
 
 void main() {
   Metadata createMetadata(
-          {List<String> languages, ReadingProgression readingProgression}) =>
+          {required List<String> languages,
+          required ReadingProgression readingProgression}) =>
       Metadata(
           localizedTitle: LocalizedString.fromString("Title"),
           languages: languages,
@@ -24,9 +25,10 @@ void main() {
         Metadata(
             identifier: "1234",
             type: "epub",
-            localizedTitle: LocalizedString({"en": "Title", "fr": "Titre"}),
-            localizedSubtitle:
-                LocalizedString({"en": "Subtitle", "fr": "Sous-titre"}),
+            localizedTitle:
+                LocalizedString.fromStrings({"en": "Title", "fr": "Titre"}),
+            localizedSubtitle: LocalizedString.fromStrings(
+                {"en": "Subtitle", "fr": "Sous-titre"}),
             modified: "2001-01-01T12:36:27.000Z".iso8601ToDate(),
             published: "2001-01-02T12:36:27.000Z".iso8601ToDate(),
             languages: ["en", "fr"],
@@ -190,14 +192,15 @@ void main() {
         Metadata(
             identifier: "1234",
             type: "epub",
-            localizedTitle: LocalizedString({"en": "Title", "fr": "Titre"}),
-            localizedSubtitle:
-                LocalizedString({"en": "Subtitle", "fr": "Sous-titre"}),
+            localizedTitle:
+                LocalizedString.fromStrings({"en": "Title", "fr": "Titre"}),
+            localizedSubtitle: LocalizedString.fromStrings(
+                {"en": "Subtitle", "fr": "Sous-titre"}),
             modified: "2001-01-01T12:36:27.000Z".iso8601ToDate(),
             published: "2001-01-02T12:36:27.000Z".iso8601ToDate(),
             languages: ["en", "fr"],
-            localizedSortAs:
-                LocalizedString({"en": "sort key", "fr": "clé de tri"}),
+            localizedSortAs: LocalizedString.fromStrings(
+                {"en": "sort key", "fr": "clé de tri"}),
             subjects: [
               Subject.fromString("Science Fiction"),
               Subject.fromString("Fantasy")

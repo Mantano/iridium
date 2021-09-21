@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:intl/locale.dart';
 
 mixin LocalizationsRepository {
-  String getMessage(String name, List<dynamic> args);
+  String getMessage(String name, List<Object>? args);
 }
 
 /// This is an abstraction to avoid a direct dependency to Flutter

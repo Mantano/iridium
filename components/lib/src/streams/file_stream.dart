@@ -10,9 +10,7 @@ import 'stream.dart';
 
 /// Random access stream to a file.
 class FileStream extends DataStream {
-  FileStream._(this._file, this._length)
-      : assert(_file != null),
-        assert(_length != null);
+  FileStream._(this._file, this._length);
 
   static Future<FileStream> fromFile(File file) async {
     RandomAccessFile raFile = await file.open();
@@ -27,7 +25,7 @@ class FileStream extends DataStream {
   int get length => _length;
 
   @override
-  Future<Stream<List<int>>> read({int start, int length}) async {
+  Future<Stream<List<int>>> read({int? start, int? length}) async {
     List<int> range = validateRange(start, length);
     start = range[0];
     length = range[1];

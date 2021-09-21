@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
@@ -17,11 +18,12 @@ class ZipArchiveFactory implements ArchiveFactory {
   const ZipArchiveFactory();
 
   @override
-  Future<Archive> open(FileSystemEntity file, String password) async =>
+  Future<Archive?> open(FileSystemEntity file, String? password) async =>
       ZipContainer(file.path)
           .archive
-          .then((zipPackage) => ZipArchive(zipPackage))
-          .onError((error, stackTrace) => null);
+          .then((zipPackage) =>
+              (zipPackage != null) ? ZipArchive(zipPackage) : null)
+          .catchError((error, stackTrace) {});
 }
 
 class ZipArchive extends Archive {
@@ -40,7 +42,7 @@ class ZipArchive extends Archive {
 
   @override
   Future<ArchiveEntry> entry(String path) async {
-    ZipLocalFile entry = archive.entries[path];
+    ZipLocalFile? entry = archive.entries[path];
     if (entry == null) {
       throw Exception("No file entry at path $path.");
     }
@@ -58,10 +60,10 @@ class ZipEntry extends ArchiveEntry {
   String get path => entry.filename;
 
   @override
-  int get length => entry.uncompressedSize.takeUnless((it) => it == -1);
+  int? get length => entry.uncompressedSize.takeUnless((it) => it == -1);
 
   @override
-  int get compressedLength {
+  int? get compressedLength {
     if (entry.compressionMethod == ZipHeader.stored ||
         entry.compressionMethod == -1) {
       return null;
@@ -71,7 +73,7 @@ class ZipEntry extends ArchiveEntry {
   }
 
   @override
-  Future<ByteData> read({IntRange range}) async => ZipStream(archive, entry)
+  Future<ByteData> read({IntRange? range}) async => ZipStream(archive, entry)
       .readData(start: range?.start, length: range?.length)
       .then((data) => data.toByteData());
 

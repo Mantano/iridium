@@ -13,9 +13,9 @@ class Facet with EquatableMixin {
   List<Link> links;
 
   Facet({
-    this.title,
-    OpdsMetadata metadata,
-    List<Link> links,
+    required this.title,
+    OpdsMetadata? metadata,
+    List<Link>? links,
   })  : this.metadata = metadata ?? OpdsMetadata(title: title),
         this.links = links ?? [];
 

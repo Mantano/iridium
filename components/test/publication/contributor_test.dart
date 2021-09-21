@@ -68,7 +68,7 @@ void main() {
         [
           Contributor(localizedName: LocalizedString.fromString("Thom Yorke")),
           Contributor(
-              localizedName: LocalizedString(
+              localizedName: LocalizedString.fromStrings(
                   {"en": "Jonny Greenwood", "fr": "Jean Boisvert"}),
               roles: {"guitarist"})
         ],
@@ -108,7 +108,7 @@ void main() {
     expect(
         [
           Contributor(
-              localizedName: LocalizedString(
+              localizedName: LocalizedString.fromStrings(
                   {"en": "Jonny Greenwood", "fr": "Jean Boisvert"}),
               roles: {"guitarist"})
         ],
@@ -123,7 +123,7 @@ void main() {
     expect(
         "Jonny Greenwood",
         Contributor(
-            localizedName: LocalizedString(
+            localizedName: LocalizedString.fromStrings(
                 {"en": "Jonny Greenwood", "fr": "Jean Boisvert"})).name);
   });
 
@@ -174,7 +174,7 @@ void main() {
         [
           Contributor(localizedName: LocalizedString.fromString("Thom Yorke")),
           Contributor(
-              localizedName: LocalizedString(
+              localizedName: LocalizedString.fromStrings(
                   {"en": "Jonny Greenwood", "fr": "Jean Boisvert"}),
               roles: {"guitarist"})
         ].toJson());

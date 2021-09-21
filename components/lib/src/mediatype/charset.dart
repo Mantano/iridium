@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
 import 'charsets.dart';
 
 class Charset {
@@ -26,11 +27,8 @@ class Charset {
 
   const Charset._(this.name, {this.aliases = const []});
 
-  static Charset forName(String name) => values.firstWhere(
-      (c) =>
-          c.name == name.toUpperCase() ||
-          c.aliases.contains(name.toUpperCase()),
-      orElse: () => null);
+  static Charset? forName(String name) => values.firstOrNullWhere((c) =>
+      c.name == name.toUpperCase() || c.aliases.contains(name.toUpperCase()));
 
   @override
   String toString() => 'Charset{name: $name, aliases: $aliases}';

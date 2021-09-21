@@ -17,7 +17,7 @@ typedef StringRetriever = Future<String> Function();
 abstract class BaseBytesResource extends Resource {
   final Link _link;
   final ByteDataRetriever _bytesFunction;
-  ByteData _bytes;
+  ByteData? _bytes;
 
   BaseBytesResource(this._link, this._bytesFunction);
 
@@ -25,15 +25,15 @@ abstract class BaseBytesResource extends Resource {
   Future<Link> link() async => _link;
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) async {
+  Future<ResourceTry<ByteData>> read({IntRange? range}) async {
     _bytes ??= await _bytesFunction();
     if (range == null) {
-      return ResourceTry.success(_bytes);
+      return ResourceTry.success(_bytes!);
     }
     IntRange range2 =
-        IntRange(max(0, range.first), min(range.last, _bytes.lengthInBytes));
+        IntRange(max(0, range.first), min(range.last, _bytes!.lengthInBytes));
     return ResourceTry.success(
-        _bytes.buffer.asByteData(range2.first, range2.length));
+        _bytes!.buffer.asByteData(range2.first, range2.length));
   }
 
   @override
@@ -51,7 +51,7 @@ class BytesResource extends BaseBytesResource {
 
   @override
   String toString() {
-    String length = (_bytes == null) ? "xxx" : _bytes.lengthInBytes.toString();
+    String length = _bytes?.lengthInBytes.toString() ?? "xxx";
     return "BytesResource($length bytes)";
   }
 }
@@ -66,7 +66,7 @@ class StringResource extends BaseBytesResource {
 
   @override
   String toString() {
-    String length = (_bytes == null) ? "..." : _bytes.lengthInBytes.toString();
+    String length = _bytes?.lengthInBytes.toString() ?? "...";
     return "StringResource($length bytes)";
   }
 }

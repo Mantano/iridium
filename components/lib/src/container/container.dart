@@ -13,7 +13,7 @@ class ContainerException implements Exception {
   factory ContainerException.resourceNotFound(String path) =>
       ContainerException("Resource not found at `$path`");
 
-  const ContainerException(this.message) : assert(message != null);
+  const ContainerException(this.message);
 
   final String message;
 

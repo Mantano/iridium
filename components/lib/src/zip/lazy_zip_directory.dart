@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:archive/archive_io.dart' as archive;
+import 'package:archive/archive.dart' as archive;
 
 import 'file_buffer.dart';
 import 'lazy_zip_file_header.dart';
@@ -20,15 +20,15 @@ class LazyZipDirectory {
   int diskWithTheStartOfTheCentralDirectory = 0; // 2 bytes
   int totalCentralDirectoryEntriesOnThisDisk = 0; // 2 bytes
   int totalCentralDirectoryEntries = 0; // 2 bytes
-  int centralDirectorySize; // 4 bytes
-  int centralDirectoryOffset; // 2 bytes
+  late int centralDirectorySize; // 4 bytes
+  late int centralDirectoryOffset; // 2 bytes
   String zipFileComment = ''; // 2 bytes, n bytes
   // Central Directory
   List<LazyZipFileHeader> fileHeaders = [];
 
   LazyZipDirectory();
 
-  Future<void> load(FileBuffer input, {String password}) async {
+  Future<void> load(FileBuffer input, {String? password}) async {
     filePosition = await _findSignature(input);
     input.position = filePosition;
     int signature = await input.readUint32(); // ignore: unused_local_variable
