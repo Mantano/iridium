@@ -4,6 +4,7 @@
 
 import 'package:mno_streamer/src/epub/constants.dart';
 
+/// Package reserved prefixes.
 const Map<String, String> packageReservedPrefixes = {
   "dcterms": Vocabularies.dcterms,
   "media": Vocabularies.media,
@@ -15,11 +16,13 @@ const Map<String, String> packageReservedPrefixes = {
   "xsd": Vocabularies.xsd
 };
 
+/// Content reserved prefixes.
 const Map<String, String> contentReservedPrefixes = {
   "msv": Vocabularies.msv,
   "prism": Vocabularies.prism
 };
 
+/// Default vocab.
 class DefaultVocab {
   static const DefaultVocab meta = DefaultVocab._(Vocabularies.meta);
   static const DefaultVocab link = DefaultVocab._(Vocabularies.link);

@@ -6,13 +6,19 @@ import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:path/path.dart';
 
-import 'src/container/container.dart' as c;
+import 'src/container/container.dart';
 
 ///  Parses a Publication from a file.
 abstract class PublicationParser {
+  /// Parse a file and return a [PubBox] instance if the format is supported by
+  /// the parser.
   Future<PubBox?> parse(String fileAtPath) =>
       parseWithFallbackTitle(fileAtPath, basename(fileAtPath));
 
+  /// Parse a file and return a [PubBox] instance if the format is supported by
+  /// the parser.
+  ///
+  /// It has a [fallbackTitle] if none is found in the publication.
   Future<PubBox?> parseWithFallbackTitle(
       String fileAtPath, String fallbackTitle);
 }
@@ -34,9 +40,11 @@ abstract class StreamPublicationParser {
       PublicationAsset asset, Fetcher fetcher);
 }
 
+/// A pair that contains a [publication] and a [container].
 class PubBox {
   final Publication publication;
-  final c.Container container;
+  final Container container;
 
+  /// Creates a [PubBox] instance.
   PubBox(this.publication, this.container);
 }

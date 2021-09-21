@@ -10,19 +10,20 @@ import 'container.dart';
 /// Temporary solution to migrate to [Publication.get] while ensuring backward compatibility with
 /// [Container].
 class PublicationContainer extends Container {
-  final Publication publication;
-  final String path;
-  final MediaType mediaType;
+  final String _path;
+  final MediaType _mediaType;
   @override
   final Drm? drm;
 
-  PublicationContainer(
-      {required this.publication,
-      required this.path,
-      required this.mediaType,
-      this.drm});
+  /// Creates an instance of [PublicationContainer].
+  PublicationContainer({
+    required String path,
+    required MediaType mediaType,
+    this.drm,
+  })  : _path = path,
+        _mediaType = mediaType;
 
   @override
   RootFile get rootFile =>
-      RootFile(rootPath: path, mimetype: mediaType.toString());
+      RootFile(rootPath: _path, mimetype: _mediaType.toString());
 }

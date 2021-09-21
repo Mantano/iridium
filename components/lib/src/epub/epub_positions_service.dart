@@ -25,12 +25,15 @@ class EpubPositionsService extends PositionsService {
   final int reflowablePositionLength;
   List<List<Locator>>? _positions;
 
+  /// Creates a [EpubPositionsService] instance.
   EpubPositionsService(
       {required this.readingOrder,
       required this.presentation,
       required this.fetcher,
       required this.reflowablePositionLength});
 
+  /// Create a [ServiceFactory] that will provide a [EpubPositionsService]
+  /// instance.
   static EpubPositionsService create(PublicationServiceContext context) =>
       EpubPositionsService(
           readingOrder: context.manifest.readingOrder,
@@ -40,17 +43,17 @@ class EpubPositionsService extends PositionsService {
 
   @override
   Future<List<List<Locator>>> positionsByReadingOrder() async =>
-      _positions ??= await computePositions();
+      _positions ??= await _computePositions();
 
-  Future<List<List<Locator>>> computePositions() async {
+  Future<List<List<Locator>>> _computePositions() async {
     int lastPositionOfPreviousResource = 0;
     List<List<Locator>> positions = [];
     for (Link link in readingOrder) {
       List<Locator> locators;
       if (presentation.layoutOf(link) == EpubLayout.fixed) {
-        locators = createFixed(link, lastPositionOfPreviousResource);
+        locators = _createFixed(link, lastPositionOfPreviousResource);
       } else {
-        locators = await createReflowable(
+        locators = await _createReflowable(
             link, lastPositionOfPreviousResource, fetcher);
       }
       locators.lastOrNull?.locations.position
@@ -76,10 +79,10 @@ class EpubPositionsService extends PositionsService {
     return positions;
   }
 
-  List<Locator> createFixed(Link link, int startPosition) =>
-      [createLocator(link, progression: 0.0, position: startPosition + 1)];
+  List<Locator> _createFixed(Link link, int startPosition) =>
+      [_createLocator(link, progression: 0.0, position: startPosition + 1)];
 
-  Future<List<Locator>> createReflowable(
+  Future<List<Locator>> _createReflowable(
       Link link, int startPosition, Fetcher fetcher) async {
     // If the resource is encrypted, we use the `originalLength` declared in `encryption.xml`
     // instead of the ZIP entry length.
@@ -94,13 +97,13 @@ class EpubPositionsService extends PositionsService {
         (length / reflowablePositionLength.toDouble()).ceil().coerceAtLeast(1);
     return [
       for (int position = 1; position <= pageCount; position++)
-        createLocator(link,
+        _createLocator(link,
             progression: (position - 1) / pageCount.toDouble(),
             position: startPosition + position)
     ];
   }
 
-  Locator createLocator(Link link,
+  Locator _createLocator(Link link,
           {required double progression, required int position}) =>
       Locator(
           href: link.href,

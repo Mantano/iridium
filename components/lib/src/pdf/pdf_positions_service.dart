@@ -13,16 +13,24 @@ import 'package:mno_shared/publication.dart';
 /// @param pageCount Total page count in the PDF document.
 /// @param tableOfContents Table of contents used to compute the position titles.
 class PdfPositionsService extends PositionsService {
+  /// [link] reference to the PDF file.
   final Link link;
+
+  /// Number of pages.
   final int pageCount;
+
+  /// Table of content for this PDF.
   final List<Link> tableOfContents;
   List<List<Locator>>? _positions;
 
+  /// Creates a [PdfPositionsService] instance.
   PdfPositionsService(
       {required this.link,
       required this.pageCount,
       required this.tableOfContents});
 
+  /// Create a [ServiceFactory] that will provide a [PdfPositionsService]
+  /// instance.
   static PdfPositionsService? create(PublicationServiceContext context) {
     Link? link = context.manifest.readingOrder.firstOrNull;
     if (link == null) {

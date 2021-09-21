@@ -7,6 +7,7 @@ import 'package:dartx/dartx.dart';
 /// Parse clock values as defined in
 /// https://www.w3.org/TR/SMIL/smil-timing.html#q22
 class ClockValueParser {
+  /// Parse clock values from [rawValue].
   static double? parse(String rawValue) {
     String value = rawValue.trim();
     if (value.contains(":")) {
