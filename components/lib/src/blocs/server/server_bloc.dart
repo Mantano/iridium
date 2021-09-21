@@ -7,7 +7,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_server/mno_server.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_io/io.dart';
 
