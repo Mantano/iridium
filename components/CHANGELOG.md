@@ -1,3 +1,7 @@
+## 0.1.3
+
+* Fix error when loading some epub
+
 ## 0.1.2
 
 * Migration to null-safety
