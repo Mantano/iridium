@@ -19,10 +19,13 @@ class ZipStream extends DataStream {
 
   @override
   Future<Stream<List<int>>> read({int? start, int? length}) async {
-    List<int> validatedRange = validateRange(start, length);
-    start = validatedRange[0];
-    length = validatedRange[1];
-    IntRange range = IntRange(start, start + length - 1);
+    IntRange? range;
+    if (start != null || length != null) {
+      List<int> validatedRange = validateRange(start, length);
+      start = validatedRange[0];
+      length = validatedRange[1];
+      range = IntRange(start, start + length - 1);
+    }
 
     Stream<List<int>>? stream =
         await _package.extractStream(_entry.filename, range: range);
