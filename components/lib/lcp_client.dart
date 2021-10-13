@@ -30,7 +30,7 @@ LcpWrapperNativeDecrypt fLcpWrapperNativeDecrypt;
 
 class LcpClient {
   static const int _maxLengthToDecrypt = 128 * 1024;
-  static bool _isInitialized;
+  static bool _isInitialized = false;
 
   static bool get isAvailable => _isInitialized;
 
