@@ -33,7 +33,7 @@ class Licenses implements DeviceRepository, LicensesRepository {
       where: '${LicensesTable.id} = ?',
       whereArgs: [license.id],
     );
-    return result.isNotEmpty;
+    return result?.isNotEmpty;
   }
 
   Future<Map<String, int>> _getAll(String column) async {
@@ -41,7 +41,7 @@ class Licenses implements DeviceRepository, LicensesRepository {
       LicensesTable.name,
       columns: [LicensesTable.id, column],
     );
-    return (result.isNotEmpty)
+    return (result != null && result.isNotEmpty)
         ? {
             for (Map<String, dynamic> row in result)
               row[LicensesTable.id] as String: row[column] as int
