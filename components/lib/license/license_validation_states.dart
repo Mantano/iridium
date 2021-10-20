@@ -20,7 +20,7 @@ class CancelledState extends LVState {
 
 class ValidateLicenseState extends LVState {
   final ByteData data;
-  final StatusDocument status;
+  final StatusDocument? status;
   const ValidateLicenseState(this.data, this.status);
 }
 
@@ -43,19 +43,19 @@ class FetchLicenseState extends LVState {
 
 class CheckLicenseStatusState extends LVState {
   final LicenseDocument license;
-  final StatusDocument status;
+  final StatusDocument? status;
   const CheckLicenseStatusState(this.license, this.status);
 }
 
 class RetrievePassphraseState extends LVState {
   final LicenseDocument license;
-  final StatusDocument status;
+  final StatusDocument? status;
   const RetrievePassphraseState(this.license, this.status);
 }
 
 class ValidateIntegrityState extends LVState {
   final LicenseDocument license;
-  final StatusDocument status;
+  final StatusDocument? status;
   final String passphrase;
   const ValidateIntegrityState(this.license, this.status, this.passphrase);
 }
