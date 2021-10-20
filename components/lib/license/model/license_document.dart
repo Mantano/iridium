@@ -8,6 +8,8 @@ import 'dart:typed_data';
 import 'package:mno_lcp/lcp.dart';
 import 'package:mno_shared/mediatype.dart';
 
+import 'package:collection/collection.dart';
+
 // The possible rel of Links.
 class LicenseRel {
   static const LicenseRel hint = LicenseRel._("hint");
@@ -93,12 +95,12 @@ class LicenseDocument {
     Encryption encryption = Encryption.parse(jsonObject["encryption"]);
     Links links = Links.parse(jsonObject["links"] as List);
 
-    Rights rights;
+    Rights? rights;
     if (jsonObject.containsKey("rights")) {
       rights = Rights.parse(jsonObject["rights"]);
     }
 
-    User user;
+    User? user;
     if (jsonObject.containsKey("user")) {
       user = User.parse(jsonObject["user"]);
     }
@@ -107,7 +109,10 @@ class LicenseDocument {
 
     DateTime updated = issued;
     if (jsonObject.containsKey("updated")) {
-      updated = DateTime.tryParse(jsonObject["updated"]);
+      var parsedDateTime = DateTime.tryParse(jsonObject["updated"]);
+      if (parsedDateTime != null) {
+        updated = parsedDateTime;
+      }
     }
 
     if (links.firstWithRel(LicenseRel.hint.val) == null) {
@@ -118,8 +123,9 @@ class LicenseDocument {
       throw Exception(
           LcpError.errorDescription(LcpErrorCase.publicationLinkNotFound));
     }
+    // TODO What to do if user or rights is null? Can it happen?
     return LicenseDocument._(id, issued, updated, provider, encryption, links,
-        rights, user, signature, jsonObject, text, data);
+        rights!, user!, signature, jsonObject, text, data);
   }
 
   /// Returns the date of last update if any, or issued date.
@@ -129,27 +135,26 @@ class LicenseDocument {
   ///
   /// - Parameter rel: The rel to look for.
   /// - Returns: The first link containing the rel.
-  Link link(LicenseRel rel, {MediaType type}) =>
+  Link? link(LicenseRel rel, {MediaType? type}) =>
       _links.firstWithRel(rel.val, type: type);
 
   /// Returns all links containing the given rel.
   ///
   /// - Parameter rel: The rel to look for.
   /// - Returns: All links containing the rel.
-  List<Link> links(LicenseRel rel, {MediaType type}) =>
+  List<Link> links(LicenseRel rel, {MediaType? type}) =>
       _links.allWithRel(rel.val, type: type);
 
-  static Link findLink(List<Link> links, LicenseRel rel) =>
-      links.firstWhere((element) => element.rel.contains(rel.val),
-          orElse: () => null);
+  static Link? findLink(List<Link> links, LicenseRel rel) =>
+      links.firstWhereOrNull((element) => element.rel.contains(rel.val));
 
   String getHint() => encryption.userKey.textHint;
 
   String get description => 'License($id)';
 
   Uri url(LicenseRel rel,
-      {MediaType preferredType, Map<String, String> parameters = const {}}) {
-    Link l =
+      {MediaType? preferredType, Map<String, String> parameters = const {}}) {
+    Link? l =
         link(rel, type: preferredType) ?? _links.firstWithRelAndNoType(rel.val);
     if (l == null) {
       throw LcpException.parsing.url(rel.val);
