@@ -21,16 +21,34 @@ class CrlService {
 
   CrlService(this.network, this.preferences);
 
+  /*
+      suspend fun retrieve(): String {
+        val (localCRL, isExpired) = readLocal()
+        if (localCRL != null && !isExpired) {
+            return localCRL
+        }
+
+        return try {
+            fetch()
+                .also { saveLocal(it) }
+
+        } catch (e: Exception) {
+            if (DEBUG) Timber.e(e)
+            localCRL ?: throw e
+        }
+    }
+
+   */
   Future<String> retrieve() async {
     _CrlStatus status = _readLocal();
     if (status.crl != null && !status.expired) {
-      return status.crl;
+      return status.crl!;
     }
     return _fetch().then((crl) => _saveLocal(crl)).onError((error, stackTrace) {
       if (status.crl != null) {
-        return status.crl;
+        return status.crl!;
       }
-      throw error;
+      throw error!;
     });
   }
 
@@ -40,14 +58,14 @@ class CrlService {
     if (data.isFailure) {
       throw LcpException.crlFetching;
     }
-    return "-----BEGIN X509 CRL-----${const Base64Encoder().convert(data.success.buffer.asUint8List())}-----END X509 CRL-----";
+    return "-----BEGIN X509 CRL-----${const Base64Encoder().convert(data.success!.buffer.asUint8List())}-----END X509 CRL-----";
   }
 
   // Returns (CRL, expired)
   _CrlStatus _readLocal() {
-    String crl = preferences.getString(crlKey);
-    String dateStr = preferences.getString(dateKey);
-    DateTime date;
+    String? crl = preferences.getString(crlKey);
+    String? dateStr = preferences.getString(dateKey);
+    DateTime? date;
     if (dateStr != null) {
       date = DateTime.parse(dateStr);
     }
@@ -65,7 +83,7 @@ class CrlService {
 }
 
 class _CrlStatus {
-  final String crl;
+  final String? crl;
   final bool expired;
 
   _CrlStatus(this.crl, this.expired);
