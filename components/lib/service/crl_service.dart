@@ -21,24 +21,6 @@ class CrlService {
 
   CrlService(this.network, this.preferences);
 
-  /*
-      suspend fun retrieve(): String {
-        val (localCRL, isExpired) = readLocal()
-        if (localCRL != null && !isExpired) {
-            return localCRL
-        }
-
-        return try {
-            fetch()
-                .also { saveLocal(it) }
-
-        } catch (e: Exception) {
-            if (DEBUG) Timber.e(e)
-            localCRL ?: throw e
-        }
-    }
-
-   */
   Future<String> retrieve() async {
     _CrlStatus status = _readLocal();
     if (status.crl != null && !status.expired) {
