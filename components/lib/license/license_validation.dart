@@ -16,22 +16,32 @@ import '../lcp.dart';
 import 'license_validation_events.dart';
 import 'license_validation_states.dart';
 
-typedef Observer = void Function(ValidatedDocuments, Exception);
+typedef Observer = void Function(ValidatedDocuments?, Exception?);
 
 enum ObserverPolicy { once, always }
 
 class ValidatedDocuments {
   final LicenseDocument license;
-  final Either<DrmContext, LicenseStatus> context;
-  final StatusDocument status;
+  final Either<DrmContext?, LicenseStatus?> context;
+  final StatusDocument? status;
 
   ValidatedDocuments(this.license, this.context, {this.status});
 
+  // DrmContext getContext() {
+  //   if (context.isLeft()) {
+  //     return context.fold((left) => left, (_) => null)!;
+  //   }
+  //   throw context.fold(always, (right) => right!);
+  // }
+
   DrmContext getContext() {
-    if (context.isLeft()) {
-      return context.fold((left) => left, (_) => null);
+    DrmContext? drmContext;
+    LicenseStatus? licenseStatus;
+    context.fold((dc) => drmContext = dc, (ls) => licenseStatus = ls);
+    if (drmContext != null) {
+      return drmContext!;
     }
-    throw context.fold(always, (right) => right);
+    throw licenseStatus!;
   }
 }
 
@@ -62,7 +72,7 @@ class LicenseValidation {
     "http://readium.org/lcp/basic-profile",
     "http://readium.org/lcp/profile-1.0"
   ];
-  final LcpAuthenticating authentication;
+  final LcpAuthenticating? authentication;
   final bool allowUserInteraction;
   final dynamic sender;
   final CrlService crl;
@@ -70,8 +80,8 @@ class LicenseValidation {
   final NetworkService network;
   final PassphrasesService passphrases;
   final void Function(LicenseDocument) onLicenseValidated;
-  StateMachine<LVState, LVEvent, dynamic> stateMachine;
-  bool isProduction;
+  late StateMachine<LVState, LVEvent, dynamic> stateMachine;
+  late bool isProduction;
 
   LVState _state;
 
@@ -86,7 +96,7 @@ class LicenseValidation {
       this.onLicenseValidated)
       : _state = const StartState();
 
-  static void _log(String message, {dynamic ex, StackTrace stacktrace}) {
+  static void _log(String message, {dynamic ex, StackTrace? stacktrace}) {
     if (_debug) {
       Fimber.d(message, ex: ex, stacktrace: stacktrace);
     }
@@ -109,7 +119,7 @@ class LicenseValidation {
   }
 
   void validate(LicenseValidationDocument document, Observer completion) {
-    LVEvent event;
+    LVEvent? event;
     switch (document.runtimeType) {
       case LicenseValidationLicenseDocument:
         event = RetrievedLicenseDataEvent(document.data);
@@ -119,7 +129,8 @@ class LicenseValidation {
         break;
     }
     _log("validate $event");
-    _observe(event, completion);
+    // TODO Vérifier, cette assertion event! est suspecte
+    _observe(event!, completion);
   }
 
   Future<bool> _computeIsProduction() async {
@@ -197,12 +208,12 @@ class LicenseValidation {
 
   void _observe(LVEvent event, Observer observer) {
     _raise(event);
-    observe(this, policy: ObserverPolicy.once, observer: observer);
+    observe(this, observer, policy: ObserverPolicy.once);
   }
 
-  void _notifyObservers(ValidatedDocuments documents, Exception error) {
-    for (int i = 0; i < observers.length; i++) {
-      observers[i].item1(documents, error);
+  void _notifyObservers(ValidatedDocuments? documents, Exception? error) {
+    for (var observer in observers) {
+      observer.item1(documents, error);
     }
     observers =
         observers.where((it) => it.item2 != ObserverPolicy.once).toList();
@@ -227,12 +238,18 @@ class LicenseValidation {
     Try<ByteData, NetworkException> result =
         await network.fetch(url, timeout: const Duration(seconds: 5));
     if (result.isFailure) {
-      throw LcpException.network(result.failure);
+      throw LcpException.network(result.failure!);
     }
 
-    _raise(RetrievedStatusDataEvent(result.success));
+    _raise(RetrievedStatusDataEvent(result.success!));
   }
 
+  /*
+      private fun validateStatus(data: ByteArray) {
+        val status = StatusDocument(data = data)
+        raise(Event.validatedStatus(status))
+    }
+   */
   void _validateStatus(ByteData data) {
     StatusDocument status = StatusDocument.parseData(data);
     _raise(ValidatedStatusEvent(status));
@@ -246,19 +263,19 @@ class LicenseValidation {
     Try<ByteData, NetworkException> result =
         await network.fetch(url, timeout: const Duration(seconds: 5));
     if (result.isFailure) {
-      throw LcpException.network(result.failure);
+      throw LcpException.network(result.failure!);
     }
-    _raise(RetrievedLicenseDataEvent(result.success));
+    _raise(RetrievedLicenseDataEvent(result.success!));
   }
 
-  void _checkLicenseStatus(LicenseDocument license, StatusDocument status) {
-    LicenseStatus error;
+  void _checkLicenseStatus(LicenseDocument license, StatusDocument? status) {
+    LicenseStatus? error;
     DateTime now = DateTime.now();
     DateTime start = license.rights.start ?? now;
     DateTime end = license.rights.end ?? now;
     if (start.isAfter(now) || now.isAfter(end)) {
       if (status != null) {
-        DateTime date = status.statusUpdated;
+        DateTime? date = status.statusUpdated;
         switch (status.status) {
           case Status.ready:
           case Status.active:
@@ -273,7 +290,7 @@ class LicenseValidation {
             error = LcpException.licenseStatus.returned(date);
             break;
           case Status.revoked:
-            int devicesCount = status.events(EventType.register).length;
+            int devicesCount = status.events(EventType.register)?.length ?? 0;
             error = LcpException.licenseStatus.revoked(date, devicesCount);
             break;
           case Status.cancelled:
@@ -281,6 +298,7 @@ class LicenseValidation {
             break;
         }
       } else {
+        DateTime foo = DateTime.now();
         if (start.isAfter(now)) {
           error = LcpException.licenseStatus.notStarted(start);
         } else {
@@ -293,7 +311,7 @@ class LicenseValidation {
 
   Future<void> _requestPassphrase(LicenseDocument license) async {
     _log("requestPassphrase");
-    String passphrase = await passphrases.request(
+    String? passphrase = await passphrases.request(
         license, authentication, allowUserInteraction, sender);
     if (passphrase == null) {
       _raise(const CancelledEvent());
@@ -316,12 +334,12 @@ class LicenseValidation {
 
   Future<void> _registerDevice(LicenseDocument license, Link link) async {
     _log("registerDevice");
-    ByteData data = await device.registerLicense(license, link);
+    ByteData? data = await device.registerLicense(license, link);
     _raise(RegisteredDeviceEvent(data));
   }
 
-  void observe(LicenseValidation licenseValidation,
-      {ObserverPolicy policy = ObserverPolicy.always, Observer observer}) {
+  void observe(LicenseValidation licenseValidation, Observer observer,
+      {ObserverPolicy policy = ObserverPolicy.always}) {
     bool notified = true;
     switch (licenseValidation.stateMachine.state.runtimeType) {
       case ValidState:

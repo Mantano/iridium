@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 class PotentialRights {
-  DateTime end;
+  DateTime? end;
 
   PotentialRights._(this.end);
 

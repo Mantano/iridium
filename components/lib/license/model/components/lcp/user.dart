@@ -3,21 +3,22 @@
 // found in the LICENSE file.
 
 class User {
-  final String id;
-  final String email;
-  final String name;
+  final String? id;
+  final String? email;
+  final String? name;
   final List<String> encrypted;
   final Map extensions;
 
   User._(this.id, this.email, this.name, this.encrypted, this.extensions);
 
-  factory User.parse(Map json) {
+  factory User.parse(Map? json) {
     List<String> encrypted = [];
-    if (json.containsKey("encrypted")) {
+    if (json != null && json.containsKey("encrypted")) {
       Iterable<dynamic> encryptedArray = json["encrypted"];
       encrypted.addAll(encryptedArray.map((v) => v.toString()));
     }
-    return User._(json["id"], json["email"], json["name"], encrypted, json);
+    return User._(json?["id"], json?["email"], json?["name"], encrypted,
+        json ?? <dynamic, dynamic>{});
   }
 
   @override

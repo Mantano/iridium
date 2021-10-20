@@ -9,7 +9,7 @@ import 'licenses.dart';
 import 'transactions.dart';
 
 class LcpDatabase {
-  static LcpDatabase _database;
+  static late LcpDatabase _database;
   final Licenses licenses;
   final Transactions transactions;
 

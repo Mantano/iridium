@@ -13,7 +13,7 @@ import 'package:mno_shared/publication.dart' as pub;
 
 /// Decrypts a resource protected with LCP.
 class LcpDecryptor {
-  final LcpLicense license;
+  final LcpLicense? license;
 
   LcpDecryptor(this.license);
 
@@ -21,7 +21,7 @@ class LcpDecryptor {
         // Checks if the resource is encrypted and whether the encryption schemes of the resource
         // and the DRM license are the same.
         pub.Link link = await resource.link();
-        pub.Encryption encryption = link.properties.encryption;
+        pub.Encryption? encryption = link.properties.encryption;
         if (encryption == null ||
             encryption.scheme != "http://readium.org/2014/01/lcp") {
           return resource;
@@ -31,9 +31,9 @@ class LcpDecryptor {
           return FailureResource(link, ResourceException.forbidden);
         }
         if (link.isDeflated || !link.isCbcEncrypted) {
-          return FullLcpResource(resource, license);
+          return FullLcpResource(resource, license!);
         }
-        return CbcLcpResource(resource, license);
+        return CbcLcpResource(resource, license!);
       });
 }
 
@@ -43,6 +43,7 @@ class LcpDecryptor {
 /// resource, for example when the resource is deflated before encryption.
 class FullLcpResource extends TransformingResource {
   final LcpLicense license;
+
   FullLcpResource(Resource resource, this.license) : super(resource);
 
   @override
@@ -51,10 +52,10 @@ class FullLcpResource extends TransformingResource {
 
   @override
   Future<ResourceTry<int>> length() async {
-    int originalLength =
+    int? originalLength =
         (await resource.link()).properties.encryption?.originalLength;
-    return (originalLength != null)
-        ? ResourceTry.success(originalLength)
+    return originalLength != null
+        ? Future.value(ResourceTry.success(originalLength))
         : super.length();
   }
 }
@@ -63,7 +64,9 @@ class CbcLcpResource extends Resource {
   static const int aesBlockSize = 16; // bytes
   final Resource resource;
   final LcpLicense license;
-  ResourceTry<int> _length;
+  // Note: we don't declare this _length member as "late" according to
+  // https://dart.dev/guides/language/effective-dart/usage#avoid-late-variables-if-you-need-to-check-whether-they-are-initialized
+  ResourceTry<int>? _length;
 
   CbcLcpResource(this.resource, this.license);
 
@@ -73,7 +76,7 @@ class CbcLcpResource extends Resource {
   @override
   Future<ResourceTry<int>> length() async {
     if (_length != null) {
-      return _length;
+      return _length!;
     }
     _length = await resource
         .length()
@@ -95,11 +98,11 @@ class CbcLcpResource extends Resource {
                       }));
             }));
 
-    return _length;
+    return _length!;
   }
 
   @override
-  Future<ResourceTry<ByteData>> read({IntRange range}) async {
+  Future<ResourceTry<ByteData>> read({IntRange? range}) async {
     if (range == null) {
       return license.decryptFully(await resource.read(), false);
     }

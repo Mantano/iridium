@@ -21,7 +21,7 @@ class MaterialRenewListener implements RenewListener {
   MaterialRenewListener(this.license, this.context);
 
   @override
-  Future<DateTime> preferredEndDate(DateTime maximumDate) async {
+  Future<DateTime> preferredEndDate(DateTime? maximumDate) async {
     DateTime start = (license.license.rights.end ?? DateTime.now());
     DateTime end = maximumDate ?? DateTime.now().add(const Duration(days: 365));
     return await showDatePicker(
@@ -33,7 +33,7 @@ class MaterialRenewListener implements RenewListener {
   }
 
   @override
-  Future<void> openWebPage(Uri url) async {
+  Future<bool> openWebPage(Uri url) async {
     if (await canLaunch(url.toString())) {
       return launch(url.toString());
     } else {

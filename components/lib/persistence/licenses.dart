@@ -16,8 +16,8 @@ class LicensesTable {
 class Licenses implements DeviceRepository, LicensesRepository {
   static const int _true = 1;
   final Database database;
-  Map<String, int> copies;
-  Map<String, int> prints;
+  Map<String, int>? copies;
+  Map<String, int>? prints;
 
   Licenses(this.database);
 
@@ -33,7 +33,7 @@ class Licenses implements DeviceRepository, LicensesRepository {
       where: '${LicensesTable.id} = ?',
       whereArgs: [license.id],
     );
-    return result?.isNotEmpty;
+    return Future.value(result.isNotEmpty);
   }
 
   Future<Map<String, int>> _getAll(String column) async {
@@ -41,7 +41,7 @@ class Licenses implements DeviceRepository, LicensesRepository {
       LicensesTable.name,
       columns: [LicensesTable.id, column],
     );
-    return (result != null && result.isNotEmpty)
+    return (result.isNotEmpty)
         ? {
             for (Map<String, dynamic> row in result)
               row[LicensesTable.id] as String: row[column] as int
@@ -57,7 +57,8 @@ class Licenses implements DeviceRepository, LicensesRepository {
       where: '${LicensesTable.id} = ?',
       whereArgs: [licenseId],
     );
-    return (result.isNotEmpty) ? result.first[column] as int : null;
+    return Future.value(
+        (result.isNotEmpty) ? result.first[column] as int : null);
   }
 
   Future<int> _set(String column, int value, String licenseId) =>
@@ -98,7 +99,7 @@ class Licenses implements DeviceRepository, LicensesRepository {
       },
       where: '${LicensesTable.id} = ?',
       whereArgs: [license.id],
-    );
+    ) as Future<void>;
   }
 
   @override
@@ -110,27 +111,27 @@ class Licenses implements DeviceRepository, LicensesRepository {
         LicensesTable.name,
         {
           LicensesTable.id: license.id,
-          LicensesTable.printsleft: license.rights?.print,
-          LicensesTable.copiesleft: license.rights?.copy,
+          LicensesTable.printsleft: license.rights.print,
+          LicensesTable.copiesleft: license.rights.copy,
         },
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   @override
-  int copiesLeft(String licenseId) => copies[licenseId];
+  int? copiesLeft(String licenseId) => copies?[licenseId];
 
   @override
   void setCopiesLeft(int quantity, String licenseId) {
-    copies[licenseId] = quantity;
+    copies?[licenseId] = quantity;
     _set(LicensesTable.copiesleft, quantity, licenseId);
   }
 
   @override
-  int printsLeft(String licenseId) => prints[licenseId];
+  int? printsLeft(String licenseId) => prints?[licenseId];
 
   @override
   void setPrintsLeft(int quantity, String licenseId) {
-    prints[licenseId] = quantity;
+    prints?[licenseId] = quantity;
     _set(LicensesTable.printsleft, quantity, licenseId);
   }
 }

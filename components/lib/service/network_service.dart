@@ -14,8 +14,8 @@ import 'package:universal_io/io.dart';
 import '../lcp.dart';
 
 class NetworkException implements Exception {
-  final int status;
-  final Exception cause;
+  final int? status;
+  final Exception? cause;
 
   NetworkException({this.status, this.cause});
 
@@ -31,15 +31,15 @@ class Method {
 
   const Method._(this.rawValue);
 
-  static Method find(String rawValue) => [get, post, put]
-      .firstWhere((it) => it.rawValue == rawValue, orElse: () => null);
+  // static Method find(String rawValue) => [get, post, put]
+  //     .firstWhere((it) => it.rawValue == rawValue, orElse: () => null);
 }
 
 class NetworkService {
   Future<Try<ByteData, NetworkException>> fetch(String url,
       {Method method = Method.get,
       Map<String, String> parameters = const {},
-      Duration timeout}) async {
+      Duration? timeout}) async {
     try {
       Uri uri = Uri.parse(url);
       Uri uriWithParams = Uri(
@@ -76,8 +76,8 @@ class NetworkService {
     }
   }
 
-  Future<MediaType> download(Uri url, File destination,
-      {String mediaType}) async {
+  Future<MediaType?> download(Uri url, File destination,
+      {String? mediaType}) async {
     try {
       HttpClientResponse response =
           await HttpClient().getUrl(url).then((request) => request.close());
@@ -87,8 +87,9 @@ class NetworkService {
       }
       List<String> extensions =
           [p.extension(url.path)].where((ext) => ext.isNotEmpty).toList();
-      return response.pipe(destination.openWrite()).then((_) =>
-          MediaType.of(mediaTypes: [mediaType], fileExtensions: extensions));
+      return response.pipe(destination.openWrite()).then((_) => MediaType.of(
+          mediaTypes: [mediaType].whereType<String>().toList(),
+          fileExtensions: extensions));
     } on Exception catch (e, stacktrace) {
       Fimber.e("download ERROR", ex: e, stacktrace: stacktrace);
       throw LcpException.network(e);

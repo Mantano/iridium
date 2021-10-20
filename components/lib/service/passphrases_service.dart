@@ -14,14 +14,14 @@ class PassphrasesService {
 
   PassphrasesService(this.repository);
 
-  Future<String> request(
+  Future<String?> request(
       LicenseDocument license,
-      LcpAuthenticating authentication,
+      LcpAuthenticating? authentication,
       bool allowUserInteraction,
       dynamic sender) async {
     List<String> candidates = await _possiblePassphrasesFromRepository(license);
     if (candidates.isNotEmpty) {
-      String passphrase;
+      String? passphrase;
       try {
         passphrase =
             LcpClient.findOneValidPassphrase(license.rawJson, candidates);
@@ -40,14 +40,14 @@ class PassphrasesService {
     return null;
   }
 
-  Future<String> _authenticate(
+  Future<String?> _authenticate(
       LicenseDocument license,
       AuthenticationReason reason,
       LcpAuthenticating authentication,
       bool allowUserInteraction,
       dynamic sender) async {
     AuthenticatedLicense authenticatedLicense = AuthenticatedLicense(license);
-    String clearPassphrase = await authentication.retrievePassphrase(
+    String? clearPassphrase = await authentication.retrievePassphrase(
         authenticatedLicense, reason, allowUserInteraction,
         sender: sender);
     if (clearPassphrase == null) {
@@ -75,8 +75,8 @@ class PassphrasesService {
     }
   }
 
-  void addPassphrase(String passphrase, bool hashed, String licenseId,
-      String provider, String userId) {
+  void addPassphrase(String passphrase, bool hashed, String? licenseId,
+      String? provider, String? userId) {
     String hashedPassphrase =
         (hashed) ? passphrase : sha256.convert(passphrase.codeUnits).toString();
     repository.addPassphrase(hashedPassphrase, licenseId, provider, userId);
@@ -89,7 +89,7 @@ class PassphrasesService {
     if (licensePassphrase != null) {
       passphrases.add(licensePassphrase);
     }
-    String userId = license.user.id;
+    String? userId = license.user.id;
     if (userId != null) {
       List<String> userPassphrases = await repository.passphrases(userId);
       passphrases.addAll(userPassphrases);

@@ -12,7 +12,7 @@ import 'package:universal_io/io.dart';
 import 'lcp.dart';
 
 class LcpServiceFactory {
-  static Future<LcpService> create() async {
+  static Future<LcpService?> create() async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
     return LcpService.create(sharedPreference);
   }
@@ -20,7 +20,7 @@ class LcpServiceFactory {
 
 abstract class LcpService {
   /// LCP service factory.
-  static LcpService create(SharedPreferences preferences) {
+  static LcpService? create(SharedPreferences preferences) {
     if (!LcpClient.isAvailable) {
       return null;
     }
@@ -30,6 +30,7 @@ abstract class LcpService {
     DeviceService device = DeviceService(db.licenses, network, preferences);
     CrlService crl = CrlService(network, preferences);
     PassphrasesService passphrases = PassphrasesService(db.transactions);
+    //TODO bizarre cette référence à une sous-classe...
     return LicensesService(
         db.licenses, crl, device, network, passphrases, preferences);
   }
@@ -63,9 +64,9 @@ abstract class LcpService {
   /// @param allowUserInteraction Indicates whether the user can be prompted for their passphrase.
   /// @param sender Free object that can be used by reading apps to give some UX context when
   ///        presenting dialogs with [LcpAuthenticating].
-  Future<Try<LcpLicense, LcpException>> retrieveLicense(
+  Future<Try<LcpLicense, LcpException>?> retrieveLicense(
       File file,
-      LcpAuthenticating authentication,
+      LcpAuthenticating? authentication,
       bool allowUserInteraction,
       dynamic sender);
 
@@ -74,8 +75,9 @@ abstract class LcpService {
   ///
   /// The provided [authentication] will be used to retrieve the user passphrase when opening an
   /// LCP license. The default implementation [LcpDialogAuthentication] presents a dialog to the
-  /// user to enter their passphrase. This implementation is not provided in mno_lcp_dart.
-  ContentProtection contentProtection({LcpAuthenticating authentication}) =>
+  /// user to enter their passphrase. This implementation is not provided in mno_lcp_dart since
+  /// it makes no assumption about the context where it will be used
+  ContentProtection contentProtection({LcpAuthenticating? authentication}) =>
       LcpContentProtection(this, authentication);
 }
 

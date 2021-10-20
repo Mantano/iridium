@@ -13,7 +13,7 @@ import 'license_validation_states.dart';
 class LicenseValidationStateMachine {
   static const bool _debug = false;
 
-  static void _log(String message, {dynamic ex, StackTrace stacktrace}) {
+  static void _log(String message, {dynamic ex, StackTrace? stacktrace}) {
     if (_debug) {
       Fimber.d(message, ex: ex, stacktrace: stacktrace);
     }
@@ -118,7 +118,7 @@ class LicenseValidationStateMachine {
               ValidatedDocuments documents = ValidatedDocuments(
                   s.license, Either.left(e.context),
                   status: s.status);
-              Link link = s.status?.link(StatusRel.register);
+              Link? link = s.status?.link(StatusRel.register);
               if (link != null) {
                 _log("RegisterDeviceState(documents, link)");
                 return b.transitionTo(RegisterDeviceState(documents, link));
@@ -137,7 +137,7 @@ class LicenseValidationStateMachine {
               if (e.statusData != null) {
                 _log("ValidateStatusState(s.documents.license, e.statusData)");
                 return b.transitionTo(
-                    ValidateStatusState(s.documents.license, e.statusData));
+                    ValidateStatusState(s.documents.license, e.statusData!));
               } else {
                 _log("State.valid(s.documents)");
                 return b.transitionTo(ValidState(s.documents));
@@ -165,7 +165,7 @@ class LicenseValidationStateMachine {
           ..onTransition((t) {
             t.match((validTransition) {
               _log("validTransition: $validTransition");
-              validTransition?.let((it) {
+              validTransition.let((it) {
                 licenseValidation.state = it.toState;
               });
             }, (invalidTransition) {

@@ -5,29 +5,28 @@ homepage: https://github.com/Mantano/mno_commons_dart
 publish_to: none
 
 environment:
-  sdk: ">=2.6.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   fimber: ^0.6.1
   universal_io: ^2.0.4
   multiple_localization: ^0.2.2
   ffi: ^1.1.2
   sqflite: ^2.0.0+4
   tuple: ^2.0.0
-  uuid: ^3.0.4
+  uuid: ^3.0.5
   device_info: ^2.0.2
-  shared_preferences: ^2.0.7
+  shared_preferences: ^2.0.8
   flutter_archive: ^4.0.1
   crypto: ^3.0.1
   either_option: ^2.0.0
   hex: ^0.2.0
-  mno_fsm: ^0.1.0
+  mno_fsm: ^0.1.1
   dfunc: ^0.7.2
   dartx: ^0.7.1
-  path_provider: ^2.0.3
-  url_launcher: ^6.0.10
+  path_provider: ^2.0.5
+  url_launcher: ^6.0.12
+  collection: ^1.15.0
   mno_shared:
     path: ../mno_shared_dart
 

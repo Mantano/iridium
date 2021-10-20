@@ -53,9 +53,9 @@ class LicensesService extends LcpService {
   }
 
   @override
-  Future<Try<LcpLicense, LcpException>> retrieveLicense(
+  Future<Try<LcpLicense, LcpException>?> retrieveLicense(
       File file,
-      LcpAuthenticating authentication,
+      LcpAuthenticating? authentication,
       bool allowUserInteraction,
       dynamic sender) async {
     try {
@@ -65,8 +65,8 @@ class LicensesService extends LcpService {
       // calling runBlocking in LicenseValidation.handle would block the main thread and cause a severe issue
       // with LcpAuthenticating.retrievePassphrase. Specifically, the interaction of runBlocking and suspendCoroutine
       // blocks the current thread before the passphrase popup has been showed until some button not yet showed is clicked.
-      LcpException lcpException;
-      LcpLicense license = await _retrieveLicense(
+      LcpException? lcpException;
+      LcpLicense? license = await _retrieveLicense(
               container, authentication, allowUserInteraction, sender)
           .onError((error, stackTrace) {
         lcpException = LcpException.wrap(error);
@@ -86,9 +86,9 @@ class LicensesService extends LcpService {
     }
   }
 
-  Future<LcpLicense> _retrieveLicense(
+  Future<LcpLicense?> _retrieveLicense(
       LicenseContainer container,
-      LcpAuthenticating authentication,
+      LcpAuthenticating? authentication,
       bool allowUserInteraction,
       dynamic sender) async {
     ByteData initialData = await container.read();
@@ -149,8 +149,8 @@ class LicensesService extends LcpService {
   }
 
   Future<AcquiredPublication> _fetchPublication(LicenseDocument license) async {
-    Link link = license.link(LicenseRel.publication);
-    Uri url = link?.url;
+    Link? link = license.link(LicenseRel.publication);
+    Uri? url = link?.url;
     if (url == null) {
       throw LcpException.parsing.url(LicenseRel.publication.val);
     }
@@ -159,9 +159,15 @@ class LicensesService extends LcpService {
         "lcp-${DateTime.now().millisecondsSinceEpoch}.tmp");
     Fimber.i("LCP destination $destination");
 
-    MediaType mediaType =
-        await network.download(url, destination, mediaType: link.type);
-    mediaType ??= (MediaType.parse(link.type) ?? MediaType.epub);
+    MediaType? mediaType =
+        await network.download(url, destination, mediaType: link?.type);
+    if (mediaType == null) {
+      if (link == null || link.type == null) {
+        mediaType = MediaType.epub;
+      } else {
+        mediaType = (MediaType.parse((link.type)!) ?? MediaType.epub);
+      }
+    }
 
     // Saves the License Document into the downloaded publication
     LicenseContainer container = await LicenseContainer.createLicenseContainer(
@@ -169,7 +175,7 @@ class LicensesService extends LcpService {
         mediaTypes: [mediaType.toString()]);
     await container.write(license);
 
-    String fileExtension = mediaType.fileExtension;
+    String? fileExtension = mediaType.fileExtension;
     return AcquiredPublication(destination, "${license.id}.$fileExtension");
   }
 }

@@ -19,11 +19,11 @@ class LcpLocalizations implements LocalizationsRepository {
 
   final String locale;
 
-  static LcpLocalizations of(BuildContext context) =>
+  static LcpLocalizations? of(BuildContext context) =>
       Localizations.of<LcpLocalizations>(context, LcpLocalizations);
 
   @override
-  String getMessage(String name, List<dynamic> args) => Intl.message(
+  String getMessage(String name, List<Object>? args) => Intl.message(
         name,
         name: name,
         args: args,

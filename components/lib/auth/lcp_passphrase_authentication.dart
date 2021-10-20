@@ -10,14 +10,14 @@ import '../lcp.dart';
 /// If the provided [passphrase] is incorrect, the given [fallback] authentication is used.
 class LcpPassphraseAuthentication extends LcpAuthenticating {
   final String passphrase;
-  final LcpAuthenticating fallback;
+  final LcpAuthenticating? fallback;
 
   LcpPassphraseAuthentication(this.passphrase, {this.fallback});
 
   @override
-  Future<String> retrievePassphrase(AuthenticatedLicense license,
+  Future<String?> retrievePassphrase(AuthenticatedLicense license,
       AuthenticationReason reason, bool allowUserInteraction,
-      {Object sender}) async {
+      {Object? sender}) async {
     if (reason != AuthenticationReason.passphraseNotFound) {
       return fallback?.retrievePassphrase(
           license, reason, allowUserInteraction = allowUserInteraction,

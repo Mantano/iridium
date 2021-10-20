@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:mno_shared/mediatype.dart';
+import 'package:collection/collection.dart';
 
 import '../../../lcp.dart';
 
@@ -14,24 +15,23 @@ class Links {
   static Links parse(List json) =>
       Links._(json.map((l) => Link.parse(l)).toList());
 
-  Link firstWithRel(String rel, {MediaType type}) =>
-      links.firstWhere((it) => it.matches(rel, type), orElse: () => null);
+  Link? firstWithRel(String rel, {MediaType? type}) =>
+      links.firstWhereOrNull((it) => it.matches(rel, type));
 
-  Link firstWithRelAndNoType(String rel) =>
-      links.firstWhere((it) => it.rel.contains(rel) && it.type == null,
-          orElse: () => null);
+  Link? firstWithRelAndNoType(String rel) =>
+      links.firstWhereOrNull((it) => it.rel.contains(rel) && it.type == null);
 
-  List<Link> allWithRel(String rel, {MediaType type}) =>
+  List<Link> allWithRel(String rel, {MediaType? type}) =>
       links.where((element) => element.matches(rel, type)).toList();
 
-  List<Link> get(String rel) => allWithRel(rel);
+  List<Link>? get(String rel) => allWithRel(rel);
 
   @override
   String toString() => '$links';
 }
 
 extension _LinkExt on Link {
-  bool matches(String rel, MediaType type) =>
+  bool matches(String rel, MediaType? type) =>
       this.rel.contains(rel) &&
       (type == null || type.matchesFromName(this.type));
 }

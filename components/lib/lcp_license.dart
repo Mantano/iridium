@@ -16,20 +16,20 @@ mixin LcpLicense implements pub.UserRights {
 
   /// License Status Document information.
   /// https://readium.org/lcp-specs/releases/lsd/latest.html
-  StatusDocument get status;
+  StatusDocument? get status;
 
   /// Number of remaining characters allowed to be copied by the user. If null, there's no limit.
-  int get charactersToCopyLeft;
+  int? get charactersToCopyLeft;
 
   /// Number of pages allowed to be printed by the user. If null, there's no limit.
-  int get pagesToPrintLeft;
+  int? get pagesToPrintLeft;
 
   /// Can the user renew the loaned publication?
   bool get canRenewLoan;
 
   /// The maximum potential date to renew to.
   /// If null, then the renew date might not be customizable.
-  DateTime get maxRenewDate;
+  DateTime? get maxRenewDate;
 
   /// Renews the loan by starting a renew LSD interaction.
   ///
@@ -57,7 +57,7 @@ mixin RenewListener {
   /// You can prompt the user for the number of days to renew, for example.
   ///
   /// The returned date can't exceed [maximumDate].
-  Future<DateTime> preferredEndDate(DateTime maximumDate);
+  Future<DateTime> preferredEndDate(DateTime? maximumDate);
 
   /// Called when the renew interaction uses an HTML web page.
   ///

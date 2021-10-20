@@ -19,8 +19,8 @@ class Transactions implements PassphrasesRepository {
   Transactions(this.database);
 
   @override
-  void addPassphrase(String passphraseHash, String licenseId, String provider,
-          String userId) =>
+  void addPassphrase(String passphraseHash, String? licenseId, String? provider,
+          String? userId) =>
       database.insert(
           TransactionsTable.name,
           {

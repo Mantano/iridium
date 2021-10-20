@@ -20,7 +20,7 @@ class License implements LcpLicense {
 
   License(this._documents, this._validation, this._licenses, this._device,
       this._network) {
-    _validation.observe(_validation, observer: (documents, _) {
+    _validation.observe(_validation, (documents, _) {
       if (documents != null) {
         _documents = documents;
       }
@@ -31,7 +31,7 @@ class License implements LcpLicense {
   LicenseDocument get license => _documents.license;
 
   @override
-  StatusDocument get status => _documents.status;
+  StatusDocument? get status => _documents.status;
 
   @override
   Future<Try<ByteData, LcpException>> decrypt(ByteData data) async {
@@ -50,9 +50,9 @@ class License implements LcpLicense {
   }
 
   @override
-  int get charactersToCopyLeft {
+  int? get charactersToCopyLeft {
     try {
-      int charactersLeft = _licenses.copiesLeft(license.id);
+      int? charactersLeft = _licenses.copiesLeft(license.id);
       if (charactersLeft != null) {
         return charactersLeft;
       }
@@ -67,13 +67,13 @@ class License implements LcpLicense {
 
   @override
   bool canCopyText(String text) {
-    int nbChars = charactersToCopyLeft;
+    int? nbChars = charactersToCopyLeft;
     return (nbChars != null) ? nbChars < text.length : true;
   }
 
   @override
   bool copy(String text) {
-    int charactersLeft = charactersToCopyLeft;
+    int? charactersLeft = charactersToCopyLeft;
     if (charactersLeft == null) {
       return true;
     }
@@ -91,9 +91,9 @@ class License implements LcpLicense {
   }
 
   @override
-  int get pagesToPrintLeft {
+  int? get pagesToPrintLeft {
     try {
-      int pagesLeft = _licenses.printsLeft(license.id);
+      int? pagesLeft = _licenses.printsLeft(license.id);
       if (pagesLeft != null) {
         return pagesLeft;
       }
@@ -108,13 +108,13 @@ class License implements LcpLicense {
 
   @override
   bool canPrintPageCount(int pageCount) {
-    int pagesLeft = pagesToPrintLeft;
+    int? pagesLeft = pagesToPrintLeft;
     return (pagesLeft != null) ? pagesLeft < pageCount : true;
   }
 
   @override
   bool print(int pageCount) {
-    int pagesLeft = pagesToPrintLeft;
+    int? pagesLeft = pagesToPrintLeft;
     if (pagesLeft == null) {
       return true;
     }
@@ -134,14 +134,14 @@ class License implements LcpLicense {
   bool get canRenewLoan => status?.link(StatusRel.renew) != null;
 
   @override
-  DateTime get maxRenewDate => status?.potentialRights?.end;
+  DateTime? get maxRenewDate => status?.potentialRights?.end;
 
   @override
   Future<Try<DateTime, LcpException>> renewLoan(RenewListener listener,
       {bool prefersWebPage = false}) async {
     // Finds the renew link according to `prefersWebPage`.
-    Link findRenewLink() {
-      StatusDocument status = _documents.status;
+    Link? findRenewLink() {
+      StatusDocument? status = _documents.status;
       if (status == null) {
         return null;
       }
@@ -154,7 +154,7 @@ class License implements LcpLicense {
       }
 
       for (MediaType type in types) {
-        Link link = status.link(StatusRel.renew, type: type);
+        Link? link = status.link(StatusRel.renew, type: type);
         if (link != null) {
           return link;
         }
@@ -166,7 +166,7 @@ class License implements LcpLicense {
 
     // Programmatically renew the loan with a PUT request.
     Future<ByteData> renewProgrammatically(Link link) async {
-      DateTime endDate;
+      DateTime? endDate;
       if (link.templateParameters.contains("end")) {
         endDate = await listener.preferredEndDate(maxRenewDate);
       }
@@ -209,7 +209,7 @@ class License implements LcpLicense {
     }
 
     try {
-      Link link = findRenewLink();
+      Link? link = findRenewLink();
       if (link == null) {
         throw LcpException.licenseInteractionNotAvailable;
       }
@@ -238,8 +238,8 @@ class License implements LcpLicense {
   @override
   Future<Try<bool, LcpException>> returnPublication() async {
     try {
-      StatusDocument status = _documents.status;
-      Uri url;
+      StatusDocument? status = _documents.status;
+      Uri? url;
       try {
         url = status?.url(StatusRel.ret,
             preferredType: null, parameters: await _device.asQueryParameters);

@@ -9,6 +9,6 @@ abstract class PassphrasesRepository {
 
   Future<List<String>> allPassphrases();
 
-  void addPassphrase(
-      String passphraseHash, String licenseId, String provider, String userId);
+  void addPassphrase(String passphraseHash, String? licenseId, String? provider,
+      String? userId);
 }

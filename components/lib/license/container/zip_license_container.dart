@@ -17,23 +17,23 @@ import 'package:universal_io/io.dart';
 import 'license_container.dart';
 
 class ZipLicenseContainer implements LicenseContainer {
-  final String zip;
+  late final String zip;
   final String pathInZIP;
 
-  ZipLicenseContainer({this.zip, this.pathInZIP});
+  ZipLicenseContainer({required this.zip, required this.pathInZIP});
 
   @override
   Future<ByteData> read() async {
-    ZipPackage archive;
+    ZipPackage? archive;
     try {
       archive = await ZipContainer(zip).archive;
     } on Exception catch (e, stacktrace) {
       Fimber.e("ZipLicenseContainer.read ERROR", ex: e, stacktrace: stacktrace);
       throw LcpException.container.openFailed;
     }
-    ZipLocalFile entry = archive.entries[pathInZIP];
+    ZipLocalFile? entry = archive?.entries[pathInZIP];
     if (entry != null) {
-      return ZipStream(archive, entry)
+      return ZipStream(archive!, entry)
           .readData(start: 0, length: entry.uncompressedSize)
           .then((data) => data.toByteData())
           .onError((error, stackTrace) =>
@@ -46,8 +46,8 @@ class ZipLicenseContainer implements LicenseContainer {
   @override
   Future<void> write(LicenseDocument license) async {
     try {
-      ZipPackage zipPackage = await ZipPackage.fromArchive(File(zip));
-      if (zipPackage.entries["META-INF/license.lcpl"] == null) {
+      ZipPackage? zipPackage = await ZipPackage.fromArchive(File(zip));
+      if (zipPackage?.entries["META-INF/license.lcpl"] == null) {
         await ZipUtils.injectEntry(
             File(zip), ByteEntry(pathInZIP, license.data));
       }

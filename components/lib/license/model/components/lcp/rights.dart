@@ -3,22 +3,22 @@
 // found in the LICENSE file.
 
 class Rights {
-  int print;
-  int copy;
-  DateTime start;
-  DateTime end;
+  int? print;
+  int? copy;
+  DateTime? start;
+  DateTime? end;
   Map extensions;
 
   Rights._(this.print, this.copy, this.start, this.end, this.extensions);
 
   factory Rights.parse(Map json) {
-    int print = json.remove("print");
-    int copy = json.remove("copy");
-    DateTime start;
+    int? print = json.remove("print");
+    int? copy = json.remove("copy");
+    DateTime? start;
     if (json.containsKey("start")) {
       start = DateTime.tryParse(json.remove("start"));
     }
-    DateTime end;
+    DateTime? end;
     if (json.containsKey("end")) {
       end = DateTime.tryParse(json.remove("end"));
     }

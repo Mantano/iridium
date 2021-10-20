@@ -14,28 +14,28 @@ class Link {
   final List<String> rel;
 
   /// Title for the Link.
-  final String title;
+  final String? title;
 
   /// MIME type of resource.
-  final String type;
+  final String? type;
 
   /// Indicates that the linked resource is a URI template.
   final bool templated;
 
   /// Expected profile used to identify the external resource. (URI)
-  final Uri profile;
+  final Uri? profile;
 
   /// Content length in octets.
-  final int length;
+  final int? length;
 
   /// SHA-256 hash of the resource.
-  final String hash;
+  final String? hash;
 
   Link._(this.href, this.rel, this.title, this.type, this.templated,
       this.profile, this.length, this.hash);
 
   factory Link.parse(Map json) {
-    String href = json["href"];
+    String? href = json["href"];
     if (href == null) {
       throw LcpException.parsing.link;
     }
@@ -44,8 +44,7 @@ class Link {
     if (rel is String) {
       relations.add(rel);
     } else if (rel is Iterable<String>) {
-      rel.fold(
-          relations, (previousValue, element) => previousValue.add(element));
+      relations.addAll(rel);
     }
     if (relations.isEmpty) {
       throw LcpException.parsing.link;
@@ -55,24 +54,30 @@ class Link {
         relations,
         json["title"] as String,
         json["type"] as String,
-        json["templated"] as bool ?? false,
+        json["templated"] as bool? ?? false,
         (json["profile"] != null) ? Uri.parse(json["profile"]) : null,
-        json["length"] as int ?? 0,
-        json["hash"] as String);
+        json["length"] as int? ?? 0,
+        json["hash"] as String?);
   }
 
-  Uri urlWithParams({Map<String, String> parameters = const {}}) {
+  Uri urlWithParams({Map<String, String?> parameters = const {}}) {
     if (!templated) {
       return Uri.parse(href);
     }
-    String expandedHref = UriTemplate(href)
-        .expand(parameters.map((key, value) => MapEntry(key, value ?? "")));
+    String expandedHref = UriTemplate(href).expand(
+        parameters.map((key, dynamic value) => MapEntry(key, value ?? "")));
     return Uri.parse(expandedHref);
   }
 
   Uri get url => urlWithParams();
 
-  MediaType get mediaType => MediaType.parse(type) ?? MediaType.binary;
+  MediaType get mediaType {
+    if (type == null) {
+      return MediaType.binary;
+    } else {
+      return MediaType.parse(type!) ?? MediaType.binary;
+    }
+  }
 
   /// List of URI template parameter keys, if the [Link] is templated.
   List<String> get templateParameters {

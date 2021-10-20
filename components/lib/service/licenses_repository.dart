@@ -7,11 +7,11 @@ import '../lcp.dart';
 abstract class LicensesRepository {
   void addLicense(LicenseDocument license);
 
-  int copiesLeft(String licenseId);
+  int? copiesLeft(String licenseId);
 
   void setCopiesLeft(int quantity, String licenseId);
 
-  int printsLeft(String licenseId);
+  int? printsLeft(String licenseId);
 
   void setPrintsLeft(int quantity, String licenseId);
 }

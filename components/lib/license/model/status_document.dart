@@ -7,6 +7,7 @@ import 'dart:typed_data';
 
 import 'package:mno_lcp/lcp.dart';
 import 'package:mno_shared/mediatype.dart';
+import 'package:collection/collection.dart';
 
 /// Describes the status of the license.
 ///
@@ -45,8 +46,8 @@ class Status {
   @override
   String toString() => 'Status{value: $value}';
 
-  static Status valueOf(String value) =>
-      _values.firstWhere((status) => status.value == value, orElse: () => null);
+  static Status? valueOf(String value) =>
+      _values.firstWhereOrNull((status) => status.value == value);
 }
 
 class StatusRel {
@@ -79,7 +80,7 @@ class StatusDocument {
   final Links _links;
 
   /// Dictionary of potential rights associated with Dates.
-  final PotentialRights potentialRights;
+  final PotentialRights? potentialRights;
 
   /// Ordered list of events related to the change in status of a License
   /// Document.
@@ -101,7 +102,7 @@ class StatusDocument {
     Uint8List list =
         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     String text = utf8.decode(list);
-    Map jsonObject;
+    Map<String, dynamic> jsonObject;
     try {
       jsonObject = json.decode(text);
       return StatusDocument.parse(jsonObject);
@@ -110,25 +111,26 @@ class StatusDocument {
     }
   }
 
-  factory StatusDocument.parse(Map json) {
-    String id;
-    Status status;
-    String message;
-    Links links;
-    DateTime licenseUpdated;
-    DateTime statusUpdated;
-    PotentialRights potentialRights;
-    List<Event> events;
+  factory StatusDocument.parse(Map<String, dynamic> json) {
+    String? id;
+    Status? status;
+    String? message;
+    Links? links;
+    DateTime? licenseUpdated;
+    DateTime? statusUpdated;
+    PotentialRights? potentialRights;
+    List<Event> events = [];
+
     try {
       if (json.containsKey("id")) id = json["id"];
       if (json.containsKey("status")) {
-        status = Status.valueOf(json["status"]);
+        status = Status.valueOf(json["status"])!;
       }
       if (json.containsKey("message")) {
         message = json["message"];
       }
       if (json.containsKey("updated")) {
-        Map updatedJson = json["updated"];
+        Map? updatedJson = json["updated"];
         if (updatedJson != null && updatedJson.isNotEmpty) {
           licenseUpdated = DateTime.tryParse(updatedJson["license"]);
           statusUpdated = DateTime.tryParse(updatedJson["status"]);
@@ -146,23 +148,33 @@ class StatusDocument {
     } on Exception {
       throw Exception(LcpParsingError.errorDescription(LcpParsingErrors.json));
     }
+    if (id == null ||
+        status == null ||
+        message == null ||
+        licenseUpdated == null ||
+        statusUpdated == null ||
+        links == null) {
+      throw Exception(LcpParsingError.errorDescription(LcpParsingErrors.json));
+    }
+
     return StatusDocument._(id, status, message, licenseUpdated, statusUpdated,
         links, potentialRights, events, json);
   }
 
-  DateTime potentialRightsEndDate() => potentialRights?.end;
+  DateTime? potentialRightsEndDate() => potentialRights?.end;
 
-  Link link(StatusRel rel, {MediaType type}) =>
+  Link? link(StatusRel rel, {MediaType? type}) =>
       _links.firstWithRel(rel.value, type: type);
 
-  List<Link> links(StatusRel rel, {MediaType type}) =>
+  List<Link>? links(StatusRel rel, {MediaType? type}) =>
       _links.allWithRel(rel.value, type: type);
 
-  Link linkWithNoType(StatusRel rel) => _links.firstWithRelAndNoType(rel.value);
+  Link? linkWithNoType(StatusRel rel) =>
+      _links.firstWithRelAndNoType(rel.value);
 
   Uri url(StatusRel rel,
-      {MediaType preferredType, Map<String, String> parameters = const {}}) {
-    Link l = link(rel, type: preferredType) ?? linkWithNoType(rel);
+      {MediaType? preferredType, Map<String, String> parameters = const {}}) {
+    Link? l = link(rel, type: preferredType) ?? linkWithNoType(rel);
     if (l == null) {
       throw LcpException.parsing.url(rel.value);
     }
@@ -170,9 +182,9 @@ class StatusDocument {
     return l.urlWithParams(parameters: parameters);
   }
 
-  List<Event> events(EventType type) => eventsWithType(type.val);
+  List<Event>? events(EventType type) => eventsWithType(type.val);
 
-  List<Event> eventsWithType(String type) =>
+  List<Event>? eventsWithType(String type) =>
       _events.where((it) => it.type == type).toList();
 
   String get description => "Status(${status.value})";

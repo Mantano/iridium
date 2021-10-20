@@ -20,7 +20,7 @@ abstract class LicenseContainer {
 
   static Future<LicenseContainer> createLicenseContainer(String filepath,
       {List<String> mediaTypes = const []}) async {
-    MediaType mediaType = await MediaType.ofFile(File(filepath),
+    MediaType? mediaType = await MediaType.ofFile(File(filepath),
         mediaTypes: mediaTypes, fileExtensions: []);
     if (mediaType == null) {
       throw LcpException.container.openFailed;
