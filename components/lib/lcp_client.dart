@@ -16,17 +16,21 @@ typedef LcpWrapperCreateContext = LcpDrmContext Function(
     Pointer<Utf8> jsonLicense,
     Pointer<Utf8> hashedPassphrase,
     Pointer<Utf8> pemCrl);
-LcpWrapperCreateContext fLcpWrapperCreateContext;
+
+late LcpWrapperCreateContext fLcpWrapperCreateContext;
 
 typedef LcpWrapperFindOneValidPassphraseNative = Pointer<Utf8> Function(
     Pointer<Utf8> jsonLicense, Int64 hashedPassphrases);
+
 typedef LcpWrapperFindOneValidPassphrase = Pointer<Utf8> Function(
     Pointer<Utf8> jsonLicense, int hashedPassphrasesPtr);
-LcpWrapperFindOneValidPassphrase fLcpWrapperFindOneValidPassphrase;
+
+late LcpWrapperFindOneValidPassphrase fLcpWrapperFindOneValidPassphrase;
 
 typedef LcpWrapperNativeDecrypt = Uint8Array Function(
     Pointer<LcpDrmContext> context, Pointer<Uint8Array> dataPtr);
-LcpWrapperNativeDecrypt fLcpWrapperNativeDecrypt;
+
+late LcpWrapperNativeDecrypt fLcpWrapperNativeDecrypt;
 
 class LcpClient {
   static const int _maxLengthToDecrypt = 128 * 1024;
@@ -67,7 +71,7 @@ class LcpClient {
   static String findOneValidPassphrase(
       String jsonLicense, List<String> hashedPassphrases) {
     int errorCode = 0;
-    Pointer<Utf8> foundHashedPassphrase;
+    Pointer<Utf8> foundHashedPassphrase = nullptr;
 
     try {
       foundHashedPassphrase = fLcpWrapperFindOneValidPassphrase(
@@ -140,19 +144,19 @@ class LcpClient {
 }
 
 class LcpDrmContext extends Struct {
-  Pointer<Utf8> hashedPassphrase;
-  Pointer<Utf8> encryptedContentKey;
-  Pointer<Utf8> token;
-  Pointer<Utf8> profile;
+  external Pointer<Utf8> hashedPassphrase;
+  external Pointer<Utf8> encryptedContentKey;
+  external Pointer<Utf8> token;
+  external Pointer<Utf8> profile;
   @Int32()
-  int errorCode;
+  external int errorCode;
 
   static Pointer<LcpDrmContext> allocate({
-    String hashedPassphrase,
-    String encryptedContentKey,
-    String token,
-    String profile,
-    int errorCode,
+    String? hashedPassphrase,
+    String? encryptedContentKey,
+    String? token,
+    String? profile,
+    int? errorCode,
   }) {
     Pointer<LcpDrmContext> pLcpDrmContext = calloc<LcpDrmContext>();
     pLcpDrmContext.ref.hashedPassphrase =
@@ -167,17 +171,17 @@ class LcpDrmContext extends Struct {
 
   @override
   String toString() =>
-      'LCP_DRM_CONTEXT{hashedPassphrase: ${hashedPassphrase?.address}, '
-      'encryptedContentKey: ${encryptedContentKey?.address}, '
-      'token: ${token?.address}, profile: ${profile?.address}, '
+      'LCP_DRM_CONTEXT{hashedPassphrase: ${hashedPassphrase.address}, '
+      'encryptedContentKey: ${encryptedContentKey.address}, '
+      'token: ${token.address}, profile: ${profile.address}, '
       'errorCode: $errorCode}';
 }
 
 class StringList extends Struct {
-  Pointer<Pointer<Utf8>> list;
+  external Pointer<Pointer<Utf8>> list;
 
   @Int64()
-  int size;
+  external int size;
 
   static Pointer<StringList> fromList(List<String> arr) {
     Pointer<Pointer<Utf8>> list = calloc.allocate<Pointer<Utf8>>(arr.length);
@@ -195,13 +199,13 @@ class StringList extends Struct {
 }
 
 class Uint8Array extends Struct {
-  Pointer<Uint8> list;
+  external Pointer<Uint8> list;
 
   @Int64()
-  int size;
+  external int size;
 
   @Int32()
-  int errorCode;
+  external int errorCode;
 
   static Pointer<Uint8Array> fromData(Uint8List uint8list) {
     Pointer<Uint8> bytes = calloc.allocate<Uint8>(uint8list.length);
