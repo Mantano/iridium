@@ -35,7 +35,7 @@ class ValidatedStatusEvent extends LVEvent {
 }
 
 class CheckedLicenseStatusEvent extends LVEvent {
-  final LicenseStatus error;
+  final LicenseStatus? error;
   const CheckedLicenseStatusEvent(this.error);
 }
 
@@ -50,7 +50,7 @@ class ValidatedIntegrityEvent extends LVEvent {
 }
 
 class RegisteredDeviceEvent extends LVEvent {
-  final ByteData statusData;
+  final ByteData? statusData;
   const RegisteredDeviceEvent(this.statusData);
 }
 
