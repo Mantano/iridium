@@ -32,9 +32,9 @@ abstract class LcpAuthenticating {
   /// @param allowUserInteraction Indicates whether the user can be prompted for their passphrase.
   /// @param sender Free object that can be used by reading apps to give some UX context when
   ///        presenting dialogs.
-  Future<String> retrievePassphrase(AuthenticatedLicense license,
+  Future<String?> retrievePassphrase(AuthenticatedLicense license,
       AuthenticationReason reason, bool allowUserInteraction,
-      {Object sender});
+      {Object? sender});
 }
 
 enum AuthenticationReason {
@@ -56,7 +56,7 @@ class AuthenticatedLicense {
 
   /// Location where a Reading System can redirect a User looking for additional information
   /// about the User Passphrase.
-  Link get hintLink => document.link(LicenseRel.hint);
+  Link? get hintLink => document.link(LicenseRel.hint);
 
   /// Support resources for the user (either a website, an email or a telephone number).
   List<Link> get supportLinks => document.links(LicenseRel.support);
@@ -65,5 +65,5 @@ class AuthenticatedLicense {
   String get provider => document.provider.toString();
 
   /// Informations about the user owning the license.
-  User get user => document.user;
+  User? get user => document.user;
 }

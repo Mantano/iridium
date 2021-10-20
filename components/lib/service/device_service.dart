@@ -23,7 +23,10 @@ class DeviceService {
   String get id {
     String deviceId = const Uuid().v1();
     if (preferences.containsKey(lcpDeviceIdPref)) {
-      deviceId = preferences.getString(lcpDeviceIdPref);
+      var prefValue = preferences.getString(lcpDeviceIdPref);
+      if (prefValue != null) {
+        deviceId = prefValue;
+      }
     }
     preferences.setString(lcpDeviceIdPref, deviceId);
     return deviceId;
@@ -47,14 +50,14 @@ class DeviceService {
         'name': await name,
       };
 
-  Future<ByteData> registerLicense(LicenseDocument license, Link link) async {
+  Future<ByteData?> registerLicense(LicenseDocument license, Link link) async {
     if (await repository.isDeviceRegistered(license)) {
       return null;
     }
 
     String url =
         link.urlWithParams(parameters: await asQueryParameters).toString();
-    ByteData data = (await network.fetch(url,
+    ByteData? data = (await network.fetch(url,
             method: Method.post, parameters: await asQueryParameters))
         .getOrNull();
     if (data == null) {
