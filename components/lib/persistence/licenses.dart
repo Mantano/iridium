@@ -87,7 +87,7 @@ class Licenses implements DeviceRepository, LicensesRepository {
   }
 
   @override
-  Future<void> registerDevice(LicenseDocument license) async {
+  Future<int> registerDevice(LicenseDocument license) async {
     if (!await _exists(license)) {
       throw LcpException.runtime(
           "The LCP License doesn't exist in the database");
@@ -99,7 +99,7 @@ class Licenses implements DeviceRepository, LicensesRepository {
       },
       where: '${LicensesTable.id} = ?',
       whereArgs: [license.id],
-    ) as Future<void>;
+    );
   }
 
   @override

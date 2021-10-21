@@ -6,9 +6,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:mno_commons/utils/try.dart';
+import 'package:mno_lcp/lcp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../lcp.dart';
 
 class CrlService {
   static const int expiration = 7;

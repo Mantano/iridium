@@ -5,10 +5,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:mno_lcp/lcp.dart';
 import 'package:mno_shared/mediatype.dart';
-
-import 'package:collection/collection.dart';
 
 // The possible rel of Links.
 class LicenseRel {
@@ -127,9 +126,6 @@ class LicenseDocument {
     return LicenseDocument._(id, issued, updated, provider, encryption, links,
         rights!, user!, signature, jsonObject, text, data);
   }
-
-  /// Returns the date of last update if any, or issued date.
-  DateTime dateOfLastUpdate() => (updated != null) ? updated : issued;
 
   /// Returns the first link containing the given rel.
   ///

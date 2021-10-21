@@ -4,8 +4,7 @@
 
 import 'package:crypto/crypto.dart';
 import 'package:fimber/fimber.dart';
-
-import '../lcp.dart';
+import 'package:mno_lcp/lcp.dart';
 
 class PassphrasesService {
   static final RegExp sha256Regex =
@@ -85,7 +84,7 @@ class PassphrasesService {
   Future<List<String>> _possiblePassphrasesFromRepository(
       LicenseDocument license) async {
     Set<String> passphrases = {};
-    String licensePassphrase = await repository.passphrase(license.id);
+    String? licensePassphrase = await repository.passphrase(license.id);
     if (licensePassphrase != null) {
       passphrases.add(licensePassphrase);
     }

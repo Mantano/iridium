@@ -9,11 +9,10 @@ import 'package:collection/collection.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/try.dart';
 import 'package:mno_lcp/io/file_util.dart';
+import 'package:mno_lcp/lcp.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart';
-
-import '../lcp.dart';
 
 class LicensesService extends LcpService {
   final LicensesRepository licenses;
@@ -123,7 +122,7 @@ class LicensesService extends LcpService {
     });
     await validation.init();
 
-    Completer<Try<LcpLicense, LcpException>> lcpLicenseCompleter = Completer();
+    Completer<Try<LcpLicense?, LcpException>> lcpLicenseCompleter = Completer();
     validation.validate(LicenseValidationDocument.license(initialData),
         (documents, error) {
       Fimber.d("documents: $documents, error: $error");
@@ -143,8 +142,11 @@ class LicensesService extends LcpService {
         lcpLicenseCompleter.complete(Try.failure(LcpException.unknown));
         throw error;
       }
+      if (documents == null && error == null) {
+        lcpLicenseCompleter.complete(Try.success(null));
+      }
     });
-    Try<LcpLicense, void> result = await lcpLicenseCompleter.future;
+    Try<LcpLicense?, void> result = await lcpLicenseCompleter.future;
     return result.getOrThrow();
   }
 

@@ -5,10 +5,9 @@
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_fsm/mno_fsm.dart';
-
-import '../lcp.dart';
-import 'license_validation_events.dart';
-import 'license_validation_states.dart';
+import 'package:mno_lcp/lcp.dart';
+import 'package:mno_lcp/license/license_validation_events.dart';
+import 'package:mno_lcp/license/license_validation_states.dart';
 
 class LicenseValidationStateMachine {
   static const bool _debug = false;

@@ -9,12 +9,11 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/services.dart';
 import 'package:mno_commons/utils/try.dart';
 import 'package:mno_fsm/mno_fsm.dart';
+import 'package:mno_lcp/lcp.dart';
+import 'package:mno_lcp/license/license_validation_events.dart';
 import 'package:mno_lcp/license/license_validation_state_machine.dart';
+import 'package:mno_lcp/license/license_validation_states.dart';
 import 'package:mno_shared/mediatype.dart';
-
-import '../lcp.dart';
-import 'license_validation_events.dart';
-import 'license_validation_states.dart';
 
 typedef Observer = void Function(ValidatedDocuments?, Exception?);
 
@@ -298,7 +297,6 @@ class LicenseValidation {
             break;
         }
       } else {
-        DateTime foo = DateTime.now();
         if (start.isAfter(now)) {
           error = LcpException.licenseStatus.notStarted(start);
         } else {

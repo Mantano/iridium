@@ -197,9 +197,11 @@ class License implements LcpLicense {
       // The reading app will open the URL in a web view and return when it is dismissed.
       listener.openWebPage(link.url);
 
-      Uri statusUrl = license.url(LicenseRel.status,
-          preferredType: MediaType.lcpStatusDocument);
-      if (statusUrl == null) {
+      Uri statusUrl;
+      try {
+        statusUrl = license.url(LicenseRel.status,
+            preferredType: MediaType.lcpStatusDocument);
+      } on LcpException {
         throw LcpException.licenseInteractionNotAvailable;
       }
 

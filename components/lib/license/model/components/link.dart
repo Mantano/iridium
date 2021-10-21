@@ -3,9 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:mno_commons/utils/uri_template.dart';
+import 'package:mno_lcp/lcp.dart';
 import 'package:mno_shared/mediatype.dart';
-
-import '../../../lcp.dart';
 
 class Link {
   final String href;

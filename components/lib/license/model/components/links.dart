@@ -2,10 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared/mediatype.dart';
 import 'package:collection/collection.dart';
-
-import '../../../lcp.dart';
+import 'package:mno_lcp/lcp.dart';
+import 'package:mno_shared/mediatype.dart';
 
 class Links {
   final List<Link> links;

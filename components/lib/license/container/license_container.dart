@@ -5,17 +5,17 @@
 import 'dart:typed_data';
 
 import 'package:mno_lcp/lcp.dart';
+import 'package:mno_lcp/license/container/epub_license_container.dart';
+import 'package:mno_lcp/license/container/lcpl_license_container.dart';
+import 'package:mno_lcp/license/container/web_pub_license_container.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:universal_io/io.dart';
-
-import 'epub_license_container.dart';
-import 'lcpl_license_container.dart';
-import 'web_pub_license_container.dart';
 
 /// Encapsulates the read/write access to the packaged License Document (eg. in an EPUB container,
 /// or a standalone LCPL file).
 abstract class LicenseContainer {
   Future<ByteData> read();
+
   Future<void> write(LicenseDocument license);
 
   static Future<LicenseContainer> createLicenseContainer(String filepath,

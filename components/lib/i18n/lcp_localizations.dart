@@ -6,10 +6,9 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:mno_lcp/i18n/localizations/messages_all.dart';
 import 'package:mno_shared/i18n/localizations_repository.dart';
 import 'package:multiple_localization/multiple_localization.dart';
-
-import 'localizations/messages_all.dart';
 
 class LcpLocalizations implements LocalizationsRepository {
   static const LocalizationsDelegate<LcpLocalizations> delegate =

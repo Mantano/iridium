@@ -5,11 +5,10 @@
 import 'dart:typed_data';
 
 import 'package:mno_commons/utils/try.dart';
+import 'package:mno_lcp/lcp.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart';
-
-import 'lcp.dart';
 
 class LcpServiceFactory {
   static Future<LcpService?> create() async {

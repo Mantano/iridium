@@ -32,7 +32,7 @@ class Transactions implements PassphrasesRepository {
           conflictAlgorithm: ConflictAlgorithm.replace);
 
   @override
-  Future<String> passphrase(String licenseId) async {
+  Future<String?> passphrase(String licenseId) async {
     List<Map<String, dynamic>> result = await database.query(
       TransactionsTable.name,
       columns: [TransactionsTable.passphrase],
@@ -41,7 +41,7 @@ class Transactions implements PassphrasesRepository {
     );
     return (result.isNotEmpty)
         ? result.first[TransactionsTable.passphrase]
-        : null;
+        : Future.value(null);
   }
 
   @override

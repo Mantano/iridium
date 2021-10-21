@@ -4,12 +4,11 @@
 
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/try.dart';
+import 'package:mno_lcp/lcp.dart';
 import 'package:mno_lcp/lcp_decryptor.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:universal_io/io.dart';
-
-import 'lcp.dart';
 
 class LcpContentProtection implements ContentProtection {
   final LcpService _lcpService;

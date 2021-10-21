@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 abstract class PassphrasesRepository {
-  Future<String> passphrase(String licenseId);
+  Future<String?> passphrase(String licenseId);
 
   Future<List<String>> passphrases(String userId);
 

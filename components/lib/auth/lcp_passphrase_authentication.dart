@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../lcp.dart';
+import 'package:mno_lcp/lcp.dart';
 
 /// An [LcpAuthenticating] implementation which can directly use a provided clear or hashed
 /// passphrase.

@@ -7,14 +7,13 @@ import 'dart:typed_data';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons/extensions/data.dart';
 import 'package:mno_lcp/lcp.dart';
+import 'package:mno_lcp/license/container/license_container.dart';
 import 'package:mno_lcp/license/model/license_document.dart';
 import 'package:mno_lcp/utils/zip_utils.dart';
 import 'package:mno_shared/container.dart';
 import 'package:mno_shared/streams.dart';
 import 'package:mno_shared/zip.dart';
 import 'package:universal_io/io.dart';
-
-import 'license_container.dart';
 
 class ZipLicenseContainer implements LicenseContainer {
   late final String zip;

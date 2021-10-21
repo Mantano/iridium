@@ -4,9 +4,8 @@
 
 import 'dart:typed_data';
 
+import 'package:mno_lcp/license/container/license_container.dart';
 import 'package:mno_lcp/license/model/license_document.dart';
-
-import 'license_container.dart';
 
 class BytesLicenseContainer implements LicenseContainer {
   ByteData _bytes;

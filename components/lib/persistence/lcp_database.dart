@@ -3,10 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:fimber/fimber.dart';
+import 'package:mno_lcp/persistence/licenses.dart';
+import 'package:mno_lcp/persistence/transactions.dart';
 import 'package:sqflite/sqflite.dart';
-
-import 'licenses.dart';
-import 'transactions.dart';
 
 class LcpDatabase {
   static late LcpDatabase _database;
