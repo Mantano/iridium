@@ -2,7 +2,6 @@ name: mno_lcp
 description: This package provides a DART LCP layer (native libraries not provided).
 version: 0.1.0
 homepage: https://github.com/Mantano/mno_lcp_dart
-publish_to: none
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -28,8 +27,7 @@ dependencies:
   universal_io: ^2.0.4
   url_launcher: ^6.0.12
   uuid: ^3.0.5
-  mno_shared:
-    path: ../mno_shared_dart
+  mno_shared: ^0.1.3
 
 dev_dependencies:
   test: ^1.19.1
