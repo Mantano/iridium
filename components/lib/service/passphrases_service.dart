@@ -10,8 +10,9 @@ class PassphrasesService {
   static final RegExp sha256Regex =
       RegExp("^([a-f0-9]{64})\$", caseSensitive: false);
   final PassphrasesRepository repository;
+  final LcpClient lcpClient;
 
-  PassphrasesService(this.repository);
+  PassphrasesService(this.repository, this.lcpClient);
 
   Future<String?> request(
       LicenseDocument license,
@@ -23,7 +24,7 @@ class PassphrasesService {
       String? passphrase;
       try {
         passphrase =
-            LcpClient.findOneValidPassphrase(license.rawJson, candidates);
+            lcpClient.findOneValidPassphrase(license.rawJson, candidates);
       } on Exception catch (ex, stacktrace) {
         Fimber.d("findOneValidPassphrase ERROR",
             ex: ex, stacktrace: stacktrace);
@@ -63,7 +64,7 @@ class PassphrasesService {
 
     try {
       String passphrase =
-          LcpClient.findOneValidPassphrase(license.rawJson, passphrases);
+          lcpClient.findOneValidPassphrase(license.rawJson, passphrases);
       addPassphrase(passphrase, true, license.id, license.provider.toString(),
           license.user.id);
       return passphrase;

@@ -8,7 +8,6 @@ import 'package:mno_lcp/lcp.dart';
 import 'package:mno_lcp/lcp_decryptor.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:universal_io/io.dart';
 
 class LcpContentProtection implements ContentProtection {
   final LcpService _lcpService;
@@ -30,8 +29,7 @@ class LcpContentProtection implements ContentProtection {
     }
 
     FileAsset fileAsset = asset;
-    // TODO Check this cast to File
-    if (!await _lcpService.isLcpProtected(fileAsset.file as File)) {
+    if (!await _lcpService.isLcpProtected(fileAsset.file)) {
       return null;
     }
 
@@ -40,9 +38,8 @@ class LcpContentProtection implements ContentProtection {
             fallback: this._authentication)
         : this._authentication;
 
-    // TODO Check this cast to File
     Try<LcpLicense, LcpException>? license = await _lcpService.retrieveLicense(
-        fileAsset.file as File, authentication, allowUserInteraction, sender);
+        fileAsset.file, authentication, allowUserInteraction, sender);
     if (license == null || license.isFailure) {
       return Try.failure(license?.failure!);
     }

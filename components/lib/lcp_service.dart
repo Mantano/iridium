@@ -11,16 +11,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:universal_io/io.dart';
 
 class LcpServiceFactory {
-  static Future<LcpService?> create() async {
+  static Future<LcpService?> create(LcpClient lcpClient) async {
     SharedPreferences sharedPreference = await SharedPreferences.getInstance();
-    return LcpService.create(sharedPreference);
+    return LcpService.create(sharedPreference, lcpClient);
   }
 }
 
 abstract class LcpService {
   /// LCP service factory.
-  static LcpService? create(SharedPreferences preferences) {
-    if (!LcpClient.isAvailable) {
+  static LcpService? create(
+      SharedPreferences preferences, LcpClient lcpClient) {
+    if (!lcpClient.isAvailable) {
       return null;
     }
 
@@ -28,14 +29,14 @@ abstract class LcpService {
     NetworkService network = NetworkService();
     DeviceService device = DeviceService(db.licenses, network, preferences);
     CrlService crl = CrlService(network, preferences);
-    PassphrasesService passphrases = PassphrasesService(db.transactions);
-    //TODO bizarre cette référence à une sous-classe...
+    PassphrasesService passphrases =
+        PassphrasesService(db.transactions, lcpClient);
     return LicensesService(
-        db.licenses, crl, device, network, passphrases, preferences);
+        db.licenses, crl, device, network, passphrases, preferences, lcpClient);
   }
 
   /// Returns if the publication is protected by LCP.
-  Future<bool> isLcpProtected(File file);
+  Future<bool> isLcpProtected(FileSystemEntity file);
 
   /// Acquires a protected publication from a standalone LCPL's bytes.
   Future<Try<AcquiredPublication, LcpException>> acquirePublication(
@@ -64,7 +65,7 @@ abstract class LcpService {
   /// @param sender Free object that can be used by reading apps to give some UX context when
   ///        presenting dialogs with [LcpAuthenticating].
   Future<Try<LcpLicense, LcpException>?> retrieveLicense(
-      File file,
+      FileSystemEntity file,
       LcpAuthenticating? authentication,
       bool allowUserInteraction,
       dynamic sender);

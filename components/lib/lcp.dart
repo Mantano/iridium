@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_lcp/lcp_client.dart';
 import 'package:mno_lcp/persistence/lcp_database.dart';
 
 export 'auth/lcp_passphrase_authentication.dart';
@@ -55,6 +54,5 @@ export 'service/passphrases_service.dart';
 mixin Lcp {
   static Future<void> initLcp() async {
     await LcpDatabase.create();
-    LcpClient.loadDynamicLib();
   }
 }

@@ -165,10 +165,9 @@ class Url extends Parsing {
 }
 
 /// Errors while reading or writing a LCP container (LCPL, EPUB, LCPDF, etc.)
-/// TODO: create subclasses
 class ContainerException extends LcpException {
   final String? path;
-  ContainerException._(String userMessageId, {this.path})
+  const ContainerException._(String userMessageId, {this.path})
       : super(userMessageId);
 
   /// Can't access the container, it's format is wrong.

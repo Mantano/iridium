@@ -21,12 +21,13 @@ class LicensesService extends LcpService {
   final NetworkService network;
   final PassphrasesService passphrases;
   final SharedPreferences preferences;
+  final LcpClient lcpClient;
 
   LicensesService(this.licenses, this.crl, this.device, this.network,
-      this.passphrases, this.preferences);
+      this.passphrases, this.preferences, this.lcpClient);
 
   @override
-  Future<bool> isLcpProtected(File file) async {
+  Future<bool> isLcpProtected(FileSystemEntity file) async {
     try {
       return (await LicenseContainer.createLicenseContainer(file.path))
           .read()
@@ -53,7 +54,7 @@ class LicensesService extends LcpService {
 
   @override
   Future<Try<LcpLicense, LcpException>?> retrieveLicense(
-      File file,
+      FileSystemEntity file,
       LcpAuthenticating? authentication,
       bool allowUserInteraction,
       dynamic sender) async {
@@ -99,7 +100,8 @@ class LicensesService extends LcpService {
         this.crl,
         this.device,
         this.network,
-        this.passphrases, (licenseDocument) async {
+        this.passphrases,
+        this.lcpClient, (licenseDocument) async {
       try {
         this.licenses.addLicense(licenseDocument);
       } on Exception catch (e, stacktrace) {
@@ -130,7 +132,7 @@ class LicensesService extends LcpService {
         try {
           documents.getContext();
           LcpLicense license = License(
-              documents, validation, this.licenses, this.device, this.network);
+              documents, validation, licenses, device, network, lcpClient);
           lcpLicenseCompleter.complete(Try.success(license));
         } on Exception catch (e) {
           Fimber.d("completion ERROR", ex: e);

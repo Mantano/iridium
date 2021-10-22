@@ -17,9 +17,10 @@ class License implements LcpLicense {
   final LicensesRepository _licenses;
   final DeviceService _device;
   final NetworkService _network;
+  final LcpClient _lcpClient;
 
   License(this._documents, this._validation, this._licenses, this._device,
-      this._network) {
+      this._network, this._lcpClient) {
     _validation.observe(_validation, (documents, _) {
       if (documents != null) {
         _documents = documents;
@@ -41,7 +42,7 @@ class License implements LcpLicense {
         return Try.success(ByteData(0));
       } else {
         DrmContext context = _documents.getContext();
-        ByteData decryptedData = LcpClient.decrypt(context, data);
+        ByteData decryptedData = _lcpClient.decrypt(context, data);
         return Try.success(decryptedData);
       }
     } on Exception catch (e) {

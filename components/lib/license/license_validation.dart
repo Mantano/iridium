@@ -78,6 +78,7 @@ class LicenseValidation {
   final DeviceService device;
   final NetworkService network;
   final PassphrasesService passphrases;
+  final LcpClient lcpClient;
   final void Function(LicenseDocument) onLicenseValidated;
   late StateMachine<LVState, LVEvent, dynamic> stateMachine;
   late bool isProduction;
@@ -92,6 +93,7 @@ class LicenseValidation {
       this.device,
       this.network,
       this.passphrases,
+      this.lcpClient,
       this.onLicenseValidated)
       : _state = const StartState();
 
@@ -118,7 +120,7 @@ class LicenseValidation {
   }
 
   void validate(LicenseValidationDocument document, Observer completion) {
-    LVEvent? event;
+    LVEvent event;
     switch (document.runtimeType) {
       case LicenseValidationLicenseDocument:
         event = RetrievedLicenseDataEvent(document.data);
@@ -126,21 +128,22 @@ class LicenseValidation {
       case LicenseValidationStatusDocument:
         event = RetrievedStatusDataEvent(document.data);
         break;
+      default:
+        throw LcpException.unknown;
     }
     _log("validate $event");
-    // TODO Vérifier, cette assertion event! est suspecte
-    _observe(event!, completion);
+    _observe(event, completion);
   }
 
   Future<bool> _computeIsProduction() async {
-    ByteData prodLicenseInput =
-        await rootBundle.load("packages/mno_lcp/assets/prod-license.lcpl");
+    ByteData prodLicenseInput = await rootBundle
+        .load("packages/mno_lcp_native/assets/prod-license.lcpl");
     LicenseDocument prodLicense = LicenseDocument.parse(prodLicenseInput);
     String passphrase =
         "7B7602FEF5DEDA10F768818FFACBC60B173DB223B7E66D8B2221EBE2C635EFAD";
     try {
       String foundPassphrase =
-          LcpClient.findOneValidPassphrase(prodLicense.rawJson, [passphrase]);
+          lcpClient.findOneValidPassphrase(prodLicense.rawJson, [passphrase]);
       return foundPassphrase == passphrase;
     } on Exception catch (e) {
       _log("isProduction ERROR", ex: e);
@@ -325,7 +328,7 @@ class LicenseValidation {
     if (!supportedProfiles.contains(profile.toString())) {
       throw LcpException.licenseProfileNotSupported;
     }
-    DrmContext context = LcpClient.createContext(
+    DrmContext context = lcpClient.createContext(
         license.rawJson, passphrase, await crl.retrieve());
     _raise(ValidatedIntegrityEvent(context));
   }
