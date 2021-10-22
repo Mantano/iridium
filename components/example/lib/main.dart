@@ -14,6 +14,7 @@ Future<void> main() async {
   if (lcpService != null) {
     ContentProtection contentProtection = lcpService.contentProtection(
         authentication: LcpPassphraseAuthentication(passphrase));
+    print("contentProtection: $contentProtection");
   }
 }
 
