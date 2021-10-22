@@ -214,8 +214,8 @@ class LicenseValidation {
   }
 
   void _notifyObservers(ValidatedDocuments? documents, Exception? error) {
-    for (var observer in observers) {
-      observer.item1(documents, error);
+    for (int i = 0; i < observers.length; i++) {
+      observers[i].item1(documents, error);
     }
     observers =
         observers.where((it) => it.item2 != ObserverPolicy.once).toList();
