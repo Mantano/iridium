@@ -10,6 +10,7 @@ import 'lazy_zip_file_header.dart';
 class LazyZipDirectory {
   // End of Central Directory Record
   static const int signature = 0x06054b50;
+  static const int headerSignature = 0x04034b50;
   static const int zip64EocdLocatorSignature = 0x07064b50;
   static const int zip64EocdLocatorSize = 20;
   static const int zip64EocdSignature = 0x06064b50;
@@ -29,6 +30,10 @@ class LazyZipDirectory {
   LazyZipDirectory();
 
   Future<void> load(FileBuffer input, {String? password}) async {
+    if (!await headerSignatureValid(input)) {
+      throw Exception("Not an archive");
+    }
+
     filePosition = await _findSignature(input);
     input.position = filePosition;
     int signature = await input.readUint32(); // ignore: unused_local_variable
@@ -158,5 +163,11 @@ class LazyZipDirectory {
 
     throw archive.ArchiveException(
         'Could not find End of Central Directory Record');
+  }
+
+  Future<bool> headerSignatureValid(FileBuffer input) async {
+    int sig = await input.readUint32();
+    input.position = 0;
+    return sig == headerSignature;
   }
 }

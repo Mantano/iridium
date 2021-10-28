@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:dartx/dartx.dart';
-import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:universal_io/io.dart';
 
@@ -156,8 +155,8 @@ class ZipPackage implements JSONable {
           cds.add(cd);
         }
       }
-    } on Exception catch (e, stacktrace) {
-      Fimber.d("Error loading epub", ex: e, stacktrace: stacktrace);
+    } on Exception {
+      // Fimber.d("Error loading epub", ex: e, stacktrace: stacktrace);
       return null;
     }
     zp.entries = Map.fromEntries(entries.map((f) => MapEntry(f.filename, f)));

@@ -3,7 +3,6 @@
 // found in the LICENSE file.
 
 import 'package:archive/archive.dart' as archive;
-import 'package:fimber/fimber.dart';
 import 'package:universal_io/io.dart';
 
 import 'file_buffer.dart';
@@ -50,8 +49,6 @@ class LazyZipDecoder {
       }
 
       return _archive;
-    }).catchError((ex, st) {
-      Fimber.d("ERROR", ex: ex, stacktrace: st);
     }).whenComplete(fileBuffer.close);
   }
 }
