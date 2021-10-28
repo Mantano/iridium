@@ -31,7 +31,6 @@ class ReadiumWebPubParser extends PublicationParser
   Future<PublicationBuilder?> parseFile(
       PublicationAsset asset, Fetcher fetcher) async {
     MediaType mediaType = await asset.mediaType;
-    Fimber.d("mediaType: $mediaType");
     if (!mediaType._isReadiumWebPubProfile) {
       return null;
     }
