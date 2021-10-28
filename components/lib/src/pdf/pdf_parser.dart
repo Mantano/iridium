@@ -47,7 +47,7 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
     }
 
     PdfDocument document = await pdfFactory.openResource(fetcher.get(pdfLink));
-    String title = document.title.ifBlank(() => null) ?? fallbackTitle;
+    String title = document.title?.ifBlank(() => null) ?? fallbackTitle;
 
     // TODO implement lookup the table of content
     // List<Link> tableOfContents = document.outline.toLinks(fileHref);
@@ -57,9 +57,9 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
           identifier: document.identifier,
           localizedTitle: LocalizedString.fromString(title),
           authors: [document.author]
-              .where(((s) => s.isNotBlank == true))
-              .mapNotNull(Contributor.fromString)
-              .toList(),
+              .where(((s) => s?.isNotBlank == true))
+              .mapNotNull(Contributor.fromString as dynamic Function(String?))
+              .toList() as List<Contributor>,
           numberOfPages: document.pageCount,
         ),
         readingOrder: [

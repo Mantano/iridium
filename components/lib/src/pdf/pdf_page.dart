@@ -14,10 +14,10 @@ abstract class PdfPage {
 
   double getPageHeight();
 
-  Image renderFullPage(int sizeX, int sizeY) =>
+  Image? renderFullPage(int sizeX, int sizeY) =>
       renderPage(sizeX, sizeY, 0, 0, sizeX, sizeY);
 
-  Image renderPage(int imageWidth, int imageHeight, int startX, int startY,
+  Image? renderPage(int imageWidth, int imageHeight, int startX, int startY,
       int sizeX, int sizeY);
 
   Uint8List renderPageBitmap(int imageWidth, int imageHeight, int startX,

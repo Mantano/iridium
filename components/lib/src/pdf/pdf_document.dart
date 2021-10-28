@@ -7,23 +7,23 @@ import 'package:image/image.dart';
 import 'package:mno_streamer/pdf.dart';
 
 abstract class PdfDocument {
-  String get identifier;
+  String? get identifier;
 
-  String get title;
+  String? get title;
 
-  String get author;
+  String? get author;
 
-  String get subject;
+  String? get subject;
 
-  String get keywords;
+  String? get keywords;
 
-  String get creator;
+  String? get creator;
 
-  String get producer;
+  String? get producer;
 
-  String get creationDate;
+  String? get creationDate;
 
-  String get modDate;
+  String? get modDate;
 
   int get pageCount;
 
