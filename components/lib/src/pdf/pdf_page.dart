@@ -27,5 +27,5 @@ abstract class PdfPage {
       int sizeY, int rotate, int deviceX, int deviceY);
 
   Product2<double, double> pageToDevice(int startX, int startY, int sizeX,
-      int sizeY, int rotate, int pageX, int pageY);
+      int sizeY, int rotate, double pageX, double pageY);
 }
