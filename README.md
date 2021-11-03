@@ -12,7 +12,7 @@ platforms. However, Iridium is purely a Mantano initiative, and does not reflect
 Dart/Flutter development.
 
 Iridium is named after the chemical element, which is known for being extremely corrosion-resistant: this reader will
-stand the test of time ;-)
+stand the test of time 😎
 
 ## Migrating an existing R2-based platform-specific app
 
