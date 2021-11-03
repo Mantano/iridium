@@ -1,4 +1,4 @@
-# MP-Readium, the Multi-platform reader toolkit"
+# Iridium [Ir], the multi-platform reader toolkit
 
 This project provides unofficial Dart/Flutter ports of the Readium 2 (R2) components<sup>[1](#readium_foundation)</sup>,
 following the [Readium 2 architecture](https://github.com/readium/architecture).
@@ -8,7 +8,11 @@ possible, in order to reach a really unified codebase. Developed and tested on A
 code should be reusable for desktop and web apps.
 
 This project could pave the way to a "unified reference implementation" for Readium, with a codebase working across all
-platforms.
+platforms. However, Iridium is purely a Mantano initiative, and does not reflect any official Readium move towards
+Dart/Flutter development.
+
+Iridium is named after the chemical element, which is known for being extremely corrosion-resistant: this reader will
+stand the test of time ;-)
 
 ## Migrating an existing R2-based platform-specific app
 
