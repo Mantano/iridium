@@ -1,6 +1,7 @@
 import 'package:app/src/models/book.dart';
 import 'package:app/src/models/notifiers/book_notifier.dart';
 import 'package:app/src/models/notifiers/theme_notifier.dart';
+import 'package:app/src/screens/book_reader/book_reader_screen.dart';
 import 'package:app/src/theme/colors.dart';
 import 'package:app/src/widgets/book_cover.dart';
 import 'package:app/src/widgets/buttons/confirm_button.dart';
@@ -107,7 +108,7 @@ class BookDetails extends StatelessWidget {
               ConfirmButton(
                 text: 'READ NOW',
                 onPressed: () {
-                  print('Opening book...');
+                  openBook(context, _book);
                 },
               ),
             ],
@@ -143,6 +144,17 @@ class BookDetails extends StatelessWidget {
               onPressed: () => _showDeleteDialog(context, bookNotifier),
             ),
     );
+  }
+
+  void openBook(BuildContext context, Book book) {
+    print('Opening book...');
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (_) => BookReaderScreen(
+                  book,
+                  title: book.title,
+                )));
   }
 
   AppBar _buildAppBar(BuildContext context) {

@@ -77,5 +77,11 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/book-cover-placeholder-light.png
-    - assets/images/book-cover-placeholder-dark.png
+    - assets/books/
+    - assets/css/
+    - assets/images/
+    - assets/js/
+    - assets/xpub-js/
+    - assets/xpub-shared-js/
+    - assets/xpub-assets/
+
