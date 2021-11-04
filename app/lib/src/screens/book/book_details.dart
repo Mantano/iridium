@@ -3,6 +3,7 @@ import 'package:app/src/models/notifiers/book_notifier.dart';
 import 'package:app/src/models/notifiers/theme_notifier.dart';
 import 'package:app/src/theme/colors.dart';
 import 'package:app/src/widgets/book_cover.dart';
+import 'package:app/src/widgets/buttons/confirm_button.dart';
 import 'package:app/src/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -102,6 +103,12 @@ class BookDetails extends StatelessWidget {
                         ?.withOpacity(0.85),
                     fontFamily: 'GoogleFonts.nunito().fontFamily',
                     fontSize: 16.0),
+              ),
+              ConfirmButton(
+                text: 'READ NOW',
+                onPressed: () {
+                  print('Opening book...');
+                },
               ),
             ],
           ),

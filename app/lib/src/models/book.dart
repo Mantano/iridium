@@ -15,7 +15,6 @@ final initialBooks = [
     'The Doe in the Forest',
     'Laurel Toven',
     'In this book, we have a geographical historical and cultural region in the wester, part of the country of Belgium',
-    //'https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png',
     'https://images-na.ssl-images-amazon.com/images/I/61+cycC9I9S.jpg',
     'Children',
     9.0,
