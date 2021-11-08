@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1075466461987",
+    "project_id": "iridium-27ef8",
+    "storage_bucket": "iridium-27ef8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075466461987:android:50fb19bf670d480d642296",
+        "android_client_info": {
+          "package_name": "com.iridium.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1075466461987-feehik9sa9q2943uvb7j1d1s96v4a9jc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC3s1rMumH-zzQRk3SiGnR3iStQG4C8xY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075466461987-feehik9sa9q2943uvb7j1d1s96v4a9jc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
