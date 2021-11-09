@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.14.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,6 +32,16 @@ dependencies:
   provider: ^6.0.1
   smooth_star_rating_null_safety: ^1.0.4+2
   flutter_speed_dial: ^4.6.6
+  flutter_fimber: ^0.6.3
+  fimber: ^0.6.1
+  permission_handler: ^8.2.5
+
+  cloud_firestore: ^3.0.0
+  firebase_auth: ^3.1.4
+  firebase_core: ^1.8.0
+  firebase_analytics: ^8.3.4
+  audio_video_progress_bar: ^0.9.0
+
 
   google_fonts: ^2.1.0
 
@@ -40,8 +50,20 @@ dependencies:
   mno_server: ^0.1.0
   mno_streamer: ^0.1.1
 
+  model:
+    path: ../model
+
+  ui_commons:
+    path: ../ui_commons
+  navigator:
+    path: ../navigator
+
   path_provider: ^2.0.6
+  bloc: ^7.2.1
+  flutter_bloc: ^7.3.1
+
   flutter_inappwebview: ^5.3.2
+  webview_flutter: ^2.1.2
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -82,6 +104,9 @@ flutter:
     - assets/images/
     - assets/js/
     - assets/xpub-js/
+    - assets/xpub-js/controllers/
+    - assets/xpub-js/model/
+    - assets/xpub-js/utils/
     - assets/xpub-shared-js/
     - assets/xpub-assets/
 

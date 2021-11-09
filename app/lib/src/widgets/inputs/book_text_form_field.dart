@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class BookTextFormField extends StatelessWidget {
   final String labelText;
   final String errorText;
-  final void Function(String?)? onSaved;
-  final String? initialValue;
+  final void Function(String) onSaved;
+  final String initialValue;
 
   const BookTextFormField({
-    Key? key,
-    required this.labelText,
-    required this.errorText,
-    required this.onSaved,
+    Key key,
+    @required this.labelText,
+    @required this.errorText,
+    @required this.onSaved,
     this.initialValue,
   }) : super(key: key);
 
@@ -30,7 +30,7 @@ class BookTextFormField extends StatelessWidget {
           ),
           labelStyle: const TextStyle(color: Colors.grey)),
       validator: (value) {
-        if ((value?.isEmpty ?? false) || (value?.trim().isEmpty ?? false)) {
+        if ((value?.isEmpty ?? false) || (value?.trim()?.isEmpty ?? false)) {
           return errorText;
         }
         return null;

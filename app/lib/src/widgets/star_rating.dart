@@ -8,9 +8,9 @@ class StarRating extends StatelessWidget {
   final double rating;
 
   const StarRating({
-    Key? key,
-    required this.starCount,
-    required this.rating,
+    Key key,
+    @required this.starCount,
+    @required this.rating,
     this.size = 20.0,
   }) : super(key: key);
 

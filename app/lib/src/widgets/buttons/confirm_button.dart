@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 @immutable
 class ConfirmButton extends StatelessWidget {
   final String text;
-  final void Function()? onPressed;
+  final void Function() onPressed;
   final double height;
 
   const ConfirmButton({
-    Key? key,
-    required this.text,
-    required this.onPressed,
+    Key key,
+    @required this.text,
+    @required this.onPressed,
     this.height = 60.0,
   }) : super(key: key);
 

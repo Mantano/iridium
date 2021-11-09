@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BookAdd extends StatelessWidget {
-  final Book? book;
+  final Book book;
 
-  const BookAdd({Key? key, this.book}) : super(key: key);
+  const BookAdd({Key key, this.book}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class BookAdd extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(12.0),
-          child: AddBookForm(book: book!),
+          child: AddBookForm(book: book),
         ),
       ),
     );
@@ -27,9 +27,9 @@ class BookAdd extends StatelessWidget {
 }
 
 class AddBookForm extends StatefulWidget {
-  final Book? book;
+  final Book book;
 
-  const AddBookForm({Key? key, this.book}) : super(key: key);
+  const AddBookForm({Key key, this.book}) : super(key: key);
 
   @override
   _AddBookFormState createState() => _AddBookFormState();
@@ -40,7 +40,7 @@ class _AddBookFormState extends State<AddBookForm> {
   var _title = '';
   var _author = '';
   var _description = '';
-  var _rating;
+  var _rating = 0.0;
   var _coverUrl = '';
   var _category = '';
 
@@ -111,7 +111,7 @@ class _AddBookFormState extends State<AddBookForm> {
               text: widget.book == null ? 'Add Book' : 'Update Book',
               onPressed: () {
                 if (_formKey.currentState?.validate() ?? false) {
-                  _formKey.currentState!.save();
+                  _formKey.currentState.save();
                   final book = Book(_title, _author, _description, _coverUrl,
                       _category, _rating);
 
@@ -119,7 +119,7 @@ class _AddBookFormState extends State<AddBookForm> {
                     bookNotifier.addBook(book);
                     Navigator.pop(context);
                   } else {
-                    bookNotifier.updateBook(widget.book!, book);
+                    bookNotifier.updateBook(widget.book, book);
                     Navigator.of(context).pop();
                   }
                 }

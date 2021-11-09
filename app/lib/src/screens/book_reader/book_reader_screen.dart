@@ -9,7 +9,7 @@ import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
 
 class BookReaderScreen extends StatefulWidget {
-  const BookReaderScreen(Book book, {Key? key, required this.title})
+  const BookReaderScreen(Book book, {Key key, @required this.title})
       : super(key: key);
 
   final String title;
@@ -19,13 +19,13 @@ class BookReaderScreen extends StatefulWidget {
 }
 
 class _BookReaderScreenState extends State<BookReaderScreen> {
-  late ServerBloc serverBloc;
-  late String address;
+  ServerBloc serverBloc;
+  String address;
 
   bool isStarted = false;
-  late PageController pageController;
-  PubBox? pubBox;
-  List<Link>? spines;
+  PageController pageController;
+  PubBox pubBox;
+  List<Link> spines;
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
         setState(() {
           address = event.address;
           isStarted = true;
-          spines = pubBox?.publication.readingOrder;
+          spines = pubBox.publication.readingOrder;
         });
 
         pageController = PageController();
@@ -62,7 +62,7 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             spines != null
-                ? Expanded(child: BookView(address, spines!, pageController))
+                ? Expanded(child: BookView(address, spines, pageController))
                 : Container(),
           ],
         ),
@@ -74,16 +74,19 @@ class _BookReaderScreenState extends State<BookReaderScreen> {
             //
           });
 
-          var dirPath = (await Utils.getFileFromAsset(
-                  'assets/books/accessible_epub_3.epub'))
-              .path;
+          // var dirPath =
+          //     (await Utils.getFileFromAsset('assets/books/The_Art_of_War.epub'))
+          //         .path;
+          var dirPath =
+              (await Utils.getFileFromAsset('assets/books/The_Art_of_War.epub'))
+                  .path;
 
           pubBox = await EpubParser().parse(dirPath);
           if (pubBox != null) {
             serverBloc.add(StartServer([
               AssetsRequestHandler("assets",
                   assetProvider: SimpleAssetProvider()),
-              FetcherRequestHandler(pubBox!.publication)
+              FetcherRequestHandler(pubBox.publication)
             ]));
           }
         },

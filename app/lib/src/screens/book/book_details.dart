@@ -1,27 +1,44 @@
+import 'dart:io';
+
 import 'package:app/src/models/book.dart';
 import 'package:app/src/models/notifiers/book_notifier.dart';
 import 'package:app/src/models/notifiers/theme_notifier.dart';
-import 'package:app/src/screens/book_reader/book_reader_screen.dart';
 import 'package:app/src/theme/colors.dart';
+import 'package:app/src/utils/utils.dart';
+import 'package:navigator/epub.dart';
+import 'package:ui_commons/model/dependencies.dart';
+import 'package:utils/extensions/file.dart';
+import 'package:ui_framework/widgets/routes/duration_page_route.dart';
+
 import 'package:app/src/widgets/book_cover.dart';
 import 'package:app/src/widgets/buttons/confirm_button.dart';
 import 'package:app/src/widgets/star_rating.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:model/document/cloud_file.dart';
 import 'package:provider/provider.dart';
+import 'package:model/book/book.dart' as IBook;
+import 'package:ui_commons/document_opener/document_opener.dart';
 
 import '../../style.dart';
 import 'book_add.dart';
 
-class BookDetails extends StatelessWidget {
+class BookDetails extends StatefulWidget {
   final Book _book;
 
-  const BookDetails(Book book, {Key? key})
+  const BookDetails(Book book, {Key key})
       : _book = book,
         super(key: key);
 
   @override
+  State<BookDetails> createState() => _BookDetailsState();
+}
+
+class _BookDetailsState extends State<BookDetails> {
+  @override
   Widget build(BuildContext context) {
+    // Ces 2 trucs sont des vestiges du squelette d'app dont je suis parti, avec la liste de livres et bookdetails;
+    // Destinés à être remplacés à l'aide de ThemeBloc probablement
     var bookNotifier = Provider.of<BookNotifier>(context);
     var themeNotifier = Provider.of<ThemeNotifier>(context);
 
@@ -39,7 +56,7 @@ class BookDetails extends StatelessWidget {
             children: <Widget>[
               Center(
                 child: BookCover(
-                  url: _book.coverUrl,
+                  url: widget._book.coverUrl,
                   boxFit: BoxFit.fitHeight,
                   height: 325,
                 ),
@@ -47,7 +64,7 @@ class BookDetails extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0.0, 32.0, 0.0, 4.0),
                 child: Text(
-                  _book.title,
+                  widget._book.title,
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),
@@ -64,7 +81,7 @@ class BookDetails extends StatelessWidget {
                             ),
                       ),
                       TextSpan(
-                        text: _book.author,
+                        text: widget._book.author,
                         style: Theme.of(context).textTheme.caption?.copyWith(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w700,
@@ -76,7 +93,7 @@ class BookDetails extends StatelessWidget {
                             fontSize: 16.0, fontWeight: FontWeight.w400),
                       ),
                       TextSpan(
-                        text: _book.category,
+                        text: widget._book.category,
                         style: Theme.of(context).textTheme.caption?.copyWith(
                               fontSize: 16.0,
                               fontWeight: FontWeight.w700,
@@ -88,14 +105,14 @@ class BookDetails extends StatelessWidget {
               ),
               StarRating(
                 starCount: 5,
-                rating: (_book.rating / 2).toDouble(),
+                rating: (widget._book.rating / 2).toDouble(),
               ),
               Divider(
                 color: Colors.grey.withOpacity(0.5),
                 height: 38.0,
               ),
               Text(
-                _book.description,
+                widget._book.description,
                 style: TextStyle(
                     color: Theme.of(context)
                         .textTheme
@@ -108,9 +125,9 @@ class BookDetails extends StatelessWidget {
               ConfirmButton(
                 text: 'READ NOW',
                 onPressed: () {
-                  openBook(context, _book);
+                  openBook(context);
                 },
-              ),
+              )
             ],
           ),
         ),
@@ -131,12 +148,12 @@ class BookDetails extends StatelessWidget {
                     () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => BookAdd(book: _book)))),
+                            builder: (_) => BookAdd(book: widget._book)))),
                 _buildSubFab(
                     'Add',
                     Icons.add,
-                    () => Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => BookAdd())))
+                    () => Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const BookAdd())))
               ],
             )
           : FloatingActionButton(
@@ -146,16 +163,77 @@ class BookDetails extends StatelessWidget {
     );
   }
 
-  void openBook(BuildContext context, Book book) {
-    print('Opening book...');
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (_) => BookReaderScreen(
-                  book,
-                  title: book.title,
-                )));
+  Future<void> openBookKO() async {
+    IBook.Book book = await initBook();
+    DurationPageRoute route = DurationPageRoute(
+      builder: (context) => buildDocumentScreen(book),
+    );
+    route.opaque = true;
+    return Navigator.push(
+      context,
+      route,
+    );
   }
+
+// ATTENTION Ca c'est obsolète c'es( appelé par openBookKO (KO = marche pas ;-) )
+  Widget buildDocumentScreen(IBook.Book book) {
+    Dependencies dependencies = Dependencies.from(context);
+
+    return DependenciesWidget(
+      dependencies: dependencies,
+      child: EpubBookScreen(
+        null, // readerThemeRepository,
+        book: book,
+        simplifiedMode: false,
+        onCloseDocument:
+            defaultOnCloseDocument ?? DocumentOpener.defaultOnCloseDocument,
+      ),
+    );
+  }
+
+  static OnCloseDocument get defaultOnCloseDocument =>
+      (BuildContext context) => Navigator.pop(context);
+
+  Future<void> openBook(BuildContext context) async {
+    print('Opening book...');
+// J'ai 2 modèles qui cohabitent: celui de l'appli de librairie, et celui
+    IBook.Book book = await initBook();
+    DocumentOpener documentOpener =
+        await DocumentOpener.findDocumentOpenerFromDocument(book);
+    return documentOpener.openDocument(book, context);
+  }
+
+  Future<IBook.Book> initBook() async {
+    File file =
+        await Utils.getFileFromAsset('assets/books/accessible_epub_3.epub');
+    var digest = computeDigest(file).toString();
+    CloudFile cloudFile = CloudFile.createCloudFile(file, digest);
+    return IBook.Book(
+        "BOOK_1",
+        "Accessible Epub 3",
+        DateTime.now(),
+        DateTime.now(),
+        DateTime.now(),
+        null,
+        cloudFile,
+        null,
+        //
+        null,
+        // ImagePaletteColors coverPaletteColors,
+        null,
+        "description",
+        100,
+        67,
+        null,
+        {} //this._readerState
+        );
+  }
+
+  // Future<void> _openDocument() async {
+  //   DocumentOpener documentOpener =
+  //   await DocumentOpener.findDocumentOpenerFromDocument(document);
+  //   return documentOpener.openDocument(document, context);
+  // }
 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
@@ -169,7 +247,7 @@ class BookDetails extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (_) => BookAdd(book: _book),
+                builder: (_) => BookAdd(book: widget._book),
               ),
             );
           },
@@ -179,7 +257,7 @@ class BookDetails extends StatelessWidget {
   }
 
   SpeedDialChild _buildSubFab(
-      String label, IconData iconData, void Function()? onTap) {
+      String label, IconData iconData, void Function() onTap) {
     return SpeedDialChild(
       label: label,
       labelStyle: const TextStyle(color: kTextTitleColor),
@@ -213,7 +291,7 @@ class BookDetails extends StatelessWidget {
           child: const Text('ACCEPT'),
           style: flatButtonStyle,
           onPressed: () {
-            bookNotifier.removeBook(_book);
+            bookNotifier.removeBook(widget._book);
             // Pop details screen
             Navigator.of(context).pop();
           },

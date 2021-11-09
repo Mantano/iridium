@@ -7,11 +7,12 @@ import 'package:app/src/widgets/book_cover.dart';
 import 'package:app/src/widgets/star_rating.dart';
 import 'package:app/src/screens/book/book_details.dart';
 import 'package:app/src/style.dart';
+import 'package:ui_commons/model/dependencies.dart';
 
 class BookItem extends StatelessWidget {
   final Book _book;
 
-  const BookItem(this._book, {Key? key}) : super(key: key);
+  const BookItem(this._book, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,12 @@ class BookItem extends StatelessWidget {
           bookNotifier.selectedIndex = bookNotifier.books.indexOf(_book);
         } else {
           Navigator.push(
-              context, MaterialPageRoute(builder: (_) => BookDetails(_book)));
+              context,
+              MaterialPageRoute(
+                  builder: (_) => DependenciesWidget(
+                        dependencies: Dependencies.from(context),
+                        child: BookDetails(_book),
+                      )));
         }
       },
       child: Container(

@@ -5,10 +5,10 @@ import 'package:provider/provider.dart';
 class BookCover extends StatelessWidget {
   final String url;
   final BoxFit boxFit;
-  final double? height;
+  final double height;
 
   const BookCover(
-      {Key? key, required this.url, this.boxFit = BoxFit.fitWidth, this.height})
+      {Key key, @required this.url, this.boxFit = BoxFit.fitWidth, this.height})
       : super(key: key);
 
   @override

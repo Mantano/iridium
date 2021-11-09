@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mantano.app">
+    package="com.iridium.app">
    <application
-        android:label="app"
+        android:label="Iridium"
         android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity

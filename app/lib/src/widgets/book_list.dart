@@ -6,9 +6,9 @@ import 'package:app/src/widgets/book_item.dart';
 import 'package:app/src/models/book.dart';
 
 class BookList extends StatelessWidget {
-  final List<Book>? _books;
+  final List<Book> _books;
 
-  const BookList({Key? key, books})
+  const BookList({Key key, books})
       : _books = books,
         super(key: key);
 

@@ -23,7 +23,7 @@ class BookView extends StatefulWidget {
   final String host;
   final PageController pageController;
 
-  const BookView(this.host, this.spines, this.pageController, {Key? key})
+  const BookView(this.host, this.spines, this.pageController, {Key key})
       : super(key: key);
   @override
   _BookViewState createState() => _BookViewState();
@@ -65,7 +65,7 @@ class _BookViewState extends State<BookView> {
             action: IWV.PermissionRequestResponseAction.GRANT);
       },
       shouldOverrideUrlLoading: (controller, navigationAction) async {
-        var uri = navigationAction.request.url!;
+        var uri = navigationAction.request.url;
 
         if (!["http", "https", "file", "chrome", "data", "javascript", "about"]
             .contains(uri.scheme)) {}
