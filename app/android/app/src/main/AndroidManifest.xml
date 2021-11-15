@@ -1,12 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="dev.jideguru.flutter_ebook_app">
+    package="com.mantano.iridium.app">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Flutter eBook App"
+        android:label="Iridium Demo App"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity

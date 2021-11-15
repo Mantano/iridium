@@ -128,7 +128,7 @@ class _ProfileState extends State<Profile> {
             'About',
           ),
           content: Text(
-            'Simple eBook app by JideGuru',
+            'Iridium Demo App by Mantano',
           ),
           actions: <Widget>[
             FlatButton(

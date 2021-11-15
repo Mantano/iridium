@@ -1,4 +1,4 @@
-package dev.jideguru.flutter_ebook_app
+package com.mantano.iridium.app;
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
