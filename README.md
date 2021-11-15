@@ -30,7 +30,7 @@ multiple modules could be achieved by developing some kind of "super-module", bu
 * [mno_opds_dart](https://github.com/Mantano/mno_opds_dart) – Parsers for OPDS catalog feeds
 * [mno_commons_dart](https://github.com/Mantano/mno_commons_dart) – Other misc. utilities (specific to this Flutter
   port, not found in Readium)
-* [mno_lcp_dart](https://github.com/Mantano/mno_lcp_dart) – Service and models for Readium LCP (soon public)
+* [mno_lcp_dart](https://github.com/Mantano/mno_lcp_dart) – Service and models for Readium LCP
 
 -----------
 <a name="readium_foundation">1</a>: Readium is a trademark of the [Readium Foundation](https://readium.org/))
