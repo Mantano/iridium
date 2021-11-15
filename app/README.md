@@ -1,57 +1,65 @@
-# Iridium (Ir) App
+# Flutter eBook App [![Codemagic build status](https://api.codemagic.io/apps/5e230defc5faa60315b1df62/5e230defc5faa60315b1df61/status_badge.svg)](https://codemagic.io/apps/5e230defc5faa60315b1df62/5e230defc5faa60315b1df61/latest_build)
 
-A modern multiplatform ebook reader based on the Flutter framework.
 
-## Purpose
+A simple demo of the Iridium reader SDK based on [JideGuru's excellent Flutter Ebook App](https://github.com/JideGuru/FlutterEbookApp). 
+The Books included in the app are from the [Public Domain](https://en.wikipedia.org/wiki/Public_domain)
+(Expired Copyright and completely free).
 
-This project is designed as a tutorial about developing ebook reading apps in Flutter.
+<a href="http://www.feedbooks.com/"><img src="ss/logo_feedbooks.png" width="200"/></a>
+<br>
 
-## Iteration 1: Skeleton
+The [Feedbooks API](http://www.feedbooks.com/api) was used to fetch books. <br>
+<br>
+<a href="https://www.vecteezy.com/vector-art/599678-book-reading-logo-and-symbols-template-icons">App
+icon</a> <br> <br>
+To download this app, <a href="https://codemagic.io/apps/5e230defc5faa60315b1df62/5e230defc5faa60315b1df61/latest_build">click here</a> to see the codemagic builds. You can choose to install the `apk` or the `ipa(ios)`.
+<!--
+<a href="https://play.google.com/store/apps/details?id=dev.jideguru.flutterEbookApp"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200"></img></a> -->
+<br> Please star⭐ the repo if you like what you see😉.
 
-We want to make this project will be multiplatform from scratch. So, before creating if with `flutter create`, we must
-enable macos-desktop, windows-desktop, linux-desktop and web support:
+## 💻 Requirements
 
-```
-flutter config --enable-macos-desktop
-flutter config --enable-windows-desktop
-flutter config --enable-linux-desktop
-flutter config --enable-web
-```
+- Any Operating System (ie. MacOS X, Linux, Windows)
+- Any IDE with Flutter SDK installed (ie. IntelliJ, Android Studio, VSCode etc)
+- A little knowledge of Dart and Flutter
 
-### Creating the skeleton
+## ✨ Features
 
-Then we can create the flutter app, thanks to the Android Studio menu or `flutter create iridium` command.
+- [x] Download eBooks.
+- [x] Read eBooks.
+- [x] Favorites.
+- [x] Dark Mode
+- [x] Swipe to delete downloads.
 
-### Running it
+## 📸 ScreenShots
 
-On macOS, you may encounter the following
-error: `xcrun: error: unable to find utility "xcodebuild", not a developer tool or in PATH`. You can fix it with the
-following command:
+<!-- <img src="ss/mockup.png"/> -->
 
-```
- sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
- ```
+| Light                             | Dark                              |
+| --------------------------------- | --------------------------------- |
+| <img src="ss/1.png" width="400">  | <img src="ss/2.png" width="400">  |
+| <img src="ss/3.png" width="400">  | <img src="ss/4.png" width="400">  |
+| <img src="ss/5.png" width="400">  | <img src="ss/6.png" width="400">  |
+| <img src="ss/7.png" width="400">  | <img src="ss/8.png" width="400">  |
+| <img src="ss/9.png" width="400">  | <img src="ss/10.png" width="400"> |
+| <img src="ss/11.png" width="400"> | <img src="ss/12.png" width="400"> |
+| <img src="ss/13.png" width="400"> | <img src="ss/14.png" width="400"> |
 
-Or, on a M1 mac:
+## 🔌 Plugins
 
-```
- sudo /usr/bin/arch -arm64e xcode-select -s /Applications/Xcode.app/Contents/Developer
- ```
+| Name                                                    | Usage                                               |
+| ------------------------------------------------------- | --------------------------------------------------- |
+| [**Provider**](https://pub.dev/packages/provider)       | State Management                                    |
+| [**Object DB**](https://pub.dev/packages/objectdb)      | NoSQL database to store Favorites & Downloads       |
+| [**XML2JSON**](https://pub.dev/packages/xml2json)       | Convert XML to JSON                                 |
+| [**DIO**](https://pub.dev/packages/dio)                 | Network calls and File Download                     |
+| [**EPub Viewer**](https://pub.dev/packages/epub_viewer) | A flutter plugin for Folioreader to read ePub files |
 
-## Resources
+## 🤓 Author(s)
 
-A few resources to get you started if this is your first Flutter project:
+**Olusegun Festus Babajide**
+[![Twitter Follow](https://img.shields.io/twitter/follow/iamjideguru.svg?style=social)](https://twitter.com/iamjideguru)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## 🔖 LICENCE
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-## Credits
-
-This app integrates bits and pieces from the following projects:
-
-- [Book Library](https://github.com/devrnt) by Jonas De Vrient
-- [Flutter Readium](https://github.com/winterdl/flutter_readium) by `winterdl`
+[Apache-2.0](https://github.com/JideGuru/FlutterEbookApp/blob/master/LICENSE)
