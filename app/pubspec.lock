@@ -84,7 +84,7 @@ packages:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.3"
+    version: "1.0.4"
   dartx:
     dependency: transitive
     description:
@@ -98,7 +98,7 @@ packages:
       name: deeply
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "1.2.0+1"
   dfunc:
     dependency: transitive
     description:
@@ -112,7 +112,7 @@ packages:
       name: dio
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.1"
+    version: "4.0.3"
   epub_viewer:
     dependency: "direct main"
     description:
@@ -133,7 +133,7 @@ packages:
       name: execution_queue
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.2.0"
   fake_async:
     dependency: transitive
     description:
@@ -302,7 +302,14 @@ packages:
       name: objectdb
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.7+1"
+    version: "1.2.1+1"
+  objectid:
+    dependency: transitive
+    description:
+      name: objectid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   octo_image:
     dependency: transitive
     description:
@@ -321,6 +328,20 @@ packages:
     dependency: "direct main"
     description:
       name: path_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.7"
+  path_provider_android:
+    dependency: transitive
+    description:
+      name: path_provider_android
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.6"
+  path_provider_ios:
+    dependency: transitive
+    description:
+      name: path_provider_ios
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.6"
@@ -365,7 +386,14 @@ packages:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.2.0+hotfix.1"
+    version: "8.3.0"
+  permission_handler_platform_interface:
+    dependency: transitive
+    description:
+      name: permission_handler_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.7.0"
   petitparser:
     dependency: transitive
     description:

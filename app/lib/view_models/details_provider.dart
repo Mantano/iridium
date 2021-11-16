@@ -66,9 +66,9 @@ class DetailsProvider extends ChangeNotifier {
       // check if book has been deleted
       String path = downloads[0]['path'];
       print(path);
-      if(await File(path).exists()){
+      if (await File(path).exists()) {
         setDownloaded(true);
-      }else{
+      } else {
         setDownloaded(false);
       }
     } else {
@@ -95,11 +95,9 @@ class DetailsProvider extends ChangeNotifier {
   }
 
   Future downloadFile(BuildContext context, String url, String filename) async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
-
-    if (permission != PermissionStatus.granted) {
-      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+    bool storageGranted = await Permission.storage.request().isGranted;
+    if (!storageGranted) {
+      await [Permission.storage].request();
       startDownload(context, url, filename);
     } else {
       startDownload(context, url, filename);
