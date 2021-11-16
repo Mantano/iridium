@@ -1,66 +1,60 @@
 import 'dart:io';
 
-import 'package:objectdb/objectdb.dart';
+import 'io/idb_io.dart' if (dart.library.html) 'web/idb_web.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DownloadsDB {
-  getPath() async {
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    final path = documentDirectory.path + '/downloads.db';
-    return path;
-  }
+  static const storeName = 'downloads';
+  var valueKey = 'value';
+
+  Future<Database> database = () async {
+    var db = await idbFactory.open('$storeName.db', version: 1,
+        onUpgradeNeeded: (e) {
+      var db = e.database;
+      db.createObjectStore(storeName);
+    });
+    return db;
+  }();
 
   //Insertion
-  add(Map item) async {
-    final db = ObjectDB(await getPath());
-//    db.open();
-    db.insert(item);
-    db.cleanup();
-    await db.close();
+  add(String key, Map value) async {
+    var db = await database;
+    var txn = db.transaction(storeName, idbModeReadWrite);
+    var store = txn.objectStore(storeName);
+    await store.put(value, key);
   }
 
-  Future<int> remove(Map item) async {
-    final db = ObjectDB(await getPath());
-//    db.open();
-    int val = await db.remove(item);
-    db.cleanup();
-    await db.close();
-    return val;
+  Future<int> remove(String key) async {
+    var db = await database;
+    var txn = db.transaction(storeName, idbModeReadWrite);
+    var store = txn.objectStore(storeName);
+    var val = await store.getObject(key);
+    await store.delete(key);
+    return Future.value(1);
   }
 
-  Future removeAllWithId(Map item) async {
-    final db = ObjectDB(await getPath());
-//    db.open();
-    List val = await db.find(item);
-    val.forEach((element) {
-      db.remove(element);
-    });
-    db.cleanup();
-    await db.close();
+  Future removeAllWithId(String key) async {
+    return remove(key);
   }
 
   Future<List> listAll() async {
-    final db = ObjectDB(await getPath());
-//    db.open();
-    List val = await db.find({});
-    db.cleanup();
-    await db.close();
-    print(val);
-    return val;
+    var db = await database;
+    var txn = db.transaction(storeName, idbModeReadWrite);
+    var store = txn.objectStore(storeName);
+    return await store.getAll();
   }
 
-  Future<List> check(Map item) async {
-    final db = ObjectDB(await getPath());
-//    db.open();
-    List val = await db.find(item);
-    db.cleanup();
-    await db.close();
-    return val;
+  Future<List> check(String key) async {
+    var db = await database;
+    var txn = db.transaction(storeName, idbModeReadWrite);
+    var store = txn.objectStore(storeName);
+    return await store.getAll(key);
   }
 
   clear() async {
-    final db = ObjectDB(await getPath());
-//    db.open();
-    db.remove({});
+    var db = await database;
+    var txn = db.transaction(storeName, idbModeReadWrite);
+    var store = txn.objectStore(storeName);
+    return await store.clear();
   }
 }

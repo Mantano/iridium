@@ -21,6 +21,7 @@ class _DownloadAlertState extends State<DownloadAlert> {
   int total = 0;
 
   download() async {
+    print("Downloading: ${widget.url}");
     await dio.download(
       widget.url,
       widget.path,

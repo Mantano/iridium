@@ -9,20 +9,21 @@ import 'package:iridium_app/components/book_list_item.dart';
 import 'package:iridium_app/components/description_text.dart';
 import 'package:iridium_app/components/loading_widget.dart';
 import 'package:iridium_app/database/locator_helper.dart';
-import 'package:iridium_app/models/category.dart';
 import 'package:iridium_app/view_models/details_provider.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Details extends StatefulWidget {
-  final Entry entry;
+  final Publication publication;
   final String imgTag;
   final String titleTag;
   final String authorTag;
 
   Details({
     Key key,
-    @required this.entry,
+    @required this.publication,
     @required this.imgTag,
     @required this.titleTag,
     @required this.authorTag,
@@ -39,9 +40,10 @@ class _DetailsState extends State<Details> {
     SchedulerBinding.instance.addPostFrameCallback(
       (_) {
         Provider.of<DetailsProvider>(context, listen: false)
-            .setEntry(widget.entry);
-        Provider.of<DetailsProvider>(context, listen: false)
-            .getFeed(widget.entry.author.uri.t.replaceAll(r'\&lang=en', ''));
+            .setEntry(widget.publication);
+        Provider.of<DetailsProvider>(context, listen: false).getFeed(widget
+            .publication.metadata.authors[0].links[0].href
+            .replaceAll(r'\&lang=en', ''));
       },
     );
   }
@@ -87,7 +89,7 @@ class _DetailsState extends State<Details> {
               _buildDivider(),
               SizedBox(height: 10.0),
               DescriptionTextWidget(
-                text: '${widget.entry.summary.t}',
+                text: '${widget.publication.metadata.description}',
               ),
               SizedBox(height: 30.0),
               _buildSectionTitle('More from Author'),
@@ -116,7 +118,7 @@ class _DetailsState extends State<Details> {
           Hero(
             tag: widget.imgTag,
             child: CachedNetworkImage(
-              imageUrl: '${widget.entry.link[1].href}',
+              imageUrl: '${widget.publication.links[1].href}',
               placeholder: (context, url) => Container(
                 height: 200.0,
                 width: 130.0,
@@ -141,7 +143,7 @@ class _DetailsState extends State<Details> {
                   child: Material(
                     type: MaterialType.transparency,
                     child: Text(
-                      '${widget.entry.title.t.replaceAll(r'\', '')}',
+                      '${widget.publication.metadata.title.replaceAll(r'\', '')}',
                       style: TextStyle(
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
@@ -156,7 +158,7 @@ class _DetailsState extends State<Details> {
                   child: Material(
                     type: MaterialType.transparency,
                     child: Text(
-                      '${widget.entry.author.name.t}',
+                      '${widget.publication.metadata.authors[0].name}',
                       style: TextStyle(
                         fontSize: 16.0,
                         fontWeight: FontWeight.w800,
@@ -166,7 +168,7 @@ class _DetailsState extends State<Details> {
                   ),
                 ),
                 SizedBox(height: 5.0),
-                _buildCategory(widget.entry, context),
+                _buildCategory(widget.publication, context),
                 Center(
                   child: Container(
                     height: 20.0,
@@ -186,7 +188,7 @@ class _DetailsState extends State<Details> {
     return Text(
       '$title',
       style: TextStyle(
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
         fontSize: 20.0,
         fontWeight: FontWeight.bold,
       ),
@@ -203,17 +205,17 @@ class _DetailsState extends State<Details> {
       return ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
-        itemCount: provider.related.feed.entry.length,
+        itemCount: provider.related.feed.publications.length,
         itemBuilder: (BuildContext context, int index) {
-          Entry entry = provider.related.feed.entry[index];
+          Publication entry = provider.related.feed.publications[index];
           return Padding(
             padding: EdgeInsets.symmetric(vertical: 5.0),
             child: BookListItem(
-              img: entry.link[1].href,
-              title: entry.title.t,
-              author: entry.author.name.t,
-              desc: entry.summary.t,
-              entry: entry,
+              img: entry.links[1].href,
+              title: entry.metadata.title,
+              author: entry.metadata.authors[0].name,
+              desc: entry.metadata.description,
+              publication: entry,
             ),
           );
         },
@@ -232,11 +234,11 @@ class _DetailsState extends State<Details> {
       String path = dl['path'];
 
       List locators =
-          await LocatorDB().getLocator(widget.entry.id.t.toString());
+          await LocatorDB().getLocator(widget.publication.metadata.identifier);
 
       EpubViewer.setConfig(
         identifier: 'androidBook',
-        themeColor: Theme.of(context).accentColor,
+        themeColor: Theme.of(context).colorScheme.secondary,
         scrollDirection: EpubScrollDirection.VERTICAL,
         enableTts: false,
         allowSharing: true,
@@ -247,7 +249,7 @@ class _DetailsState extends State<Details> {
       EpubViewer.locatorStream.listen((event) async {
         // Get locator here
         Map json = jsonDecode(event);
-        json['bookId'] = widget.entry.id.t.toString();
+        json['bookId'] = widget.publication.metadata.identifier;
         // Save locator to your database
         await LocatorDB().update(json);
       });
@@ -266,8 +268,10 @@ class _DetailsState extends State<Details> {
       return FlatButton(
         onPressed: () => provider.downloadFile(
           context,
-          widget.entry.link[3].href,
-          widget.entry.title.t.replaceAll(' ', '_').replaceAll(r"\'", "'"),
+          widget.publication.links.firstWithMediaType(MediaType.epub).href,
+          widget.publication.metadata.title
+              .replaceAll(' ', '_')
+              .replaceAll(r"\'", "'"),
         ),
         child: Text(
           'Download',
@@ -276,22 +280,24 @@ class _DetailsState extends State<Details> {
     }
   }
 
-  _buildCategory(Entry entry, BuildContext context) {
-    if (entry.category == null) {
+  _buildCategory(Publication publication, BuildContext context) {
+    if (publication.metadata.subjects == null) {
       return SizedBox();
     } else {
       return Container(
-        height: entry.category.length < 3 ? 55.0 : 95.0,
+        height: publication.metadata.subjects.length < 3 ? 55.0 : 95.0,
         child: GridView.builder(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          itemCount: entry.category.length > 4 ? 4 : entry.category.length,
+          itemCount: publication.metadata.subjects.length > 4
+              ? 4
+              : publication.metadata.subjects.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             childAspectRatio: 210 / 80,
           ),
           itemBuilder: (BuildContext context, int index) {
-            Category cat = entry.category[index];
+            Subject cat = publication.metadata.subjects[index];
             return Padding(
               padding: EdgeInsets.fromLTRB(0.0, 5.0, 5.0, 5.0),
               child: Container(
@@ -301,17 +307,17 @@ class _DetailsState extends State<Details> {
                     Radius.circular(20),
                   ),
                   border: Border.all(
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
                 child: Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 2.0),
                     child: Text(
-                      '${cat.label}',
+                      '${cat.name}',
                       style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                        fontSize: cat.label.length > 18 ? 6.0 : 10.0,
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontSize: cat.name.length > 18 ? 6.0 : 10.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

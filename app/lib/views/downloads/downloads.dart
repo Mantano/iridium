@@ -191,7 +191,7 @@ class _DownloadsState extends State<Downloads> {
   }
 
   _deleteBook(Map dl, int index) {
-    db.remove({'id': dl['id']}).then((v) async {
+    db.remove(dl['id']).then((v) async {
       File f = File(dl['path']);
       if (await f.exists()) {
         f.delete();

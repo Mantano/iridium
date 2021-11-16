@@ -3,8 +3,8 @@ import 'package:flutter/scheduler.dart';
 import 'package:iridium_app/components/body_builder.dart';
 import 'package:iridium_app/components/book_list_item.dart';
 import 'package:iridium_app/components/loading_widget.dart';
-import 'package:iridium_app/models/category.dart';
 import 'package:iridium_app/view_models/genre_provider.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Genre extends StatefulWidget {
@@ -64,15 +64,15 @@ class _GenreState extends State<Genre> {
           shrinkWrap: true,
           itemCount: provider.items.length,
           itemBuilder: (BuildContext context, int index) {
-            Entry entry = provider.items[index];
+            Publication entry = provider.items[index];
             return Padding(
               padding: EdgeInsets.all(5.0),
               child: BookListItem(
-                img: entry.link[1].href,
-                title: entry.title.t,
-                author: entry.author.name.t,
-                desc: entry.summary.t,
-                entry: entry,
+                img: entry.links[1].href,
+                title: entry.metadata.title,
+                author: entry.metadata.authors[0].name,
+                desc: entry.metadata.description,
+                publication: entry,
               ),
             );
           },

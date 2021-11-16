@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iridium_app/components/loading_widget.dart';
-import 'package:iridium_app/models/category.dart';
 import 'package:iridium_app/util/router.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:uuid/uuid.dart';
 
 import '../views/details/details.dart';
@@ -12,7 +12,7 @@ class BookListItem extends StatelessWidget {
   final String title;
   final String author;
   final String desc;
-  final Entry entry;
+  final Publication publication;
 
   BookListItem({
     Key key,
@@ -20,7 +20,7 @@ class BookListItem extends StatelessWidget {
     @required this.title,
     @required this.author,
     @required this.desc,
-    @required this.entry,
+    @required this.publication,
   }) : super(key: key);
 
   static final uuid = Uuid();
@@ -35,7 +35,7 @@ class BookListItem extends StatelessWidget {
         MyRouter.pushPage(
           context,
           Details(
-            entry: entry,
+            publication: publication,
             imgTag: imgTag,
             titleTag: titleTag,
             authorTag: authorTag,
@@ -118,7 +118,7 @@ class BookListItem extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.w800,
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ),

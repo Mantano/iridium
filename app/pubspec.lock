@@ -92,13 +92,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.1"
-  deeply:
-    dependency: transitive
-    description:
-      name: deeply
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0+1"
   dfunc:
     dependency: transitive
     description:
@@ -127,13 +120,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  execution_queue:
-    dependency: transitive
-    description:
-      name: execution_queue
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.0"
   fake_async:
     dependency: transitive
     description:
@@ -233,6 +219,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.0.0"
+  idb_shim:
+    dependency: "direct main"
+    description:
+      name: idb_shim
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.1"
+  idb_sqflite:
+    dependency: "direct main"
+    description:
+      name: idb_sqflite
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   image:
     dependency: transitive
     description:
@@ -271,23 +271,23 @@ packages:
   mno_commons:
     dependency: transitive
     description:
-      name: mno_commons
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../bookari_for_flutter/mno_commons_dart"
+      relative: true
+    source: path
     version: "0.1.2"
   mno_opds:
     dependency: "direct main"
     description:
-      name: mno_opds
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../bookari_for_flutter/mno_opds_dart"
+      relative: true
+    source: path
     version: "0.1.1"
   mno_shared:
-    dependency: transitive
+    dependency: "direct main"
     description:
-      name: mno_shared
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "../../bookari_for_flutter/mno_shared_dart"
+      relative: true
+    source: path
     version: "0.1.3"
   nested:
     dependency: transitive
@@ -296,20 +296,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  objectdb:
-    dependency: "direct main"
-    description:
-      name: objectdb
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.1+1"
-  objectid:
-    dependency: transitive
-    description:
-      name: objectid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   octo_image:
     dependency: transitive
     description:
@@ -386,14 +372,7 @@ packages:
       name: permission_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.3.0"
-  permission_handler_platform_interface:
-    dependency: transitive
-    description:
-      name: permission_handler_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.7.0"
+    version: "4.3.0"
   petitparser:
     dependency: transitive
     description:
@@ -436,6 +415,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.2"
+  sembast:
+    dependency: transitive
+    description:
+      name: sembast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -504,6 +490,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+  sqflite_common_ffi:
+    dependency: "direct main"
+    description:
+      name: sqflite_common_ffi
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  sqlite3:
+    dependency: transitive
+    description:
+      name: sqlite3
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.1"
   stack_trace:
     dependency: transitive
     description:

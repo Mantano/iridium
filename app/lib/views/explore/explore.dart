@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:iridium_app/components/body_builder.dart';
 import 'package:iridium_app/components/book_card.dart';
 import 'package:iridium_app/components/loading_widget.dart';
-import 'package:iridium_app/models/category.dart';
 import 'package:iridium_app/util/api.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/view_models/home_provider.dart';
 import 'package:iridium_app/views/genre/genre.dart';
+import 'package:mno_shared/opds.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Explore extends StatefulWidget {
@@ -40,9 +41,9 @@ class _ExploreState extends State<Explore> {
 
   _buildBodyList(HomeProvider homeProvider) {
     return ListView.builder(
-      itemCount: homeProvider?.top?.feed?.link?.length ?? 0,
+      itemCount: homeProvider?.top?.feed?.publications?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        Link link = homeProvider.top.feed.link[index];
+        Link link = homeProvider.top.feed.links[index];
 
         // We don't need the tags from 0-9 because
         // they are not categories
@@ -94,7 +95,7 @@ class _ExploreState extends State<Explore> {
             child: Text(
               'See All',
               style: TextStyle(
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -105,12 +106,12 @@ class _ExploreState extends State<Explore> {
   }
 
   _buildSectionBookList(Link link) {
-    return FutureBuilder<CategoryFeed>(
+    return FutureBuilder<ParseData>(
       future: api.getCategory(link.href),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
-          CategoryFeed category = snapshot.data;
+          ParseData category = snapshot.data;
 
           return Container(
             height: 200.0,
@@ -118,10 +119,10 @@ class _ExploreState extends State<Explore> {
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 scrollDirection: Axis.horizontal,
-                itemCount: category.feed.entry.length,
+                itemCount: category.feed.publications.length,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  Entry entry = category.feed.entry[index];
+                  Publication entry = category.feed.publications[index];
 
                   return Padding(
                     padding: EdgeInsets.symmetric(
@@ -129,7 +130,7 @@ class _ExploreState extends State<Explore> {
                       vertical: 10.0,
                     ),
                     child: BookCard(
-                      img: entry.link[1].href,
+                      img: entry.coverLink.href,
                       entry: entry,
                     ),
                   );

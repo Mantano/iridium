@@ -3,11 +3,12 @@ import 'package:flutter/scheduler.dart';
 import 'package:iridium_app/components/body_builder.dart';
 import 'package:iridium_app/components/book_card.dart';
 import 'package:iridium_app/components/book_list_item.dart';
-import 'package:iridium_app/models/category.dart';
+// import 'package:iridium_app/models/category.dart';
 import 'package:iridium_app/util/consts.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/view_models/home_provider.dart';
 import 'package:iridium_app/views/genre/genre.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -98,15 +99,15 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
           primary: false,
           padding: EdgeInsets.symmetric(horizontal: 15.0),
           scrollDirection: Axis.horizontal,
-          itemCount: homeProvider?.top?.feed?.entry?.length ?? 0,
+          itemCount: homeProvider?.top?.feed?.publications?.length ?? 0,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            Entry entry = homeProvider.top.feed.entry[index];
+            Publication publication = homeProvider.top.feed.publications[index];
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
               child: BookCard(
-                img: entry.link[1].href,
-                entry: entry,
+                img: publication.links[1].href,
+                entry: publication,
               ),
             );
           },
@@ -123,10 +124,10 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
           primary: false,
           padding: EdgeInsets.symmetric(horizontal: 15.0),
           scrollDirection: Axis.horizontal,
-          itemCount: homeProvider?.top?.feed?.link?.length ?? 0,
+          itemCount: homeProvider?.top?.feed?.links?.length ?? 0,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            Link link = homeProvider.top.feed.link[index];
+            Link link = homeProvider.top.feed.links[index];
 
             // We don't need the tags from 0-9 because
             // they are not categories
@@ -138,7 +139,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
               padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.all(
                     Radius.circular(20.0),
                   ),
@@ -182,18 +183,18 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
       padding: EdgeInsets.symmetric(horizontal: 15.0),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: homeProvider?.recent?.feed?.entry?.length ?? 0,
+      itemCount: homeProvider?.recent?.feed?.publications?.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        Entry entry = homeProvider.recent.feed.entry[index];
+        Publication publication = homeProvider.recent.feed?.publications[index];
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
           child: BookListItem(
-            img: entry.link[1].href,
-            title: entry.title.t,
-            author: entry.author.name.t,
-            desc: entry.summary.t,
-            entry: entry,
+            img: publication.coverLink?.href,
+            title: publication.metadata.title,
+            author: publication.metadata.authors[0]?.name,
+            desc: publication.metadata.description,
+            publication: publication,
           ),
         );
       },

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:iridium_app/components/book.dart';
-import 'package:iridium_app/models/category.dart';
+//import 'package:iridium_app/models/category.dart';
 import 'package:iridium_app/view_models/favorites_provider.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Favorites extends StatefulWidget {
@@ -85,15 +86,15 @@ class _FavoritesState extends State<Favorites> {
         childAspectRatio: 200 / 340,
       ),
       itemBuilder: (BuildContext context, int index) {
-        Entry entry = Entry.fromJson(favoritesProvider.posts[index]['item']);
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.0),
-          child: BookItem(
-            img: entry.link[1].href,
-            title: entry.title.t,
-            entry: entry,
-          ),
-        );
+        // Entry entry = Publication.fromJson(favoritesProvider.posts[index]['item']);
+        // return Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 5.0),
+        //   child: BookItem(
+        //     img: entry.link[1].href,
+        //     title: entry.title.t,
+        //     publication: entry,
+        //   ),
+        // );
       },
     );
   }

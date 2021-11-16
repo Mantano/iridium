@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iridium_app/components/loading_widget.dart';
-import 'package:iridium_app/models/category.dart';
 import 'package:iridium_app/util/router.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:uuid/uuid.dart';
 
 import '../views/details/details.dart';
@@ -10,13 +10,13 @@ import '../views/details/details.dart';
 class BookItem extends StatelessWidget {
   final String img;
   final String title;
-  final Entry entry;
+  final Publication publication;
 
   BookItem({
     Key key,
     @required this.img,
     @required this.title,
-    @required this.entry,
+    @required this.publication,
   }) : super(key: key);
 
   static final uuid = Uuid();
@@ -31,7 +31,7 @@ class BookItem extends StatelessWidget {
         MyRouter.pushPage(
           context,
           Details(
-            entry: entry,
+            publication: publication,
             imgTag: imgTag,
             titleTag: titleTag,
             authorTag: authorTag,

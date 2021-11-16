@@ -1,15 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iridium_app/components/loading_widget.dart';
-import 'package:iridium_app/models/category.dart';
 import 'package:iridium_app/util/router.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:uuid/uuid.dart';
 
 import '../views/details/details.dart';
 
 class BookCard extends StatelessWidget {
   final String img;
-  final Entry entry;
+  final Publication entry;
 
   BookCard({
     Key key,
@@ -41,7 +41,7 @@ class BookCard extends StatelessWidget {
             MyRouter.pushPage(
               context,
               Details(
-                entry: entry,
+                publication: entry,
                 imgTag: imgTag,
                 titleTag: titleTag,
                 authorTag: authorTag,
