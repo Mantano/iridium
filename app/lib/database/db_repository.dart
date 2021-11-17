@@ -1,7 +1,7 @@
 import 'io/idb_io.dart' if (dart.library.html) 'web/idb_web.dart';
 
-class FavoriteDB {
-  static const storeName = 'favorites';
+class DbRepository {
+  static const storeName = 'downloads';
   var valueKey = 'value';
 
   Future<Database> database = () async {
@@ -14,7 +14,7 @@ class FavoriteDB {
   }();
 
   //Insertion
-  add(key, value) async {
+  add(String key, Map value) async {
     var db = await database;
     var txn = db.transaction(storeName, idbModeReadWrite);
     var store = txn.objectStore(storeName);
@@ -30,6 +30,10 @@ class FavoriteDB {
     return Future.value(1);
   }
 
+  Future removeAllWithId(String key) async {
+    return remove(key);
+  }
+
   Future<List> listAll() async {
     var db = await database;
     var txn = db.transaction(storeName, idbModeReadWrite);
@@ -37,11 +41,17 @@ class FavoriteDB {
     return await store.getAll();
   }
 
-  Future<List> check(String? key) async {
-    if (key == null) return Future.value([]);
+  Future<List> check(String key) async {
     var db = await database;
     var txn = db.transaction(storeName, idbModeReadWrite);
     var store = txn.objectStore(storeName);
     return await store.getAll(key);
+  }
+
+  clear() async {
+    var db = await database;
+    var txn = db.transaction(storeName, idbModeReadWrite);
+    var store = txn.objectStore(storeName);
+    return await store.clear();
   }
 }

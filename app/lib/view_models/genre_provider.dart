@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iridium_app/util/api.dart';
@@ -24,10 +25,10 @@ class GenreProvider extends ChangeNotifier {
         if (!loadingMore) {
           paginate(url);
           // Animate to bottom of list
-          Timer(Duration(milliseconds: 100), () {
+          Timer(const Duration(milliseconds: 100), () {
             controller.animateTo(
               controller.position.maxScrollExtent,
-              duration: Duration(milliseconds: 100),
+              duration: const Duration(milliseconds: 100),
               curve: Curves.easeIn,
             );
           });
@@ -38,7 +39,7 @@ class GenreProvider extends ChangeNotifier {
 
   getFeed(String url) async {
     setApiRequestStatus(APIRequestStatus.loading);
-    print(url);
+    Fimber.d("getFeed: $url");
     try {
       ParseData parseData = await api.getCategory(url);
       var pubs = parseData.feed?.publications;
@@ -49,7 +50,7 @@ class GenreProvider extends ChangeNotifier {
       listener(url);
     } catch (e) {
       checkError(e);
-      throw (e);
+      rethrow;
     }
   }
 
@@ -57,7 +58,7 @@ class GenreProvider extends ChangeNotifier {
     if (apiRequestStatus != APIRequestStatus.loading &&
         !loadingMore &&
         loadMore) {
-      Timer(Duration(milliseconds: 100), () {
+      Timer(const Duration(milliseconds: 100), () {
         controller.jumpTo(controller.position.maxScrollExtent);
       });
       loadingMore = true;
@@ -75,7 +76,7 @@ class GenreProvider extends ChangeNotifier {
         loadMore = false;
         loadingMore = false;
         notifyListeners();
-        throw (e);
+        rethrow;
       }
     }
   }

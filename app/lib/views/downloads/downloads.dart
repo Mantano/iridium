@@ -11,6 +11,8 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:uuid/uuid.dart';
 
 class Downloads extends StatefulWidget {
+  const Downloads({Key? key}) : super(key: key);
+
   @override
   _DownloadsState createState() => _DownloadsState();
 }
@@ -18,7 +20,7 @@ class Downloads extends StatefulWidget {
 class _DownloadsState extends State<Downloads> {
   bool done = true;
   var db = DownloadsDB();
-  static final uuid = Uuid();
+  static const uuid = Uuid();
 
   List dls = [];
 
@@ -40,7 +42,7 @@ class _DownloadsState extends State<Downloads> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Downloads'),
+        title: const Text('Downloads'),
       ),
       body: dls.isEmpty ? _buildEmptyListView() : _buildBodyList(),
     );
@@ -65,7 +67,7 @@ class _DownloadsState extends State<Downloads> {
 
               EpubViewer.setConfig(
                 identifier: 'androidBook',
-                themeColor: Theme.of(context).accentColor,
+                themeColor: Theme.of(context).colorScheme.secondary,
                 scrollDirection: EpubScrollDirection.VERTICAL,
                 enableTts: false,
                 allowSharing: true,
@@ -83,12 +85,12 @@ class _DownloadsState extends State<Downloads> {
               });
             },
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
               child: Row(
                 children: <Widget>[
                   CachedNetworkImage(
                     imageUrl: dl['image'],
-                    placeholder: (context, url) => Container(
+                    placeholder: (context, url) => const SizedBox(
                       height: 70.0,
                       width: 70.0,
                       child: LoadingWidget(),
@@ -103,21 +105,21 @@ class _DownloadsState extends State<Downloads> {
                     height: 70.0,
                     width: 70.0,
                   ),
-                  SizedBox(width: 10.0),
+                  const SizedBox(width: 10.0),
                   Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
                           dl['name'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        Divider(),
+                        const Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -126,14 +128,14 @@ class _DownloadsState extends State<Downloads> {
                               style: TextStyle(
                                 fontSize: 13.0,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).accentColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               dl['size'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 13.0,
                               ),
                               maxLines: 2,
@@ -151,7 +153,7 @@ class _DownloadsState extends State<Downloads> {
         );
       },
       separatorBuilder: (BuildContext context, int index) {
-        return Divider();
+        return const Divider();
       },
     );
   }
@@ -166,7 +168,7 @@ class _DownloadsState extends State<Downloads> {
             height: 300.0,
             width: 300.0,
           ),
-          Text(
+          const Text(
             'Nothing is here',
             style: TextStyle(
               fontSize: 24.0,
@@ -181,9 +183,9 @@ class _DownloadsState extends State<Downloads> {
   _dismissibleBackground() {
     return Container(
       alignment: Alignment.centerRight,
-      padding: EdgeInsets.only(right: 20.0),
+      padding: const EdgeInsets.only(right: 20.0),
       color: Colors.red,
-      child: Icon(
+      child: const Icon(
         Feather.trash_2,
         color: Colors.white,
       ),
@@ -199,7 +201,6 @@ class _DownloadsState extends State<Downloads> {
       setState(() {
         dls.removeAt(index);
       });
-      print('done');
     });
   }
 }

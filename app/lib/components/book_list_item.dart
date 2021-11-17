@@ -23,7 +23,7 @@ class BookListItem extends StatelessWidget {
     this.publication,
   }) : super(key: key);
 
-  static final uuid = Uuid();
+  static const uuid = Uuid();
   final String imgTag = uuid.v4();
   final String titleTag = uuid.v4();
   final String authorTag = uuid.v4();
@@ -42,28 +42,28 @@ class BookListItem extends StatelessWidget {
           ),
         );
       },
-      child: Container(
+      child: SizedBox(
         height: 150.0,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Card(
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
                 ),
               ),
               elevation: 4,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(10.0),
                 ),
                 child: Hero(
                   tag: imgTag,
                   child: CachedNetworkImage(
                     imageUrl: '$img',
-                    placeholder: (context, url) => Container(
+                    placeholder: (context, url) => const SizedBox(
                       height: 150.0,
                       width: 100.0,
                       child: LoadingWidget(
@@ -83,7 +83,7 @@ class BookListItem extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 10.0),
+            const SizedBox(width: 10.0),
             Flexible(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -106,7 +106,7 @@ class BookListItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Hero(
@@ -123,7 +123,7 @@ class BookListItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Text(
                     '${desc.length < 100 ? desc : desc.substring(0, 100)}...'
                         .replaceAll(r'\n', '\n')

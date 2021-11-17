@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'io/idb_io.dart' if (dart.library.html) 'web/idb_web.dart';
-import 'package:path_provider/path_provider.dart';
 
 class DownloadsDB {
   static const storeName = 'downloads';

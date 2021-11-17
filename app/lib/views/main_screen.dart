@@ -6,6 +6,8 @@ import 'package:iridium_app/views/settings/settings.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -20,10 +22,10 @@ class _MainScreenState extends State<MainScreen> {
       onWillPop: () => Dialogs().showExitDialog(context),
       child: Scaffold(
         body: PageView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
           onPageChanged: onPageChanged,
-          children: <Widget>[
+          children: const <Widget>[
             Home(),
             Explore(),
             Profile(),
@@ -31,34 +33,28 @@ class _MainScreenState extends State<MainScreen> {
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: Theme.of(context).primaryColor,
-          selectedItemColor: Theme.of(context).accentColor,
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
           unselectedItemColor: Colors.grey[500],
           elevation: 20,
           type: BottomNavigationBarType.fixed,
-          items: <BottomNavigationBarItem>[
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.home,
               ),
-              title: Text(
-                'Home',
-              ),
+              label: 'Home',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.compass,
               ),
-              title: Text(
-                'Explore',
-              ),
+              label: 'Explore',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.settings,
               ),
-              title: Text(
-                'Settings',
-              ),
+              label: 'Settings',
             ),
           ],
           onTap: navigationTapped,
@@ -86,7 +82,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void onPageChanged(int page) {
     setState(() {
-      this._page = page;
+      _page = page;
     });
   }
 }

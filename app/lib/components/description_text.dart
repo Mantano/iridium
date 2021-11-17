@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DescriptionTextWidget extends StatefulWidget {
   final String text;
 
-  DescriptionTextWidget({required this.text});
+  const DescriptionTextWidget({Key? key, required this.text}) : super(key: key);
 
   @override
   _DescriptionTextWidgetState createState() => _DescriptionTextWidgetState();
@@ -33,7 +33,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
     return Container(
       child: secondHalf.isEmpty
           ? Text(
-              '${flag ? (firstHalf) : (firstHalf + secondHalf)}'
+              (flag ? (firstHalf) : (firstHalf + secondHalf))
                   .replaceAll(r'\n', '\n')
                   .replaceAll(r'\r', '')
                   .replaceAll(r"\'", "'"),
@@ -45,7 +45,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
           : Column(
               children: <Widget>[
                 Text(
-                  '${flag ? (firstHalf + '...') : (firstHalf + secondHalf)}'
+                  (flag ? (firstHalf + '...') : (firstHalf + secondHalf))
                       .replaceAll(r'\n', '\n\n')
                       .replaceAll(r'\r', '')
                       .replaceAll(r"\'", "'"),
@@ -60,7 +60,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                     children: <Widget>[
                       Text(
                         flag ? 'show more' : 'show less',
-                        style: TextStyle(color: Colors.blue),
+                        style: const TextStyle(color: Colors.blue),
                       ),
                     ],
                   ),

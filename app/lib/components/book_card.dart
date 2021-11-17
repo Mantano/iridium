@@ -17,24 +17,24 @@ class BookCard extends StatelessWidget {
     this.entry,
   }) : super(key: key);
 
-  static final uuid = Uuid();
+  static const uuid = Uuid();
   final String imgTag = uuid.v4();
   final String titleTag = uuid.v4();
   final String authorTag = uuid.v4();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 120.0,
       child: Card(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(10.0),
           ),
         ),
         elevation: 4.0,
         child: InkWell(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(10.0),
           ),
           onTap: () {
@@ -49,14 +49,14 @@ class BookCard extends StatelessWidget {
             );
           },
           child: ClipRRect(
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(10.0),
             ),
             child: Hero(
               tag: imgTag,
               child: CachedNetworkImage(
                 imageUrl: '$img',
-                placeholder: (context, url) => LoadingWidget(
+                placeholder: (context, url) => const LoadingWidget(
                   isImage: true,
                 ),
                 errorWidget: (context, url, error) => Image.asset(

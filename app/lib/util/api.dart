@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:mno_opds/mno_opds.dart';
 import 'package:mno_shared/opds.dart';
-import 'package:xml2json/xml2json.dart';
 
 class Api {
   Dio dio = Dio();

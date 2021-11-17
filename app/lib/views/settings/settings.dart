@@ -8,6 +8,8 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
+  const Profile({Key? key}) : super(key: key);
+
   @override
   _ProfileState createState() => _ProfileState();
 }
@@ -22,17 +24,17 @@ class _ProfileState extends State<Profile> {
       {
         'icon': Feather.heart,
         'title': 'Favorites',
-        'function': () => _pushPage(Favorites()),
+        'function': () => _pushPage(const Favorites()),
       },
       {
         'icon': Feather.download,
         'title': 'Downloads',
-        'function': () => _pushPage(Downloads()),
+        'function': () => _pushPage(const Downloads()),
       },
       {
         'icon': Feather.moon,
         'title': 'Dark Mode',
-        'function': () => _pushPage(Downloads()),
+        'function': () => _pushPage(const Downloads()),
       },
       {
         'icon': Feather.info,
@@ -42,7 +44,7 @@ class _ProfileState extends State<Profile> {
       {
         'icon': Feather.file_text,
         'title': 'Licenses',
-        'function': () => _pushPageDialog(LicensePage()),
+        'function': () => _pushPageDialog(const LicensePage()),
       },
     ];
   }
@@ -57,14 +59,14 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Settings',
         ),
       ),
       body: ListView.separated(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: items.length,
         itemBuilder: (BuildContext context, int index) {
           if (items[index]['title'] == 'Dark Mode') {
@@ -82,7 +84,7 @@ class _ProfileState extends State<Profile> {
           );
         },
         separatorBuilder: (BuildContext context, int index) {
-          return Divider();
+          return const Divider();
         },
       ),
     );
@@ -124,17 +126,17 @@ class _ProfileState extends State<Profile> {
       context: context,
       builder: (_) {
         return AlertDialog(
-          title: Text(
+          title: const Text(
             'About',
           ),
-          content: Text(
+          content: const Text(
             'Iridium Demo App by Mantano',
           ),
           actions: <Widget>[
             FlatButton(
-              textColor: Theme.of(context).accentColor,
+              textColor: Theme.of(context).colorScheme.secondary,
               onPressed: () => Navigator.pop(context),
-              child: Text(
+              child: const Text(
                 'Close',
               ),
             ),

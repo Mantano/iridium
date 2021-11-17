@@ -1,3 +1,4 @@
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:iridium_app/components/body_builder.dart';
@@ -12,6 +13,8 @@ import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -35,8 +38,8 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
           appBar: AppBar(
             centerTitle: true,
             title: Text(
-              '${Constants.appName}',
-              style: TextStyle(
+              Constants.appName,
+              style: const TextStyle(
                 fontSize: 20.0,
               ),
             ),
@@ -61,13 +64,13 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
       child: ListView(
         children: <Widget>[
           _buildFeaturedSection(homeProvider),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           _buildSectionTitle('Categories'),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           _buildGenreSection(homeProvider),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           _buildSectionTitle('Recently Added'),
-          SizedBox(height: 20.0),
+          const SizedBox(height: 20.0),
           _buildNewSection(homeProvider),
         ],
       ),
@@ -76,13 +79,13 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
 
   _buildSectionTitle(String title) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            '$title',
-            style: TextStyle(
+            title,
+            style: const TextStyle(
               fontSize: 20.0,
               fontWeight: FontWeight.w500,
             ),
@@ -93,12 +96,12 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   }
 
   _buildFeaturedSection(HomeProvider homeProvider) {
-    return Container(
+    return SizedBox(
       height: 200.0,
       child: Center(
         child: ListView.builder(
           primary: false,
-          padding: EdgeInsets.symmetric(horizontal: 15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
           scrollDirection: Axis.horizontal,
           itemCount: homeProvider.top?.feed?.publications.length ?? 0,
           shrinkWrap: true,
@@ -106,7 +109,8 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
             Publication? publication =
                 homeProvider.top?.feed?.publications[index];
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
               child: BookCard(
                 img: publication?.links[1].href,
                 entry: publication,
@@ -119,38 +123,40 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   }
 
   _buildGenreSection(HomeProvider homeProvider) {
-    return Container(
+    return SizedBox(
       height: 50.0,
       child: Center(
         child: ListView.builder(
           primary: false,
-          padding: EdgeInsets.symmetric(horizontal: 15.0),
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
           scrollDirection: Axis.horizontal,
-          itemCount: homeProvider.top?.feed?.links.length ?? 0,
+          itemCount: homeProvider.top?.feed?.facets[1].links.length ?? 0,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            Link? link = homeProvider.top?.feed?.links[index];
+            Link? link = homeProvider.top?.feed?.facets[1].links[index];
 
-            // We don't need the tags from 0-9 because
-            // they are not categories
-            if (link == null || index < 10) {
-              return SizedBox();
-            }
+            // // We don't need the tags from 0-9 because
+            // // they are not categories
+            // if (false && (link == null || index < 10)) {
+            //   return const SizedBox();
+            // }
 
             return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.secondary,
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(20.0),
                   ),
                 ),
                 child: InkWell(
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(20.0),
                   ),
                   onTap: () {
+                    Fimber.d("Opening ${link!.title} at URL: ${link.href}");
                     MyRouter.pushPage(
                       context,
                       Genre(
@@ -161,10 +167,10 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                   },
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
                       child: Text(
-                        '${link.title}',
-                        style: TextStyle(
+                        '${link!.title}',
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
@@ -182,18 +188,18 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   _buildNewSection(HomeProvider homeProvider) {
     return ListView.builder(
       primary: false,
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: homeProvider.recent?.feed?.publications.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
         Publication? publication =
             homeProvider.recent?.feed?.publications[index];
 
         return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
           child: BookListItem(
-            img: publication?.coverLink?.href,
+            img: publication?.manifest.links[1].href,
             title: publication?.metadata.title,
             author: publication?.metadata.authors[0].name ?? "** author **",
             desc: publication?.metadata.description ?? "** description **",

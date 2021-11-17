@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iridium_app/components/download_alert.dart';
@@ -32,7 +33,7 @@ class DetailsProvider extends ChangeNotifier {
       setRelated(feed);
       setLoading(false);
     } catch (e) {
-      throw (e);
+      rethrow;
     }
   }
 
@@ -54,7 +55,6 @@ class DetailsProvider extends ChangeNotifier {
   removeFav() async {
     if (entry.metadata.identifier != null) {
       favDB.remove(entry.metadata.identifier!).then((v) {
-        print(v);
         checkFav();
       });
     }
@@ -66,7 +66,7 @@ class DetailsProvider extends ChangeNotifier {
     if (downloads.isNotEmpty) {
       // check if book has been deleted
       String path = downloads[0]['path'];
-      print(path);
+      Fimber.d(path);
       if (await File(path).exists()) {
         setDownloaded(true);
       } else {
@@ -90,7 +90,7 @@ class DetailsProvider extends ChangeNotifier {
 
   removeDownload() async {
     dlDB.remove(entry.metadata.identifier).then((v) {
-      print(v);
+      Fimber.d("removing download: $v");
       checkDownload();
     });
   }
@@ -123,7 +123,7 @@ class DetailsProvider extends ChangeNotifier {
     String path = Platform.isIOS
         ? appDocDir!.path + '/$filename.epub'
         : appDocDir!.path + '/$filename.epub';
-    print(path);
+    Fimber.d("path: $path");
     File file = File(path);
     if (!await file.exists()) {
       await file.create();
@@ -148,7 +148,7 @@ class DetailsProvider extends ChangeNotifier {
           {
             'id': entry.metadata.identifier,
             'path': path,
-            'image': '${entry.links[1].href}',
+            'image': entry.links[1].href,
             'size': v,
             'name': entry.metadata.title,
           },

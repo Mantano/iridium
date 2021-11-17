@@ -11,6 +11,8 @@ import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Explore extends StatefulWidget {
+  const Explore({Key? key}) : super(key: key);
+
   @override
   _ExploreState createState() => _ExploreState();
 }
@@ -26,7 +28,7 @@ class _ExploreState extends State<Explore> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
+            title: const Text(
               'Explore',
             ),
           ),
@@ -49,15 +51,15 @@ class _ExploreState extends State<Explore> {
         // We don't need the tags from 0-9 because
         // they are not categories
         if (link == null || index < 10) {
-          return SizedBox();
+          return const SizedBox();
         }
 
         return Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Column(
             children: <Widget>[
               _buildSectionHeader(link),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               _buildSectionBookList(link),
             ],
           ),
@@ -68,14 +70,14 @@ class _ExploreState extends State<Explore> {
 
   _buildSectionHeader(Link link) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Flexible(
             child: Text(
               '${link.title}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
               ),
@@ -114,11 +116,11 @@ class _ExploreState extends State<Explore> {
             snapshot.hasData) {
           ParseData? category = snapshot.data;
 
-          return Container(
+          return SizedBox(
             height: 200.0,
             child: Center(
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 scrollDirection: Axis.horizontal,
                 itemCount: category?.feed?.publications.length ?? 0,
                 shrinkWrap: true,
@@ -126,7 +128,7 @@ class _ExploreState extends State<Explore> {
                   Publication entry = category!.feed!.publications[index];
 
                   return Padding(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 5.0,
                       vertical: 10.0,
                     ),
@@ -140,7 +142,7 @@ class _ExploreState extends State<Explore> {
             ),
           );
         } else {
-          return Container(
+          return const SizedBox(
             height: 200.0,
             child: LoadingWidget(),
           );
