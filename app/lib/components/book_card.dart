@@ -8,13 +8,13 @@ import 'package:uuid/uuid.dart';
 import '../views/details/details.dart';
 
 class BookCard extends StatelessWidget {
-  final String img;
-  final Publication entry;
+  final String? img;
+  final Publication? entry;
 
   BookCard({
-    Key key,
-    @required this.img,
-    @required this.entry,
+    Key? key,
+    this.img,
+    this.entry,
   }) : super(key: key);
 
   static final uuid = Uuid();

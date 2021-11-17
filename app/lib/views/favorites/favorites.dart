@@ -25,7 +25,7 @@ class _FavoritesState extends State<Favorites> {
   }
 
   getFavorites() {
-    SchedulerBinding.instance.addPostFrameCallback(
+    SchedulerBinding.instance?.addPostFrameCallback(
       (_) {
         if (mounted) {
           Provider.of<FavoritesProvider>(context, listen: false).getFavorites();
@@ -38,7 +38,7 @@ class _FavoritesState extends State<Favorites> {
   Widget build(BuildContext context) {
     return Consumer<FavoritesProvider>(
       builder: (BuildContext context, FavoritesProvider favoritesProvider,
-          Widget child) {
+          Widget? child) {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -86,6 +86,8 @@ class _FavoritesState extends State<Favorites> {
         childAspectRatio: 200 / 340,
       ),
       itemBuilder: (BuildContext context, int index) {
+        throw UnimplementedError(
+            "List of favorites not completely implemented");
         // Entry entry = Publication.fromJson(favoritesProvider.posts[index]['item']);
         // return Padding(
         //   padding: EdgeInsets.symmetric(horizontal: 5.0),

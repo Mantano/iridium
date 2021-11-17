@@ -20,7 +20,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback(
+    SchedulerBinding.instance?.addPostFrameCallback(
       (_) => Provider.of<HomeProvider>(context, listen: false).getFeeds(),
     );
   }
@@ -29,7 +29,8 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
     return Consumer<HomeProvider>(
-      builder: (BuildContext context, HomeProvider homeProvider, Widget child) {
+      builder:
+          (BuildContext context, HomeProvider homeProvider, Widget? child) {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -99,14 +100,15 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
           primary: false,
           padding: EdgeInsets.symmetric(horizontal: 15.0),
           scrollDirection: Axis.horizontal,
-          itemCount: homeProvider?.top?.feed?.publications?.length ?? 0,
+          itemCount: homeProvider.top?.feed?.publications.length ?? 0,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            Publication publication = homeProvider.top.feed.publications[index];
+            Publication? publication =
+                homeProvider.top?.feed?.publications[index];
             return Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
               child: BookCard(
-                img: publication.links[1].href,
+                img: publication?.links[1].href,
                 entry: publication,
               ),
             );
@@ -124,14 +126,14 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
           primary: false,
           padding: EdgeInsets.symmetric(horizontal: 15.0),
           scrollDirection: Axis.horizontal,
-          itemCount: homeProvider?.top?.feed?.links?.length ?? 0,
+          itemCount: homeProvider.top?.feed?.links.length ?? 0,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            Link link = homeProvider.top.feed.links[index];
+            Link? link = homeProvider.top?.feed?.links[index];
 
             // We don't need the tags from 0-9 because
             // they are not categories
-            if (index < 10) {
+            if (link == null || index < 10) {
               return SizedBox();
             }
 
@@ -183,17 +185,18 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
       padding: EdgeInsets.symmetric(horizontal: 15.0),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: homeProvider?.recent?.feed?.publications?.length ?? 0,
+      itemCount: homeProvider.recent?.feed?.publications.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        Publication publication = homeProvider.recent.feed?.publications[index];
+        Publication? publication =
+            homeProvider.recent?.feed?.publications[index];
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
           child: BookListItem(
-            img: publication.coverLink?.href,
-            title: publication.metadata.title,
-            author: publication.metadata.authors[0]?.name,
-            desc: publication.metadata.description,
+            img: publication?.coverLink?.href,
+            title: publication?.metadata.title,
+            author: publication?.metadata.authors[0].name ?? "** author **",
+            desc: publication?.metadata.description ?? "** description **",
             publication: publication,
           ),
         );

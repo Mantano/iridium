@@ -21,7 +21,8 @@ class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeProvider>(
-      builder: (BuildContext context, HomeProvider homeProvider, Widget child) {
+      builder:
+          (BuildContext context, HomeProvider homeProvider, Widget? child) {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -41,13 +42,13 @@ class _ExploreState extends State<Explore> {
 
   _buildBodyList(HomeProvider homeProvider) {
     return ListView.builder(
-      itemCount: homeProvider?.top?.feed?.publications?.length ?? 0,
+      itemCount: homeProvider.top?.feed?.publications.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        Link link = homeProvider.top.feed.links[index];
+        Link? link = homeProvider.top?.feed?.links[index];
 
         // We don't need the tags from 0-9 because
         // they are not categories
-        if (index < 10) {
+        if (link == null || index < 10) {
           return SizedBox();
         }
 
@@ -111,7 +112,7 @@ class _ExploreState extends State<Explore> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
-          ParseData category = snapshot.data;
+          ParseData? category = snapshot.data;
 
           return Container(
             height: 200.0,
@@ -119,10 +120,10 @@ class _ExploreState extends State<Explore> {
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 scrollDirection: Axis.horizontal,
-                itemCount: category.feed.publications.length,
+                itemCount: category?.feed?.publications.length ?? 0,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  Publication entry = category.feed.publications[index];
+                  Publication entry = category!.feed!.publications[index];
 
                   return Padding(
                     padding: EdgeInsets.symmetric(
@@ -130,7 +131,7 @@ class _ExploreState extends State<Explore> {
                       vertical: 10.0,
                     ),
                     child: BookCard(
-                      img: entry.coverLink.href,
+                      img: entry.coverLink?.href,
                       entry: entry,
                     ),
                   );

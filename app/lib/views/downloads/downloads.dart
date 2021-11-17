@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:iridium_app/components/loading_widget.dart';
 import 'package:iridium_app/database/download_helper.dart';
 import 'package:iridium_app/database/locator_helper.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:uuid/uuid.dart';
 
 class Downloads extends StatefulWidget {
@@ -20,7 +20,7 @@ class _DownloadsState extends State<Downloads> {
   var db = DownloadsDB();
   static final uuid = Uuid();
 
-  List dls = List();
+  List dls = [];
 
   getDownloads() async {
     List l = await db.listAll();

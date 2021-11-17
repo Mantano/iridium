@@ -12,9 +12,9 @@ class Genre extends StatefulWidget {
   final String url;
 
   Genre({
-    Key key,
-    @required this.title,
-    @required this.url,
+    Key? key,
+    required this.title,
+    required this.url,
   }) : super(key: key);
 
   @override
@@ -25,7 +25,7 @@ class _GenreState extends State<Genre> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback(
+    SchedulerBinding.instance?.addPostFrameCallback(
       (_) => Provider.of<GenreProvider>(context, listen: false)
           .getFeed(widget.url),
     );
@@ -34,7 +34,7 @@ class _GenreState extends State<Genre> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-      builder: (BuildContext context, GenreProvider provider, Widget child) {
+      builder: (BuildContext context, GenreProvider provider, Widget? child) {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
@@ -71,7 +71,7 @@ class _GenreState extends State<Genre> {
                 img: entry.links[1].href,
                 title: entry.metadata.title,
                 author: entry.metadata.authors[0].name,
-                desc: entry.metadata.description,
+                desc: entry.metadata.description ?? "** description **",
                 publication: entry,
               ),
             );

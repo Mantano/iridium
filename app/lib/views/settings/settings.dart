@@ -4,7 +4,7 @@ import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/view_models/app_provider.dart';
 import 'package:iridium_app/views/downloads/downloads.dart';
 import 'package:iridium_app/views/favorites/favorites.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -13,7 +13,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  List items;
+  late List items;
 
   @override
   void initState() {

@@ -7,7 +7,7 @@ class DownloadAlert extends StatefulWidget {
   final String url;
   final String path;
 
-  DownloadAlert({Key key, @required this.url, @required this.path})
+  DownloadAlert({Key? key, required this.url, required this.path})
       : super(key: key);
 
   @override
@@ -78,10 +78,10 @@ class _DownloadAlertState extends State<DownloadAlert> {
                 ),
                 child: LinearProgressIndicator(
                   value: double.parse(progress) / 100.0,
-                  valueColor:
-                      AlwaysStoppedAnimation(Theme.of(context).accentColor),
+                  valueColor: AlwaysStoppedAnimation(
+                      Theme.of(context).colorScheme.secondary),
                   backgroundColor:
-                      Theme.of(context).accentColor.withOpacity(0.3),
+                      Theme.of(context).colorScheme.secondary.withOpacity(0.3),
                 ),
               ),
               SizedBox(height: 5.0),

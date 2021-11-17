@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:iridium_app/database/favorite_helper.dart';
 
 class FavoritesProvider extends ChangeNotifier {
-  List posts = List();
+  List posts = [];
   bool loading = true;
   var db = FavoriteDB();
 

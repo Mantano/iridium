@@ -6,8 +6,8 @@ import 'package:iridium_app/util/functions.dart';
 import 'package:mno_shared/opds.dart';
 
 class HomeProvider with ChangeNotifier {
-  ParseData top;
-  ParseData recent;
+  ParseData? top;
+  ParseData? recent;
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
   Api api = Api();
 
@@ -42,7 +42,7 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  ParseData getTop() {
+  ParseData? getTop() {
     return top;
   }
 
@@ -51,7 +51,7 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  ParseData getRecent() {
+  ParseData? getRecent() {
     return recent;
   }
 }

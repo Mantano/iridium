@@ -6,13 +6,13 @@ import 'package:iridium_app/util/enum/api_request_status.dart';
 class BodyBuilder extends StatelessWidget {
   final APIRequestStatus apiRequestStatus;
   final Widget child;
-  final Function reload;
+  final void Function()? reload;
 
   BodyBuilder(
-      {Key key,
-      @required this.apiRequestStatus,
-      @required this.child,
-      @required this.reload})
+      {Key? key,
+      required this.apiRequestStatus,
+      required this.child,
+      required this.reload})
       : super(key: key);
 
   @override
@@ -24,25 +24,20 @@ class BodyBuilder extends StatelessWidget {
     switch (apiRequestStatus) {
       case APIRequestStatus.loading:
         return LoadingWidget();
-        break;
       case APIRequestStatus.unInitialized:
         return LoadingWidget();
-        break;
       case APIRequestStatus.connectionError:
         return MyErrorWidget(
           refreshCallBack: reload,
           isConnection: true,
         );
-        break;
       case APIRequestStatus.error:
         return MyErrorWidget(
           refreshCallBack: reload,
           isConnection: false,
         );
-        break;
       case APIRequestStatus.loaded:
         return child;
-        break;
       default:
         return LoadingWidget();
     }

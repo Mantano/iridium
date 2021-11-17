@@ -8,19 +8,19 @@ import 'package:uuid/uuid.dart';
 import '../views/details/details.dart';
 
 class BookListItem extends StatelessWidget {
-  final String img;
-  final String title;
-  final String author;
+  final String? img;
+  final String? title;
+  final String? author;
   final String desc;
-  final Publication publication;
+  final Publication? publication;
 
   BookListItem({
-    Key key,
-    @required this.img,
-    @required this.title,
-    @required this.author,
-    @required this.desc,
-    @required this.publication,
+    Key? key,
+    this.img,
+    this.title,
+    this.author,
+    this.desc = "** description **",
+    this.publication,
   }) : super(key: key);
 
   static final uuid = Uuid();
@@ -35,7 +35,7 @@ class BookListItem extends StatelessWidget {
         MyRouter.pushPage(
           context,
           Details(
-            publication: publication,
+            publication: publication!,
             imgTag: imgTag,
             titleTag: titleTag,
             authorTag: authorTag,
@@ -95,11 +95,11 @@ class BookListItem extends StatelessWidget {
                     child: Material(
                       type: MaterialType.transparency,
                       child: Text(
-                        '${title.replaceAll(r'\', '')}',
+                        '${title?.replaceAll(r'\', '')}',
                         style: TextStyle(
                           fontSize: 17.0,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).textTheme.headline6.color,
+                          color: Theme.of(context).textTheme.headline6?.color,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -131,7 +131,7 @@ class BookListItem extends StatelessWidget {
                         .replaceAll(r'\"', '"'),
                     style: TextStyle(
                       fontSize: 13.0,
-                      color: Theme.of(context).textTheme.caption.color,
+                      color: Theme.of(context).textTheme.caption?.color,
                     ),
                   ),
                 ],

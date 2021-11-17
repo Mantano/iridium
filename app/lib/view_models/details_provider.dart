@@ -13,9 +13,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class DetailsProvider extends ChangeNotifier {
-  ParseData related;
+  late ParseData related;
   bool loading = true;
-  Publication entry;
+  late Publication entry;
   var favDB = FavoriteDB();
   var dlDB = DownloadsDB();
 
@@ -52,10 +52,12 @@ class DetailsProvider extends ChangeNotifier {
   }
 
   removeFav() async {
-    favDB.remove(entry.metadata.identifier).then((v) {
-      print(v);
-      checkFav();
-    });
+    if (entry.metadata.identifier != null) {
+      favDB.remove(entry.metadata.identifier!).then((v) {
+        print(v);
+        checkFav();
+      });
+    }
   }
 
   // check if book has been downloaded before
@@ -94,11 +96,10 @@ class DetailsProvider extends ChangeNotifier {
   }
 
   Future downloadFile(BuildContext context, String url, String filename) async {
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
+    PermissionStatus permission = await Permission.storage.status;
 
     if (permission != PermissionStatus.granted) {
-      await PermissionHandler().requestPermissions([PermissionGroup.storage]);
+      await Permission.storage.request();
       startDownload(context, url, filename);
     } else {
       startDownload(context, url, filename);
@@ -106,13 +107,13 @@ class DetailsProvider extends ChangeNotifier {
   }
 
   startDownload(BuildContext context, String url, String filename) async {
-    Directory appDocDir = Platform.isAndroid
+    Directory? appDocDir = Platform.isAndroid
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
     if (Platform.isAndroid) {
       // Directory(appDocDir.path.split('Android')[0] + '${Constants.appName}')
       //     .createSync();
-      Directory(appDocDir.path).createSync();
+      Directory(appDocDir!.path).createSync();
     }
 
     // String path = Platform.isIOS
@@ -120,8 +121,8 @@ class DetailsProvider extends ChangeNotifier {
     //     : appDocDir.path.split('Android')[0] +
     //         '${Constants.appName}/$filename.epub';
     String path = Platform.isIOS
-        ? appDocDir.path + '/$filename.epub'
-        : appDocDir.path + '/$filename.epub';
+        ? appDocDir!.path + '/$filename.epub'
+        : appDocDir!.path + '/$filename.epub';
     print(path);
     File file = File(path);
     if (!await file.exists()) {
@@ -141,9 +142,9 @@ class DetailsProvider extends ChangeNotifier {
     ).then((v) {
       // When the download finishes, we then add the book
       // to our local database
-      if (v != null) {
+      if (v != null && entry.metadata.identifier != null) {
         addDownload(
-          entry.metadata.identifier,
+          entry.metadata.identifier!,
           {
             'id': entry.metadata.identifier,
             'path': path,

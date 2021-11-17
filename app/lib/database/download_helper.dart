@@ -24,17 +24,18 @@ class DownloadsDB {
     await store.put(value, key);
   }
 
-  Future<int> remove(String key) async {
-    var db = await database;
-    var txn = db.transaction(storeName, idbModeReadWrite);
-    var store = txn.objectStore(storeName);
-    var val = await store.getObject(key);
-    await store.delete(key);
-    return Future.value(1);
+  remove(String? key) async {
+    if (key != null) {
+      var db = await database;
+      var txn = db.transaction(storeName, idbModeReadWrite);
+      var store = txn.objectStore(storeName);
+      var val = await store.getObject(key);
+      await store.delete(key);
+    }
   }
 
-  Future removeAllWithId(String key) async {
-    return remove(key);
+  removeAllWithId(String? key) async {
+    if (key != null) remove(key);
   }
 
   Future<List> listAll() async {
@@ -44,7 +45,8 @@ class DownloadsDB {
     return await store.getAll();
   }
 
-  Future<List> check(String key) async {
+  Future<List> check(String? key) async {
+    if (key == null) return Future.value([]);
     var db = await database;
     var txn = db.transaction(storeName, idbModeReadWrite);
     var store = txn.objectStore(storeName);

@@ -3,7 +3,7 @@ import 'package:iridium_app/util/dialogs.dart';
 import 'package:iridium_app/views/explore/explore.dart';
 import 'package:iridium_app/views/home/home.dart';
 import 'package:iridium_app/views/settings/settings.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -11,7 +11,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  PageController _pageController;
+  late PageController _pageController;
   int _page = 0;
 
   @override

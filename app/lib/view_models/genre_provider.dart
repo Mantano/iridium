@@ -7,10 +7,11 @@ import 'package:iridium_app/util/enum/api_request_status.dart';
 import 'package:iridium_app/util/functions.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mno_shared/opds.dart';
+import 'package:mno_shared/publication.dart';
 
 class GenreProvider extends ChangeNotifier {
   ScrollController controller = ScrollController();
-  List items = List();
+  List<Publication> items = [];
   int page = 1;
   bool loadingMore = false;
   bool loadMore = true;
@@ -40,7 +41,10 @@ class GenreProvider extends ChangeNotifier {
     print(url);
     try {
       ParseData parseData = await api.getCategory(url);
-      items = parseData.feed.publications;
+      var pubs = parseData.feed?.publications;
+      if (pubs != null) {
+        items = pubs;
+      }
       setApiRequestStatus(APIRequestStatus.loaded);
       listener(url);
     } catch (e) {
@@ -61,7 +65,10 @@ class GenreProvider extends ChangeNotifier {
       notifyListeners();
       try {
         ParseData parseData = await api.getCategory(url + '&page=$page');
-        items.addAll(parseData.feed.publications);
+        var pubs = parseData.feed?.publications;
+        if (pubs != null) {
+          items.addAll(pubs);
+        }
         loadingMore = false;
         notifyListeners();
       } catch (e) {

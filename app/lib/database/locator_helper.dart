@@ -31,13 +31,14 @@ class LocatorDB {
     return await store.put(item, {'bookId': item['bookId']});
   }
 
-  Future<int> remove(key) async {
-    var db = await database;
-    var txn = db.transaction(storeName, idbModeReadWrite);
-    var store = txn.objectStore(storeName);
-    var val = await store.getObject(key);
-    await store.delete(key);
-    return val;
+  remove(String? key) async {
+    if (key != null) {
+      var db = await database;
+      var txn = db.transaction(storeName, idbModeReadWrite);
+      var store = txn.objectStore(storeName);
+      var val = await store.getObject(key);
+      await store.delete(key);
+    }
   }
 
   Future<List> listAll() async {
@@ -47,7 +48,10 @@ class LocatorDB {
     return await store.getAll();
   }
 
-  Future<List> getLocator(String id) async {
+  Future<List> getLocator(String? id) async {
+    if (id == null) {
+      return Future.value([]);
+    }
     var db = await database;
     var txn = db.transaction(storeName, idbModeReadWrite);
     var store = txn.objectStore(storeName);

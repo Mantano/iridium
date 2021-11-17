@@ -40,7 +40,8 @@ class FavoriteDB {
     return await store.getAll();
   }
 
-  Future<List> check(String key) async {
+  Future<List> check(String? key) async {
+    if (key == null) return Future.value([]);
     var db = await database;
     var txn = db.transaction(storeName, idbModeReadWrite);
     var store = txn.objectStore(storeName);
