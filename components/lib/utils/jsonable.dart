@@ -3,9 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:dartx/dartx.dart';
-
-import '../extensions/strings.dart';
-import 'take.dart';
+import 'package:mno_commons/extensions/strings.dart';
+import 'package:mno_commons/utils/take.dart';
 
 mixin JSONable {
   /// Serializes the object to its JSON representation.

@@ -1,6 +1,6 @@
 // Copyright (c) 2021 Mantano. All rights reserved.
-// Unauthorized copying of this file, via any medium is strictly prohibited.
-// Proprietary and confidential.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
 abstract class Predicate<T> {
   static const Predicate acceptAll = AcceptAllPredicate();
