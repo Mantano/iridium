@@ -6,9 +6,8 @@ import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:mno_commons/utils/href.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/src/epub/constants.dart';
 import 'package:xml/xml.dart';
-
-import 'constants.dart';
 
 /// Parser for encryption.xml file.
 class EncryptionParser {

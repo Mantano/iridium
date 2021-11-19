@@ -8,12 +8,11 @@ import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/href.dart';
 import 'package:mno_commons/utils/take.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/src/epub/clock_value_parser.dart';
 import 'package:mno_streamer/src/epub/constants.dart';
+import 'package:mno_streamer/src/epub/extensions/xml_node.dart';
 import 'package:mno_streamer/src/epub/property_data_type.dart';
 import 'package:xml/xml.dart' show XmlElement, XmlNode, XmlFindExtension;
-
-import 'clock_value_parser.dart';
-import 'extensions/xml_node.dart';
 
 class Title {
   final LocalizedString value;

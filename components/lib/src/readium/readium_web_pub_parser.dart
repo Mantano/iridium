@@ -13,11 +13,10 @@ import 'package:mno_streamer/pdf.dart';
 import 'package:mno_streamer/publication_parser.dart';
 import 'package:mno_streamer/src/container/container.dart';
 import 'package:mno_streamer/src/container/publication_container.dart';
+import 'package:mno_streamer/src/readium/lcpdf_positions_service.dart';
 import 'package:mno_streamer/src/streamer.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
-
-import 'lcpdf_positions_service.dart';
 
 /// Parses any Readium Web Publication package or manifest, e.g. WebPub, Audiobook, DiViNa, LCPDF...
 class ReadiumWebPubParser extends PublicationParser

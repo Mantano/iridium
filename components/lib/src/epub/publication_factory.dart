@@ -6,10 +6,9 @@ import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/src/epub/constants.dart';
 import 'package:mno_streamer/src/epub/metadata_parser.dart';
-
-import 'constants.dart';
-import 'package_document.dart';
+import 'package:mno_streamer/src/epub/package_document.dart';
 
 /// Creates a [Publication] model from an EPUB package's document.
 ///

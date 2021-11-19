@@ -4,8 +4,7 @@
 
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
-
-import 'container.dart';
+import 'package:mno_streamer/src/container/container.dart';
 
 /// Temporary solution to migrate to [Publication.get] while ensuring backward compatibility with
 /// [Container].

@@ -7,9 +7,8 @@ import 'package:dfunc/dfunc.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/href.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/src/epub/constants.dart';
 import 'package:xml/xml.dart';
-
-import 'constants.dart';
 
 /// Parser for NCX files that describes the table of content and page list.
 class NcxParser {

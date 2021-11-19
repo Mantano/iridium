@@ -8,12 +8,11 @@ import 'package:dfunc/dfunc.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/publication_parser.dart';
 import 'package:mno_streamer/src/container/container.dart';
 import 'package:mno_streamer/src/container/publication_container.dart';
 import 'package:mno_streamer/src/image/image_parser.dart';
 import 'package:universal_io/io.dart';
-
-import '../../publication_parser.dart';
 
 /// Errors related to CBZ parser.
 class CbzParserException implements Exception {

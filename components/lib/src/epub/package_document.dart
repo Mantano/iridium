@@ -7,11 +7,10 @@ import 'package:dfunc/dfunc.dart';
 import 'package:mno_commons/utils/href.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/src/epub/constants.dart';
+import 'package:mno_streamer/src/epub/extensions/xml_node.dart';
+import 'package:mno_streamer/src/epub/metadata_parser.dart';
+import 'package:mno_streamer/src/epub/property_data_type.dart';
 import 'package:xml/xml.dart';
-
-import 'extensions/xml_node.dart';
-import 'metadata_parser.dart';
-import 'property_data_type.dart';
 
 class PackageDocument {
   final String path;
