@@ -4,10 +4,9 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:mno_shared/publication.dart';
-
-import 'facet.dart';
-import 'group.dart';
-import 'opds_metadata.dart';
+import 'package:mno_shared/src/opds/facet.dart';
+import 'package:mno_shared/src/opds/group.dart';
+import 'package:mno_shared/src/opds/opds_metadata.dart';
 
 class Feed with EquatableMixin {
   final String title;

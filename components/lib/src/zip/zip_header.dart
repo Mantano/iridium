@@ -5,8 +5,7 @@
 import 'dart:convert';
 
 import 'package:mno_commons/utils/jsonable.dart';
-
-import 'file_buffer.dart';
+import 'package:mno_shared/src/zip/file_buffer.dart';
 
 abstract class ZipHeader {
   /// Compression method for uncompressed entries.
@@ -14,11 +13,15 @@ abstract class ZipHeader {
 
   /// Compression method for compressed (deflated) entries.
   static const int deflated = 8;
+
   ZipHeader(this.signature);
+
   final int signature; // 2 bytes
 
   bool get isLocalFile => signature == 0x0403;
+
   bool get isCentralDirectory => signature == 0x0201;
+
   bool get isCentralDirectoryEnd => signature == 0x0605;
 
   Future<void> _read(FileBuffer src);

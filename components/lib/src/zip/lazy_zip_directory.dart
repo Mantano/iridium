@@ -2,10 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:archive/archive.dart' as archive;
-
-import 'file_buffer.dart';
-import 'lazy_zip_file_header.dart';
+import 'package:archive/archive.dart';
+import 'package:mno_shared/src/zip/file_buffer.dart';
+import 'package:mno_shared/src/zip/lazy_zip_file_header.dart';
 
 class LazyZipDirectory {
   // End of Central Directory Record
@@ -51,7 +50,7 @@ class LazyZipDirectory {
 
     await _readZip64Data(input);
 
-    archive.InputStream dirContent =
+    InputStream dirContent =
         await input.subset(centralDirectoryOffset, centralDirectorySize);
 
     while (!dirContent.isEOS) {
@@ -82,8 +81,7 @@ class LazyZipDirectory {
     if (locPos < 0) {
       return;
     }
-    archive.InputStream zip64 =
-        await input.subset(locPos, zip64EocdLocatorSize);
+    InputStream zip64 = await input.subset(locPos, zip64EocdLocatorSize);
 
     int sig = zip64.readUint32();
     // If this ins't the signature we're looking for, nothing more to do.
@@ -161,8 +159,7 @@ class LazyZipDirectory {
       }
     }
 
-    throw archive.ArchiveException(
-        'Could not find End of Central Directory Record');
+    throw ArchiveException('Could not find End of Central Directory Record');
   }
 
   Future<bool> headerSignatureValid(FileBuffer input) async {

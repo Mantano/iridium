@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import '../../publication.dart';
-import '../streams/stream.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_shared/streams.dart';
 
 /// Applies a transformation on a [Publication] resource's [DataStream].
 abstract class ContentFilter {

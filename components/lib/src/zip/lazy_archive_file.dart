@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'lazy_zip_file_header.dart';
+import 'package:mno_shared/src/zip/lazy_zip_file_header.dart';
 
 /// A file contained in an Archive.
 class LazyArchiveFile {

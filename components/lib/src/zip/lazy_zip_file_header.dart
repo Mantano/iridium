@@ -2,10 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:archive/archive.dart' as archive;
-
-import 'file_buffer.dart';
-import 'lazy_zip_file.dart';
+import 'package:archive/archive.dart';
+import 'package:mno_shared/src/zip/file_buffer.dart';
+import 'package:mno_shared/src/zip/lazy_zip_file.dart';
 
 class LazyZipFileHeader {
   static const int zipSignature = 0x02014b50;
@@ -31,7 +30,7 @@ class LazyZipFileHeader {
   LazyZipFileHeader(this.signature);
 
   Future<void> load(
-      archive.InputStream input, FileBuffer bytes, String? password) async {
+      InputStream input, FileBuffer bytes, String? password) async {
     versionMadeBy = input.readUint16();
     versionNeededToExtract = input.readUint16();
     generalPurposeBitFlag = input.readUint16();
@@ -54,7 +53,7 @@ class LazyZipFileHeader {
     }
 
     if (extraLen > 0) {
-      archive.InputStream extra = input.readBytes(extraLen);
+      InputStream extra = input.readBytes(extraLen);
       extraField = extra.toUint8List();
 
       int id = extra.readUint16();

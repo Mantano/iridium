@@ -10,11 +10,10 @@ import 'package:fimber/fimber.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/io.dart';
 import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/mediatype/mediatype.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
-
-import '../../publication.dart';
 
 class FileFetcher extends Fetcher {
   final Map<String, FileSystemEntity> paths;

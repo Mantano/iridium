@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:dartx/dartx.dart';
-import 'charsets.dart';
+import 'package:mno_shared/src/mediatype/charsets.dart';
 
 class Charset {
   static const Charset ascii = Charset._("US-ASCII", aliases: [

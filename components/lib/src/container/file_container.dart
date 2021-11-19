@@ -2,11 +2,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:mno_shared/src/container/container.dart';
+import 'package:mno_shared/src/streams/file_stream.dart';
+import 'package:mno_shared/src/streams/stream.dart';
 import 'package:universal_io/io.dart';
-
-import '../streams/file_stream.dart';
-import '../streams/stream.dart';
-import 'container.dart';
 
 /// [Container] providing ad-hoc access to standalone files (eg. single video file).
 class FileContainer extends Container {

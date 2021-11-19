@@ -6,13 +6,12 @@ import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
 import 'package:mno_commons/utils/exceptions.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/util/archive/archive.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
-
-import '../../fetcher.dart';
-import '../../publication.dart';
 
 /// Provides access to a [Resource] from a [Link].
 abstract class Fetcher {
@@ -93,6 +92,7 @@ abstract class Fetcher {
 /// A [Fetcher] providing no resources at all.
 class EmptyFetcher extends Fetcher {
   const EmptyFetcher();
+
   @override
   Future<List<Link>> links() async => [];
 

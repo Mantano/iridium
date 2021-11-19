@@ -12,11 +12,10 @@ import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 // ignore: implementation_imports
 import 'package:intl/src/intl_helpers.dart';
-
-import 'messages_de.dart' as messages_de;
-import 'messages_en.dart' as messages_en;
-import 'messages_es.dart' as messages_es;
-import 'messages_fr.dart' as messages_fr;
+import 'package:mno_shared/i18n/localizations/messages_de.dart' as messages_de;
+import 'package:mno_shared/i18n/localizations/messages_en.dart' as messages_en;
+import 'package:mno_shared/i18n/localizations/messages_es.dart' as messages_es;
+import 'package:mno_shared/i18n/localizations/messages_fr.dart' as messages_fr;
 
 typedef LibraryLoader = Future<dynamic> Function();
 

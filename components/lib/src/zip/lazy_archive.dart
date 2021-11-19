@@ -4,7 +4,7 @@
 
 import 'dart:collection';
 
-import 'lazy_archive_file.dart';
+import 'package:mno_shared/src/zip/lazy_archive_file.dart';
 
 /// A collection of files
 class LazyArchive extends IterableBase<LazyArchiveFile> {

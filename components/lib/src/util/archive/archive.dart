@@ -7,10 +7,9 @@ import 'dart:typed_data';
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/exceptions.dart';
+import 'package:mno_shared/src/util/archive/exploded_archive.dart';
+import 'package:mno_shared/src/util/archive/zip_archive.dart';
 import 'package:universal_io/io.dart';
-
-import 'exploded_archive.dart';
-import 'zip_archive.dart';
 
 mixin ArchiveFactory {
   /// Opens an archive from a local [file].

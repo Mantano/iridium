@@ -11,11 +11,10 @@ import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/exceptions.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:mno_shared/src/fetcher/fetcher.dart';
 import 'package:mno_shared/src/mediatype/mediatype.dart';
 import 'package:mno_shared/src/util/archive/archive.dart';
 import 'package:universal_io/io.dart';
-
-import 'fetcher.dart';
 
 /// Provides access to entries of an archive.
 class ArchiveFetcher extends Fetcher {

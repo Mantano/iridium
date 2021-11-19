@@ -5,8 +5,7 @@
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/jsonable.dart';
-
-import '../../publication.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Contributor Object for the Readium Web Publication Manifest.
 /// https://readium.org/webpub-manifest/schema/contributor-object.schema.json

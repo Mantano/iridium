@@ -4,13 +4,11 @@
 
 import 'package:mno_commons/io.dart';
 import 'package:mno_commons/utils/try.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/mediatype/mediatype.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
-
-import '../../../fetcher.dart';
-import '../../../publication.dart';
-import 'publication_asset.dart';
 
 /// Represents a publication stored as a file on the local file system.
 ///

@@ -4,11 +4,10 @@
 
 import 'package:mno_commons/utils/try.dart';
 import 'package:mno_shared/archive.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/mediatype/mediatype.dart';
 import 'package:path/path.dart';
-
-import '../../../fetcher.dart';
-import '../../../publication.dart';
 
 /// Represents a digital medium (e.g. a file) offering access to a publication. */
 abstract class PublicationAsset {

@@ -3,9 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:dartx/dartx.dart';
+import 'package:mno_shared/streams.dart';
 import 'package:mno_shared/zip.dart';
-
-import 'stream.dart';
 
 /// Random access stream to a file compressed in a ZIP archive.
 class ZipStream extends DataStream {
