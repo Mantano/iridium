@@ -11,7 +11,7 @@ dependencies:
   archive: ^3.1.6
   collection: ^1.15.0
   crypto: ^3.0.1
-  dartx: ^0.7.1
+  dartx: ^0.8.0
   dfunc: ^0.7.2
   equatable: ^2.0.3
   fimber: ^0.6.1
@@ -28,4 +28,4 @@ dependencies:
 dev_dependencies:
   image_compare: ^1.1.1
   lints: ^1.0.1
-  test: ^1.19.1
+  test: ^1.19.3
