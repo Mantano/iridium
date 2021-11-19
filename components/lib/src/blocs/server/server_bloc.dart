@@ -7,10 +7,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_server/mno_server.dart';
+import 'package:mno_server/src/blocs/server/request_controller.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_io/io.dart';
-
-import 'request_controller.dart';
 
 /// A ServerBloc is used to start/stop a server instance.
 ///
