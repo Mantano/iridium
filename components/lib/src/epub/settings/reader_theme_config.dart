@@ -14,9 +14,18 @@ class ReaderThemeConfig implements JSONable {
   TextAlign? textAlign;
   LineHeight? lineHeight;
   TextMargin? textMargin;
+  String? fontFamily;
+  String? fontWeight;
 
-  ReaderThemeConfig(this.name, this.textColor, this.backgroundColor,
-      this.textAlign, this.lineHeight, this.textMargin);
+  ReaderThemeConfig(
+      this.name,
+      this.textColor,
+      this.backgroundColor,
+      this.textAlign,
+      this.lineHeight,
+      this.textMargin,
+      this.fontFamily,
+      this.fontWeight);
 
   ReaderThemeConfig._none()
       : name = "None",
@@ -24,10 +33,19 @@ class ReaderThemeConfig implements JSONable {
         backgroundColor = null,
         textAlign = null,
         lineHeight = null,
-        textMargin = null;
+        textMargin = null,
+        fontFamily = null,
+        fontWeight = null;
 
   ReaderThemeConfig clone() => ReaderThemeConfig(
-      name, textColor, backgroundColor, textAlign, lineHeight, textMargin);
+      name,
+      textColor,
+      backgroundColor,
+      textAlign,
+      lineHeight,
+      textMargin,
+      fontFamily,
+      fontWeight);
 
   static final ReaderThemeConfig defaultTheme = ReaderThemeConfig._none();
 
@@ -49,6 +67,8 @@ class ReaderThemeConfig implements JSONable {
         _asTextAlign(data["textAlign"]),
         _asLineHeight(data["lineHeight"]),
         _asTextMargin(data["textMargin"]),
+        data["fontFamily"] as String,
+        data["fontWeight"] as String,
       );
 
   static Color? _asColor(dynamic color) =>

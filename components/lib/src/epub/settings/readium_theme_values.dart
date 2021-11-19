@@ -19,8 +19,11 @@ class ReadiumThemeValues {
       .replaceFirst("{{backgroundColor}}", backgroundColor)
       .replaceFirst("{{textColor}}", textColor)
       .replaceFirst("{{textAlign}}", textAlign)
-      .replaceFirst("{{lineHeight}}", lineHeight);
+      .replaceFirst("{{lineHeight}}", lineHeight)
+      .replaceFirst("{{fontFamily}}", fontFamily)
+      .replaceFirst("{{fontWeight}}", fontWeight);
 
+  // c.f. ReadiumCSS-after.css
   Map<String, String> get cssVarsAndValues => {
         "--RS__pageGutter": textMargin,
         "--RS__verticalMargin": verticalMargin,
@@ -29,6 +32,8 @@ class ReadiumThemeValues {
         "--USER__textAlign": textAlign,
         "--USER__lineHeight": lineHeight,
         "--USER__fontSize": fontSize,
+        "--USER__fontFamily": fontFamily,
+        "--USER__fontWeight": fontWeight,
       };
 
   String get verticalMargin => "${verticalMarginInt}px";
@@ -47,6 +52,14 @@ class ReadiumThemeValues {
   String _colorAsString(Color? color) =>
       (color != null) ? _formatColor(color.value) : "inherit";
 
+  String _fontFamilyAsString() => formatFontFamily(readerTheme.fontFamily);
+
+  String _fontWeightAsString() => formatFontWeight(readerTheme.fontWeight);
+
+  String get fontFamily => _fontFamilyAsString();
+
+  String get fontWeight => _fontWeightAsString();
+
   String get textAlign => readerTheme.textAlign?.let((it) => it.name) ?? "";
 
   String get lineHeight =>
@@ -56,4 +69,10 @@ class ReadiumThemeValues {
 
   static String _formatColor(int color) =>
       "#${(color & 0xFFFFFF).toRadixString(16).padLeft(6, '0')}";
+
+  static String formatFontFamily(String? fontFamily) =>
+      (fontFamily == null) ? "inherit" : "font-family: \"$fontFamily\"";
+
+  static String formatFontWeight(String? fontWeight) =>
+      (fontWeight == null) ? "inherit" : "font-weight: \"$fontWeight\"";
 }
