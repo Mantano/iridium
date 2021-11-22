@@ -30,9 +30,17 @@ dependencies:
     path: ../mno_shared_dart
   mno_streamer:
     path: ../mno_streamer_dart
-#  viewer:
-#    path: ../viewer
 
 dev_dependencies:
   test: ^1.19.3
   lints: ^1.0.1
+
+flutter:
+
+  assets:
+    - assets/xpub-assets/
+    - assets/xpub-shared-js/
+    - assets/xpub-js/
+    - assets/xpub-js/controllers/
+    - assets/xpub-js/model/
+    - assets/xpub-js/utils/
