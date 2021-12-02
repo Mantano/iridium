@@ -20,7 +20,7 @@ class MockCoverService extends CoverService {
 void main() async {
   File cover = File("test_resources/publication/services/cover.jpg");
   Uint8List coverBytes = (await cover.readAsBytes());
-  Image coverBitmap = readJpg(coverBytes);
+  Image? coverBitmap = readJpg(coverBytes);
   String coverPath = cover.path;
 
   Publication publication = Publication(
