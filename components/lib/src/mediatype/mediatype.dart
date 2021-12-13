@@ -9,9 +9,6 @@ import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/take.dart';
 import 'package:mno_shared/mediatype.dart';
-import 'package:mno_shared/src/mediatype/sniffer.dart';
-import 'package:mno_shared/src/mediatype/sniffer_content.dart';
-import 'package:mno_shared/src/mediatype/sniffer_context.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 

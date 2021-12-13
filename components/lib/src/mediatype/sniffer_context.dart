@@ -14,8 +14,6 @@ import 'package:mno_commons/utils/exceptions.dart';
 import 'package:mno_shared/archive.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:mno_shared/src/mediatype/mediatype.dart';
-import 'package:mno_shared/src/mediatype/sniffer_content.dart';
 import 'package:mno_shared/streams.dart';
 import 'package:xml/xml.dart';
 

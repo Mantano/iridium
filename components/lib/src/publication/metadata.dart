@@ -7,8 +7,6 @@ import 'package:fimber/fimber.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:mno_shared/src/publication/localized_string.dart';
-import 'package:mno_shared/src/publication/reading_progression.dart';
 
 /// https://readium.org/webpub-manifest/schema/metadata.schema.json
 ///

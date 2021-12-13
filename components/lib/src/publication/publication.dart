@@ -15,7 +15,6 @@ import 'package:mno_commons/utils/ref.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/mediatype/mediatype.dart';
-import 'package:mno_shared/src/readium_css.dart';
 
 typedef ServiceFactory = PublicationService? Function(
     PublicationServiceContext);

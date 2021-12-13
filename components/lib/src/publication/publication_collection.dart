@@ -7,7 +7,6 @@ import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:mno_shared/src/publication/subcollection_map.dart';
 
 /// Core Collection Model
 ///

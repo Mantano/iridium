@@ -6,7 +6,6 @@ import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:mno_shared/src/publication/link.dart';
 
 /// The Presentation Hints extension defines a number of hints for User Agents about the way content
 /// should be presented to the user.
