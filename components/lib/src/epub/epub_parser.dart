@@ -17,8 +17,6 @@ import 'package:mno_streamer/src/epub/epub_deobfuscator.dart';
 import 'package:mno_streamer/src/epub/epub_positions_service.dart';
 import 'package:mno_streamer/src/epub/navigation_document_parser.dart';
 import 'package:mno_streamer/src/epub/ncx_parser.dart';
-import 'package:mno_streamer/src/epub/package_document.dart';
-import 'package:mno_streamer/src/epub/publication_factory.dart';
 import 'package:mno_streamer/src/epub/readium_css_layout.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
