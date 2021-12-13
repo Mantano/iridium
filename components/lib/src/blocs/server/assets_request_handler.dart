@@ -5,7 +5,6 @@
 import 'dart:typed_data';
 
 import 'package:mno_server/mno_server.dart';
-import 'package:mno_server/src/blocs/server/asset_provider.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
@@ -52,7 +51,7 @@ class AssetsRequestHandler extends RequestHandler {
       return true;
     } on Error catch (ex, _) {
       // For debugging
-//      Fimber.d("Error loading: $href", ex: ex, stacktrace: stacktrace);
+      // Fimber.d("Error loading: $href", ex: ex, stacktrace: st);
       return false;
     }
   }
