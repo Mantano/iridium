@@ -49,7 +49,7 @@ multiple modules could be achieved by developing some kind of "super-module", bu
 ## Private Modules
 
 * [mno_navigator_flutter](https://github.com/Mantano/mno_navigator_flutter) – Navigator
-* [mno_streamer_dart](https://github.com/Mantano/mno_iridium_app) – Iridium SDK demo app
+* [mno_iridium_app](https://github.com/Mantano/mno_iridium_app) – Iridium SDK demo app
 
 -----------
 <a name="readium_foundation">1</a>: Readium is a trademark of the [Readium Foundation](https://readium.org/))
