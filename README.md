@@ -45,11 +45,11 @@ multiple modules could be achieved by developing some kind of "super-module", bu
 * [mno_commons_dart](https://github.com/Mantano/mno_commons_dart) – Other misc. utilities (specific to this Flutter
   port, not found in Readium)
 * [mno_lcp_dart](https://github.com/Mantano/mno_lcp_dart) – Service and models for Readium LCP (soon public)
+* [mno_iridium_app](https://github.com/Mantano/mno_iridium_app) – Iridium SDK demo app. :warning: Requires the private modules 
 
 ## Private Modules
 
 * [mno_navigator_flutter](https://github.com/Mantano/mno_navigator_flutter) – Navigator
-* [mno_iridium_app](https://github.com/Mantano/mno_iridium_app) – Iridium SDK demo app
 
 -----------
 <a name="readium_foundation">1</a>: Readium is a trademark of the [Readium Foundation](https://readium.org/))
