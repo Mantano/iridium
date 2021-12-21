@@ -31,11 +31,10 @@ not reflect any official Readium move towards Dart/Flutter development.
 The Readium SDK is funded by public grants and membership fees. Iridium is completely funded and developed by Mantano,
 which is a private company. As a consequence:
 
-- You can also simply become a sponsor without paying the price of the access to the Navigator component: many
-  sponsorship tiers are available, starting at very low prices. Please look at [sponsored contributions](https://github.com/sponsors/Mantano) for more details;
-- Iridium's highly optimized "navigator" component source code is made only available
-  through the a specific sponsorship tier. However, please note that the Iridium SDK can easily be used
-  without this paid component. In this case, you have to develop a Navigator by yourself.
+- You can support this work by [becoming a sponsor](https://github.com/sponsors/Mantano);
+- One of the sponsorship tiers gives full access to Iridium's highly optimized "navigator" component source code.
+  However, *please note that the Iridium SDK can easily be used without this paid "navigator"
+  component*. In this case, you (obviously) have to develop it by yourself.
 
 ## Migrating an existing R2-based platform-specific app
 
