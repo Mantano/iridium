@@ -28,8 +28,14 @@ Developed in the continuity of Readium 2, Iridium could pave the way to a "unifi
 Readium, with a unique codebase working across all platforms. However, Iridium is purely a Mantano initiative, and does
 not reflect any official Readium move towards Dart/Flutter development.
 
-Since all the development has been achieved and self-funded by Mantano, access to the key components that are the "
-navigator" and the demo app is made available through [sponsored contributions](https://github.com/sponsors/Mantano).
+The Readium SDK is funded by public grants and membership fees. Iridium is completely funded and developed by Mantano,
+which is a private company. As a consequence:
+
+- You can also simply become a sponsor without paying the price of the access to the Navigator component: many
+  sponsorship tiers are available, starting at very low prices. Please look at [sponsored contributions](https://github.com/sponsors/Mantano) for more details;
+- Iridium's highly optimized "navigator" component source code is made only available
+  through the a specific sponsorship tier. However, please note that the Iridium SDK can easily be used
+  without this paid component. In this case, you have to develop a Navigator by yourself.
 
 ## Migrating an existing R2-based platform-specific app
 
