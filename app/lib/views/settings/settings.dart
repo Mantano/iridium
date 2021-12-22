@@ -133,8 +133,11 @@ class _ProfileState extends State<Profile> {
             'Iridium Demo App by Mantano',
           ),
           actions: <Widget>[
-            FlatButton(
-              textColor: Theme.of(context).colorScheme.secondary,
+            TextButton(
+              style: ButtonStyle(
+                textStyle: MaterialStateProperty.all(
+                    TextStyle(color: Theme.of(context).colorScheme.secondary)),
+              ),
               onPressed: () => Navigator.pop(context),
               child: const Text(
                 'Close',

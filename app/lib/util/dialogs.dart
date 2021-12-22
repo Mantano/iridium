@@ -39,12 +39,16 @@ class Dialogs {
                   SizedBox(
                     height: 40.0,
                     width: 130.0,
-                    child: OutlineButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: OutlinedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        )),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.white),
+                        side: MaterialStateProperty.all(BorderSide(
+                            color: Theme.of(context).colorScheme.secondary)),
                       ),
-                      borderSide: BorderSide(
-                          color: Theme.of(context).colorScheme.secondary),
                       child: Text(
                         'No',
                         style: TextStyle(
@@ -52,15 +56,18 @@ class Dialogs {
                         ),
                       ),
                       onPressed: () => Navigator.pop(context),
-                      color: Colors.white,
                     ),
                   ),
                   SizedBox(
                     height: 40.0,
                     width: 130.0,
-                    child: RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        )),
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondary),
                       ),
                       child: const Text(
                         'Yes',
@@ -69,7 +76,6 @@ class Dialogs {
                         ),
                       ),
                       onPressed: () => exit(0),
-                      color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
                 ],

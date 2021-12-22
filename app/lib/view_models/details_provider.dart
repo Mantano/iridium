@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fimber/fimber.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iridium_app/components/download_alert.dart';
 import 'package:iridium_app/database/download_helper.dart';

@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:fimber/fimber.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:iridium_app/util/api.dart';
 import 'package:iridium_app/util/enum/api_request_status.dart';

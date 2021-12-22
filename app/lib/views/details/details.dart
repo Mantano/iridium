@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:epub_viewer/epub_viewer.dart';
@@ -11,7 +12,9 @@ import 'package:iridium_app/components/book_list_item.dart';
 import 'package:iridium_app/components/description_text.dart';
 import 'package:iridium_app/components/loading_widget.dart';
 import 'package:iridium_app/database/locator_helper.dart';
+import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/view_models/details_provider.dart';
+import 'package:iridium_app/views/viewers/epub_screen.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
@@ -233,27 +236,33 @@ class _DetailsState extends State<Details> {
       // first value from the string as out local book path
       Map dl = dlList[0];
       String path = dl['path'];
-
-      List locators =
-          await LocatorDB().getLocator(widget.publication?.metadata.identifier);
-
-      EpubViewer.setConfig(
-        identifier: 'androidBook',
-        themeColor: Theme.of(context).colorScheme.secondary,
-        scrollDirection: EpubScrollDirection.VERTICAL,
-        enableTts: false,
-        allowSharing: true,
+      MyRouter.pushPage(
+        context,
+        EpubScreen(
+          asset: FileAsset(File(path)),
+        ),
       );
-      EpubViewer.open(path,
-          lastLocation:
-              locators.isNotEmpty ? EpubLocator.fromJson(locators[0]) : null);
-      EpubViewer.locatorStream.listen((event) async {
-        // Get locator here
-        Map json = jsonDecode(event);
-        json['bookId'] = widget.publication?.metadata.identifier;
-        // Save locator to your database
-        await LocatorDB().update(json);
-      });
+
+      // List locators =
+      //     await LocatorDB().getLocator(widget.publication?.metadata.identifier);
+      //
+      // EpubViewer.setConfig(
+      //   identifier: 'androidBook',
+      //   themeColor: Theme.of(context).colorScheme.secondary,
+      //   scrollDirection: EpubScrollDirection.VERTICAL,
+      //   enableTts: false,
+      //   allowSharing: true,
+      // );
+      // EpubViewer.open(path,
+      //     lastLocation:
+      //         locators.isNotEmpty ? EpubLocator.fromJson(locators[0]) : null);
+      // EpubViewer.locatorStream.listen((event) async {
+      //   // Get locator here
+      //   Map json = jsonDecode(event);
+      //   json['bookId'] = widget.publication?.metadata.identifier;
+      //   // Save locator to your database
+      //   await LocatorDB().update(json);
+      // });
     }
   }
 
