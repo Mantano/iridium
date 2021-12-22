@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fimber/flutter_fimber.dart';
 import 'package:iridium_app/util/consts.dart';
 import 'package:iridium_app/theme/theme_config.dart';
 import 'package:iridium_app/view_models/app_provider.dart';
@@ -11,6 +13,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  if (kReleaseMode) {
+    Fimber.plantTree(FimberTree());
+  } else {
+    Fimber.plantTree(DebugBufferTree());
+  }
   runApp(
     MultiProvider(
       providers: [

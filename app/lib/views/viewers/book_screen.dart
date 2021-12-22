@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/material.dart';
-import 'package:iridium_app/views/viewers/in_memory_reader_annotation_repository.dart';
+import 'package:iridium_app/views/viewers/model/in_memory_reader_annotation_repository.dart';
+import 'package:iridium_app/views/viewers/ui/reader_app_bar.dart';
 import 'package:mno_commons/utils/functions.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_server/mno_server.dart';
@@ -32,6 +36,13 @@ abstract class BookScreenState<T extends BookScreen,
         handlersProvider);
   }
 
+  Future<bool> loadWebViewConfig() async {
+    if (Platform.isAndroid) {
+      await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+    }
+    return true;
+  }
+
   Future<String?> get openLocation async => null;
 
   Future<Streamer> createStreamer() async => Streamer();
@@ -56,18 +67,26 @@ abstract class BookScreenState<T extends BookScreen,
   });
 
   @override
-  Widget build(BuildContext context) => WillPopScope(
-        onWillPop: _onWillPop,
-        child: Scaffold(
-          body: createPublicationNavigator(
-            waitingScreenBuilder: buildWaitingScreen,
-            displayErrorBuilder: _displayErrorDialog,
-            onReaderContextCreated: onReaderContextCreated,
-            wrapper: buildWidgetWrapper,
-            publicationController: publicationController,
-          ),
-        ),
-      );
+  Widget build(BuildContext context) => FutureBuilder(
+      future: loadWebViewConfig(),
+      initialData: false,
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.data!) {
+          return WillPopScope(
+            onWillPop: _onWillPop,
+            child: Scaffold(
+              body: createPublicationNavigator(
+                waitingScreenBuilder: buildWaitingScreen,
+                displayErrorBuilder: _displayErrorDialog,
+                onReaderContextCreated: onReaderContextCreated,
+                wrapper: buildWidgetWrapper,
+                publicationController: publicationController,
+              ),
+            ),
+          );
+        }
+        return const SizedBox.shrink();
+      });
 
   Future<bool> _onWillPop() async => true;
 
@@ -105,16 +124,16 @@ abstract class BookScreenState<T extends BookScreen,
         //     // maxHeight: constraints.maxHeight,
         //   ),
         // ),
-        // SafeArea(
-        //   top: false,
-        //   child: Align(
-        //     alignment: Alignment.topCenter,
-        //     child: ReaderAppBar(
-        //       readerContext: readerContext,
-        //       publicationController: publicationController,
-        //     ),
-        //   ),
-        // ),
+        SafeArea(
+          top: false,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ReaderAppBar(
+              readerContext: readerContext,
+              publicationController: publicationController,
+            ),
+          ),
+        ),
       ],
     );
   }
