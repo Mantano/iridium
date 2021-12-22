@@ -60,7 +60,7 @@ class PaginationInfo {
       Page page = Page(
           p["spineItemPageIndex"],
           p["spineItemPageCount"],
-          p["spineItemPageThumbnailsCount"],
+          p["spineItemPageThumbnailsCount"] ?? 1,
           p["idref"],
           p["spineItemIndex"],
           p["pageNumber"]);
@@ -140,7 +140,7 @@ class Page {
   final int spineItemPageThumbnailsCount;
   final String idref;
   final int spineItemIndex;
-  final int pageNumber;
+  final int? pageNumber;
 
   Page(
       this.spineItemPageIndex,
