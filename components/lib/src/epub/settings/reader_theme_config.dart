@@ -57,6 +57,8 @@ class ReaderThemeConfig implements JSONable {
         if (textAlign != null) "textAlign": textAlign!.id,
         if (lineHeight != null) "lineHeight": lineHeight!.id,
         if (textMargin != null) "textMargin": textMargin!.id,
+        if (fontFamily != null) "fontFamily": fontFamily,
+        if (fontWeight != null) "fontWeight": fontWeight,
       };
 
   factory ReaderThemeConfig.fromJson(Map<String, Object> data) =>
@@ -89,5 +91,7 @@ class ReaderThemeConfig implements JSONable {
       'backgroundColor: $backgroundColor, '
       'textAlign: $textAlign, '
       'lineHeight: $lineHeight, '
-      'textMargin: $textMargin}';
+      'textMargin: $textMargin, '
+      'fontFamily: $fontFamily, '
+      'fontWeight: $fontWeight}';
 }

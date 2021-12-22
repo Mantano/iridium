@@ -20,7 +20,7 @@ abstract class ReaderAnnotationRepository {
   Future<void> delete(List<String> deletedIds);
 
   Future<List<ReaderAnnotation>> allWhere({
-    Predicate predicate = Predicate.acceptAll,
+    Predicate<ReaderAnnotation> predicate = const AcceptAllPredicate(),
   });
 
   void notifyDeletedIds(List<String> deletedIds) =>

@@ -6,10 +6,13 @@ import 'dart:ui';
 
 import 'package:dfunc/dfunc.dart';
 import 'package:mno_navigator/epub.dart';
+import 'package:mno_shared/publication.dart';
 
 class ReadiumThemeValues {
   final ReaderThemeConfig readerTheme;
   final ViewerSettings viewerSettings;
+  bool advanced = false;
+  bool scroll = false;
 
   ReadiumThemeValues(this.readerTheme, this.viewerSettings);
 
@@ -20,6 +23,12 @@ class ReadiumThemeValues {
       .replaceFirst("{{textColor}}", textColor)
       .replaceFirst("{{textAlign}}", textAlign)
       .replaceFirst("{{lineHeight}}", lineHeight)
+      .replaceFirst(
+          "{{scroll}}", scroll ? "readium-scroll-off" : "readium-scroll-on")
+      .replaceFirst("{{advancedSettings}}",
+          advanced ? "readium-advanced-off" : "readium-advanced-on")
+      .replaceFirst("{{fontOverride}}",
+          (fontFamily != "inherit") ? "readium-font-on" : "readium-font-off")
       .replaceFirst("{{fontFamily}}", fontFamily)
       .replaceFirst("{{fontWeight}}", fontWeight);
 
@@ -29,10 +38,17 @@ class ReadiumThemeValues {
         "--RS__verticalMargin": verticalMargin,
         "--RS__backgroundColor": backgroundColor,
         "--RS__textColor": textColor,
-        "--USER__textAlign": textAlign,
-        "--USER__lineHeight": lineHeight,
-        "--USER__fontSize": fontSize,
-        "--USER__fontFamily": fontFamily,
+        ReadiumCSSName.textAlignment.name: textAlign,
+        ReadiumCSSName.lineHeight.name: lineHeight,
+        ReadiumCSSName.fontSize.name: fontSize,
+        ReadiumCSSName.publisherDefault.name:
+            advanced ? "readium-advanced-off" : "readium-advanced-on",
+        ReadiumCSSName.scroll.name:
+            scroll ? "readium-scroll-on" : "readium-scroll-off",
+        ReadiumCSSName.fontOverride.name:
+            (fontFamily != "inherit") ? "readium-font-on" : "readium-font-off",
+        ReadiumCSSName.fontFamily.name: fontFamily,
+        // TODO Never used, should remove...
         "--USER__fontWeight": fontWeight,
       };
 
@@ -70,9 +86,7 @@ class ReadiumThemeValues {
   static String _formatColor(int color) =>
       "#${(color & 0xFFFFFF).toRadixString(16).padLeft(6, '0')}";
 
-  static String formatFontFamily(String? fontFamily) =>
-      (fontFamily == null) ? "inherit" : "font-family: \"$fontFamily\"";
+  static String formatFontFamily(String? fontFamily) => fontFamily ?? "inherit";
 
-  static String formatFontWeight(String? fontWeight) =>
-      (fontWeight == null) ? "inherit" : "font-weight: \"$fontWeight\"";
+  static String formatFontWeight(String? fontWeight) => fontWeight ?? "inherit";
 }

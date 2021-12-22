@@ -18,7 +18,7 @@ class CbzController extends PublicationController {
 
   CbzController(
     Function onServerClosed,
-    Function onPageJump,
+    Function? onPageJump,
     Future<String?> locationFuture,
     FileAsset fileAsset,
     Future<Streamer> streamerFuture,

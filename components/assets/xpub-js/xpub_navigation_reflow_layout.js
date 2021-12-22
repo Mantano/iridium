@@ -329,102 +329,108 @@
     }
 
     xpub.initPagination = function() {
-        if (xpub.observers != undefined) {
-            for (i = 0; i < xpub.observers.length; i++) {
-                xpub.observers[i].disconnect();
-            }
-        }
-        xpub.observers = [];
-
-        let paginator = $('#xpub_paginator');
-        paginator.empty();
-
-        let nbCols = $('#xpub_contenuSpineItem').howMuchCols();
-        xpub.paginationInfo.columnCount = nbCols;
-        if (xpub.screenshotConfig) {
-            let spineItemPageThumbnailsCount = $('#xpub_contenuSpineItem').
-                        howMuchCols(xpub.screenshotConfig.nbThumbnails);
-            xpub.paginationInfo.nbThumbnailsCount = spineItemPageThumbnailsCount;
-        }
-
-        for (i = 0; i < nbCols; i++) {
-            let divText = "<div id=\"xpub_page_" + i + "\" data-page=\"" + i + "\" class=\"xpub_page_overlay\">" +
-            "   <div class=\"xpub_page_bookmark\" data-page=\"" + i + "\" data-prevent-tap=\"true\">" +
-            "      <img src=\"/xpub-assets/bookmark.svg\" />" +
-            "   </div>" +
-            "</div>";
-            paginator.eq(0).append(divText);
-        }
-        paginator.show();
-
-        let firstDivSelector = '#xpub_page_0';
-        let lastDivSelector = '#xpub_page_' + (nbCols - 1);
-
-        for (i = 0; i < nbCols; i++) {
-            let observer = new IntersectionObserver(function (entries) {
-                if (entries[0].isIntersecting) {
-                    let index = $(entries[0].target).data("page");
-                    xpub.paginationInfo.currentSpreadIndex = index;
-                    xpub.triggerOnPaginationChanged();
+        document.fonts.ready.then(function () {
+            if (xpub.observers != undefined) {
+                for (i = 0; i < xpub.observers.length; i++) {
+                    xpub.observers[i].disconnect();
                 }
-            }, {threshold: [0.99]});
-            let querySelector = document.querySelector('#xpub_page_' + i);
-            if (querySelector != null) {
-                observer.observe(querySelector);
-                xpub.observers.push(observer);
             }
-        }
+            xpub.observers = [];
 
-        $('.xpub_page_bookmark').click(function(event) {
-            xpub.navigation.refreshPaginationInfo();
-            let paginationInfo = getPaginationInfo();
-            let pageIndex = paginationInfo.openPages[0].spineItemPageIndex;
-            $('.xpub_page_bookmark[data-page=' + pageIndex + '] img').
-                    toggle(paginationInfo.pageBookmarks.length == 0);
-            paginationInfo.text = xpub.bookmarks.getTextSnippet();
-            onToggleBookmark(JSON.stringify(paginationInfo));
+            let paginator = $('#xpub_paginator');
+            paginator.empty();
+
+            let nbCols = $('#xpub_contenuSpineItem').howMuchCols();
+            xpub.paginationInfo.columnCount = nbCols;
+            if (xpub.screenshotConfig) {
+                let spineItemPageThumbnailsCount = $('#xpub_contenuSpineItem').
+                            howMuchCols(xpub.screenshotConfig.nbThumbnails);
+                xpub.paginationInfo.nbThumbnailsCount = spineItemPageThumbnailsCount;
+            }
+
+            for (i = 0; i < nbCols; i++) {
+                let divText = "<div id=\"xpub_page_" + i + "\" data-page=\"" + i + "\" class=\"xpub_page_overlay\">" +
+                "   <div class=\"xpub_page_bookmark\" data-page=\"" + i + "\" data-prevent-tap=\"true\">" +
+                "      <img src=\"/xpub-assets/bookmark.svg\" />" +
+                "   </div>" +
+                "</div>";
+                paginator.eq(0).append(divText);
+            }
+            paginator.show();
+
+            let firstDivSelector = '#xpub_page_0';
+            let lastDivSelector = '#xpub_page_' + (nbCols - 1);
+
+            for (i = 0; i < nbCols; i++) {
+                let observer = new IntersectionObserver(function (entries) {
+                    if (entries[0].isIntersecting) {
+                        let index = $(entries[0].target).data("page");
+                        xpub.paginationInfo.currentSpreadIndex = index;
+                        xpub.triggerOnPaginationChanged();
+                    }
+                }, {threshold: [0.99]});
+                let querySelector = document.querySelector('#xpub_page_' + i);
+                if (querySelector != null) {
+                    observer.observe(querySelector);
+                    xpub.observers.push(observer);
+                }
+            }
+
+            $('.xpub_page_bookmark').click(function(event) {
+                xpub.navigation.refreshPaginationInfo();
+                let paginationInfo = getPaginationInfo();
+                let pageIndex = paginationInfo.openPages[0].spineItemPageIndex;
+                $('.xpub_page_bookmark[data-page=' + pageIndex + '] img').
+                        toggle(paginationInfo.pageBookmarks.length == 0);
+                paginationInfo.text = xpub.bookmarks.getTextSnippet();
+                onToggleBookmark(JSON.stringify(paginationInfo));
+            });
+
+            let observerBeginning = new IntersectionObserver(function (entries) {
+                // isIntersecting is true when element and viewport are overlapping
+                // isIntersecting is false when element and viewport don't overlap
+                onBeginningVisibilityChanged(entries[0].isIntersecting);
+            }, {threshold: [0.8]});
+            let observerEnd = new IntersectionObserver(function (entries) {
+                // isIntersecting is true when element and viewport are overlapping
+                // isIntersecting is false when element and viewport don't overlap
+                onEndVisibilityChanged(entries[0].isIntersecting);
+            }, {threshold: [0.8]});
+            xpub.observers.push(observerBeginning);
+            xpub.observers.push(observerEnd);
+            let firstDivQuerySelector = document.querySelector(firstDivSelector);
+            if (firstDivQuerySelector != null) {
+                observerBeginning.observe(firstDivQuerySelector);
+            }
+            let lastDivQuerySelector = document.querySelector(lastDivSelector);
+            if (lastDivQuerySelector != null) {
+                observerEnd.observe(lastDivQuerySelector);
+            }
+            xpub.bookmarks.generatePageNumberForCfi();
+            xpub.elementIdsWithPageIndex = new Map();
+            for (let i in xpub.elementIds) {
+                let elementId = xpub.elementIds[i];
+                let pageIndex = cfiNavigationLogic.getPageForElementId(elementId);
+                xpub.elementIdsWithPageIndex.set(elementId, pageIndex);
+            }
+
+            if (xpub.screenshotConfig) {
+                document.fonts.ready.then(function () {
+                    let nbThumbnails = xpub.screenshotConfig.nbThumbnails;
+                    let xpubContainer = $('.xpub_container');
+                    let containerHeight = xpubContainer[0].clientHeight;
+                    let containerWidth = xpubContainer[0].clientWidth;
+                    let translateLeft = -(containerWidth / nbThumbnails * ((nbThumbnails - 1) / 2));
+                    let translateTop = -(containerHeight / nbThumbnails * ((nbThumbnails - 1) / 2));
+                    let scale = 1 / nbThumbnails;
+                    $('#xpub_contenuSpineItem')[0].style.transform = "translate(" + translateLeft + "px, " + translateTop + "px) scale(" + scale + ")";
+                    if (paginator.length == 0) {
+                        document.fonts.ready.then(function () {
+                            xpub.triggerOnPaginationChanged();
+                        });
+                    }
+                });
+            }
         });
-
-        let observerBeginning = new IntersectionObserver(function (entries) {
-            // isIntersecting is true when element and viewport are overlapping
-            // isIntersecting is false when element and viewport don't overlap
-            onBeginningVisibilityChanged(entries[0].isIntersecting);
-        }, {threshold: [0.8]});
-        let observerEnd = new IntersectionObserver(function (entries) {
-            // isIntersecting is true when element and viewport are overlapping
-            // isIntersecting is false when element and viewport don't overlap
-            onEndVisibilityChanged(entries[0].isIntersecting);
-        }, {threshold: [0.8]});
-        xpub.observers.push(observerBeginning);
-        xpub.observers.push(observerEnd);
-        let firstDivQuerySelector = document.querySelector(firstDivSelector);
-        if (firstDivQuerySelector != null) {
-            observerBeginning.observe(firstDivQuerySelector);
-        }
-        let lastDivQuerySelector = document.querySelector(lastDivSelector);
-        if (lastDivQuerySelector != null) {
-            observerEnd.observe(lastDivQuerySelector);
-        }
-        xpub.bookmarks.generatePageNumberForCfi();
-        xpub.elementIdsWithPageIndex = new Map();
-        for (let i in xpub.elementIds) {
-            let elementId = xpub.elementIds[i];
-            let pageIndex = cfiNavigationLogic.getPageForElementId(elementId);
-            xpub.elementIdsWithPageIndex.set(elementId, pageIndex);
-        }
-
-        if (xpub.screenshotConfig) {
-            let nbThumbnails = xpub.screenshotConfig.nbThumbnails;
-            let xpubContainer = $('.xpub_container');
-            let containerHeight = xpubContainer[0].clientHeight;
-            let containerWidth = xpubContainer[0].clientWidth;
-            let translateLeft = -(containerWidth / nbThumbnails * ((nbThumbnails - 1) / 2));
-            let translateTop = -(containerHeight / nbThumbnails * ((nbThumbnails - 1) / 2));
-            let scale = 1 / nbThumbnails;
-            $('#xpub_contenuSpineItem')[0].style.transform = "translate(" + translateLeft + "px, " + translateTop + "px) scale(" + scale + ")";
-            if (paginator.length == 0) {
-                 xpub.triggerOnPaginationChanged();
-            }
-        }
     };
 })();

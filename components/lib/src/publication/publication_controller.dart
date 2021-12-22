@@ -16,7 +16,7 @@ import 'package:mno_streamer/parser.dart';
 
 abstract class PublicationController {
   final Function onServerClosed;
-  final Function onPageJump;
+  final Function? onPageJump;
   final Future<String?> locationFuture;
   final FileAsset fileAsset;
   final Future<Streamer> streamerFuture;
@@ -129,9 +129,9 @@ abstract class PublicationController {
   }
 
   void _onReaderCommand(ReaderCommand command) {
-    if (pageControllerAttached) {
+    if (pageControllerAttached && command.spineItemIndex != null) {
       jumpToPage(command.spineItemIndex!);
-      onPageJump();
+      onPageJump?.call();
     }
   }
 }

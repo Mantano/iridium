@@ -87,6 +87,9 @@
   --USER__lineHeight: {{lineHeight}};
   --RS__backgroundColor: {{backgroundColor}};
   --RS__textColor: {{textColor}};
+  --USER__scroll: {{scroll}};
+  --USER__advancedSettings: {{advancedSettings}};
+  --USER__fontOverride: {{fontOverride}};
   --USER__fontFamily: {{fontFamily}};
   --USER__fontWeight: {{fontWeight}};
   --USER__lineHeight: {{lineHeight}};

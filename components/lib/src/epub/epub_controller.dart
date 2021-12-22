@@ -17,7 +17,7 @@ class EpubController extends PublicationController {
 
   EpubController(
     Function onServerClosed,
-    Function onPageJump,
+    Function? onPageJump,
     Future<String?> locationFuture,
     FileAsset fileAsset,
     Future<Streamer> streamerFuture,
