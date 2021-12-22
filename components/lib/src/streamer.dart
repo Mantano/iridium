@@ -54,7 +54,7 @@ class Streamer {
   final ArchiveFactory archiveFactory;
 
   /// [pdfFactory] provide a way to create [PdfDocument] instance.
-  final PdfDocumentFactory pdfFactory;
+  final PdfDocumentFactory? pdfFactory;
 
   /// [onCreatePublication] is a callback that is called after the
   /// [PublicationBuilder] is created.
@@ -67,7 +67,7 @@ class Streamer {
       this.ignoreDefaultParsers = false,
       this.contentProtections = const [],
       this.archiveFactory = const DefaultArchiveFactory(),
-      required this.pdfFactory,
+      this.pdfFactory,
       OnCreatePublication? onCreatePublication})
       : _parsers = parsers,
         this.onCreatePublication =
@@ -167,9 +167,9 @@ class Streamer {
 
   List<StreamPublicationParser> _getDefaultParsers() => _defaultParsers ??= [
         EpubParser(),
-        PdfParser(pdfFactory),
+        if (pdfFactory != null) PdfParser(pdfFactory!),
         ImageParser(),
-        ReadiumWebPubParser(pdfFactory),
+        if (pdfFactory != null) ReadiumWebPubParser(pdfFactory),
       ];
 
   List<StreamPublicationParser> _getParsers() => List.of(_parsers)
