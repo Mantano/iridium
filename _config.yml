@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Iridium
+title: Iridium [Ir]
 subtitle: The Multiplatform E-Reader SDK
 repository: Mantano/iridium
 email: iridium@mantano.com
