@@ -13,17 +13,24 @@ This SDK provides ppen-source unofficial Dart/Flutter ports of Readium 2 (R2)
 components<sup>[1](#readium_foundation)</sup>, following
 the [Readium 2 architecture](https://github.com/readium/architecture):
 
-
 | Name                                                                          | Usage                                                                       |
 |-------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| [**Mno OPDS**](https://pub.dev/packages/mno_opds)                             | OPDS parsers                                                                |
-| [**mno_shared_dart**](https://github.com/Mantano/mno_shared_dart)             | Shared Publication models and utilities                                     |
-| [**mno_streamer_dart**](https://github.com/Mantano/mno_streamer_dart)         | Publication parsers                                                         |
-| [**mno_server_dart**](https://github.com/Mantano/mno_server_dart)             | Local HTTP server                                                           |
-| [**mno_navigator_flutter**](https://github.com/Mantano/mno_navigator_flutter) | Navigator                                                                   |
-| [**mno_opds_dart**](https://github.com/Mantano/mno_opds_dart)                 | Parsers for OPDS catalog feeds                                              |
-| [**mno_commons_dart**](https://github.com/Mantano/mno_commons_dart)           | Other misc. utilities (specific to this Flutter port, not found in Readium) |
-| [**mno_lcp_dart**](https://github.com/Mantano/mno_lcp_dart)                   | Service and models for Readium LCP (soon public)                            |
+| [**Mno
+OPDS**](https://pub.dev/packages/mno_opds)                             | OPDS parsers                                                                |
+| [**
+mno_shared_dart**](https://github.com/Mantano/mno_shared_dart)             | Shared Publication models and utilities                                     |
+| [**
+mno_streamer_dart**](https://github.com/Mantano/mno_streamer_dart)         | Publication parsers                                                         |
+| [**
+mno_server_dart**](https://github.com/Mantano/mno_server_dart)             | Local HTTP server                                                           |
+| [**
+mno_navigator_flutter**](https://github.com/Mantano/mno_navigator_flutter) | Navigator                                                                   |
+| [**
+mno_opds_dart**](https://github.com/Mantano/mno_opds_dart)                 | Parsers for OPDS catalog feeds                                              |
+| [**
+mno_commons_dart**](https://github.com/Mantano/mno_commons_dart)           | Other misc. utilities (specific to this Flutter port, not found in Readium) |
+| [**
+mno_lcp_dart**](https://github.com/Mantano/mno_lcp_dart)                   | Service and models for Readium LCP (soon public)                            |
 
 ## Why this name?
 
@@ -61,6 +68,11 @@ multiple modules could be achieved by developing some kind of "super-module", bu
   port, not found in Readium)
 * [mno_lcp_dart](https://github.com/Mantano/mno_lcp_dart) – Service and models for Readium LCP (soon public)
 * [iridium_demo](https://github.com/Mantano/iridium-demo) – Iridium SDK demo app
+
+## Applications based on Iridium
+
+OK... Let's face it, Iridium is brand new. So this list is currently reduced to Mantano's own forthcoming app, but good surprises are on the way ;-)
+
 
 -----------
 <a name="readium_foundation">1</a>: Readium is a trademark of the [Readium Foundation](https://readium.org/))
