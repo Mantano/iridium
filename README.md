@@ -13,7 +13,7 @@ collect external funding or aggregate external contributors.
 
 ## Components
 
-This SDK provides ppen-source unofficial Dart/Flutter ports of Readium 2 (R2)
+This SDK provides open-source unofficial Dart/Flutter ports of Readium 2 (R2)
 components<sup>[1](#readium_foundation)</sup>, following
 the [Readium 2 architecture](https://github.com/readium/architecture):
 
