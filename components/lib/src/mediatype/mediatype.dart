@@ -127,6 +127,8 @@ class MediaType {
       MediaType._(type: "video", subtype: "mp4", fileExtension: "mp4");
   static const MediaType mpeg =
       MediaType._(type: "video", subtype: "mpeg", fileExtension: "mpeg");
+  static const MediaType mov =
+      MediaType._(type: "video", subtype: "mov", fileExtension: "mov");
   static const MediaType ncx = MediaType._(
       type: "application", subtype: "x-dtbncx+xml", fileExtension: "ncx");
   static const MediaType ogg =
@@ -239,6 +241,7 @@ class MediaType {
     lcpProtectedPdf,
     lcpStatusDocument,
     lpf,
+    mov,
     mp3,
     mp4,
     mpeg,
