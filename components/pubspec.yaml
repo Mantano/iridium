@@ -20,7 +20,8 @@ dependencies:
   photo_view: ^0.13.0
   preload_page_view: ^0.1.6
   universal_io: ^2.0.4
-  webview_flutter: ^2.3.1
+  webview_flutter: 2.3.1
+  webview_flutter_android: 2.3.1
 
   mno_commons:
     path: ../mno_commons_dart

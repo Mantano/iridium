@@ -13,6 +13,7 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:universal_io/io.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -58,6 +59,10 @@ class WebViewScreenState extends State<WebViewScreen> {
 
   @override
   void initState() {
+    super.initState();
+    // Enable hybrid composition (see https://pub.dev/packages/webview_flutter/versions/2.8.0)
+    // Can be removed when upgrading to 3.0.0
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     LinkPagination linkPagination = publication.paginationInfo[spineItem]!;
     _spineItemContext = SpineItemContext(
       readerContext: readerContext,
@@ -95,7 +100,8 @@ class WebViewScreenState extends State<WebViewScreen> {
   Widget build(BuildContext context) {
     widget.widgetKeepAliveListener.register(position, this);
     currentSelectedSpineItem = false;
-
+    print(
+        '=== INITIAL URL: ${widget.address}/${spineItem.href.removePrefix("/")}');
     return buildWebView(spineItem);
   }
 
