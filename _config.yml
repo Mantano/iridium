@@ -19,6 +19,8 @@
 # in the templates via {{ site.myvariable }}.
 
 title: Iridium | The Multiplatform E-Reader SDK
+page.title: Iridium
+page.subtitle: The Multiplatform E-Reader SDK
 repository: Mantano/iridium
 email: iridium@mantano.com
 #  Write an awesome description for your new site here. You can edit this

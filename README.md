@@ -1,5 +1,3 @@
-# Iridium [Ir], the multi-platform reader toolkit
-
 Iridium is a multiplatform e-reader Software Development Kit. It leverages Flutter's multiplatform capabilities and
 minimizes the platform-specific code as much as possible. Hence, it does provide a really unified codebase.
 
