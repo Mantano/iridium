@@ -1,4 +1,4 @@
-Iridium is a multiplatform e-reader Software Development Kit. It leverages Flutter's multiplatform capabilities and
+Iridium is an open-source multiplatform e-reader Software Development Kit developed by [Mantano](https://www.mantano.com). It leverages Flutter's multiplatform capabilities and
 minimizes the platform-specific code as much as possible. Hence, it does provide a really unified codebase.
 
 ## Supported platforms
