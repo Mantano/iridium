@@ -26,7 +26,7 @@ email: iridium@mantano.com
 #  Google search results) and in your feed.xml site description.
 description: >- # this means to ignore newlines until "baseurl:"
   Create ebook reading apps for iOS, Android,
-  Web, MacOS, Linux and Windows in minutes with this Flutter SDK!
+  Web, MacOS, Linux and Windows in minutes!
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://iridium.rocks" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: mantano_research
