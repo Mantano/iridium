@@ -11,11 +11,21 @@ collect external funding or aggregate external contributors.
 
 ## Components
 
-This SDK provides:
+This SDK provides ppen-source unofficial Dart/Flutter ports of Readium 2 (R2)
+components<sup>[1](#readium_foundation)</sup>, following
+the [Readium 2 architecture](https://github.com/readium/architecture):
 
-- Open-source unofficial Dart/Flutter ports of Readium 2 (R2) components<sup>[1](#readium_foundation)</sup>, following
-  the [Readium 2 architecture](https://github.com/readium/architecture).
-- Private components and demo app, accessible through [sponsored contributions](https://github.com/sponsors/Mantano).
+
+| Name                                                                          | Usage                                                                       |
+|-------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| [**Mno OPDS**](https://pub.dev/packages/mno_opds)                             | OPDS parsers                                                                |
+| [**mno_shared_dart**](https://github.com/Mantano/mno_shared_dart)             | Shared Publication models and utilities                                     |
+| [**mno_streamer_dart**](https://github.com/Mantano/mno_streamer_dart)         | Publication parsers                                                         |
+| [**mno_server_dart**](https://github.com/Mantano/mno_server_dart)             | Local HTTP server                                                           |
+| [**mno_navigator_flutter**](https://github.com/Mantano/mno_navigator_flutter) | Navigator                                                                   |
+| [**mno_opds_dart**](https://github.com/Mantano/mno_opds_dart)                 | Parsers for OPDS catalog feeds                                              |
+| [**mno_commons_dart**](https://github.com/Mantano/mno_commons_dart)           | Other misc. utilities (specific to this Flutter port, not found in Readium) |
+| [**mno_lcp_dart**](https://github.com/Mantano/mno_lcp_dart)                   | Service and models for Readium LCP (soon public)                            |
 
 ## Why this name?
 
@@ -32,9 +42,7 @@ The Readium SDK is funded by public grants and membership fees. Iridium is compl
 which is a private company. As a consequence:
 
 - You can support this work by [becoming a sponsor](https://github.com/sponsors/Mantano);
-- One of the sponsorship tiers gives full access to Iridium's highly optimized "navigator" component source code.
-  However, *please note that the Iridium SDK can easily be used without this paid "navigator"
-  component*. In this case, you (obviously) have to develop it by yourself.
+- One of the sponsorship tiers gives full access to Iridium's optimized "navigator" component.
 
 ## Migrating an existing R2-based platform-specific app
 
