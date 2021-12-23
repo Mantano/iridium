@@ -1,5 +1,9 @@
-Iridium is an open-source multiplatform e-reader Software Development Kit developed by [Mantano](https://www.mantano.com). It leverages Flutter's multiplatform capabilities and
-minimizes the platform-specific code as much as possible. Hence, it does provide a really unified codebase.
+Iridium is an open-source multiplatform e-reader Software Development Kit developed with [Dart](https://dart.dev/)
+and [Flutter](https://flutter.dev/) by [Mantano](https://www.mantano.com).
+
+Iridium keeps the platform-specific code to the bare minimum (zero for now, in fact...). Hence, it does provide a really
+unified codebase. Until now, only the precompiled LCP DRM native library is specific to each platform, and is provided
+in binary form by [Edrlab](http://edrlab.org).
 
 ## Supported platforms
 
@@ -71,7 +75,8 @@ multiple modules could be achieved by developing some kind of "super-module", bu
 
 ## Applications based on Iridium
 
-OK... Let's face it, Iridium is brand new. So this list is currently reduced to Mantano's own forthcoming app, but good surprises are on the way ;-)
+OK... Let's face it, Iridium is brand new. So this list is currently reduced to Mantano's own forthcoming app, but good
+surprises are on the way ;-)
 
 
 -----------
