@@ -39,3 +39,10 @@ $header-bg-color: #c62641;
   background-image: none;
 //  background-image: linear-gradient(285deg, $header-bg-color-secondary 0%, $header-bg-color 100%);
 }
+
+.main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
+  color: #333333;
+  text-transform: uppercase;
+  font-family: 'Josefin Sans';
+  font-weight: 600;
+}
