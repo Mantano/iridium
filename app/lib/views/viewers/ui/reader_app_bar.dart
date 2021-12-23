@@ -27,6 +27,8 @@ class ReaderAppBarState extends State<ReaderAppBar> {
   late StreamSubscription<bool> _streamSubscription;
   double opacity = 0.0;
 
+  ReaderContext get readerContext => widget.readerContext;
+
   @override
   void initState() {
     super.initState();
@@ -91,6 +93,7 @@ class ReaderAppBarState extends State<ReaderAppBar> {
 
   void _onBookmarkPressed() {
     Fimber.d("_onBookmarkPressed");
+    readerContext.toggleBookmark();
   }
 
   void _onSettingsPressed() {
