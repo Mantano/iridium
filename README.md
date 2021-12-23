@@ -3,7 +3,7 @@ and [Flutter](https://flutter.dev/) by [Mantano](https://www.mantano.com).
 
 Iridium keeps the platform-specific code to the bare minimum (zero for now, in fact...). Hence, it does provide a really
 unified codebase. Until now, only the precompiled LCP DRM native library is specific to each platform, and is provided
-in binary form by [Edrlab](http://edrlab.org) that simply must be dropped into the source tree.
+in binary form by [Edrlab](https://edrlab.org) that simply must be dropped into the source tree.
 
 ## Supported platforms
 
