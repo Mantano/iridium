@@ -3,7 +3,7 @@ minimizes the platform-specific code as much as possible. Hence, it does provide
 
 ## Supported platforms
 
-Iridium is currently developed and tested on Android and iOS first, large parts of the code should be reusable for
+Iridium is currently developed and tested on Android and iOS first, but large parts of the code should be reusable for
 desktop and web apps. Such desktop and web versions are not currently on the roadmap, but will be considered if we can
 collect external funding or aggregate external contributors.
 
