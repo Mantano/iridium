@@ -253,6 +253,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   void _onPaginationInfo(PaginationInfo? paginationInfo) {
     if (currentSelectedSpineItem == true && paginationInfo != null) {
       readerContext.notifyCurrentLocation(paginationInfo, spineItem);
+      readerContext.currentSpineItemContext = _spineItemContext;
     }
   }
 }

@@ -195,6 +195,16 @@
         // END Mantano
     };
 
+    xpub.navigation.toggleBookmark = function()  {
+        xpub.navigation.refreshPaginationInfo();
+        let paginationInfo = getPaginationInfo();
+        let pageIndex = paginationInfo.openPages[0].spineItemPageIndex;
+        $('.xpub_page_bookmark[data-page=' + pageIndex + '] img').
+                toggle(paginationInfo.pageBookmarks.length == 0);
+        paginationInfo.text = xpub.bookmarks.getTextSnippet();
+        onToggleBookmark(JSON.stringify(paginationInfo));
+    };
+
     xpub.navigation.getNavigationInfo = function () {
         return {
             idref: xpub.currentSpineItem.idref,
@@ -377,13 +387,7 @@
             }
 
             $('.xpub_page_bookmark').click(function(event) {
-                xpub.navigation.refreshPaginationInfo();
-                let paginationInfo = getPaginationInfo();
-                let pageIndex = paginationInfo.openPages[0].spineItemPageIndex;
-                $('.xpub_page_bookmark[data-page=' + pageIndex + '] img').
-                        toggle(paginationInfo.pageBookmarks.length == 0);
-                paginationInfo.text = xpub.bookmarks.getTextSnippet();
-                onToggleBookmark(JSON.stringify(paginationInfo));
+                xpub.navigation.toggleBookmark();
             });
 
             let observerBeginning = new IntersectionObserver(function (entries) {

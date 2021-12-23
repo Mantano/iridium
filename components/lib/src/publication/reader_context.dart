@@ -45,6 +45,7 @@ class ReaderContext {
   late Map<Link, int> _tableOfContentsToSpineItemIndex;
   late Map<Type, ReaderCommandProcessor> readerCommandProcessors;
   Link? currentSpineItem;
+  SpineItemContext? currentSpineItemContext;
 
   Fetcher get fetcher => publication!.fetcher;
 
@@ -124,6 +125,8 @@ class ReaderContext {
     toolbarVisibility = !toolbarVisibility;
     _toolbarStreamController.add(toolbarVisibility);
   }
+
+  void toggleBookmark() => currentSpineItemContext?.jsApi?.toggleBookmark();
 
   List<String> getElementIdsFromSpineItem(int spineItemIndex) =>
       getTocItemsFromSpineItem(spineItemIndex)

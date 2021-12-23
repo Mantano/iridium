@@ -113,6 +113,10 @@ class JsApi {
     }
   }
 
+  void toggleBookmark() {
+    loadJS("xpub.navigation.toggleBookmark();");
+  }
+
   void addBookmark(ReaderAnnotation annotation) {
     loadJS(
         "xpub.bookmarks.addBookmark('${annotation.id}', ${annotation.location});");
