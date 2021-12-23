@@ -19,7 +19,7 @@ dependencies:
 
 dev_dependencies:
   lints: ^1.0.1
-  test: ^1.19.5
+  test: ^1.20.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
