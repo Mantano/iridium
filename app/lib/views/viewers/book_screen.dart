@@ -6,6 +6,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/material.dart';
 import 'package:iridium_app/views/viewers/model/in_memory_reader_annotation_repository.dart';
 import 'package:iridium_app/views/viewers/ui/reader_app_bar.dart';
+import 'package:iridium_app/views/viewers/ui/reader_toolbar.dart';
 import 'package:mno_commons/utils/functions.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_server/mno_server.dart';
@@ -114,16 +115,14 @@ abstract class BookScreenState<T extends BookScreen,
         SafeArea(
           child: child,
         ),
-        // Align(
-        //   alignment: Alignment.bottomCenter,
-        //   child: ReaderToolbar(
-        //     readerContext: readerContext,
-        //     serverAddress: state.address,
-        //     onPrevious: publicationController.onPrevious,
-        //     onNext: publicationController.onNext,
-        //     // maxHeight: constraints.maxHeight,
-        //   ),
-        // ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: ReaderToolbar(
+            readerContext: readerContext,
+            onPrevious: publicationController.onPrevious,
+            onNext: publicationController.onNext,
+          ),
+        ),
         SafeArea(
           top: false,
           child: Align(

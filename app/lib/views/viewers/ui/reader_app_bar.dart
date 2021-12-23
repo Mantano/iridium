@@ -53,9 +53,9 @@ class ReaderAppBarState extends State<ReaderAppBar> {
             child: SizedBox(
               height: height,
               child: AppBar(
-                backgroundColor: Colors.black,
+                backgroundColor: Theme.of(context).colorScheme.primaryContainer,
                 iconTheme: IconThemeData(
-                  color: Theme.of(context).iconTheme.color,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
                 actions: [
                   IconButton(

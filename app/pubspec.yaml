@@ -43,11 +43,10 @@ dependencies:
   dartx: ^1.0.0
   uuid: ^3.0.5
 #  objectdb: ^1.0.7+1
-  epub_viewer: ^0.2.4
   path_provider: ^2.0.8
   dio: ^4.0.4
   permission_handler: ^8.3.0
-  google_fonts: ^2.1.0
+  google_fonts: ^2.1.1
   flutter_spinkit: ^5.1.0
   idb_shim: ^2.0.1
   idb_sqflite: ^1.1.0
