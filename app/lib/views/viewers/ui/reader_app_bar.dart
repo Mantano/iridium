@@ -6,6 +6,8 @@ import 'dart:async';
 
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:iridium_app/util/router.dart';
+import 'package:iridium_app/views/viewers/ui/reader_navigation_screen.dart';
 import 'package:mno_navigator/publication.dart';
 
 class ReaderAppBar extends StatefulWidget {
@@ -102,5 +104,7 @@ class ReaderAppBarState extends State<ReaderAppBar> {
 
   void _onMenuPressed() {
     Fimber.d("onMenuPressed");
+    MyRouter.pushPage(
+        context, ReaderNavigationScreen(readerContext: readerContext));
   }
 }
