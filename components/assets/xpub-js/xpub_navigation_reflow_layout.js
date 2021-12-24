@@ -201,7 +201,7 @@
         let pageIndex = paginationInfo.openPages[0].spineItemPageIndex;
         $('.xpub_page_bookmark[data-page=' + pageIndex + '] img').
                 toggle(paginationInfo.pageBookmarks.length == 0);
-        paginationInfo.text = xpub.bookmarks.getTextSnippet();
+        paginationInfo.location.text.highlight = xpub.bookmarks.getTextSnippet();
         onToggleBookmark(JSON.stringify(paginationInfo));
     };
 

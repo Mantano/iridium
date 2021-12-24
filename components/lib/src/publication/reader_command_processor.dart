@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:dartx/dartx.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_shared/publication.dart';
@@ -19,8 +20,8 @@ class GoToHrefCommandProcessor extends ReaderCommandProcessor<GoToHrefCommand> {
 
   @override
   int findSpineItemIndex(GoToHrefCommand command, Publication publication) =>
-      publication.pageLinks
-          .indexWhere((spineItem) => spineItem.href == command.href);
+      publication.pageLinks.indexWhere(
+          (spineItem) => spineItem.href.removePrefix("/") == command.href);
 
   @override
   OpenPageRequest createOpenPageRequestForCommand(GoToHrefCommand command) =>

@@ -37,7 +37,7 @@ class ReadiumLocation {
           idref = json["idref"];
           contentCFI =
               json["contentCFI"] ?? (json["contentCFI"] ?? json["cfi"]);
-          elementId = json["elementId"];
+          elementId = json["elementId"] ?? "";
           percent = json["percent"] as double? ?? 0;
           version = json["version"] as int? ?? currentVersion;
         }

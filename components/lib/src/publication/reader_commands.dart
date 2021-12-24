@@ -11,7 +11,7 @@ abstract class ReaderCommand {
 
 class GoToHrefCommand extends ReaderCommand {
   final String href;
-  final String fragment;
+  final String? fragment;
 
   GoToHrefCommand(this.href, this.fragment);
 

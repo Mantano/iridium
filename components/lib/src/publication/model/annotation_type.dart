@@ -21,5 +21,5 @@ class AnnotationType {
       _values.firstWhere((type) => type.id == id);
 
   @override
-  String toString() => 'AnnotationKind.$name';
+  String toString() => 'AnnotationType.$name';
 }

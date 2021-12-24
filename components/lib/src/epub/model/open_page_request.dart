@@ -47,7 +47,7 @@ class OpenPageRequest implements JSONable {
       : this._(null, null, null, null, contentRefUrl, sourceFileHref, null,
             false, false);
 
-  OpenPageRequest.fromElementId(String idref, String elementId)
+  OpenPageRequest.fromElementId(String idref, String? elementId)
       : this._(idref, null, null, null, null, null, elementId, false, false);
 
   OpenPageRequest.fromIdrefLastPage(String idref)

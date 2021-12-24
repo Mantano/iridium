@@ -42,6 +42,7 @@
                         location.idref = nav.idref;
                         location.textCfi = cfis.textCfi ? cfis.textCfi : cfis.elementCfi.split("@")[0];
                         location.elementCfi = cfis.elementCfi;
+                        location.text = {};
                     }
                 }
             }
