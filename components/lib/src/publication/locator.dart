@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_commons/utils/take.dart';
 import 'package:mno_shared/publication.dart';
@@ -57,13 +56,13 @@ class Locator with EquatableMixin implements JSONable {
   static Locator? fromJson(Map<String, dynamic>? json) {
     String? href = json?.optNullableString("href");
     String? type = json?.optNullableString("type");
-    if (href == null || type == null) {
-      Fimber.i("[href] and [type] are required $json");
-      return null;
-    }
+    // if (href == null || type == null) {
+    //   Fimber.i("[href] and [type] are required $json");
+    //   return null;
+    // }
     return Locator(
-        href: href,
-        type: type,
+        href: href ?? "",
+        type: type ?? "",
         title: json.optNullableString("title"),
         locations: Locations.fromJson(json.optJSONObject("locations")),
         text: LocatorText.fromJson(json.optJSONObject("text")));
