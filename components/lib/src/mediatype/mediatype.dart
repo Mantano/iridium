@@ -49,6 +49,7 @@ class MediaType {
 
   static const MediaType aac =
       MediaType._(type: "audio", subtype: "aac", fileExtension: "aac");
+
   static const MediaType acsm = MediaType._(
       type: "application",
       subtype: "vnd.adobe.adept+xml",
@@ -123,8 +124,11 @@ class MediaType {
       type: "application", subtype: "lpf+zip", fileExtension: "lpf");
   static const MediaType mp3 =
       MediaType._(type: "audio", subtype: "mpeg", fileExtension: "mp3");
+
   static const MediaType mp4 =
       MediaType._(type: "video", subtype: "mp4", fileExtension: "mp4");
+  static const MediaType mp4a =
+      MediaType._(type: "video", subtype: "mp4", fileExtension: "m4a");
   static const MediaType mpeg =
       MediaType._(type: "video", subtype: "mpeg", fileExtension: "mpeg");
   static const MediaType mov =
@@ -195,7 +199,7 @@ class MediaType {
   static const MediaType wav =
       MediaType._(type: "audio", subtype: "wav", fileExtension: "wav");
   static const MediaType webmAudio =
-      MediaType._(type: "audio", subtype: "webm", fileExtension: "webm");
+      MediaType._(type: "audio", subtype: "webm", fileExtension: "weba");
   static const MediaType webmVideo =
       MediaType._(type: "video", subtype: "webm", fileExtension: "webm");
   static const MediaType webp =
@@ -206,8 +210,15 @@ class MediaType {
       MediaType._(type: "font", subtype: "woff2", fileExtension: "woff2");
   static const MediaType xhtml = MediaType._(
       type: "application", subtype: "xhtml+xml", fileExtension: "xhtml");
+  static const MediaType xaiff =
+      MediaType._(type: "audio", subtype: "xaiff", fileExtension: "aif");
+  static const MediaType xaiffc =
+      MediaType._(type: "audio", subtype: "xaiff", fileExtension: "aifc");
   static const MediaType xml =
       MediaType._(type: "application", subtype: "xml", fileExtension: "xml");
+  static const MediaType xmpegurl =
+      MediaType._(type: "audio", subtype: "mpeg", fileExtension: "m3u");
+
   static const MediaType zab = MediaType._(
       type: "application",
       subtype: "x.readium.zab+zip",
@@ -273,8 +284,13 @@ class MediaType {
     webp,
     woff,
     woff2,
+    xaiff,
+    xaiffc,
+    xhtml,
+    xhtml,
     xhtml,
     xml,
+    xmpegurl,
     zab,
     zip,
   ];
