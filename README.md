@@ -18,7 +18,6 @@ the [Readium 2 architecture](https://github.com/readium/architecture):
 
 | Name                                                                          | Usage                                                                       |
 |-------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| [**Mno OPDS**](https://pub.dev/packages/mno_opds)                             | OPDS parsers                                                                |
 | [**mno_shared_dart**](https://github.com/Mantano/mno_shared_dart)             | Shared Publication models and utilities                                     |
 | [**mno_streamer_dart**](https://github.com/Mantano/mno_streamer_dart)         | Publication parsers                                                         |
 | [**mno_server_dart**](https://github.com/Mantano/mno_server_dart)             | Local HTTP server                                                           |
