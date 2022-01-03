@@ -21,17 +21,17 @@ dependencies:
   flutter:
     sdk: flutter
   mno_commons:
-    path: ../../bookari_for_flutter/mno_commons_dart
+    path: ../mno_commons_dart
   mno_navigator:
-    path: ../../bookari_for_flutter/mno_navigator_flutter
+    path: ../mno_navigator_flutter
   mno_server:
-    path: ../../bookari_for_flutter/mno_server_dart
+    path: ../mno_server_dart
   mno_streamer:
-    path: ../../bookari_for_flutter/mno_streamer_dart
+    path: ../mno_streamer_dart
   mno_opds:
-    path: ../../bookari_for_flutter/mno_opds_dart
+    path: ../mno_opds_dart
   mno_shared:
-    path: ../../bookari_for_flutter/mno_shared_dart
+    path: ../mno_shared_dart
   cupertino_icons: ^1.0.4
   provider: ^6.0.1
   shared_preferences: ^2.0.11
