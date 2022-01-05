@@ -16,7 +16,7 @@ class FontSizeButton extends StatelessWidget {
         type: MaterialType.transparency,
         child: IconButton(
           splashRadius: 24.0,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           onPressed: () => viewerSettingsBloc
               .add((increase) ? IncrFontSizeEvent() : DecrFontSizeEvent()),
           icon: ImageIcon(

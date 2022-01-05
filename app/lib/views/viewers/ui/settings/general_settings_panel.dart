@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iridium_app/views/viewers/model/fonts.dart';
 import 'package:iridium_app/views/viewers/ui/settings/color_theme.dart';
 import 'package:iridium_app/views/viewers/ui/settings/font_size_button.dart';
 import 'package:mno_navigator/epub.dart';
@@ -37,8 +39,9 @@ class _GeneralSettingsPanelState extends State<GeneralSettingsPanel> {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 32.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _buildFontSizeRow(),
             _buildSelectFontRow(),
@@ -64,10 +67,36 @@ class _GeneralSettingsPanelState extends State<GeneralSettingsPanel> {
         ],
       );
 
-  Widget _buildSelectFontRow() => Row();
+  Widget _buildSelectFontRow() => Row(
+        children: [
+          const Text("Font"),
+          const Spacer(),
+          BlocBuilder(
+              bloc: readerThemeBloc,
+              builder: (BuildContext context, ReaderThemeState state) {
+                return DropdownButton<String>(
+                    value:
+                        state.readerTheme.fontFamily ?? Fonts.googleFonts.first,
+                    items: Fonts.googleFonts
+                        .map((fontFamily) => DropdownMenuItem(
+                              value: fontFamily,
+                              child: Text(fontFamily),
+                              onTap: () {
+                                readerThemeBloc.add(ReaderThemeEvent(
+                                    readerThemeBloc.currentTheme.copy(
+                                  fontFamily: fontFamily,
+                                )));
+                              },
+                            ))
+                        .toList(),
+                    onChanged: (value) {});
+              })
+        ],
+      );
 
   Widget _buildColorThemeRow() => ToggleButtons(
         isSelected: isSelected,
+        color: Theme.of(context).textTheme.button?.color,
         constraints: const BoxConstraints(
           minWidth: 64.0,
           minHeight: 48.0,

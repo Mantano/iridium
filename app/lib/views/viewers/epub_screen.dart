@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iridium_app/views/viewers/book_screen.dart';
+import 'package:iridium_app/views/viewers/model/fonts.dart';
 import 'package:mno_commons/utils/functions.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -82,7 +83,8 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
           assetProvider: _AssetProvider(),
           transformData: _transformAssetData,
         ),
-        FetcherRequestHandler(readerContext.publication!)
+        FetcherRequestHandler(readerContext.publication!,
+            googleFonts: Fonts.googleFonts)
       ];
   Uint8List _transformAssetData(String href, Uint8List data) {
     if (href == 'xpub-js/ReadiumCSS-after.css') {

@@ -4,7 +4,6 @@
 
 import 'dart:async';
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iridium_app/util/router.dart';
@@ -32,7 +31,6 @@ class ReaderAppBarState extends State<ReaderAppBar> {
   final GlobalKey _settingsKey = GlobalKey();
   late StreamSubscription<bool> _streamSubscription;
   double opacity = 0.0;
-  OverlayEntry? _overlayEntry;
 
   ReaderContext get readerContext => widget.readerContext;
 
@@ -50,7 +48,6 @@ class ReaderAppBarState extends State<ReaderAppBar> {
   void dispose() {
     super.dispose();
     _streamSubscription.cancel();
-    _overlayEntry?.remove();
   }
 
   @override
@@ -105,37 +102,41 @@ class ReaderAppBarState extends State<ReaderAppBar> {
   }
 
   void _onSettingsPressed() {
-    Fimber.d("onSettingsPressed");
     ViewerSettingsBloc viewerSettingsBloc =
         BlocProvider.of<ViewerSettingsBloc>(context);
     ReaderThemeBloc readerThemeBloc = BlocProvider.of<ReaderThemeBloc>(context);
-    _overlayEntry ??= OverlayEntry(builder: (context) {
-      RenderBox? renderButton =
-          _settingsKey.currentContext?.findRenderObject() as RenderBox?;
-      Offset? position = renderButton
-          ?.localToGlobal(renderButton.size.bottomCenter(Offset.zero));
-      return SafeArea(
-        child: Stack(
-          children: [
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTapDown: (state) => _overlayEntry?.remove(),
-            ),
-            Positioned(
-              top: (position?.dy ?? 0.0) - MediaQuery.of(context).padding.top,
-              right: 0,
-              width: MediaQuery.of(context).size.width * 2 / 3,
-              child: SettingsPanel(
-                readerContext: readerContext,
-                viewerSettingsBloc: viewerSettingsBloc,
-                readerThemeBloc: readerThemeBloc,
-              ),
-            ),
-          ],
-        ),
-      );
-    });
-    Overlay.of(context)?.insert(_overlayEntry!);
+    Navigator.push(
+        context,
+        PageRouteBuilder(
+            opaque: false,
+            pageBuilder: (BuildContext context, Animation<double> animation,
+                Animation<double> secondaryAnimation) {
+              RenderBox? renderButton =
+                  _settingsKey.currentContext?.findRenderObject() as RenderBox?;
+              Offset? position = renderButton
+                  ?.localToGlobal(renderButton.size.bottomCenter(Offset.zero));
+              return SafeArea(
+                child: Stack(
+                  children: [
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => Navigator.pop(context),
+                    ),
+                    Positioned(
+                      top: (position?.dy ?? 0.0) -
+                          MediaQuery.of(context).padding.top,
+                      right: 0,
+                      width: MediaQuery.of(context).size.width * 2 / 3,
+                      child: SettingsPanel(
+                        readerContext: readerContext,
+                        viewerSettingsBloc: viewerSettingsBloc,
+                        readerThemeBloc: readerThemeBloc,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }));
   }
 
   void _onMenuPressed() {

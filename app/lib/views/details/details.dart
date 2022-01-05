@@ -67,9 +67,7 @@ class _DetailsState extends State<Details> {
                 },
                 icon: Icon(
                   detailsProvider.faved ? Icons.favorite : Feather.heart,
-                  color: detailsProvider.faved
-                      ? Colors.red
-                      : Theme.of(context).iconTheme.color,
+                  color: detailsProvider.faved ? Colors.red : null,
                 ),
               ),
               IconButton(

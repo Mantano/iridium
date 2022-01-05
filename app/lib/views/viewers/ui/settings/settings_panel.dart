@@ -38,32 +38,36 @@ class _SettingsPanelState extends State<SettingsPanel>
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: 400.0,
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            title: TabBar(
-              labelColor: Theme.of(context).colorScheme.onPrimary,
+        height: 320.0,
+        child: Card(
+          elevation: 8.0,
+          child: Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              title: TabBar(
+                labelColor: Theme.of(context).colorScheme.onPrimary,
+                controller: _tabController,
+                tabs: const [
+                  Tab(text: "SETTINGS"),
+                  Tab(text: "ADVANCED"),
+                ],
+              ),
+            ),
+            body: TabBarView(
               controller: _tabController,
-              tabs: const [
-                Tab(text: "SETTINGS"),
-                Tab(text: "ADVANCED"),
+              children: [
+                GeneralSettingsPanel(
+                  readerContext: widget.readerContext,
+                  viewerSettingsBloc: widget.viewerSettingsBloc,
+                  readerThemeBloc: widget.readerThemeBloc,
+                ),
+                AdvancedSettingsPanel(
+                  readerContext: widget.readerContext,
+                  readerThemeBloc: widget.readerThemeBloc,
+                ),
               ],
             ),
-          ),
-          body: TabBarView(
-            controller: _tabController,
-            children: [
-              GeneralSettingsPanel(
-                readerContext: widget.readerContext,
-                viewerSettingsBloc: widget.viewerSettingsBloc,
-                readerThemeBloc: widget.readerThemeBloc,
-              ),
-              AdvancedSettingsPanel(
-                readerContext: widget.readerContext,
-                readerThemeBloc: widget.readerThemeBloc,
-              ),
-            ],
           ),
         ),
       );

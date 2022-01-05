@@ -27,8 +27,9 @@ class _AdvancedSettingsPanelState extends State<AdvancedSettingsPanel> {
       bloc: widget.readerThemeBloc,
       builder: (BuildContext context, ReaderThemeState state) {
         return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _buildPublishersDefaultRow(),
               _buildTextAlignmentRow(state),
