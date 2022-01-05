@@ -34,29 +34,28 @@ const String lineHeightName = "--USER__$lineHeightRef";
 // Also used for storing UserSettings in UserDefaults
 class ReadiumCSSName {
   static const ReadiumCSSName fontSize =
-      ReadiumCSSName._("fontSize", "--USER__fontSize");
+      ReadiumCSSName._(fontSizeRef, fontSizeName);
   static const ReadiumCSSName fontFamily =
-      ReadiumCSSName._("fontFamily", "--USER__fontFamily");
+      ReadiumCSSName._(fontFamilyRef, fontFamilyName);
   static const ReadiumCSSName fontOverride =
-      ReadiumCSSName._("fontOverride", "--USER__fontOverride");
+      ReadiumCSSName._(fontOverrideRef, fontOverrideName);
   static const ReadiumCSSName appearance =
-      ReadiumCSSName._("appearance", "--USER__appearance");
-  static const ReadiumCSSName scroll =
-      ReadiumCSSName._("scroll", "--USER__scroll");
+      ReadiumCSSName._(appearanceRef, appearanceName);
+  static const ReadiumCSSName scroll = ReadiumCSSName._(scrollRef, scrollName);
   static const ReadiumCSSName publisherDefault =
-      ReadiumCSSName._("publisherDefault", "--USER__advancedSettings");
+      ReadiumCSSName._(publisherDefaultRef, "--USER__advancedSettings");
   static const ReadiumCSSName textAlignment =
-      ReadiumCSSName._("textAlignment", "--USER__textAlign");
+      ReadiumCSSName._(textAlignmentRef, textAlignmentName);
   static const ReadiumCSSName columnCount =
-      ReadiumCSSName._("columnCount", "--USER__colCount");
+      ReadiumCSSName._(columnCountRef, columnCountName);
   static const ReadiumCSSName wordSpacing =
-      ReadiumCSSName._("wordSpacing", "--USER__wordSpacing");
+      ReadiumCSSName._(wordSpacingRef, wordSpacingName);
   static const ReadiumCSSName letterSpacing =
-      ReadiumCSSName._("letterSpacing", "--USER__letterSpacing");
+      ReadiumCSSName._(letterSpacingRef, letterSpacingName);
   static const ReadiumCSSName pageMargins =
-      ReadiumCSSName._("pageMargins", "--USER__pageMargins");
+      ReadiumCSSName._(pageMarginsRef, pageMarginsName);
   static const ReadiumCSSName lineHeight =
-      ReadiumCSSName._("lineHeight", "--USER__lineHeight");
+      ReadiumCSSName._(lineHeightRef, lineHeightName);
   static const ReadiumCSSName paraIndent =
       ReadiumCSSName._("paraIndent", "--USER__paraIndent");
   static const ReadiumCSSName hyphens =
@@ -81,10 +80,10 @@ class ReadiumCSSName {
     ligatures,
   ];
 
-  final String name;
   final String ref;
+  final String name;
 
-  const ReadiumCSSName._(this.name, this.ref);
+  const ReadiumCSSName._(this.ref, this.name);
 
   static ReadiumCSSName? from(String name) =>
       _values.firstOrNullWhere((element) => element.name == name);
