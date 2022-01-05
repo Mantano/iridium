@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_fimber/flutter_fimber.dart';
 import 'package:iridium_app/util/consts.dart';
-import 'package:iridium_app/theme/theme_config.dart';
 import 'package:iridium_app/view_models/app_provider.dart';
 import 'package:iridium_app/view_models/details_provider.dart';
 import 'package:iridium_app/view_models/favorites_provider.dart';

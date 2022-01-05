@@ -7,6 +7,7 @@ folders=("mno_commons_dart"
   "mno_server_dart"
   "mno_shared_dart"
   "mno_streamer_dart"
+  "app"
   #  "pdfium_ffi"
 )
 for i in "${folders[@]}"; do
