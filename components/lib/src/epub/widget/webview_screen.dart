@@ -48,7 +48,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   StreamSubscription<ReaderCommand>? _readerCommandSubscription;
   StreamSubscription<PaginationInfo>? _paginationInfoSubscription;
   late EpubCallbacks epubCallbacks;
-  bool? currentSelectedSpineItem;
+  late bool currentSelectedSpineItem;
 
   int get position => widget.position;
 
@@ -223,6 +223,7 @@ class WebViewScreenState extends State<WebViewScreen> {
 
   void _updateSpineItemPosition(CurrentSpineItemState state) {
     this.currentSelectedSpineItem = state.spineItemIdx == position;
+    _jsApi?.initPagination();
     if (state.spineItemIdx > position) {
       _jsApi?.navigateToEnd();
     } else if (state.spineItemIdx < position) {
@@ -249,7 +250,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   }
 
   void _onPaginationInfo(PaginationInfo? paginationInfo) {
-    if (currentSelectedSpineItem == true && paginationInfo != null) {
+    if (currentSelectedSpineItem && paginationInfo != null) {
       readerContext.notifyCurrentLocation(paginationInfo, spineItem);
       readerContext.currentSpineItemContext = _spineItemContext;
     }

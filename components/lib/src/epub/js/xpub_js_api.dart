@@ -59,13 +59,17 @@ class JsApi {
         loadJS("xpub.theme.updateProperty('$key', '$value');");
       });
       loadJS("xpub.theme.setVerticalMargin(${values.verticalMarginInt});");
-      loadJS("xpub.initPagination();");
+      initPagination();
     }
   }
 
   void updateFontSize(ViewerSettings viewerSettings) {
     loadJS(
         "xpub.theme.updateProperty('--USER__fontSize', '${viewerSettings.fontSize}%');");
+    initPagination();
+  }
+
+  void initPagination() {
     loadJS("xpub.initPagination();");
   }
 
