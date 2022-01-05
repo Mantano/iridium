@@ -1,13 +1,14 @@
-// Copyright (c) 2021 Mantano. All rights reserved.
+// Copyright (c) 2022 Mantano. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import 'dart:ui' show Color;
 
+import 'package:equatable/equatable.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_navigator/epub.dart';
 
-class ReaderThemeConfig implements JSONable {
+class ReaderThemeConfig with EquatableMixin implements JSONable {
   final String name;
   Color? textColor;
   Color? backgroundColor;
@@ -37,15 +38,26 @@ class ReaderThemeConfig implements JSONable {
         fontFamily = null,
         fontWeight = null;
 
-  ReaderThemeConfig clone() => ReaderThemeConfig(
-      name,
-      textColor,
-      backgroundColor,
-      textAlign,
-      lineHeight,
-      textMargin,
-      fontFamily,
-      fontWeight);
+  ReaderThemeConfig copy({
+    String? name,
+    Color? textColor,
+    Color? backgroundColor,
+    TextAlign? textAlign,
+    LineHeight? lineHeight,
+    TextMargin? textMargin,
+    String? fontFamily,
+    String? fontWeight,
+  }) =>
+      ReaderThemeConfig(
+        name ?? this.name,
+        textColor ?? this.textColor,
+        backgroundColor ?? this.backgroundColor,
+        textAlign ?? this.textAlign,
+        lineHeight ?? this.lineHeight,
+        textMargin ?? this.textMargin,
+        fontFamily ?? this.fontFamily,
+        fontWeight ?? this.fontWeight,
+      );
 
   static final ReaderThemeConfig defaultTheme = ReaderThemeConfig._none();
 
@@ -94,4 +106,16 @@ class ReaderThemeConfig implements JSONable {
       'textMargin: $textMargin, '
       'fontFamily: $fontFamily, '
       'fontWeight: $fontWeight}';
+
+  @override
+  List<Object?> get props => [
+        name,
+        textColor,
+        backgroundColor,
+        textAlign,
+        lineHeight,
+        textMargin,
+        fontFamily,
+        fontWeight,
+      ];
 }

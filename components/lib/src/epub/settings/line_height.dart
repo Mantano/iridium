@@ -1,10 +1,11 @@
-// Copyright (c) 2021 Mantano. All rights reserved.
+// Copyright (c) 2022 Mantano. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import 'package:equatable/equatable.dart';
+import 'package:mno_navigator/src/epub/settings/value_settings.dart';
 
-class LineHeight with EquatableMixin {
+class LineHeight with EquatableMixin implements ValueSettings {
   static const LineHeight factor_1_0 = LineHeight._(0, 1.0);
   static const LineHeight factor_1_25 = LineHeight._(1, 1.25);
   static const LineHeight factor_1_5 = LineHeight._(2, 1.5);
@@ -20,7 +21,9 @@ class LineHeight with EquatableMixin {
     factor_2_25,
   ];
 
+  @override
   final int id;
+  @override
   final double value;
 
   const LineHeight._(this.id, this.value);

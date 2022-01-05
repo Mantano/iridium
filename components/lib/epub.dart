@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Mantano. All rights reserved.
+// Copyright (c) 2022 Mantano. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -23,6 +23,7 @@ export 'package:mno_navigator/src/epub/settings/readium_theme_values.dart';
 export 'package:mno_navigator/src/epub/settings/screenshot_config.dart';
 export 'package:mno_navigator/src/epub/settings/text_align.dart';
 export 'package:mno_navigator/src/epub/settings/text_margin.dart';
+export 'package:mno_navigator/src/epub/settings/value_settings.dart';
 export 'package:mno_navigator/src/epub/settings/viewer_settings.dart';
 export 'package:mno_navigator/src/epub/utils/toc_utils.dart';
 export 'package:mno_navigator/src/epub/widget/epub_navigator.dart';

@@ -1,10 +1,11 @@
-// Copyright (c) 2021 Mantano. All rights reserved.
+// Copyright (c) 2022 Mantano. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
 import 'package:equatable/equatable.dart';
+import 'package:mno_navigator/src/epub/settings/value_settings.dart';
 
-class TextMargin with EquatableMixin {
+class TextMargin with EquatableMixin implements ValueSettings {
   static const TextMargin margin_0 = TextMargin._(0, 0.0);
   static const TextMargin margin_10 = TextMargin._(1, 10.0);
   static const TextMargin margin_20 = TextMargin._(2, 20.0);
@@ -20,7 +21,9 @@ class TextMargin with EquatableMixin {
     margin_50,
   ];
 
+  @override
   final int id;
+  @override
   final double value;
 
   const TextMargin._(this.id, this.value);

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Mantano. All rights reserved.
+// Copyright (c) 2022 Mantano. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -12,7 +12,7 @@ class ReaderThemeBloc extends Bloc<ReaderThemeEvent, ReaderThemeState> {
       : super(
             ReaderThemeState(defaultTheme ?? ReaderThemeConfig.defaultTheme)) {
     on<ReaderThemeEvent>(
-        (event, emit) => emit(ReaderThemeState(event.readerTheme.clone())));
+        (event, emit) => emit(ReaderThemeState(event.readerTheme.copy())));
   }
 
   ReaderThemeConfig get currentTheme => state.readerTheme;
