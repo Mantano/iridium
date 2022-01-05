@@ -1,24 +1,24 @@
-# Iridium [Ir], the multi-platform reader toolkit
+Iridium is an open-source multiplatform e-reader Software Development Kit developed with [Dart](https://dart.dev/)
+and [Flutter](https://flutter.dev/) by [Mantano](https://www.mantano.com).
 
-Iridium is a multiplatform e-reader Software Development Kit. It leverages Flutter's multiplatform capabilities and
-minimizes the platform-specific code as much as possible. Hence, it does provide a really unified codebase.
+Iridium keeps the platform-specific code to the bare minimum (zero for now, in fact...). Hence, it does provide a really
+unified codebase. Until now, only the precompiled LCP DRM native library is specific to each platform, and is provided
+in binary form by [Edrlab](https://edrlab.org) that simply must be dropped into the source tree.
 
 ## Supported platforms
 
-Iridium is currently developed and tested on Android and iOS first, large parts of the code should be reusable for
+Iridium is currently developed and tested on Android and iOS first, but large parts of the code should be reusable for
 desktop and web apps. Such desktop and web versions are not currently on the roadmap, but will be considered if we can
 collect external funding or aggregate external contributors.
 
 ## Components
 
-This SDK provides ppen-source unofficial Dart/Flutter ports of Readium 2 (R2)
+This SDK provides open-source unofficial Dart/Flutter ports of Readium 2 (R2)
 components<sup>[1](#readium_foundation)</sup>, following
 the [Readium 2 architecture](https://github.com/readium/architecture):
 
-
 | Name                                                                          | Usage                                                                       |
 |-------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| [**Mno OPDS**](https://pub.dev/packages/mno_opds)                             | OPDS parsers                                                                |
 | [**mno_shared_dart**](https://github.com/Mantano/mno_shared_dart)             | Shared Publication models and utilities                                     |
 | [**mno_streamer_dart**](https://github.com/Mantano/mno_streamer_dart)         | Publication parsers                                                         |
 | [**mno_server_dart**](https://github.com/Mantano/mno_server_dart)             | Local HTTP server                                                           |
@@ -26,6 +26,7 @@ the [Readium 2 architecture](https://github.com/readium/architecture):
 | [**mno_opds_dart**](https://github.com/Mantano/mno_opds_dart)                 | Parsers for OPDS catalog feeds                                              |
 | [**mno_commons_dart**](https://github.com/Mantano/mno_commons_dart)           | Other misc. utilities (specific to this Flutter port, not found in Readium) |
 | [**mno_lcp_dart**](https://github.com/Mantano/mno_lcp_dart)                   | Service and models for Readium LCP (soon public)                            |
+| [**mno_lcp_native_dart**](https://github.com/Mantano/mno_lcp_native_dart)     | Native interface for Readium LCP (soon public)                              |
 
 ## Why this name?
 
@@ -63,6 +64,12 @@ multiple modules could be achieved by developing some kind of "super-module", bu
   port, not found in Readium)
 * [mno_lcp_dart](https://github.com/Mantano/mno_lcp_dart) – Service and models for Readium LCP (soon public)
 * [iridium_demo](https://github.com/Mantano/iridium-demo) – Iridium SDK demo app
+
+## Applications based on Iridium
+
+OK... Let's face it, Iridium is brand new. So this list is currently reduced to Mantano's own forthcoming app, but good
+surprises are on the way ;-)
+
 
 -----------
 <a name="readium_foundation">1</a>: Readium is a trademark of the [Readium Foundation](https://readium.org/))
