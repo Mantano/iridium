@@ -82,6 +82,7 @@ class _InjectHtmlResource extends TransformingResource {
   /// The file extension is used to know if it's a JS or CSS.
   List<String> _createLinksToInject(EpubLayout renditionLayout) => [
         '/xpub-js/xpub.css',
+        '/xpub-js/fonts.css',
         '/xpub-js/ReadiumCSS-before.css',
         '/xpub-js/ReadiumCSS-default.css',
         '/xpub-js/ReadiumCSS-after.css',
