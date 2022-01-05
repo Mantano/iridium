@@ -56,6 +56,7 @@ dependencies:
   bloc: ^8.0.1
   flutter_bloc: ^8.0.0
   flutter_inappwebview: ^5.3.2
+  json_theme: ^3.2.3+1
 
 dev_dependencies:
   flutter_lints: ^1.0.4
@@ -71,3 +72,5 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/appainter_light_theme.json
+    - assets/appainter_dark_theme.json
