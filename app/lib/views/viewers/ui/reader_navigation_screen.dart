@@ -24,10 +24,17 @@ class _ReaderNavigationScreenState extends State<ReaderNavigationScreen>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
           bottom: TabBar(
-            labelColor: Theme.of(context).colorScheme.onPrimaryContainer,
+            labelColor: Theme.of(context).colorScheme.onPrimary,
             controller: _tabController,
             tabs: const [
               Tab(text: "Contents"),
