@@ -11,8 +11,6 @@ import 'package:mno_shared/publication.dart';
 class ReadiumThemeValues {
   final ReaderThemeConfig readerTheme;
   final ViewerSettings viewerSettings;
-  bool advanced = false;
-  bool scroll = false;
 
   ReadiumThemeValues(this.readerTheme, this.viewerSettings);
 
@@ -23,14 +21,13 @@ class ReadiumThemeValues {
       .replaceFirst("{{textColor}}", textColor)
       .replaceFirst("{{textAlign}}", textAlign)
       .replaceFirst("{{lineHeight}}", lineHeight)
-      .replaceFirst(
-          "{{scroll}}", scroll ? "readium-scroll-off" : "readium-scroll-on")
+      .replaceFirst("{{scroll}}",
+          readerTheme.scroll ? "readium-scroll-off" : "readium-scroll-on")
       .replaceFirst("{{advancedSettings}}",
-          advanced ? "readium-advanced-off" : "readium-advanced-on")
+          readerTheme.advanced ? "readium-advanced-off" : "readium-advanced-on")
       .replaceFirst("{{fontOverride}}",
           (fontFamily != "inherit") ? "readium-font-on" : "readium-font-off")
-      .replaceFirst("{{fontFamily}}", fontFamily)
-      .replaceFirst("{{fontWeight}}", fontWeight);
+      .replaceFirst("{{fontFamily}}", fontFamily);
 
   // c.f. ReadiumCSS-after.css
   Map<String, String> get cssVarsAndValues => {
@@ -41,15 +38,14 @@ class ReadiumThemeValues {
         ReadiumCSSName.textAlignment.name: textAlign,
         ReadiumCSSName.lineHeight.name: lineHeight,
         ReadiumCSSName.fontSize.name: fontSize,
-        ReadiumCSSName.publisherDefault.name:
-            advanced ? "readium-advanced-off" : "readium-advanced-on",
+        ReadiumCSSName.publisherDefault.name: readerTheme.advanced
+            ? "readium-advanced-off"
+            : "readium-advanced-on",
         ReadiumCSSName.scroll.name:
-            scroll ? "readium-scroll-on" : "readium-scroll-off",
+            readerTheme.scroll ? "readium-scroll-on" : "readium-scroll-off",
         ReadiumCSSName.fontOverride.name:
             (fontFamily != "inherit") ? "readium-font-on" : "readium-font-off",
         ReadiumCSSName.fontFamily.name: fontFamily,
-        // TODO Never used, should remove...
-        "--USER__fontWeight": fontWeight,
       };
 
   String get verticalMargin => "${verticalMarginInt}px";
@@ -70,11 +66,7 @@ class ReadiumThemeValues {
 
   String _fontFamilyAsString() => formatFontFamily(readerTheme.fontFamily);
 
-  String _fontWeightAsString() => formatFontWeight(readerTheme.fontWeight);
-
   String get fontFamily => _fontFamilyAsString();
-
-  String get fontWeight => _fontWeightAsString();
 
   String get textAlign => readerTheme.textAlign?.let((it) => it.name) ?? "";
 

@@ -17,6 +17,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
   TextMargin? textMargin;
   String? fontFamily;
   String? fontWeight;
+  bool advanced;
+  bool scroll;
 
   ReaderThemeConfig(
       this.name,
@@ -26,7 +28,9 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
       this.lineHeight,
       this.textMargin,
       this.fontFamily,
-      this.fontWeight);
+      this.fontWeight,
+      this.advanced,
+      this.scroll);
 
   ReaderThemeConfig._none()
       : name = "None",
@@ -36,7 +40,9 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         lineHeight = null,
         textMargin = null,
         fontFamily = null,
-        fontWeight = null;
+        fontWeight = null,
+        advanced = true,
+        scroll = false;
 
   ReaderThemeConfig copy({
     String? name,
@@ -47,6 +53,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
     TextMargin? textMargin,
     String? fontFamily,
     String? fontWeight,
+    bool? advanced,
+    bool? scroll,
   }) =>
       ReaderThemeConfig(
         name ?? this.name,
@@ -57,6 +65,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         textMargin ?? this.textMargin,
         fontFamily ?? this.fontFamily,
         fontWeight ?? this.fontWeight,
+        advanced ?? this.advanced,
+        scroll ?? this.scroll,
       );
 
   static final ReaderThemeConfig defaultTheme = ReaderThemeConfig._none();
@@ -71,6 +81,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         if (textMargin != null) "textMargin": textMargin!.id,
         if (fontFamily != null) "fontFamily": fontFamily,
         if (fontWeight != null) "fontWeight": fontWeight,
+        "advanced": advanced,
+        "scroll": scroll,
       };
 
   factory ReaderThemeConfig.fromJson(Map<String, Object> data) =>
@@ -83,6 +95,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         _asTextMargin(data["textMargin"]),
         data["fontFamily"] as String,
         data["fontWeight"] as String,
+        data["advanced"] as bool? ?? false,
+        data["scroll"] as bool? ?? false,
       );
 
   static Color? _asColor(dynamic color) =>
@@ -105,7 +119,9 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
       'lineHeight: $lineHeight, '
       'textMargin: $textMargin, '
       'fontFamily: $fontFamily, '
-      'fontWeight: $fontWeight}';
+      'fontWeight: $fontWeight, '
+      'advanced: $advanced, '
+      'scroll: $scroll}';
 
   @override
   List<Object?> get props => [
@@ -117,5 +133,7 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         textMargin,
         fontFamily,
         fontWeight,
+        advanced,
+        scroll,
       ];
 }
