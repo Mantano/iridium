@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Theme.of(context).bottomAppBarColor,
           selectedItemColor: Theme.of(context).colorScheme.secondary,
           unselectedItemColor: Colors.grey[500],
           elevation: 20,
