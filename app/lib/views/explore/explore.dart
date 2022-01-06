@@ -44,9 +44,10 @@ class _ExploreState extends State<Explore> {
 
   _buildBodyList(HomeProvider homeProvider) {
     return ListView.builder(
-      itemCount: homeProvider.top?.feed?.publications.length ?? 0,
+//      itemCount: homeProvider.top?.feed?.links.length ?? 0,
+      itemCount: homeProvider.top?.feed?.facets[1].links.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        Link? link = homeProvider.top?.feed?.links[index];
+        Link? link = homeProvider.top?.feed?.facets[1].links[index];
 
         // We don't need the tags from 0-9 because
         // they are not categories
