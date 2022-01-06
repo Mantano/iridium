@@ -134,7 +134,7 @@ class _ExploreState extends State<Explore> {
                       vertical: 10.0,
                     ),
                     child: BookCard(
-                      img: entry.coverLink?.href,
+                      img: entry.links[1].href,
                       entry: entry,
                     ),
                   );
