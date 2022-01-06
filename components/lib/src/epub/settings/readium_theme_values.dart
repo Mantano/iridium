@@ -22,9 +22,9 @@ class ReadiumThemeValues {
       .replaceFirst("{{textAlign}}", textAlign)
       .replaceFirst("{{lineHeight}}", lineHeight)
       .replaceFirst("{{scroll}}",
-          readerTheme.scroll ? "readium-scroll-off" : "readium-scroll-on")
+          readerTheme.scroll ? "readium-scroll-on" : "readium-scroll-off")
       .replaceFirst("{{advancedSettings}}",
-          readerTheme.advanced ? "readium-advanced-off" : "readium-advanced-on")
+          readerTheme.advanced ? "readium-advanced-on" : "readium-advanced-off")
       .replaceFirst("{{fontOverride}}",
           (fontFamily != "inherit") ? "readium-font-on" : "readium-font-off")
       .replaceFirst("{{fontFamily}}", fontFamily);
@@ -39,8 +39,8 @@ class ReadiumThemeValues {
         ReadiumCSSName.lineHeight.name: lineHeight,
         ReadiumCSSName.fontSize.name: fontSize,
         ReadiumCSSName.publisherDefault.name: readerTheme.advanced
-            ? "readium-advanced-off"
-            : "readium-advanced-on",
+            ? "readium-advanced-on"
+            : "readium-advanced-off",
         ReadiumCSSName.scroll.name:
             readerTheme.scroll ? "readium-scroll-on" : "readium-scroll-off",
         ReadiumCSSName.fontOverride.name:
