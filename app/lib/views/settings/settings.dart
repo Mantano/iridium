@@ -130,7 +130,7 @@ class _ProfileState extends State<Profile> {
             'About',
           ),
           content: const Text(
-            'Iridium Demo App by Mantano',
+            'Iridium Demo App by Mantano, adapted from JideGuru\'s Flutter eBook App',
           ),
           actions: <Widget>[
             TextButton(
