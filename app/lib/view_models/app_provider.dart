@@ -7,7 +7,7 @@ class AppProvider extends ChangeNotifier {
     checkTheme();
   }
 
-  ThemeData theme = ThemeConfig.lightTheme;
+  ThemeData theme = ThemeConfig.lightTheme!;
   Key key = UniqueKey();
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -39,10 +39,10 @@ class AppProvider extends ChangeNotifier {
     String r = prefs.getString('theme') ?? 'light';
 
     if (r == 'light') {
-      t = ThemeConfig.lightTheme;
+      t = ThemeConfig.lightTheme!;
       setTheme(ThemeConfig.lightTheme, 'light');
     } else {
-      t = ThemeConfig.darkTheme;
+      t = ThemeConfig.darkTheme!;
       setTheme(ThemeConfig.darkTheme, 'dark');
     }
 
