@@ -38,7 +38,7 @@ class _SettingsPanelState extends State<SettingsPanel>
 
   @override
   Widget build(BuildContext context) => SizedBox(
-        height: 320.0,
+        height: 400.0,
         child: Card(
           elevation: 8.0,
           child: Scaffold(

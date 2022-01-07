@@ -1,13 +1,14 @@
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart'
     show
+        LetterSpacing,
         LineHeight,
         ReaderThemeBloc,
         ReaderThemeConfig,
         ReaderThemeEvent,
         TextMargin,
-        ValueSettings;
+        ValueSettings,
+        WordSpacing;
 
 class SettingsRow<T extends ValueSettings> extends StatefulWidget {
   final ReaderThemeBloc readerThemeBloc;
@@ -54,7 +55,7 @@ class _SettingsRowState<T extends ValueSettings> extends State<SettingsRow<T>> {
     return null;
   }
 
-  String get valueLabel => (value != null) ? "\n${value!.value}" : "";
+  String get valueLabel => (value != null) ? "${value!.value}" : "auto";
 
   @override
   Widget build(BuildContext context) => Row(
@@ -77,7 +78,7 @@ class _SettingsRowState<T extends ValueSettings> extends State<SettingsRow<T>> {
           Expanded(
             child: Center(
               child: Text(
-                "${widget.label}$valueLabel",
+                "${widget.label}\n$valueLabel",
                 style: Theme.of(context).textTheme.bodyText1,
                 textAlign: TextAlign.center,
               ),
@@ -101,11 +102,13 @@ class _SettingsRowState<T extends ValueSettings> extends State<SettingsRow<T>> {
       );
 
   void applyValue(T? value) {
-    Fimber.d("value: $value");
     if (value != null) {
       readerThemeBloc.add(ReaderThemeEvent(readerTheme.copy(
         textMargin: (value is TextMargin) ? value : null,
         lineHeight: (value is LineHeight) ? value : null,
+        wordSpacing: (value is WordSpacing) ? value : null,
+        letterSpacing: (value is LetterSpacing) ? value : null,
+        advanced: true,
       )));
     }
   }

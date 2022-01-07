@@ -20,32 +20,33 @@ class AdvancedSettingsPanel extends StatefulWidget {
 }
 
 class _AdvancedSettingsPanelState extends State<AdvancedSettingsPanel> {
-  bool publisherDefaultValue = false;
+  ReaderThemeBloc get readerThemeBloc => widget.readerThemeBloc;
 
   @override
   Widget build(BuildContext context) => BlocBuilder(
-      bloc: widget.readerThemeBloc,
-      builder: (BuildContext context, ReaderThemeState state) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildPublishersDefaultRow(),
-              _buildTextAlignmentRow(state),
-              _buildPageMarginRow(state),
-              _buildLineSpacingRow(state),
-            ],
-          ),
-        );
-      });
+      bloc: readerThemeBloc,
+      builder: (BuildContext context, ReaderThemeState state) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildPublishersDefaultRow(state),
+                _buildTextAlignmentRow(state),
+                _buildPageMarginRow(state),
+                _buildWordSpacingRow(state),
+                _buildLetterSpacingRow(state),
+                _buildLineSpacingRow(state),
+              ],
+            ),
+          ));
 
-  Widget _buildPublishersDefaultRow() => SwitchListTile(
+  Widget _buildPublishersDefaultRow(ReaderThemeState state) => SwitchListTile(
         title: const Text("Publisher's default"),
-        value: publisherDefaultValue,
-        onChanged: (value) => setState(() {
-          publisherDefaultValue = value;
-        }),
+        value: !state.readerTheme.advanced,
+        onChanged: (value) =>
+            readerThemeBloc.add(ReaderThemeEvent(state.readerTheme.copy(
+          advanced: !value,
+        ))),
       );
 
   Widget _buildTextAlignmentRow(ReaderThemeState state) => Row(
@@ -66,6 +67,24 @@ class _AdvancedSettingsPanelState extends State<AdvancedSettingsPanel> {
         label: "Page Margins",
         value: state.readerTheme.textMargin,
         values: TextMargin.values,
+      );
+
+  Widget _buildWordSpacingRow(ReaderThemeState state) =>
+      SettingsRow<WordSpacing>(
+        readerThemeBloc: widget.readerThemeBloc,
+        readerTheme: state.readerTheme,
+        label: "Word Spacing",
+        value: state.readerTheme.wordSpacing,
+        values: WordSpacing.values,
+      );
+
+  Widget _buildLetterSpacingRow(ReaderThemeState state) =>
+      SettingsRow<LetterSpacing>(
+        readerThemeBloc: widget.readerThemeBloc,
+        readerTheme: state.readerTheme,
+        label: "Letter Spacing",
+        value: state.readerTheme.letterSpacing,
+        values: LetterSpacing.values,
       );
 
   Widget _buildLineSpacingRow(ReaderThemeState state) =>

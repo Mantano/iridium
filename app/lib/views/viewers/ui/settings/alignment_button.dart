@@ -27,6 +27,7 @@ class AlignmentButton extends StatelessWidget {
             onTap: () {
               readerThemeBloc.add(ReaderThemeEvent(readerTheme.copy(
                 textAlign: textAlign,
+                advanced: true,
               )));
             },
             child: Padding(
