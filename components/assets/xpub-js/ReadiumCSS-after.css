@@ -107,6 +107,8 @@
   --USER__fontOverride: {{fontOverride}};
   --USER__fontFamily: {{fontFamily}};
   --USER__lineHeight: {{lineHeight}};
+  --USER__wordSpacing: {{wordSpacing}};
+  --USER__letterSpacing: {{letterSpacing}};
   --RS__linkColor: #0000EE;
   --RS__visitedColor: #551A8B;
 

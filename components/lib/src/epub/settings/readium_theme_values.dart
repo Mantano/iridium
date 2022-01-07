@@ -21,6 +21,8 @@ class ReadiumThemeValues {
       .replaceFirst("{{textColor}}", textColor)
       .replaceFirst("{{textAlign}}", textAlign)
       .replaceFirst("{{lineHeight}}", lineHeight)
+      .replaceFirst("{{wordSpacing}}", wordSpacing)
+      .replaceFirst("{{letterSpacing}}", letterSpacing)
       .replaceFirst("{{scroll}}",
           readerTheme.scroll ? "readium-scroll-on" : "readium-scroll-off")
       .replaceFirst("{{advancedSettings}}",
@@ -37,6 +39,8 @@ class ReadiumThemeValues {
         "--RS__textColor": textColor,
         ReadiumCSSName.textAlignment.name: textAlign,
         ReadiumCSSName.lineHeight.name: lineHeight,
+        ReadiumCSSName.wordSpacing.name: wordSpacing,
+        ReadiumCSSName.letterSpacing.name: letterSpacing,
         ReadiumCSSName.fontSize.name: fontSize,
         ReadiumCSSName.publisherDefault.name: readerTheme.advanced
             ? "readium-advanced-on"
@@ -72,6 +76,12 @@ class ReadiumThemeValues {
 
   String get lineHeight =>
       readerTheme.lineHeight?.let((it) => "${it.value}") ?? "";
+
+  String get wordSpacing =>
+      readerTheme.wordSpacing?.let((it) => "${it.value}rem") ?? "";
+
+  String get letterSpacing =>
+      readerTheme.letterSpacing?.let((it) => "${it.value}em") ?? "";
 
   String get fontSize => '${viewerSettings.fontSize}%';
 

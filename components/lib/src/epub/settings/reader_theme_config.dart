@@ -14,6 +14,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
   Color? backgroundColor;
   TextAlign? textAlign;
   LineHeight? lineHeight;
+  WordSpacing? wordSpacing;
+  LetterSpacing? letterSpacing;
   TextMargin? textMargin;
   String? fontFamily;
   String? fontWeight;
@@ -26,6 +28,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
       this.backgroundColor,
       this.textAlign,
       this.lineHeight,
+      this.wordSpacing,
+      this.letterSpacing,
       this.textMargin,
       this.fontFamily,
       this.fontWeight,
@@ -38,6 +42,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         backgroundColor = null,
         textAlign = null,
         lineHeight = null,
+        wordSpacing = null,
+        letterSpacing = null,
         textMargin = null,
         fontFamily = null,
         fontWeight = null,
@@ -50,6 +56,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
     Color? backgroundColor,
     TextAlign? textAlign,
     LineHeight? lineHeight,
+    WordSpacing? wordSpacing,
+    LetterSpacing? letterSpacing,
     TextMargin? textMargin,
     String? fontFamily,
     String? fontWeight,
@@ -62,6 +70,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         backgroundColor ?? this.backgroundColor,
         textAlign ?? this.textAlign,
         lineHeight ?? this.lineHeight,
+        wordSpacing ?? this.wordSpacing,
+        letterSpacing ?? this.letterSpacing,
         textMargin ?? this.textMargin,
         fontFamily ?? this.fontFamily,
         fontWeight ?? this.fontWeight,
@@ -78,6 +88,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         if (backgroundColor != null) "backgroundColor": backgroundColor!.value,
         if (textAlign != null) "textAlign": textAlign!.id,
         if (lineHeight != null) "lineHeight": lineHeight!.id,
+        if (wordSpacing != null) "wordSpacing": wordSpacing!.id,
+        if (letterSpacing != null) "letterSpacing": letterSpacing!.id,
         if (textMargin != null) "textMargin": textMargin!.id,
         if (fontFamily != null) "fontFamily": fontFamily,
         if (fontWeight != null) "fontWeight": fontWeight,
@@ -92,6 +104,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         _asColor(data["backgroundColor"]),
         _asTextAlign(data["textAlign"]),
         _asLineHeight(data["lineHeight"]),
+        _asWordSpacing(data["wordSpacing"]),
+        _asLetterSpacing(data["letterSpacing"]),
         _asTextMargin(data["textMargin"]),
         data["fontFamily"] as String,
         data["fontWeight"] as String,
@@ -108,6 +122,12 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
   static LineHeight? _asLineHeight(dynamic lineHeight) =>
       (lineHeight != null) ? LineHeight.from(lineHeight as int) : null;
 
+  static WordSpacing? _asWordSpacing(dynamic wordSpacing) =>
+      (wordSpacing != null) ? WordSpacing.from(wordSpacing as int) : null;
+
+  static LetterSpacing? _asLetterSpacing(dynamic letterSpacing) =>
+      (letterSpacing != null) ? LetterSpacing.from(letterSpacing as int) : null;
+
   static TextMargin? _asTextMargin(dynamic textMargin) =>
       (textMargin != null) ? TextMargin.from(textMargin as int) : null;
 
@@ -117,6 +137,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
       'backgroundColor: $backgroundColor, '
       'textAlign: $textAlign, '
       'lineHeight: $lineHeight, '
+      'wordSpacing: $wordSpacing, '
+      'letterSpacing: $letterSpacing, '
       'textMargin: $textMargin, '
       'fontFamily: $fontFamily, '
       'fontWeight: $fontWeight, '
@@ -130,6 +152,8 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         backgroundColor,
         textAlign,
         lineHeight,
+        wordSpacing,
+        letterSpacing,
         textMargin,
         fontFamily,
         fontWeight,
