@@ -49,7 +49,10 @@ class MediaType {
 
   static const MediaType aac =
       MediaType._(type: "audio", subtype: "aac", fileExtension: "aac");
-
+  static const MediaType v3g2 =
+      MediaType._(type: "video", subtype: "3g2", fileExtension: "3g2");
+  static const MediaType v3gp =
+      MediaType._(type: "video", subtype: "3gp", fileExtension: "3gp");
   static const MediaType acsm = MediaType._(
       type: "application",
       subtype: "vnd.adobe.adept+xml",
@@ -131,12 +134,16 @@ class MediaType {
       MediaType._(type: "video", subtype: "mp4", fileExtension: "m4a");
   static const MediaType mpeg =
       MediaType._(type: "video", subtype: "mpeg", fileExtension: "mpeg");
+  static const MediaType mpg =
+      MediaType._(type: "video", subtype: "mpg", fileExtension: "mpg");
+  static const MediaType mkv =
+      MediaType._(type: "video", subtype: "mkv", fileExtension: "mkv");
   static const MediaType mov =
       MediaType._(type: "video", subtype: "mov", fileExtension: "mov");
   static const MediaType ncx = MediaType._(
       type: "application", subtype: "x-dtbncx+xml", fileExtension: "ncx");
   static const MediaType ogg =
-      MediaType._(type: "audio", subtype: "ogg", fileExtension: "oga");
+      MediaType._(type: "application", subtype: "ogg", fileExtension: "oga");
   static const MediaType ogv =
       MediaType._(type: "video", subtype: "ogg", fileExtension: "ogv");
   static const MediaType opds1 = MediaType._(
@@ -214,6 +221,22 @@ class MediaType {
       MediaType._(type: "audio", subtype: "xaiff", fileExtension: "aif");
   static const MediaType xaiffc =
       MediaType._(type: "audio", subtype: "xaiff", fileExtension: "aifc");
+  static const MediaType xlsx = MediaType._(
+      type: "application",
+      subtype: "vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      fileExtension: "xlsx");
+  static const MediaType xls = MediaType._(
+      type: "application",
+      subtype: "application/vnd.ms-excel",
+      fileExtension: "xls");
+
+  static const MediaType pptx = MediaType._(
+      type: "application",
+      subtype: "vnd.openxmlformats-officedocument.presentationml.presentation",
+      fileExtension: "pptx");
+  static const MediaType ppt = MediaType._(
+      type: "application", subtype: "vnd.ms-powerpoint", fileExtension: "ppt");
+
   static const MediaType xml =
       MediaType._(type: "application", subtype: "xml", fileExtension: "xml");
   static const MediaType xmpegurl =
@@ -268,6 +291,8 @@ class MediaType {
     otf,
     pdf,
     png,
+    ppt,
+    pptx,
     readiumAudiobook,
     readiumAudiobookManifest,
     readiumWebpub,
@@ -277,6 +302,8 @@ class MediaType {
     text,
     tiff,
     ttf,
+    v3g2,
+    v3gp,
     w3cWpubManifest,
     wav,
     webmAudio,
@@ -291,6 +318,8 @@ class MediaType {
     xhtml,
     xml,
     xmpegurl,
+    xls,
+    xlsx,
     zab,
     zip,
   ];
