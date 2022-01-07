@@ -31,10 +31,10 @@ class CbzNavigator extends PublicationNavigator {
         );
 
   @override
-  State<StatefulWidget> createState() => EpubNavigatorState();
+  State<StatefulWidget> createState() => CbzNavigatorState();
 }
 
-class EpubNavigatorState extends PublicationNavigatorState<CbzNavigator> {
+class CbzNavigatorState extends PublicationNavigatorState<CbzNavigator> {
   static const double minScaleFactor = 0.999;
   static const double maxScaleFactor = 3.0;
 
