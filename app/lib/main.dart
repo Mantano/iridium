@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_fimber/flutter_fimber.dart';
+import 'package:iridium_app/theme/theme_config.dart';
 import 'package:iridium_app/util/consts.dart';
 import 'package:iridium_app/view_models/app_provider.dart';
 import 'package:iridium_app/view_models/details_provider.dart';
@@ -23,8 +24,8 @@ void main() async {
   }
   // Theme was generated with https://zeshuaro.github.io/appainter/#/
   WidgetsFlutterBinding.ensureInitialized();
-  ThemeData lightTheme = await loadTheme('assets/appainter_light_theme.json');
-  ThemeData darkTheme = await loadTheme('assets/appainter_dark_theme.json');
+  ThemeConfig.lightTheme = await loadTheme('assets/appainter_light_theme.json');
+  ThemeConfig.darkTheme = await loadTheme('assets/appainter_dark_theme.json');
   runApp(
     MultiProvider(
       providers: [
@@ -34,7 +35,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FavoritesProvider()),
         ChangeNotifierProvider(create: (_) => GenreProvider()),
       ],
-      child: MyApp(lightTheme, darkTheme),
+      child: MyApp(),
     ),
   );
 }
@@ -47,10 +48,7 @@ Future<ThemeData> loadTheme(String themeAssetPath) async {
 }
 
 class MyApp extends StatelessWidget {
-  final ThemeData lightTheme;
-  final ThemeData darkTheme;
-
-  const MyApp(this.lightTheme, this.darkTheme, {Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +59,8 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
-          theme: lightTheme,
-          darkTheme: darkTheme,
+          theme: themeData(appProvider.theme),
+          darkTheme: themeData(ThemeConfig.darkTheme!),
           home: const Splash(),
         );
       },

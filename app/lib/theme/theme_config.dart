@@ -8,7 +8,10 @@ class ThemeConfig {
   static Color lightBG = Colors.white;
   static Color darkBG = const Color(0xff121212);
 
-  static ThemeData lightTheme = ThemeData(
+  static ThemeData? lightTheme;
+  static ThemeData? darkTheme;
+
+  static ThemeData lightTheme0 = ThemeData(
     brightness: Brightness.light,
     backgroundColor: lightBG,
     primaryColor: lightPrimary,
@@ -23,7 +26,7 @@ class ThemeConfig {
     textSelectionTheme: TextSelectionThemeData(cursorColor: lightAccent),
   );
 
-  static ThemeData darkTheme = ThemeData(
+  static ThemeData darkTheme0 = ThemeData(
     brightness: Brightness.dark,
     backgroundColor: darkBG,
     primaryColor: darkPrimary,
