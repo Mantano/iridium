@@ -1,17 +1,12 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:epub_viewer/epub_viewer.dart';
-
-// import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/components/book_list_item.dart';
 import 'package:iridium_app/components/description_text.dart';
 import 'package:iridium_app/components/loading_widget.dart';
-import 'package:iridium_app/database/locator_helper.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/view_models/details_provider.dart';
 import 'package:iridium_app/views/viewers/epub_screen.dart';
@@ -72,9 +67,7 @@ class _DetailsState extends State<Details> {
                 },
                 icon: Icon(
                   detailsProvider.faved ? Icons.favorite : Feather.heart,
-                  color: detailsProvider.faved
-                      ? Colors.red
-                      : Theme.of(context).iconTheme.color,
+                  color: detailsProvider.faved ? Colors.red : null,
                 ),
               ),
               IconButton(
@@ -242,27 +235,6 @@ class _DetailsState extends State<Details> {
           asset: FileAsset(File(path)),
         ),
       );
-
-      // List locators =
-      //     await LocatorDB().getLocator(widget.publication?.metadata.identifier);
-      //
-      // EpubViewer.setConfig(
-      //   identifier: 'androidBook',
-      //   themeColor: Theme.of(context).colorScheme.secondary,
-      //   scrollDirection: EpubScrollDirection.VERTICAL,
-      //   enableTts: false,
-      //   allowSharing: true,
-      // );
-      // EpubViewer.open(path,
-      //     lastLocation:
-      //         locators.isNotEmpty ? EpubLocator.fromJson(locators[0]) : null);
-      // EpubViewer.locatorStream.listen((event) async {
-      //   // Get locator here
-      //   Map json = jsonDecode(event);
-      //   json['bookId'] = widget.publication?.metadata.identifier;
-      //   // Save locator to your database
-      //   await LocatorDB().update(json);
-      // });
     }
   }
 
