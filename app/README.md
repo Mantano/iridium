@@ -1,7 +1,8 @@
 # Flutter eBook App [![Codemagic build status](https://api.codemagic.io/apps/5e230defc5faa60315b1df62/5e230defc5faa60315b1df61/status_badge.svg)](https://codemagic.io/apps/5e230defc5faa60315b1df62/5e230defc5faa60315b1df61/latest_build)
 
 
-A simple demo of the Iridium reader SDK based on [JideGuru's excellent Flutter Ebook App](https://github.com/JideGuru/FlutterEbookApp). 
+A simple demo of the Iridium reader SDK based on [JideGuru's excellent Flutter Ebook App](https://github.com/JideGuru/FlutterEbookApp) (_Please note that for technical reasons the current Git history doesn't contain JideGuru's original code: it will be added back shortly_).
+
 The Books included in the app are from the [Public Domain](https://en.wikipedia.org/wiki/Public_domain)
 (Expired Copyright and completely free).
 
