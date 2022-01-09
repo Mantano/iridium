@@ -4,19 +4,23 @@
     $( document ).ready(function() {
         // Add a function in jQuery to compute how many columns are created for a specific element
         $.fn.howMuchCols = function(nbThumbnails){
-            var nbThumbnails = (nbThumbnails) ? nbThumbnails : 1;
-            var lastElem = $(this).find(':last')[0];
-            var clientRects = lastElem.getClientRects();
-            var isImg = lastElem.tagName == 'img';
-            var windowWidth = $(window).width();
-            var columnWidth = windowWidth / nbThumbnails;
-            var result = Math.ceil((0.01 + $(this).find(':last').position().left) / columnWidth);
-            for (index = 0; index < clientRects.length; index++) {
-                var rect = clientRects[index];
-                if (isImg && rect.height < 20)  {
-                    break;
+            nbThumbnails = (nbThumbnails) ? nbThumbnails : 1;
+            const windowWidth = $(window).width();
+            // See https://www.codegrepper.com/code-examples/javascript/jquery+detect+if+element+has+overflow
+            const spineItemDiv = $('#xpub_contenuSpineItem');
+            const contentsWidth = spineItemDiv.prop('scrollWidth');
+            const contentsHeight = spineItemDiv.prop('scrollHeight');
+            // flutter_log.postMessage("=============== windowWidth: " + windowWidth + ", contentsWidth: " + contentsWidth + ", contentsHeight: " + contentsHeight);
+            const columnWidth = windowWidth / nbThumbnails;
+            let result = Math.ceil(contentsWidth / columnWidth);
+            const lastElem = $(this).find(':last')[0];
+            const clientRects = lastElem.getClientRects();
+            if (lastElem.tagName === 'img') {
+                const rect = clientRects[0];
+                // flutter_log.postMessage("=============== IS IMG rect.width: " + rect.width + ", rect.height: " + rect.height);
+                if (rect.width > contentsWidth || rect.height > contentsHeight) {
+                    result--;
                 }
-                result = Math.max(result, Math.ceil((0.01 + rect.left) / columnWidth));
             }
             return result;
         };
