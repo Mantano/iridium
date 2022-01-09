@@ -27,6 +27,7 @@ the [Readium 2 architecture](https://github.com/readium/architecture):
 | [**mno_commons_dart**](https://github.com/Mantano/mno_commons_dart)           | Other misc. utilities (specific to this Flutter port, not found in Readium) |
 | [**mno_lcp_dart**](https://github.com/Mantano/mno_lcp_dart)                   | Service and models for Readium LCP (soon public)                            |
 | [**mno_lcp_native_dart**](https://github.com/Mantano/mno_lcp_native_dart)     | Native interface for Readium LCP (soon public)                              |
+| [**iridium_demo**](https://github.com/Mantano/iridium-demo)                   | Iridium SDK demo app (based on [JideGuru's Flutter eBook App](https://github.com/JideGuru/FlutterEbookApp))                |
 
 ## Why this name?
 
@@ -52,18 +53,6 @@ apps. Some of them could probably be [integrated into existing apps](https://flu
 
 However, *packing multiple Flutter libraries into an application isn’t supported by Flutter for now*. Integrating
 multiple modules could be achieved by developing some kind of "super-module", but this has not been tested.
-
-## Modules
-
-* [mno_shared_dart](https://github.com/Mantano/mno_shared_dart) – Shared Publication models and utilities
-* [mno_streamer_dart](https://github.com/Mantano/mno_streamer_dart) – Publication parsers
-* [mno_server_dart](https://github.com/Mantano/mno_server_dart) – Local HTTP server
-* [mno_navigator_flutter](https://github.com/Mantano/mno_navigator_flutter) – Navigator
-* [mno_opds_dart](https://github.com/Mantano/mno_opds_dart) – Parsers for OPDS catalog feeds
-* [mno_commons_dart](https://github.com/Mantano/mno_commons_dart) – Other misc. utilities (specific to this Flutter
-  port, not found in Readium)
-* [mno_lcp_dart](https://github.com/Mantano/mno_lcp_dart) – Service and models for Readium LCP (soon public)
-* [iridium_demo](https://github.com/Mantano/iridium-demo) – Iridium SDK demo app
 
 ## Applications based on Iridium
 
