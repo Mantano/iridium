@@ -41,6 +41,7 @@ class RequestController {
       response.statusCode = HttpStatus.internalServerError;
       Fimber.d("Request error", ex: e, stacktrace: stacktrace);
     } finally {
+      await response.flush();
       await response.close();
     }
   }
