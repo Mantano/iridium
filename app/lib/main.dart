@@ -13,6 +13,7 @@ import 'package:iridium_app/view_models/genre_provider.dart';
 import 'package:iridium_app/view_models/home_provider.dart';
 import 'package:iridium_app/views/splash/splash.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:json_theme/json_theme.dart';
 
@@ -52,6 +53,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // https://pub.dev/packages/new_version
+    // TODO debuguer
+    // final newVersion = NewVersion();
+    // newVersion.showAlertIfNecessary(context: context);
+
     return Consumer<AppProvider>(
       builder: (BuildContext context, AppProvider appProvider, Widget? child) {
         return MaterialApp(

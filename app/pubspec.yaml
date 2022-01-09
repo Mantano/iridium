@@ -58,6 +58,7 @@ dependencies:
   flutter_bloc: ^8.0.0
   flutter_inappwebview: ^5.3.2
   json_theme: ^3.2.3+1
+  new_version: ^0.2.3
 
 dev_dependencies:
   flutter_lints: ^1.0.4
