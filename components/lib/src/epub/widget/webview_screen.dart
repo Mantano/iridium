@@ -13,6 +13,7 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:universal_io/io.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
@@ -50,6 +51,8 @@ class WebViewScreenState extends State<WebViewScreen> {
   late EpubCallbacks epubCallbacks;
   late bool currentSelectedSpineItem;
 
+  bool isLoaded = false;
+
   int get position => widget.position;
 
   Link get spineItem => widget.link;
@@ -58,9 +61,17 @@ class WebViewScreenState extends State<WebViewScreen> {
 
   @override
   void initState() {
+    super.initState();
     // Enable hybrid composition (see https://pub.dev/packages/webview_flutter/versions/2.8.0)
     // Can be removed when upgrading to 3.0.0
-    // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+//    if (Platform.isAndroid) WebView.platform = AndroidWebView();
+    // Fix for blank WebViews with 3.0.0 (https://github.com/flutter/flutter/issues/74626)
+    WidgetsBinding.instance!.addPostFrameCallback((callback) {
+      setState(() {
+        isLoaded = true;
+      });
+    });
     LinkPagination linkPagination = publication.paginationInfo[spineItem]!;
     _spineItemContext = SpineItemContext(
       readerContext: readerContext,
@@ -78,7 +89,6 @@ class WebViewScreenState extends State<WebViewScreen> {
         _viewerSettingsBloc,
         readerContext.readerAnnotationRepository,
         webViewHorizontalGestureRecognizer);
-    super.initState();
   }
 
   @override
@@ -107,18 +117,7 @@ class WebViewScreenState extends State<WebViewScreen> {
         spineItemContext: _spineItemContext,
         child: Stack(
           children: <Widget>[
-            WebView(
-              debuggingEnabled: true,
-              initialUrl: '${widget.address}/${link.href.removePrefix("/")}',
-              javascriptMode: JavascriptMode.unrestricted,
-              javascriptChannels: epubCallbacks.channels,
-              navigationDelegate: _navigationDelegate,
-              onPageFinished: _onPageFinished,
-              gestureRecognizers: {
-                Factory(() => webViewHorizontalGestureRecognizer),
-              },
-              onWebViewCreated: _onWebViewCreated,
-            ),
+            buildWebViewComponent(link),
 //          Align(
 //            child: BookmarkIcon(),
 //            alignment: Alignment.topRight,
@@ -126,6 +125,23 @@ class WebViewScreenState extends State<WebViewScreen> {
           ],
         ),
       );
+
+  Widget buildWebViewComponent(Link link) {
+    return isLoaded
+        ? WebView(
+            debuggingEnabled: true,
+            initialUrl: '${widget.address}/${link.href.removePrefix("/")}',
+            javascriptMode: JavascriptMode.unrestricted,
+            javascriptChannels: epubCallbacks.channels,
+            navigationDelegate: _navigationDelegate,
+            onPageFinished: _onPageFinished,
+            gestureRecognizers: {
+              Factory(() => webViewHorizontalGestureRecognizer),
+            },
+            onWebViewCreated: _onWebViewCreated,
+          )
+        : Container();
+  }
 
 //  @override
 //  bool get wantKeepAlive {
