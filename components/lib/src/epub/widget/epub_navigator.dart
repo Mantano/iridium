@@ -54,6 +54,8 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
       PreloadPageView.builder(
         controller: epubController.pageController,
         scrollDirection: Axis.horizontal,
+        // TODO Currently, with Hybrid Composition activated, preloadPagesCount > 1 provides erratic behavior.
+        // To investigate!
         preloadPagesCount: 1,
         onPageChanged: epubController.onPageChanged,
         physics: const AlwaysScrollableScrollPhysics(),
