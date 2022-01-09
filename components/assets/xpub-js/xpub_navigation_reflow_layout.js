@@ -28,6 +28,7 @@
         if (window.flutter_inappwebview) {
             window.flutter_inappwebview.callHandler('GestureCallbacksOnBeginningVisibilityChanged', value);
         } else {
+//          flutter_log.postMessage("====== onBeginningVisibilityChanged, URL: " + window.location.href);
             GestureCallbacksOnBeginningVisibilityChanged.postMessage(value);
         }
     }
@@ -36,6 +37,7 @@
         if (window.flutter_inappwebview) {
             window.flutter_inappwebview.callHandler('GestureCallbacksOnEndVisibilityChanged', value);
         } else {
+//            flutter_log.postMessage("====== onBeginningVisibilityChanged, URL: " + window.location.href);
             GestureCallbacksOnEndVisibilityChanged.postMessage(value);
         }
     }
@@ -138,7 +140,7 @@
                         xpub.paginationInfo.nbThumbnailsCount, xpub.currentSpineItem.idref,
                         xpub.currentSpineItem.index);
             xpub.bookmarks.pages.forEach(function(pageIndex, bookmarkId, pages) {
-                if (pageIndex == pageIndexes[i]) {
+                if (pageIndex === pageIndexes[i]) {
                     paginationInfo.pageBookmarks.push(bookmarkId);
                 }
             });
@@ -200,7 +202,7 @@
         let paginationInfo = getPaginationInfo();
         let pageIndex = paginationInfo.openPages[0].spineItemPageIndex;
         $('.xpub_page_bookmark[data-page=' + pageIndex + '] img').
-                toggle(paginationInfo.pageBookmarks.length == 0);
+                toggle(paginationInfo.pageBookmarks.length === 0);
         paginationInfo.location.text.highlight = xpub.bookmarks.getTextSnippet();
         onToggleBookmark(JSON.stringify(paginationInfo));
     };
@@ -247,7 +249,7 @@
 
         let page = cfiNavigationLogic.getPageForElement($element);
 
-        if (page == -1) {
+        if (page === -1) {
             return;
         }
 
@@ -298,7 +300,7 @@
      */
     xpub.openPageNext = function () {
         let paginationInfo = getPaginationInfo();
-        if (paginationInfo.openPages.length == 0) {
+        if (paginationInfo.openPages.length === 0) {
             return;
         }
         let lastOpenPage = paginationInfo.openPages[paginationInfo.openPages.length - 1];
@@ -315,7 +317,7 @@
      */
     xpub.openPagePrev = function () {
         let paginationInfo = getPaginationInfo();
-        if (paginationInfo.openPages.length == 0) {
+        if (paginationInfo.openPages.length === 0) {
             return;
         }
         let firstOpenPage = paginationInfo.openPages[0];
@@ -340,7 +342,7 @@
 
     xpub.initPagination = function() {
         document.fonts.ready.then(function () {
-            if (xpub.observers != undefined) {
+            if (xpub.observers !== undefined) {
                 for (i = 0; i < xpub.observers.length; i++) {
                     xpub.observers[i].disconnect();
                 }
@@ -351,6 +353,7 @@
             paginator.empty();
 
             let nbCols = $('#xpub_contenuSpineItem').howMuchCols();
+//            flutter_log.postMessage("=========== nbCols: " + nbCols);
             xpub.paginationInfo.columnCount = nbCols;
             if (xpub.screenshotConfig) {
                 let spineItemPageThumbnailsCount = $('#xpub_contenuSpineItem').
@@ -358,7 +361,7 @@
                 xpub.paginationInfo.nbThumbnailsCount = spineItemPageThumbnailsCount;
             }
 
-            for (i = 0; i < nbCols; i++) {
+            for (let i = 0; i < nbCols; i++) {
                 let divText = "<div id=\"xpub_page_" + i + "\" data-page=\"" + i + "\" class=\"xpub_page_overlay\">" +
                 "   <div class=\"xpub_page_bookmark\" data-page=\"" + i + "\" data-prevent-tap=\"true\">" +
                 "      <img src=\"/xpub-assets/bookmark.svg\" />" +
@@ -371,7 +374,7 @@
             let firstDivSelector = '#xpub_page_0';
             let lastDivSelector = '#xpub_page_' + (nbCols - 1);
 
-            for (i = 0; i < nbCols; i++) {
+            for (let i = 0; i < nbCols; i++) {
                 let observer = new IntersectionObserver(function (entries) {
                     if (entries[0].isIntersecting) {
                         let index = $(entries[0].target).data("page");
@@ -393,20 +396,24 @@
             let observerBeginning = new IntersectionObserver(function (entries) {
                 // isIntersecting is true when element and viewport are overlapping
                 // isIntersecting is false when element and viewport don't overlap
+//                 flutter_log.postMessage("=========== observerBeginning, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
                 onBeginningVisibilityChanged(entries[0].isIntersecting);
             }, {threshold: [0.8]});
             let observerEnd = new IntersectionObserver(function (entries) {
                 // isIntersecting is true when element and viewport are overlapping
                 // isIntersecting is false when element and viewport don't overlap
+//                flutter_log.postMessage("=========== observerEnd, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
                 onEndVisibilityChanged(entries[0].isIntersecting);
             }, {threshold: [0.8]});
             xpub.observers.push(observerBeginning);
             xpub.observers.push(observerEnd);
             let firstDivQuerySelector = document.querySelector(firstDivSelector);
+//             flutter_log.postMessage("=========== firstDivQuerySelector: " + firstDivQuerySelector);
             if (firstDivQuerySelector != null) {
                 observerBeginning.observe(firstDivQuerySelector);
             }
             let lastDivQuerySelector = document.querySelector(lastDivSelector);
+//             flutter_log.postMessage("=========== lastDivQuerySelector: " + lastDivQuerySelector);
             if (lastDivQuerySelector != null) {
                 observerEnd.observe(lastDivQuerySelector);
             }
