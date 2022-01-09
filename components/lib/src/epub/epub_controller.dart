@@ -10,6 +10,7 @@ import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import 'package:universal_io/io.dart';
 
 class EpubController extends PublicationController {
   PreloadPageController? _pageController;
@@ -43,8 +44,12 @@ class EpubController extends PublicationController {
   bool get pageControllerAttached => _pageController?.hasClients == true;
 
   @override
-  void initPageController(int initialPage) => _pageController =
-      PreloadPageController(keepPage: true, initialPage: initialPage);
+  void initPageController(int initialPage) => _pageController = PreloadPageController(
+      // With Hybrid Composition, on both Android and iOS we must set viewportFraction
+      // to < 1.0, in order to get the WebViews to render! Otherwise they do load the data but don't render...
+      keepPage: true,
+      initialPage: initialPage,
+      viewportFraction: 0.9999);
 
   @override
   void onPrevious() => _pageController?.previousPage(
