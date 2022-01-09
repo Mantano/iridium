@@ -67,7 +67,8 @@ class WebViewHorizontalGestureRecognizer
         // vertical drag - stop tracking
         stopTrackingPointer(event.pointer);
         _dragDistance = Offset.zero;
-      } else if (dx > kTouchSlop && dx > dy) {
+        //} else if (dx > kTouchSlop && dx > dy) {
+      } else if (dx > dy) {
         // horizontal drag
         if ((isEndVisible && isDraggingTowardsLeft(event)) ||
             (isBeginningVisible && isDraggingTowardsRight(event))) {
