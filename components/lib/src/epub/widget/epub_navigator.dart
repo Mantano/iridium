@@ -10,6 +10,7 @@ import 'package:mno_navigator/publication.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import 'package:universal_io/io.dart';
 
 class EpubNavigator extends PublicationNavigator {
   final EpubController epubController;
@@ -56,7 +57,7 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
         scrollDirection: Axis.horizontal,
         // TODO Currently, with Hybrid Composition activated, preloadPagesCount > 1 provides erratic behavior.
         // To investigate!
-        preloadPagesCount: 1,
+        preloadPagesCount: Platform.isAndroid ? 2 : 1,
         onPageChanged: epubController.onPageChanged,
         physics: const AlwaysScrollableScrollPhysics(),
         itemCount: spine.length,
