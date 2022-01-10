@@ -63,9 +63,8 @@ class WebViewScreenState extends State<WebViewScreen> {
   void initState() {
     super.initState();
     // Enable hybrid composition (see https://pub.dev/packages/webview_flutter/versions/2.8.0)
-    // Can be removed when upgrading to 3.0.0
-    // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
-    if (Platform.isAndroid) WebView.platform = AndroidWebView();
+    // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView(); // For Hybrid Composition C (faster) - Default on 3.0.0
+    // if (Platform.isAndroid) WebView.platform = AndroidWebView(); // For Virtual Display (slower)
     // Fix for blank WebViews with 3.0.0 (https://github.com/flutter/flutter/issues/74626)
     WidgetsBinding.instance!.addPostFrameCallback((callback) {
       setState(() {
