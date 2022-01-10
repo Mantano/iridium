@@ -126,22 +126,20 @@ class WebViewScreenState extends State<WebViewScreen> {
         ),
       );
 
-  Widget buildWebViewComponent(Link link) {
-    return isLoaded
-        ? WebView(
-            debuggingEnabled: true,
-            initialUrl: '${widget.address}/${link.href.removePrefix("/")}',
-            javascriptMode: JavascriptMode.unrestricted,
-            javascriptChannels: epubCallbacks.channels,
-            navigationDelegate: _navigationDelegate,
-            onPageFinished: _onPageFinished,
-            gestureRecognizers: {
-              Factory(() => webViewHorizontalGestureRecognizer),
-            },
-            onWebViewCreated: _onWebViewCreated,
-          )
-        : Container();
-  }
+  Widget buildWebViewComponent(Link link) => isLoaded
+      ? WebView(
+          debuggingEnabled: true,
+          initialUrl: '${widget.address}/${link.href.removePrefix("/")}',
+          javascriptMode: JavascriptMode.unrestricted,
+          javascriptChannels: epubCallbacks.channels,
+          navigationDelegate: _navigationDelegate,
+          onPageFinished: _onPageFinished,
+          gestureRecognizers: {
+            Factory(() => webViewHorizontalGestureRecognizer),
+          },
+          onWebViewCreated: _onWebViewCreated,
+        )
+      : Container();
 
 //  @override
 //  bool get wantKeepAlive {

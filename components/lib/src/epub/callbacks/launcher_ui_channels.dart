@@ -99,6 +99,6 @@ class LauncherUIChannels extends JavascriptChannels {
   }
 
   void _flutterLog(JavascriptMessage message) {
-    Fimber.d("${message.message}");
+    Fimber.d(message.message);
   }
 }
