@@ -226,9 +226,7 @@ class MediaType {
       subtype: "vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       fileExtension: "xlsx");
   static const MediaType xls = MediaType._(
-      type: "application",
-      subtype: "application/vnd.ms-excel",
-      fileExtension: "xls");
+      type: "application", subtype: "vnd.ms-excel", fileExtension: "xls");
 
   static const MediaType pptx = MediaType._(
       type: "application",
