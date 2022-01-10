@@ -10,12 +10,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  bloc: ^8.0.1
+  bloc: ^8.0.2
   dartx: ^1.0.0
   dfunc: ^0.7.2
   equatable: ^2.0.3
   fimber: ^0.6.4
-  flutter_bloc: ^8.0.0
+  flutter_bloc: ^8.0.1
   flutter_inappwebview: ^5.3.2
   photo_view: ^0.13.0
   preload_page_view: ^0.1.6
