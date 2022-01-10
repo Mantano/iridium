@@ -5,6 +5,14 @@ Iridium keeps the platform-specific code to the bare minimum (zero for now, in f
 unified codebase. Until now, only the precompiled LCP DRM native library is specific to each platform, and is provided
 in binary form by [Edrlab](https://edrlab.org) that simply must be dropped into the source tree.
 
+## Test it right now!
+
+Pre-built versions of the [Iridium Demo App](https://github.com/Mantano/iridium/tree/develop/app) are available:
+- For Android: [Beta on Play Store](https://play.google.com/store/apps/details?id=com.mantano.iridium.IridiumApp)
+- For iOS: [IPA here](https://api.codemagic.io/artifacts/cafe9a91-b4d5-48f0-b716-ca948d8e11ac/3c8b8914-96c5-4597-8c60-3a3ead8eda1f/Iridium.ipa)
+
+Note: The Iridium Demo App is based on the excellent [Jideguru's Flutter Ebook App](https://github.com/JideGuru/FlutterEbookApp).
+
 ## Supported platforms
 
 Iridium is currently developed and tested on Android and iOS first, but large parts of the code should be reusable for
