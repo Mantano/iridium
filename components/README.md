@@ -5,30 +5,6 @@ the [Readium 2 Navigator](https://readium.org/technical/r2-navigator-architectur
 
 ## Current technical choices
 
-### WebViews used to display Epub spine items
-
-For now, we are using [webview_flutter](https://pub.dev/packages/webview_flutter) 3.x, which relies on Android WebView
-and iOS WkWebView. In the current version, we use Hybrid Composition on iOS, which is the only option available. But **on
-Android, while Hybrid Composition is now the default, we still use Virtual Display, because there are a few unresolved
-issues when using Hybrid Composition**:
-
-1. The webviews aren't prerendered when preloaded by the PreloadPageView. In the Chrome inspector, they appear as "
-   empty - never attached". This causes many subsequent issues;
-2. When displaying the book navigation page (including Table of Contents, Bookmarks etc.), which is pushed on top thanks
-   to "pushPage", the webview briefly reappears and flashes on top, before leaving the navigation panel visible.
-
-As a consequence, the display isn't completely smooth on Android when swiping between pages.
-
-To switch to Hybrid Composition and get smooth sswiping, simply uncomment in `WebViewScreenState.initState` the
-following line:
-
-```
-if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
-```
-
-At some point we'll try to replace [webview_flutter](https://pub.dev/packages/webview_flutter)
-by [flutter_inappwebview](https://pub.dev/packages/flutter_inappwebview), that we already use for other purposes.
-
 ### Epub reflow pagination strategy
 
 For the current implementation, we have chosen to follow a different route, compared to R2:
@@ -45,6 +21,18 @@ There are pros and cons to this approach. But the main UX advantage is that swip
 both spine items are visible at the same time, exactly like when swiping between pages inside a spine item).
 
 At this point a few visual glitches still remain to be fixed.
+
+### WebViews used to display Epub spine items
+
+For now, we are using [webview_flutter](https://pub.dev/packages/webview_flutter) 3.x, which relies on Android WebView
+and iOS WkWebView. 
+
+Note: In the current version, there is a small visual glitch on Android when displaying the navigation panel: the webview briefly 
+reappears and flashes on top, before leaving the navigation panel visible. This is a 
+[Flutter issue](https://github.com/flutter/flutter/issues/95343), and will be fixed in Flutter SDK 2.10._
+
+At some point we could consider replacing [webview_flutter](https://pub.dev/packages/webview_flutter)
+by [flutter_inappwebview](https://pub.dev/packages/flutter_inappwebview), that we already use for other purposes.
 
 ## Note
 
