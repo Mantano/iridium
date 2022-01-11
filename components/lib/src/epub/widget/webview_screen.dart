@@ -13,7 +13,6 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:universal_io/io.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
