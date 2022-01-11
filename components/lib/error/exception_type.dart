@@ -2,7 +2,9 @@
 // Unauthorized copying of this file, via any medium is strictly prohibited.
 // Proprietary and confidential.
 
-class ExceptionType {
+import 'package:equatable/equatable.dart';
+
+class ExceptionType with EquatableMixin {
   static const ExceptionType platform = ExceptionType._(1, "PLATFORM");
   static const ExceptionType firebaseAuth = ExceptionType._(2, "FIREBASE_AUTH");
   static const ExceptionType unknown = ExceptionType._(0, "UNKNOWN");

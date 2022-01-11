@@ -2,7 +2,7 @@
 // Unauthorized copying of this file, via any medium is strictly prohibited.
 // Proprietary and confidential.
 
-import 'exception_type.dart';
+import 'package:mno_commons/error/exception_type.dart';
 
 class GlobalException implements Exception {
   String message;
