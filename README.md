@@ -7,11 +7,36 @@ in binary form by [Edrlab](https://edrlab.org) that simply must be dropped into 
 
 ## Test it right now!
 
+### Pre-built versions
 Pre-built versions of the [Iridium Demo App](https://github.com/Mantano/iridium/tree/develop/app) are available:
 - For Android: [Beta on Play Store](https://play.google.com/store/apps/details?id=com.mantano.iridium.IridiumApp)
 - For iOS: [IPA here](https://api.codemagic.io/artifacts/cafe9a91-b4d5-48f0-b716-ca948d8e11ac/3c8b8914-96c5-4597-8c60-3a3ead8eda1f/Iridium.ipa)
 
 Note: The Iridium Demo App is based on the excellent [Jideguru's Flutter Ebook App](https://github.com/JideGuru/FlutterEbookApp).
+
+### Build it yourself
+
+#### From the command-line
+```
+git clone --recurse-submodules https://github.com/Mantano/iridium.git
+cd iridium
+git checkout develop
+cd app
+flutter devices <-- Pick a device id in the list (in the 2nd column)
+flutter run -d <device_id>
+```
+
+If you have the following error message:
+```
+Error: Could not find or load main class org.gradle.wrapper.GradleWrapperMain
+```
+apply [the fix mentioned in this post](https://github.com/flutter/flutter/issues/14422#issuecomment-389192340).
+
+#### From Android Studio or Intellij IDEA:
+
+- File / New / From Version Control (https://github.com/Mantano/iridium.git)
+- Switch to the develop branch with the context menu at the root of the project (Git / Branches / develop)
+- Run
 
 ## Supported platforms
 
