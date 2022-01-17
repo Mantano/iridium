@@ -17,18 +17,18 @@ dependencies:
   dfunc: ^0.7.2
   either_option: ^2.0.0
   fimber: ^0.6.4
-  flutter_archive: ^4.1.0
+  flutter_archive: ^4.1.1
   hex: ^0.2.0
   intl: ^0.17.0
   mno_fsm: ^0.1.1
   multiple_localization: ^0.2.2
   path: ^1.8.0
   path_provider: ^2.0.8
-  shared_preferences: ^2.0.11
-  sqflite: ^2.0.1
+  shared_preferences: ^2.0.12
+  sqflite: ^2.0.2
   tuple: ^2.0.0
   universal_io: ^2.0.4
-  url_launcher: ^6.0.17
+  url_launcher: ^6.0.18
   uuid: ^3.0.5
   mno_commons:
     path: ../mno_commons_dart
