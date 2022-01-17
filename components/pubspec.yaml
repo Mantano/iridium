@@ -11,7 +11,7 @@ dependencies:
   dartx: ^1.0.0
   dfunc: ^0.7.2
   fimber: ^0.6.4
-  image: ^3.1.0
+  image: ^3.1.1
   path: ^1.8.0
   universal_io: ^2.0.4
   xml: ^5.3.1
