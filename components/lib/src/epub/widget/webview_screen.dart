@@ -113,15 +113,7 @@ class WebViewScreenState extends State<WebViewScreen> {
 
   Widget buildWebView(Link link) => SpineItemContextWidget(
         spineItemContext: _spineItemContext,
-        child: Stack(
-          children: <Widget>[
-            buildWebViewComponent(link),
-//          Align(
-//            child: BookmarkIcon(),
-//            alignment: Alignment.topRight,
-//          ),
-          ],
-        ),
+        child: buildWebViewComponent(link),
       );
 
   Widget buildWebViewComponent(Link link) => isLoaded
@@ -137,7 +129,7 @@ class WebViewScreenState extends State<WebViewScreen> {
           },
           onWebViewCreated: _onWebViewCreated,
         )
-      : Container();
+      : const SizedBox.shrink();
 
 //  @override
 //  bool get wantKeepAlive {
@@ -184,25 +176,9 @@ class WebViewScreenState extends State<WebViewScreen> {
               predicate: AnnotationTypeAndDocumentPredicate(
                   spineItem.id!, AnnotationType.bookmark))
           .then((annotations) => _jsApi?.computeAnnotationsInfo(annotations));
-      // StreamSubscription<List<Annotation>> loadAnnotationsSubscription;
-      // loadAnnotationsSubscription = _annotationsBloc.documentRepository
-      //     .allWhere(
-      //         predicate: AnnotationKindAndBookAndIdrefPredicate(
-      //             spineItem.id, widget._book.id, AnnotationKind.bookmark))
-      //     .listen((annotations) {
-      //   _jsApi?.computeAnnotationsInfo(annotations);
-      //   loadAnnotationsSubscription.cancel();
-      // });
       _annotationsSubscription = readerContext
           .readerAnnotationRepository.deletedIdsStream
           .listen((deletedIds) => _jsApi?.removeBookmarks(deletedIds));
-      // _annotationsSubscription =
-      //     _annotationsBloc.stream.listen((DocumentsState state) {
-      //   if (state is DocumentsLoaded &&
-      //       (state.deletedIds != null && state.deletedIds.isNotEmpty)) {
-      //     _jsApi?.removeBookmarks(state.deletedIds);
-      //   }
-      // });
     } catch (e, stacktrace) {
       Fimber.d("_onPageFinished ERROR", ex: e, stacktrace: stacktrace);
     }

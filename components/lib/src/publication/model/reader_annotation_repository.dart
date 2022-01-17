@@ -17,7 +17,7 @@ abstract class ReaderAnnotationRepository {
   Future<ReaderAnnotation> createReaderAnnotation(
       PaginationInfo paginationInfo);
 
-  Future<void> delete(List<String> deletedIds);
+  void delete(List<String> deletedIds);
 
   Future<List<ReaderAnnotation>> allWhere({
     Predicate<ReaderAnnotation> predicate = const AcceptAllPredicate(),

@@ -62,9 +62,8 @@ class LauncherUIChannels extends JavascriptChannels {
       PaginationInfo paginationInfo = PaginationInfo.fromJson(
           message.message, _spineItemContext.linkPagination);
       if (paginationInfo.pageBookmarks.isNotEmpty) {
-        _bookmarkRepository
-            ?.delete(paginationInfo.pageBookmarks)
-            .then((_) => jsApi.removeBookmark(paginationInfo));
+        _bookmarkRepository?.delete(paginationInfo.pageBookmarks);
+        jsApi.removeBookmark(paginationInfo);
       } else {
         _bookmarkRepository
             ?.createReaderAnnotation(paginationInfo)
