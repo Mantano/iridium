@@ -5,12 +5,14 @@
 class ExceptionType {
   static const ExceptionType platform = ExceptionType._(1, "PLATFORM");
   static const ExceptionType firebaseAuth = ExceptionType._(2, "FIREBASE_AUTH");
+  static const ExceptionType firebase = ExceptionType._(3, "FIREBASE");
   static const ExceptionType unknown = ExceptionType._(0, "UNKNOWN");
 
   static const List<ExceptionType> _values = [
     unknown,
     platform,
     firebaseAuth,
+    firebase,
   ];
   final int id;
   final String name;
