@@ -96,7 +96,7 @@ class LcpError {
       case LcpErrorCase.deviceId:
         return "Couldn't retrieve/generate a proper deviceId.";
       case LcpErrorCase.unexpectedServerError:
-        return "An unexpected error has occured.";
+        return "An unexpected error has occurred.";
       case LcpErrorCase.invalidHintData:
         return "The data ed by the server for the hint is not valid.";
       case LcpErrorCase.archive:
