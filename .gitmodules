@@ -4,9 +4,9 @@
 [submodule "mno_lcp_dart"]
 	path = mno_lcp_dart
 	url = git@github.com:Mantano/mno_lcp_dart
-[submodule "mno_lcp_native"]
-	path = mno_lcp_native
-	url = git@github.com:Mantano/mno_lcp_native
+#[submodule "mno_lcp_native"]
+#	path = mno_lcp_native
+#	url = git@github.com:Mantano/mno_lcp_native
 [submodule "mno_navigator_flutter"]
 	path = mno_navigator_flutter
 	url = git@github.com:Mantano/mno_navigator_flutter
