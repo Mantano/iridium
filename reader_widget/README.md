@@ -1,22 +1,8 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Plug and play reader widget allowing to easily integrate an Iridium viewer inside any app.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Display Epub e-books.
 
 ## Getting started
 
@@ -25,15 +11,22 @@ start using the package.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+The `example` suidirectory provides a minimalistic starting point.
+
+Add the iridium_reader_widget project as a submodule and add it to the dependencies list (it is not published on Pub.dev yet).
+
+In the Flutter screen where you want to embed a vieser:
 
 ```dart
-const like = 'sample';
+import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
+```
+
+And anywhere in your view hierarchy:
+
+```dart
+EpubScreen.fromPath(filePath: widget.dirPath)
 ```
 
 ## Additional information
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+More information [here](https://gtihub.com/Mantano/Iridium) and [here](https://iridium.rocks).
