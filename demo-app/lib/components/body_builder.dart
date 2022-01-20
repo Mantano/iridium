@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/components/error_widget.dart';
-import 'package:flutter_ebook_app/components/loading_widget.dart';
-import 'package:flutter_ebook_app/util/enum/api_request_status.dart';
+import 'package:iridium_app/components/error_widget.dart';
+import 'package:iridium_app/components/loading_widget.dart';
+import 'package:iridium_app/util/enum/api_request_status.dart';
 
 class BodyBuilder extends StatelessWidget {
   final APIRequestStatus apiRequestStatus;
   final Widget child;
-  final Function reload;
+  final void Function()? reload;
 
-  BodyBuilder(
+  const BodyBuilder(
       {Key? key,
       required this.apiRequestStatus,
       required this.child,
@@ -23,9 +23,9 @@ class BodyBuilder extends StatelessWidget {
   Widget _buildBody() {
     switch (apiRequestStatus) {
       case APIRequestStatus.loading:
-        return LoadingWidget();
+        return const LoadingWidget();
       case APIRequestStatus.unInitialized:
-        return LoadingWidget();
+        return const LoadingWidget();
       case APIRequestStatus.connectionError:
         return MyErrorWidget(
           refreshCallBack: reload,
@@ -39,7 +39,7 @@ class BodyBuilder extends StatelessWidget {
       case APIRequestStatus.loaded:
         return child;
       default:
-        return LoadingWidget();
+        return const LoadingWidget();
     }
   }
 }

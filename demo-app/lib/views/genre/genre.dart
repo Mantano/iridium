@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_ebook_app/components/body_builder.dart';
-import 'package:flutter_ebook_app/components/book_list_item.dart';
-import 'package:flutter_ebook_app/components/loading_widget.dart';
-import 'package:flutter_ebook_app/models/category.dart';
-import 'package:flutter_ebook_app/view_models/genre_provider.dart';
+import 'package:iridium_app/components/body_builder.dart';
+import 'package:iridium_app/components/book_list_item.dart';
+import 'package:iridium_app/components/loading_widget.dart';
+import 'package:iridium_app/view_models/genre_provider.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Genre extends StatefulWidget {
   final String title;
   final String url;
 
-  Genre({
+  const Genre({
     Key? key,
     required this.title,
     required this.url,
@@ -25,7 +25,7 @@ class _GenreState extends State<Genre> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance!.addPostFrameCallback(
+    SchedulerBinding.instance?.addPostFrameCallback(
       (_) => Provider.of<GenreProvider>(context, listen: false)
           .getFeed(widget.url),
     );
@@ -38,7 +38,7 @@ class _GenreState extends State<Genre> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text('${widget.title}'),
+            title: Text(widget.title),
           ),
           body: _buildBody(provider),
         );
@@ -59,32 +59,36 @@ class _GenreState extends State<Genre> {
       controller: provider.controller,
       children: <Widget>[
         ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
           shrinkWrap: true,
           itemCount: provider.items.length,
           itemBuilder: (BuildContext context, int index) {
-            Entry entry = provider.items[index];
+            Publication entry = provider.items[index];
             return Padding(
-              padding: EdgeInsets.all(5.0),
+              padding: const EdgeInsets.all(5.0),
               child: BookListItem(
-                entry: entry,
+                img: entry.links[1].href,
+                title: entry.metadata.title,
+                author: entry.metadata.authors[0].name,
+                desc: entry.metadata.description ?? "** description **",
+                publication: entry,
               ),
             );
           },
         ),
-        SizedBox(height: 10.0),
+        const SizedBox(height: 10.0),
         provider.loadingMore
-            ? Container(
+            ? SizedBox(
                 height: 80.0,
                 child: _buildProgressIndicator(),
               )
-            : SizedBox(),
+            : const SizedBox(),
       ],
     );
   }
 
   _buildProgressIndicator() {
-    return LoadingWidget();
+    return const LoadingWidget();
   }
 }

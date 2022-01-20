@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:flutter_ebook_app/models/category.dart';
-import 'package:xml2json/xml2json.dart';
+import 'package:mno_opds/mno_opds.dart';
+import 'package:mno_shared/opds.dart';
 
 class Api {
   Dio dio = Dio();
@@ -19,16 +17,14 @@ class Api {
   static String romance = '$publicDomainURL/top.atom?cat=FBFIC027000';
   static String horror = '$publicDomainURL/top.atom?cat=FBFIC015000';
 
-  Future<CategoryFeed> getCategory(String url) async {
+  Future<ParseData> getCategory(String url) async {
     var res = await dio.get(url).catchError((e) {
-      throw(e);
+      throw (e);
     });
-    CategoryFeed category;
+    ParseData category;
     if (res.statusCode == 200) {
-      Xml2Json xml2json = new Xml2Json();
-      xml2json.parse(res.data.toString());
-      var json = jsonDecode(xml2json.toGData());
-      category = CategoryFeed.fromJson(json);
+      ParseData parseData = Opds1Parser.parse(res.data, Uri.parse(url));
+      category = parseData;
     } else {
       throw ('Error ${res.statusCode}');
     }

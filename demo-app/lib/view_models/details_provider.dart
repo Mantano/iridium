@@ -1,22 +1,21 @@
+import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/components/download_alert.dart';
-import 'package:flutter_ebook_app/database/download_helper.dart';
-import 'package:flutter_ebook_app/database/favorite_helper.dart';
-import 'package:flutter_ebook_app/models/category.dart';
-import 'package:flutter_ebook_app/util/api.dart';
-import 'package:flutter_ebook_app/util/consts.dart';
+import 'package:iridium_app/components/download_alert.dart';
+import 'package:iridium_app/database/download_helper.dart';
+import 'package:iridium_app/database/favorite_helper.dart';
+import 'package:iridium_app/util/api.dart';
+import 'package:mno_shared/opds.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../models/category.dart';
-
 class DetailsProvider extends ChangeNotifier {
-  CategoryFeed related = CategoryFeed();
+  late ParseData related;
   bool loading = true;
-  Entry? entry;
+  late Publication entry;
   var favDB = FavoriteDB();
   var dlDB = DownloadsDB();
 
@@ -29,17 +28,17 @@ class DetailsProvider extends ChangeNotifier {
     checkFav();
     checkDownload();
     try {
-      CategoryFeed feed = await api.getCategory(url);
+      ParseData feed = await api.getCategory(url);
       setRelated(feed);
       setLoading(false);
     } catch (e) {
-      throw (e);
+      rethrow;
     }
   }
 
   // check if book is favorited
   checkFav() async {
-    List c = await favDB.check({'id': entry!.id!.t.toString()});
+    List c = await favDB.check({'id': entry.metadata.identifier.toString()});
     if (c.isNotEmpty) {
       setFaved(true);
     } else {
@@ -48,24 +47,31 @@ class DetailsProvider extends ChangeNotifier {
   }
 
   addFav() async {
-    await favDB.add({'id': entry!.id!.t.toString(), 'item': entry!.toJson()});
+    await favDB.add({
+      'id': entry.metadata.identifier.toString(),
+      'item': jsonEncode(entry)
+    });
     checkFav();
   }
 
   removeFav() async {
-    favDB.remove({'id': entry!.id!.t.toString()}).then((v) {
-      print(v);
-      checkFav();
-    });
+    if (entry.metadata.identifier != null) {
+      favDB.remove({'id': entry.metadata.identifier!}).then((v) {
+        Fimber.d("Removed -> v");
+        checkFav();
+      });
+    } else {
+      Fimber.d("Can't remove fav, id is null...");
+    }
   }
 
   // check if book has been downloaded before
   checkDownload() async {
-    List downloads = await dlDB.check({'id': entry!.id!.t.toString()});
+    List downloads = await dlDB.check({'id': entry.metadata.identifier});
     if (downloads.isNotEmpty) {
       // check if book has been deleted
       String path = downloads[0]['path'];
-      print(path);
+      Fimber.d(path);
       if (await File(path).exists()) {
         setDownloaded(true);
       } else {
@@ -77,19 +83,19 @@ class DetailsProvider extends ChangeNotifier {
   }
 
   Future<List> getDownload() async {
-    List c = await dlDB.check({'id': entry!.id!.t.toString()});
+    List c = await dlDB.check({'id': entry.metadata.identifier.toString()});
     return c;
   }
 
   addDownload(Map body) async {
-    await dlDB.removeAllWithId({'id': entry!.id!.t.toString()});
+    await dlDB.removeAllWithId({'id': entry.metadata.identifier});
     await dlDB.add(body);
     checkDownload();
   }
 
   removeDownload() async {
-    dlDB.remove({'id': entry!.id!.t.toString()}).then((v) {
-      print(v);
+    dlDB.remove({'id': entry.metadata.identifier.toString()}).then((v) {
+      Fimber.d("removing download: $v");
       checkDownload();
     });
   }
@@ -114,15 +120,19 @@ class DetailsProvider extends ChangeNotifier {
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
     if (Platform.isAndroid) {
-      Directory(appDocDir!.path.split('Android')[0] + '${Constants.appName}')
-          .createSync();
+      // Directory(appDocDir.path.split('Android')[0] + '${Constants.appName}')
+      //     .createSync();
+      Directory(appDocDir!.path).createSync();
     }
 
+    // String path = Platform.isIOS
+    //     ? appDocDir.path + '/$filename.epub'
+    //     : appDocDir.path.split('Android')[0] +
+    //         '${Constants.appName}/$filename.epub';
     String path = Platform.isIOS
         ? appDocDir!.path + '/$filename.epub'
-        : appDocDir!.path.split('Android')[0] +
-            '${Constants.appName}/$filename.epub';
-    print(path);
+        : appDocDir!.path + '/$filename.epub';
+    Fimber.d("path: $path");
     File file = File(path);
     if (!await file.exists()) {
       await file.create();
@@ -141,14 +151,15 @@ class DetailsProvider extends ChangeNotifier {
     ).then((v) {
       // When the download finishes, we then add the book
       // to our local database
-      if (v != null) {
+      if (v != null && entry.metadata.identifier != null) {
         addDownload(
+//          entry.metadata.identifier!,
           {
-            'id': entry!.id!.t.toString(),
+            'id': entry.metadata.identifier,
             'path': path,
-            'image': '${entry!.link![1].href}',
+            'image': entry.links[1].href,
             'size': v,
-            'name': entry!.title!.t,
+            'name': entry.metadata.title,
           },
         );
       }
@@ -165,7 +176,7 @@ class DetailsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  CategoryFeed getRelated() {
+  ParseData getRelated() {
     return related;
   }
 

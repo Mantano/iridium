@@ -1,21 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/components/loading_widget.dart';
-import 'package:flutter_ebook_app/models/category.dart';
-import 'package:flutter_ebook_app/util/router.dart';
+import 'package:iridium_app/components/loading_widget.dart';
+import 'package:iridium_app/util/router.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:uuid/uuid.dart';
 
 import '../views/details/details.dart';
 
 class BookListItem extends StatelessWidget {
-  final Entry entry;
+  final String? img;
+  final String? title;
+  final String? author;
+  final String desc;
+  final Publication? publication;
 
   BookListItem({
     Key? key,
-    required this.entry,
+    this.img,
+    this.title,
+    this.author,
+    this.desc = "** description **",
+    this.publication,
   }) : super(key: key);
 
-  static final uuid = Uuid();
+  static const uuid = Uuid();
   final String imgTag = uuid.v4();
   final String titleTag = uuid.v4();
   final String authorTag = uuid.v4();
@@ -27,35 +35,35 @@ class BookListItem extends StatelessWidget {
         MyRouter.pushPage(
           context,
           Details(
-            entry: entry,
+            publication: publication!,
             imgTag: imgTag,
             titleTag: titleTag,
             authorTag: authorTag,
           ),
         );
       },
-      child: Container(
+      child: SizedBox(
         height: 150.0,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Card(
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(10.0),
                 ),
               ),
               elevation: 4,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(10.0),
                 ),
                 child: Hero(
                   tag: imgTag,
                   child: CachedNetworkImage(
-                    imageUrl: '${entry.link![1].href!}',
-                    placeholder: (context, url) => Container(
+                    imageUrl: '$img',
+                    placeholder: (context, url) => const SizedBox(
                       height: 150.0,
                       width: 100.0,
                       child: LoadingWidget(
@@ -75,7 +83,7 @@ class BookListItem extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 10.0),
+            const SizedBox(width: 10.0),
             Flexible(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -87,18 +95,18 @@ class BookListItem extends StatelessWidget {
                     child: Material(
                       type: MaterialType.transparency,
                       child: Text(
-                        '${entry.title!.t!.replaceAll(r'\', '')}',
+                        '${title?.replaceAll(r'\', '')}',
                         style: TextStyle(
                           fontSize: 17.0,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).textTheme.headline6!.color,
+                          color: Theme.of(context).textTheme.headline6?.color,
                         ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Hero(
@@ -106,24 +114,24 @@ class BookListItem extends StatelessWidget {
                     child: Material(
                       type: MaterialType.transparency,
                       child: Text(
-                        '${entry.author!.name!.t!}',
+                        '$author',
                         style: TextStyle(
                           fontSize: 14.0,
                           fontWeight: FontWeight.w800,
-                          color: Theme.of(context).accentColor,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Text(
-                    '${entry.summary!.t!.length < 100 ? entry.summary!.t! : entry.summary!.t!.substring(0, 100)}...'
+                    '${desc.length < 100 ? desc : desc.substring(0, 100)}...'
                         .replaceAll(r'\n', '\n')
                         .replaceAll(r'\r', '')
                         .replaceAll(r'\"', '"'),
                     style: TextStyle(
                       fontSize: 13.0,
-                      color: Theme.of(context).textTheme.caption!.color,
+                      color: Theme.of(context).textTheme.caption?.color,
                     ),
                   ),
                 ],

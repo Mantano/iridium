@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_ebook_app/database/favorite_helper.dart';
+import 'package:iridium_app/database/favorite_helper.dart';
 
 class FavoritesProvider extends ChangeNotifier {
   List posts = [];

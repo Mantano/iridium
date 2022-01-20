@@ -1,16 +1,18 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:epub_viewer/epub_viewer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/components/loading_widget.dart';
-import 'package:flutter_ebook_app/database/download_helper.dart';
-import 'package:flutter_ebook_app/database/locator_helper.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iridium_app/components/loading_widget.dart';
+import 'package:iridium_app/database/download_helper.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
+import 'package:iridium_app/util/router.dart';
+import 'package:iridium_app/views/viewers/epub_screen.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:uuid/uuid.dart';
 
 class Downloads extends StatefulWidget {
+  const Downloads({Key? key}) : super(key: key);
+
   @override
   _DownloadsState createState() => _DownloadsState();
 }
@@ -18,7 +20,7 @@ class Downloads extends StatefulWidget {
 class _DownloadsState extends State<Downloads> {
   bool done = true;
   var db = DownloadsDB();
-  static final uuid = Uuid();
+  static const uuid = Uuid();
 
   List dls = [];
 
@@ -40,7 +42,7 @@ class _DownloadsState extends State<Downloads> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Downloads'),
+        title: const Text('Downloads'),
       ),
       body: dls.isEmpty ? _buildEmptyListView() : _buildBodyList(),
     );
@@ -61,36 +63,20 @@ class _DownloadsState extends State<Downloads> {
           child: InkWell(
             onTap: () async {
               String path = dl['path'];
-              List locators = await LocatorDB().getLocator(dl['id']);
-
-              EpubViewer.setConfig(
-                identifier: 'androidBook',
-                themeColor: Theme.of(context).accentColor,
-                scrollDirection: EpubScrollDirection.VERTICAL,
-                enableTts: false,
-                allowSharing: true,
+              MyRouter.pushPage(
+                context,
+                EpubScreen(
+                  asset: FileAsset(File(path)),
+                ),
               );
-              EpubViewer.open(
-                  path,
-                  lastLocation: locators.isNotEmpty
-                      ? EpubLocator.fromJson(locators[0])
-                      : null
-              );
-              EpubViewer.locatorStream.listen((event) async {
-                // Get locator here
-                Map json = jsonDecode(event);
-                json['bookId'] = dl['id'];
-                // Save locator to your database
-                await LocatorDB().update(json);
-              });
             },
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
               child: Row(
                 children: <Widget>[
                   CachedNetworkImage(
                     imageUrl: dl['image'],
-                    placeholder: (context, url) => Container(
+                    placeholder: (context, url) => const SizedBox(
                       height: 70.0,
                       width: 70.0,
                       child: LoadingWidget(),
@@ -105,21 +91,21 @@ class _DownloadsState extends State<Downloads> {
                     height: 70.0,
                     width: 70.0,
                   ),
-                  SizedBox(width: 10.0),
+                  const SizedBox(width: 10.0),
                   Flexible(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
                           dl['name'],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 15.0,
                             fontWeight: FontWeight.bold,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        Divider(),
+                        const Divider(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -128,14 +114,14 @@ class _DownloadsState extends State<Downloads> {
                               style: TextStyle(
                                 fontSize: 13.0,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).accentColor,
+                                color: Theme.of(context).colorScheme.secondary,
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
                               dl['size'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 13.0,
                               ),
                               maxLines: 2,
@@ -153,7 +139,7 @@ class _DownloadsState extends State<Downloads> {
         );
       },
       separatorBuilder: (BuildContext context, int index) {
-        return Divider();
+        return const Divider();
       },
     );
   }
@@ -168,7 +154,7 @@ class _DownloadsState extends State<Downloads> {
             height: 300.0,
             width: 300.0,
           ),
-          Text(
+          const Text(
             'Nothing is here',
             style: TextStyle(
               fontSize: 24.0,
@@ -183,9 +169,9 @@ class _DownloadsState extends State<Downloads> {
   _dismissibleBackground() {
     return Container(
       alignment: Alignment.centerRight,
-      padding: EdgeInsets.only(right: 20.0),
+      padding: const EdgeInsets.only(right: 20.0),
       color: Colors.red,
-      child: Icon(
+      child: const Icon(
         Feather.trash_2,
         color: Colors.white,
       ),
@@ -193,7 +179,7 @@ class _DownloadsState extends State<Downloads> {
   }
 
   _deleteBook(Map dl, int index) {
-    db.remove({'id': dl['id']}).then((v) async {
+    db.remove(dl['id']).then((v) async {
       File f = File(dl['path']);
       if (await f.exists()) {
         f.delete();
@@ -201,7 +187,6 @@ class _DownloadsState extends State<Downloads> {
       setState(() {
         dls.removeAt(index);
       });
-      print('done');
     });
   }
 }

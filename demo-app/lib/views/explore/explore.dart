@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/components/body_builder.dart';
-import 'package:flutter_ebook_app/components/book_card.dart';
-import 'package:flutter_ebook_app/components/loading_widget.dart';
-import 'package:flutter_ebook_app/models/category.dart';
-import 'package:flutter_ebook_app/util/api.dart';
-import 'package:flutter_ebook_app/util/router.dart';
-import 'package:flutter_ebook_app/view_models/home_provider.dart';
-import 'package:flutter_ebook_app/views/genre/genre.dart';
+import 'package:iridium_app/components/body_builder.dart';
+import 'package:iridium_app/components/book_card.dart';
+import 'package:iridium_app/components/loading_widget.dart';
+import 'package:iridium_app/util/api.dart';
+import 'package:iridium_app/util/router.dart';
+import 'package:iridium_app/view_models/home_provider.dart';
+import 'package:iridium_app/views/genre/genre.dart';
+import 'package:mno_shared/opds.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Explore extends StatefulWidget {
+  const Explore({Key? key}) : super(key: key);
+
   @override
   _ExploreState createState() => _ExploreState();
 }
@@ -20,11 +23,12 @@ class _ExploreState extends State<Explore> {
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeProvider>(
-      builder: (BuildContext context, HomeProvider homeProvider, Widget? child) {
+      builder:
+          (BuildContext context, HomeProvider homeProvider, Widget? child) {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
+            title: const Text(
               'Explore',
             ),
           ),
@@ -40,22 +44,23 @@ class _ExploreState extends State<Explore> {
 
   _buildBodyList(HomeProvider homeProvider) {
     return ListView.builder(
-      itemCount: homeProvider.top.feed?.link?.length ?? 0,
+//      itemCount: homeProvider.top?.feed?.links.length ?? 0,
+      itemCount: homeProvider.top?.feed?.facets[1].links.length ?? 0,
       itemBuilder: (BuildContext context, int index) {
-        Link link = homeProvider.top.feed!.link![index];
+        Link? link = homeProvider.top?.feed?.facets[1].links[index];
 
         // We don't need the tags from 0-9 because
         // they are not categories
-        if (index < 10) {
-          return SizedBox();
+        if (link == null || index < 10) {
+          return const SizedBox();
         }
 
         return Padding(
-          padding: EdgeInsets.symmetric(vertical: 10.0),
+          padding: const EdgeInsets.symmetric(vertical: 10.0),
           child: Column(
             children: <Widget>[
               _buildSectionHeader(link),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               _buildSectionBookList(link),
             ],
           ),
@@ -66,14 +71,14 @@ class _ExploreState extends State<Explore> {
 
   _buildSectionHeader(Link link) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Flexible(
             child: Text(
               '${link.title}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
               ),
@@ -87,14 +92,14 @@ class _ExploreState extends State<Explore> {
                 context,
                 Genre(
                   title: '${link.title}',
-                  url: link.href!,
+                  url: link.href,
                 ),
               );
             },
             child: Text(
               'See All',
               style: TextStyle(
-                color: Theme.of(context).accentColor,
+                color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.w400,
               ),
             ),
@@ -105,31 +110,31 @@ class _ExploreState extends State<Explore> {
   }
 
   _buildSectionBookList(Link link) {
-    return FutureBuilder<CategoryFeed>(
-      future: api.getCategory(link.href!),
+    return FutureBuilder<ParseData>(
+      future: api.getCategory(link.href),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
-          CategoryFeed category = snapshot.data!;
+          ParseData? category = snapshot.data;
 
-          return Container(
+          return SizedBox(
             height: 200.0,
             child: Center(
               child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 scrollDirection: Axis.horizontal,
-                itemCount: category.feed!.entry!.length,
+                itemCount: category?.feed?.publications.length ?? 0,
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
-                  Entry entry = category.feed!.entry![index];
+                  Publication entry = category!.feed!.publications[index];
 
                   return Padding(
-                    padding: EdgeInsets.symmetric(
+                    padding: const EdgeInsets.symmetric(
                       horizontal: 5.0,
                       vertical: 10.0,
                     ),
                     child: BookCard(
-                      img: entry.link![1].href!,
+                      img: entry.links[1].href,
                       entry: entry,
                     ),
                   );
@@ -138,7 +143,7 @@ class _ExploreState extends State<Explore> {
             ),
           );
         } else {
-          return Container(
+          return const SizedBox(
             height: 200.0,
             child: LoadingWidget(),
           );

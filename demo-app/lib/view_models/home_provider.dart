@@ -1,22 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/models/category.dart';
-import 'package:flutter_ebook_app/util/api.dart';
-import 'package:flutter_ebook_app/util/enum/api_request_status.dart';
-import 'package:flutter_ebook_app/util/functions.dart';
+import 'package:iridium_app/util/api.dart';
+import 'package:iridium_app/util/enum/api_request_status.dart';
+import 'package:iridium_app/util/functions.dart';
+import 'package:mno_shared/opds.dart';
 
 class HomeProvider with ChangeNotifier {
-  CategoryFeed top = CategoryFeed();
-  CategoryFeed recent = CategoryFeed();
+  ParseData? top;
+  ParseData? recent;
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
   Api api = Api();
 
   getFeeds() async {
     setApiRequestStatus(APIRequestStatus.loading);
     try {
-      CategoryFeed popular = await api.getCategory(Api.popular);
+      ParseData popular = await api.getCategory(Api.popular);
       setTop(popular);
-      CategoryFeed newReleases = await api.getCategory(Api.recent);
+      ParseData newReleases = await api.getCategory(Api.recent);
       setRecent(newReleases);
       setApiRequestStatus(APIRequestStatus.loaded);
     } catch (e) {
@@ -42,7 +42,7 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  CategoryFeed getTop() {
+  ParseData? getTop() {
     return top;
   }
 
@@ -51,7 +51,7 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  CategoryFeed getRecent() {
+  ParseData? getRecent() {
     return recent;
   }
 }

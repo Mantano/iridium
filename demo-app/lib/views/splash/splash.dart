@@ -1,17 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/util/router.dart';
-import 'package:flutter_ebook_app/views/main_screen.dart';
+import 'package:iridium_app/util/router.dart';
+import 'package:iridium_app/views/main_screen.dart';
 
 class Splash extends StatefulWidget {
+  const Splash({Key? key}) : super(key: key);
+
   @override
   _SplashState createState() => _SplashState();
 }
 
 class _SplashState extends State<Splash> {
   startTimeout() {
-    return new Timer(Duration(seconds: 2), handleTimeout);
+    return Timer(const Duration(seconds: 2), handleTimeout);
   }
 
   void handleTimeout() {
@@ -21,7 +23,7 @@ class _SplashState extends State<Splash> {
   changeScreen() async {
     MyRouter.pushPageReplacement(
       context,
-      MainScreen(),
+      const MainScreen(),
     );
   }
 

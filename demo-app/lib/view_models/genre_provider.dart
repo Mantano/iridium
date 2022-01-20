@@ -1,17 +1,17 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/util/api.dart';
-import 'package:flutter_ebook_app/util/enum/api_request_status.dart';
-import 'package:flutter_ebook_app/util/functions.dart';
+import 'package:iridium_app/util/api.dart';
+import 'package:iridium_app/util/enum/api_request_status.dart';
+import 'package:iridium_app/util/functions.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
-import '../models/category.dart';
+import 'package:mno_shared/opds.dart';
+import 'package:mno_shared/publication.dart';
 
 class GenreProvider extends ChangeNotifier {
   ScrollController controller = ScrollController();
-  List items = [];
+  List<Publication> items = [];
   int page = 1;
   bool loadingMore = false;
   bool loadMore = true;
@@ -24,10 +24,10 @@ class GenreProvider extends ChangeNotifier {
         if (!loadingMore) {
           paginate(url);
           // Animate to bottom of list
-          Timer(Duration(milliseconds: 100), () {
+          Timer(const Duration(milliseconds: 100), () {
             controller.animateTo(
               controller.position.maxScrollExtent,
-              duration: Duration(milliseconds: 100),
+              duration: const Duration(milliseconds: 100),
               curve: Curves.easeIn,
             );
           });
@@ -38,15 +38,18 @@ class GenreProvider extends ChangeNotifier {
 
   getFeed(String url) async {
     setApiRequestStatus(APIRequestStatus.loading);
-    print(url);
+    Fimber.d("getFeed: $url");
     try {
-      CategoryFeed feed = await api.getCategory(url);
-      items = feed.feed!.entry!;
+      ParseData parseData = await api.getCategory(url);
+      var pubs = parseData.feed?.publications;
+      if (pubs != null) {
+        items = pubs;
+      }
       setApiRequestStatus(APIRequestStatus.loaded);
       listener(url);
     } catch (e) {
       checkError(e);
-      throw (e);
+      rethrow;
     }
   }
 
@@ -54,22 +57,25 @@ class GenreProvider extends ChangeNotifier {
     if (apiRequestStatus != APIRequestStatus.loading &&
         !loadingMore &&
         loadMore) {
-      Timer(Duration(milliseconds: 100), () {
+      Timer(const Duration(milliseconds: 100), () {
         controller.jumpTo(controller.position.maxScrollExtent);
       });
       loadingMore = true;
       page = page + 1;
       notifyListeners();
       try {
-        CategoryFeed feed = await api.getCategory(url + '&page=$page');
-        items.addAll(feed.feed!.entry!);
+        ParseData parseData = await api.getCategory(url + '&page=$page');
+        var pubs = parseData.feed?.publications;
+        if (pubs != null) {
+          items.addAll(pubs);
+        }
         loadingMore = false;
         notifyListeners();
       } catch (e) {
         loadMore = false;
         loadingMore = false;
         notifyListeners();
-        throw (e);
+        rethrow;
       }
     }
   }

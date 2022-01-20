@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/components/loading_widget.dart';
-import 'package:flutter_ebook_app/models/category.dart';
-import 'package:flutter_ebook_app/util/router.dart';
+import 'package:iridium_app/components/loading_widget.dart';
+import 'package:iridium_app/util/router.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:uuid/uuid.dart';
 
 import '../views/details/details.dart';
@@ -10,16 +10,16 @@ import '../views/details/details.dart';
 class BookItem extends StatelessWidget {
   final String img;
   final String title;
-  final Entry entry;
+  final Publication publication;
 
   BookItem({
     Key? key,
     required this.img,
     required this.title,
-    required this.entry,
+    required this.publication,
   }) : super(key: key);
 
-  static final uuid = Uuid();
+  static const uuid = Uuid();
   final String imgTag = uuid.v4();
   final String titleTag = uuid.v4();
   final String authorTag = uuid.v4();
@@ -31,7 +31,7 @@ class BookItem extends StatelessWidget {
         MyRouter.pushPage(
           context,
           Details(
-            entry: entry,
+            publication: publication,
             imgTag: imgTag,
             titleTag: titleTag,
             authorTag: authorTag,
@@ -41,14 +41,14 @@ class BookItem extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ClipRRect(
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(10.0),
             ),
             child: Hero(
               tag: imgTag,
               child: CachedNetworkImage(
-                imageUrl: '$img',
-                placeholder: (context, url) => LoadingWidget(
+                imageUrl: img,
+                placeholder: (context, url) => const LoadingWidget(
                   isImage: true,
                 ),
                 errorWidget: (context, url, error) => Image.asset(
@@ -60,14 +60,14 @@ class BookItem extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 5.0),
+          const SizedBox(height: 5.0),
           Hero(
             tag: titleTag,
             child: Material(
               type: MaterialType.transparency,
               child: Text(
-                '${title.replaceAll(r'\', '')}',
-                style: TextStyle(
+                title.replaceAll(r'\', ''),
+                style: const TextStyle(
                   fontSize: 14.0,
                   fontWeight: FontWeight.bold,
                 ),

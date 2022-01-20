@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter_ebook_app/components/book.dart';
-import 'package:flutter_ebook_app/models/category.dart';
-import 'package:flutter_ebook_app/view_models/favorites_provider.dart';
+import 'package:iridium_app/view_models/favorites_provider.dart';
 import 'package:provider/provider.dart';
 
 class Favorites extends StatefulWidget {
+  const Favorites({Key? key}) : super(key: key);
+
   @override
   _FavoritesState createState() => _FavoritesState();
 }
@@ -24,7 +24,7 @@ class _FavoritesState extends State<Favorites> {
   }
 
   getFavorites() {
-    SchedulerBinding.instance!.addPostFrameCallback(
+    SchedulerBinding.instance?.addPostFrameCallback(
       (_) {
         if (mounted) {
           Provider.of<FavoritesProvider>(context, listen: false).getFavorites();
@@ -41,7 +41,7 @@ class _FavoritesState extends State<Favorites> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: Text(
+            title: const Text(
               'Favorites',
             ),
           ),
@@ -63,7 +63,7 @@ class _FavoritesState extends State<Favorites> {
             height: 300.0,
             width: 300.0,
           ),
-          Text(
+          const Text(
             'Nothing is here',
             style: TextStyle(
               fontSize: 24.0,
@@ -77,23 +77,25 @@ class _FavoritesState extends State<Favorites> {
 
   _buildGridView(FavoritesProvider favoritesProvider) {
     return GridView.builder(
-      padding: EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 0.0),
       shrinkWrap: true,
       itemCount: favoritesProvider.posts.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
         childAspectRatio: 200 / 340,
       ),
       itemBuilder: (BuildContext context, int index) {
-        Entry entry = Entry.fromJson(favoritesProvider.posts[index]['item']);
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.0),
-          child: BookItem(
-            img: entry.link![1].href!,
-            title: entry.title!.t!,
-            entry: entry,
-          ),
-        );
+        throw UnimplementedError(
+            "List of favorites not completely implemented");
+        // Entry entry = Publication.fromJson(favoritesProvider.posts[index]['item']);
+        // return Padding(
+        //   padding: EdgeInsets.symmetric(horizontal: 5.0),
+        //   child: BookItem(
+        //     img: entry.link[1].href,
+        //     title: entry.title.t,
+        //     publication: entry,
+        //   ),
+        // );
       },
     );
   }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ebook_app/util/dialogs.dart';
-import 'package:flutter_ebook_app/views/explore/explore.dart';
-import 'package:flutter_ebook_app/views/home/home.dart';
-import 'package:flutter_ebook_app/views/settings/settings.dart';
-import 'package:flutter_icons/flutter_icons.dart';
+import 'package:iridium_app/util/dialogs.dart';
+import 'package:iridium_app/views/explore/explore.dart';
+import 'package:iridium_app/views/home/home.dart';
+import 'package:iridium_app/views/settings/settings.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 
 class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -20,28 +22,38 @@ class _MainScreenState extends State<MainScreen> {
       onWillPop: () => Dialogs().showExitDialog(context),
       child: Scaffold(
         body: PageView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
           onPageChanged: onPageChanged,
-          children: <Widget>[Home(), Explore(), Profile()],
+          children: const <Widget>[
+            Home(),
+            Explore(),
+            Profile(),
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).primaryColor,
-          selectedItemColor: Theme.of(context).accentColor,
+          backgroundColor: Theme.of(context).bottomAppBarColor,
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
           unselectedItemColor: Colors.grey[500],
           elevation: 20,
           type: BottomNavigationBarType.fixed,
-          items: <BottomNavigationBarItem>[
+          items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Feather.home),
+              icon: Icon(
+                Feather.home,
+              ),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Feather.compass),
+              icon: Icon(
+                Feather.compass,
+              ),
               label: 'Explore',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Feather.settings),
+              icon: Icon(
+                Feather.settings,
+              ),
               label: 'Settings',
             ),
           ],
@@ -70,7 +82,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void onPageChanged(int page) {
     setState(() {
-      this._page = page;
+      _page = page;
     });
   }
 }

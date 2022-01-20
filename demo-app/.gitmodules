@@ -1,0 +1,21 @@
+[submodule "mno_commons_dart"]
+	path = mno_commons_dart
+	url = https://github.com/Mantano/mno_commons_dart.git
+[submodule "mno_lcp_dart"]
+	path = mno_lcp_dart
+	url = https://github.com/Mantano/mno_lcp_dart.git
+[submodule "mno_navigator_flutter"]
+	path = mno_navigator_flutter
+	url = https://github.com/Mantano/mno_navigator_flutter.git
+[submodule "mno_server_dart"]
+	path = mno_server_dart
+	url = https://github.com/Mantano/mno_server_dart.git
+[submodule "mno_streamer_dart"]
+	path = mno_streamer_dart
+	url = https://github.com/Mantano/mno_streamer_dart.git
+[submodule "mno_opds_dart"]
+	path = mno_opds_dart
+	url = https://github.com/Mantano/mno_opds_dart.git
+[submodule "mno_shared_dart"]
+	path = mno_shared_dart
+	url = https://github.com/Mantano/mno_shared_dart.git
