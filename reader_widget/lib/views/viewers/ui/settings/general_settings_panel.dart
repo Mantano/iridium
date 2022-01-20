@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iridium_app/views/viewers/model/fonts.dart';
-import 'package:iridium_app/views/viewers/ui/settings/color_theme.dart';
-import 'package:iridium_app/views/viewers/ui/settings/font_size_button.dart';
+import 'package:iridium_reader_widget/views/viewers/model/fonts.dart';
+import 'color_theme.dart';
+import 'font_size_button.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 

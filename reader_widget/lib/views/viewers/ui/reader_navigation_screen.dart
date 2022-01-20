@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:iridium_app/views/viewers/ui/bookmarks_panel.dart';
-import 'package:iridium_app/views/viewers/ui/content_panel.dart';
+import 'package:iridium_reader_widget/views/viewers/ui/bookmarks_panel.dart';
+import 'package:iridium_reader_widget/views/viewers/ui/content_panel.dart';
 import 'package:mno_navigator/publication.dart';
 
 class ReaderNavigationScreen extends StatefulWidget {

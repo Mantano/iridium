@@ -6,9 +6,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:iridium_app/util/router.dart';
-import 'package:iridium_app/views/viewers/ui/reader_navigation_screen.dart';
-import 'package:iridium_app/views/viewers/ui/settings/settings_panel.dart';
+import 'package:iridium_reader_widget/views/viewers/ui/reader_navigation_screen.dart';
+import 'package:iridium_reader_widget/views/viewers/ui/settings/settings_panel.dart';
+import 'package:iridium_reader_widget/util/router.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 

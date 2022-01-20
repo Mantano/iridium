@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:iridium_app/views/viewers/ui/settings/advanced_settings_panel.dart';
-import 'package:iridium_app/views/viewers/ui/settings/general_settings_panel.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
+import 'advanced_settings_panel.dart';
+import 'general_settings_panel.dart';
 
 class SettingsPanel extends StatefulWidget {
   final ReaderContext readerContext;

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:iridium_app/views/viewers/ui/toolbar_button.dart';
-import 'package:iridium_app/views/viewers/ui/toolbar_page_number.dart';
+import 'package:iridium_reader_widget/views/viewers/ui/toolbar_button.dart';
+import 'package:iridium_reader_widget/views/viewers/ui/toolbar_page_number.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 
