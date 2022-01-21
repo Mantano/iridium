@@ -1,0 +1,15 @@
+include: package:lints/recommended.yaml
+linter:
+  rules:
+    omit_local_variable_types: false
+    public_member_api_docs: true
+    unnecessary_this: false
+    prefer_single_quotes: false
+    prefer_double_quotes: false
+    annotate_overrides: true
+    prefer_expression_function_bodies: true
+
+// Source: https://stackoverflow.com/questions/57598838/non-nullable-by-default-how-to-enable-the-experiment
+analyzer:
+  enable-experiment:
+    - non-nullable
