@@ -17,8 +17,10 @@ dependencies:
   path: ^1.8.0
   rxdart: ^0.27.3
   universal_io: ^2.0.4
-  mno_commons: ^0.1.2
-  mno_shared: ^0.1.2
+  mno_commons:
+    ../commons
+  mno_shared:
+    ../shared
 
 dev_dependencies:
   lints: ^1.0.1

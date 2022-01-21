@@ -24,13 +24,13 @@ dependencies:
   webview_flutter_web: ^0.1.0
 
   mno_commons:
-    path: ../mno_commons_dart
+    path: ../commons
   mno_server:
-    path: ../mno_server_dart
+    path: ../server
   mno_shared:
-    path: ../mno_shared_dart
+    path: ../shared
   mno_streamer:
-    path: ../mno_streamer_dart
+    path: ../streamer
 
 dev_dependencies:
   test: ^1.20.1

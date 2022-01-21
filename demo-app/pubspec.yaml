@@ -22,17 +22,17 @@ dependencies:
   flutter:
     sdk: flutter
   mno_commons:
-    path: mno_commons_dart
+    path: ../components/commons
   mno_navigator:
-    path: mno_navigator_flutter
+    path: ../components/navigator
   mno_server:
-    path: mno_server_dart
+    path: ../components/server
   mno_streamer:
-    path: mno_streamer_dart
+    path: ../components/streamer
   mno_opds:
-    path: mno_opds_dart
+    path: ../components/opds
   mno_shared:
-    path: mno_shared_dart
+    path: ../components/shared
   cupertino_icons: ^1.0.4
   provider: ^6.0.2
   shared_preferences: ^2.0.12
