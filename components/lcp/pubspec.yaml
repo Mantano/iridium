@@ -31,9 +31,9 @@ dependencies:
   url_launcher: ^6.0.18
   uuid: ^3.0.5
   mno_commons:
-    path: ../mno_commons_dart
+    path: ../commons
   mno_shared:
-    path: ../mno_shared_dart
+    path: ../shared
 
 dev_dependencies:
   test: ^1.20.1

@@ -14,8 +14,10 @@ dependencies:
   http: ^0.13.4
   universal_io: ^2.0.4
   xml: ^5.3.1
-  mno_commons: ^0.1.2
-  mno_shared: ^0.1.2
+  mno_commons:
+    ../commons
+  mno_shared:
+    ../shared
 
 dev_dependencies:
   lints: ^1.0.1
