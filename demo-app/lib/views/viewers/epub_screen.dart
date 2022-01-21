@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
@@ -16,6 +17,10 @@ import 'package:mno_streamer/parser.dart';
 class EpubScreen extends BookScreen {
   const EpubScreen({Key? key, required FileAsset asset})
       : super(key: key, asset: asset);
+
+  factory EpubScreen.fromPath({Key? key, required String filePath}) {
+    return EpubScreen(key: key, asset: FileAsset(File(filePath)));
+  }
 
   @override
   State<StatefulWidget> createState() => EpubScreenState();
