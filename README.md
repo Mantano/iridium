@@ -5,6 +5,28 @@ Iridium keeps the platform-specific code to the bare minimum (zero for now, in f
 unified codebase. Until now, only the precompiled LCP DRM native library is specific to each platform, and is provided
 in binary form by [Edrlab](https://edrlab.org) that simply must be dropped into the source tree.
 
+
+## Features
+
+- [x] EPUB 2.x and 3.x support
+- [ ] Audiobook support
+- [ ] PDF support
+- [x] Readium LCP support (not in demo app yet)
+- [x] CBZ support (not in demo app yet)
+- [x] Custom styles
+- [x] Night & sepia modes
+- [x] Pagination
+- [ ] Scrolling
+- [x] Table of contents
+- [x] OPDS 1.x and 2.0 support
+- [ ] FXL support
+- [ ] RTL support
+- [ ] Search in EPUB
+- [ ] Highlights/annotations
+- [ ] TTS
+- [ ] EPUB 3 Media Overlays
+- [ ] Divina support
+
 # Test it right now!
 
 ## Pre-built versions
