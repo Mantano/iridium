@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:mno_lcp/i18n/localizations/messages_all.dart';
+import 'package:mno_shared/i18n/locale_utils.dart';
 import 'package:mno_shared/i18n/localizations_repository.dart';
 import 'package:multiple_localization/multiple_localization.dart';
 
@@ -112,5 +113,5 @@ class _LcpLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      ['de', 'en', 'es', 'fr'].contains(locale.languageCode);
+      LocaleUtils.supportedLanguageCodes.contains(locale.languageCode);
 }

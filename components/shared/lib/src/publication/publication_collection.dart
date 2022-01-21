@@ -8,8 +8,6 @@ import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_shared/publication.dart';
 
-import 'subcollection_map.dart';
-
 /// Core Collection Model
 ///
 /// https://readium.org/webpub-manifest/schema/subcollection.schema.json

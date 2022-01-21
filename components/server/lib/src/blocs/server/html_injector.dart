@@ -16,15 +16,16 @@ import 'package:path/path.dart' as p;
 class HtmlInjector {
   /// The [publication] that is the context for the HTML injection.
   final Publication publication;
+  final List<String> googleFonts;
 
   /// Create an instance [HtmlInjector] for a [publication].
-  HtmlInjector(this.publication);
+  HtmlInjector(this.publication, {this.googleFonts = const []});
 
   /// Inject CSS and JS links if the resource is HTML.
   Resource transform(Resource resource) => LazyResource(() async {
         Link link = await resource.link();
         if (link.mediaType.isHtml) {
-          return _InjectHtmlResource(publication, resource);
+          return _InjectHtmlResource(publication, googleFonts, resource);
         }
         return resource;
       });
@@ -32,8 +33,10 @@ class HtmlInjector {
 
 class _InjectHtmlResource extends TransformingResource {
   final Publication publication;
+  final List<String> googleFonts;
 
-  _InjectHtmlResource(this.publication, Resource resource) : super(resource);
+  _InjectHtmlResource(this.publication, this.googleFonts, Resource resource)
+      : super(resource);
 
   @override
   Future<ResourceTry<ByteData>> transform(ResourceTry<ByteData> data) async {
@@ -57,8 +60,9 @@ class _InjectHtmlResource extends TransformingResource {
     }
 
     String linksHtml = _createLinksToInjectHtml(renditionLayout);
+    String googleFonts = _createGoogleFontsHtml();
 
-    return "${html.substring(0, headIndex)}\n$linksHtml\n${html.substring(headIndex)}";
+    return "${html.substring(0, headIndex)}\n$linksHtml\n$googleFonts\n${html.substring(headIndex)}";
   }
 
   /// Builds the HTML for the list of links to be injected in <head>
@@ -82,6 +86,7 @@ class _InjectHtmlResource extends TransformingResource {
   /// The file extension is used to know if it's a JS or CSS.
   List<String> _createLinksToInject(EpubLayout renditionLayout) => [
         '/xpub-js/xpub.css',
+        '/xpub-js/fonts.css',
         '/xpub-js/ReadiumCSS-before.css',
         '/xpub-js/ReadiumCSS-default.css',
         '/xpub-js/ReadiumCSS-after.css',
@@ -150,5 +155,13 @@ class _InjectHtmlResource extends TransformingResource {
     RegExp exp = RegExp(pattern);
     Match? startBody = exp.firstMatch(html);
     return startBody;
+  }
+
+  String _createGoogleFontsHtml() {
+    if (googleFonts.isEmpty) {
+      return "";
+    }
+    String fontList = googleFonts.map((f) => f.replaceAll(" ", "+")).join("|");
+    return "<style>@import url('https://fonts.googleapis.com/css?family=$fontList');</style>";
   }
 }

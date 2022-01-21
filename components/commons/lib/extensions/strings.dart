@@ -7,8 +7,7 @@ import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:dartx/dartx.dart';
-
-import 'data.dart';
+import 'package:mno_commons/extensions/data.dart';
 
 extension StringExtension on String {
   /// If this string starts with the given [prefix], returns this string.

@@ -9,9 +9,8 @@ import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/href.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_commons/utils/uri_template.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/mediatype/mediatype.dart';
-
-import '../../publication.dart';
 
 /// Function used to recursively transform the href of a [Link] when parsing its JSON
 /// representation.

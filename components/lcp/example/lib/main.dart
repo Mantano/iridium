@@ -5,7 +5,7 @@
 import 'dart:typed_data';
 
 import 'package:mno_lcp/lcp.dart';
-import 'package:mno_shared/src/publication/content_protection.dart';
+import 'package:mno_shared/publication.dart';
 
 Future<void> main() async {
   String passphrase = "passphrase";
@@ -14,6 +14,7 @@ Future<void> main() async {
   if (lcpService != null) {
     ContentProtection contentProtection = lcpService.contentProtection(
         authentication: LcpPassphraseAuthentication(passphrase));
+    print("contentProtection: $contentProtection");
   }
 }
 

@@ -9,8 +9,6 @@ import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 
-import 'asset_provider.dart';
-
 /// Function to transform a response data based on href provided.
 typedef TransformData = Uint8List Function(String href, Uint8List data);
 
@@ -53,7 +51,7 @@ class AssetsRequestHandler extends RequestHandler {
       return true;
     } on Error catch (ex, _) {
       // For debugging
-//      Fimber.d("Error loading: $href", ex: ex, stacktrace: stacktrace);
+      // Fimber.d("Error loading: $href", ex: ex, stacktrace: st);
       return false;
     }
   }

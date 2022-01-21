@@ -14,10 +14,10 @@ abstract class PdfPage {
 
   double getPageHeight();
 
-  Image renderFullPage(int sizeX, int sizeY) =>
+  Image? renderFullPage(int sizeX, int sizeY) =>
       renderPage(sizeX, sizeY, 0, 0, sizeX, sizeY);
 
-  Image renderPage(int imageWidth, int imageHeight, int startX, int startY,
+  Image? renderPage(int imageWidth, int imageHeight, int startX, int startY,
       int sizeX, int sizeY);
 
   Uint8List renderPageBitmap(int imageWidth, int imageHeight, int startX,
@@ -27,5 +27,5 @@ abstract class PdfPage {
       int sizeY, int rotate, int deviceX, int deviceY);
 
   Product2<double, double> pageToDevice(int startX, int startY, int sizeX,
-      int sizeY, int rotate, int pageX, int pageY);
+      int sizeY, int rotate, double pageX, double pageY);
 }

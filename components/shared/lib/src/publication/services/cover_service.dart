@@ -5,12 +5,10 @@
 import 'dart:typed_data';
 
 import 'package:dfunc/dfunc.dart';
-import 'package:fimber/fimber.dart';
 import 'package:image/image.dart';
 import 'package:mno_commons/extensions/data.dart';
 import 'package:mno_shared/fetcher.dart';
-
-import '../../../publication.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Provides an easy access to a bitmap version of the publication cover.
 ///
@@ -60,9 +58,7 @@ extension PublicationCoverExtension on Publication {
   /// Returns the publication cover as a [Bitmap] at its maximum size.
   Future<Image?> cover() async {
     final coverService = findService<CoverService>();
-    Fimber.d("coverService: $coverService");
     Image? cover = await coverService?.cover();
-    Fimber.d("cover: $cover");
     if (cover != null) {
       return cover;
     }

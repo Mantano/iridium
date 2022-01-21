@@ -4,9 +4,8 @@
 
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/src/container/container.dart';
 import 'package:path/path.dart';
-
-import 'src/container/container.dart';
 
 ///  Parses a Publication from a file.
 abstract class PublicationParser {

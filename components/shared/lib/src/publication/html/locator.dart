@@ -4,8 +4,7 @@
 
 import 'package:dfunc/dfunc.dart';
 import 'package:mno_shared/publication.dart';
-
-import 'dom_range.dart';
+import 'package:mno_shared/src/publication/html/dom_range.dart';
 
 extension LocationsExtension on Locations {
   /// A CSS Selector.

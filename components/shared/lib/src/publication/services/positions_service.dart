@@ -9,9 +9,8 @@ import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart' hide GroupBy;
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/jsonable.dart';
-
-import '../../../fetcher.dart';
-import '../../../publication.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 
 final Link _positionsLink = Link(
     href: "/~readium/positions",

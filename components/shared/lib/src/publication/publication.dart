@@ -12,11 +12,9 @@ import 'package:fimber/fimber.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/extensions/uri.dart';
 import 'package:mno_commons/utils/ref.dart';
+import 'package:mno_shared/fetcher.dart';
+import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/mediatype/mediatype.dart';
-
-import '../../fetcher.dart';
-import '../../publication.dart';
-import '../readium_css.dart';
 
 typedef ServiceFactory = PublicationService? Function(
     PublicationServiceContext);
@@ -68,7 +66,9 @@ class Publication with EquatableMixin {
   // Shortcuts to manifest properties
 
   List<String> get context => _manifest.context;
+
   Metadata get metadata => _manifest.metadata;
+
   List<Link> get links => _manifest.links;
 
   /// Identifies a list of resources in reading order for the publication.
@@ -309,6 +309,7 @@ class PublicationServiceContext {
 /// Provides helpers to manipulate the list of services of a [Publication].
 class ServicesBuilder {
   final Map<Type, ServiceFactory> serviceFactories;
+
   const ServicesBuilder._(this.serviceFactories);
 
   factory ServicesBuilder.create(

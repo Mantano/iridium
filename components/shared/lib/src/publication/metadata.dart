@@ -8,9 +8,6 @@ import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_shared/publication.dart';
 
-import 'localized_string.dart';
-import 'reading_progression.dart';
-
 /// https://readium.org/webpub-manifest/schema/metadata.schema.json
 ///
 /// @param readingProgression WARNING: This contains the reading progression as declared in the

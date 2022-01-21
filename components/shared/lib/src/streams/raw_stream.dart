@@ -4,11 +4,12 @@
 
 import 'dart:convert';
 
-import 'stream.dart';
+import 'package:mno_shared/src/streams/stream.dart';
 
 /// Simple in-memory data stream.
 class RawDataStream extends DataStream {
   RawDataStream(this._data);
+
   final List<int> _data;
 
   factory RawDataStream.fromString(String contents,

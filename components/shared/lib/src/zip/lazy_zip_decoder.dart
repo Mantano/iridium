@@ -3,15 +3,13 @@
 // found in the LICENSE file.
 
 import 'package:archive/archive.dart' as archive;
-import 'package:fimber/fimber.dart';
+import 'package:mno_shared/src/zip/file_buffer.dart';
+import 'package:mno_shared/src/zip/lazy_archive.dart';
+import 'package:mno_shared/src/zip/lazy_archive_file.dart';
+import 'package:mno_shared/src/zip/lazy_zip_directory.dart';
+import 'package:mno_shared/src/zip/lazy_zip_file.dart';
+import 'package:mno_shared/src/zip/lazy_zip_file_header.dart';
 import 'package:universal_io/io.dart';
-
-import 'file_buffer.dart';
-import 'lazy_archive.dart';
-import 'lazy_archive_file.dart';
-import 'lazy_zip_directory.dart';
-import 'lazy_zip_file.dart';
-import 'lazy_zip_file_header.dart';
 
 /// Decode a zip formatted buffer into an [Archive] object.
 class LazyZipDecoder {
@@ -50,8 +48,6 @@ class LazyZipDecoder {
       }
 
       return _archive;
-    }).catchError((ex, st) {
-      Fimber.d("ERROR", ex: ex, stacktrace: st);
     }).whenComplete(fileBuffer.close);
   }
 }

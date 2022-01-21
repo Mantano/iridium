@@ -3,11 +3,10 @@
 // found in the LICENSE file.
 
 import 'package:mno_server/mno_server.dart';
+import 'package:mno_server/src/blocs/server/html_injector.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:universal_io/io.dart';
-
-import 'html_injector.dart';
 
 /// Serves the resources of a [Publication] [Fetcher] from a [ServerBloc].
 class FetcherRequestHandler extends RequestHandler {
@@ -18,8 +17,8 @@ class FetcherRequestHandler extends RequestHandler {
   /// Creates an instance of [FetcherRequestHandler] for a [publication].
   ///
   /// A [transformData] parameter is optional.
-  FetcherRequestHandler(this.publication)
-      : _htmlInjector = HtmlInjector(publication);
+  FetcherRequestHandler(this.publication, {List<String> googleFonts = const []})
+      : _htmlInjector = HtmlInjector(publication, googleFonts: googleFonts);
 
   Fetcher get _fetcher => publication.fetcher;
 

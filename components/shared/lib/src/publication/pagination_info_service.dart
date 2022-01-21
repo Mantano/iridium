@@ -10,8 +10,6 @@ import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/mediatype/mediatype.dart';
 import 'package:mno_shared/src/publication/epub/publication.dart';
 
-import '../../publication.dart';
-
 class PaginationInfosService {
   // we consider that a page is usually made of 3500 bytes
   static const int _pageSize = 3500;

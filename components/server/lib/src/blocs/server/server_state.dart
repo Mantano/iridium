@@ -4,8 +4,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-
-import 'server_bloc.dart';
+import 'package:mno_server/src/blocs/server/server_bloc.dart';
 
 /// Root class for [ServerBloc] states.
 @immutable

@@ -5,9 +5,6 @@
 import 'dart:typed_data';
 
 import 'package:mno_lcp/lcp.dart';
-import 'package:mno_lcp/license/container/epub_license_container.dart';
-import 'package:mno_lcp/license/container/lcpl_license_container.dart';
-import 'package:mno_lcp/license/container/web_pub_license_container.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:universal_io/io.dart';
 

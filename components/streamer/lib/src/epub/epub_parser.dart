@@ -11,18 +11,15 @@ import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
 import 'package:mno_streamer/src/container/container.dart';
 import 'package:mno_streamer/src/container/publication_container.dart';
-import 'package:mno_streamer/src/epub/package_document.dart';
+import 'package:mno_streamer/src/epub/constants.dart';
+import 'package:mno_streamer/src/epub/encryption_parser.dart';
+import 'package:mno_streamer/src/epub/epub_deobfuscator.dart';
+import 'package:mno_streamer/src/epub/epub_positions_service.dart';
+import 'package:mno_streamer/src/epub/navigation_document_parser.dart';
+import 'package:mno_streamer/src/epub/ncx_parser.dart';
+import 'package:mno_streamer/src/epub/readium_css_layout.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
-
-import 'constants.dart';
-import 'encryption_parser.dart';
-import 'epub_deobfuscator.dart';
-import 'epub_positions_service.dart';
-import 'navigation_document_parser.dart';
-import 'ncx_parser.dart';
-import 'publication_factory.dart';
-import 'readium_css_layout.dart';
 
 /// Constants settings for EPUB publication.
 class EPUBConstant {

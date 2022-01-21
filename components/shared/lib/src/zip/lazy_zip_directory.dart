@@ -2,14 +2,14 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:archive/archive.dart' as archive;
-
-import 'file_buffer.dart';
-import 'lazy_zip_file_header.dart';
+import 'package:archive/archive.dart';
+import 'package:mno_shared/src/zip/file_buffer.dart';
+import 'package:mno_shared/src/zip/lazy_zip_file_header.dart';
 
 class LazyZipDirectory {
   // End of Central Directory Record
   static const int signature = 0x06054b50;
+  static const int headerSignature = 0x04034b50;
   static const int zip64EocdLocatorSignature = 0x07064b50;
   static const int zip64EocdLocatorSize = 20;
   static const int zip64EocdSignature = 0x06064b50;
@@ -29,6 +29,10 @@ class LazyZipDirectory {
   LazyZipDirectory();
 
   Future<void> load(FileBuffer input, {String? password}) async {
+    if (!await headerSignatureValid(input)) {
+      throw Exception("Not an archive");
+    }
+
     filePosition = await _findSignature(input);
     input.position = filePosition;
     int signature = await input.readUint32(); // ignore: unused_local_variable
@@ -46,7 +50,7 @@ class LazyZipDirectory {
 
     await _readZip64Data(input);
 
-    archive.InputStream dirContent =
+    InputStream dirContent =
         await input.subset(centralDirectoryOffset, centralDirectorySize);
 
     while (!dirContent.isEOS) {
@@ -77,8 +81,7 @@ class LazyZipDirectory {
     if (locPos < 0) {
       return;
     }
-    archive.InputStream zip64 =
-        await input.subset(locPos, zip64EocdLocatorSize);
+    InputStream zip64 = await input.subset(locPos, zip64EocdLocatorSize);
 
     int sig = zip64.readUint32();
     // If this ins't the signature we're looking for, nothing more to do.
@@ -156,7 +159,12 @@ class LazyZipDirectory {
       }
     }
 
-    throw archive.ArchiveException(
-        'Could not find End of Central Directory Record');
+    throw ArchiveException('Could not find End of Central Directory Record');
+  }
+
+  Future<bool> headerSignatureValid(FileBuffer input) async {
+    int sig = await input.readUint32();
+    input.position = 0;
+    return sig == headerSignature;
   }
 }

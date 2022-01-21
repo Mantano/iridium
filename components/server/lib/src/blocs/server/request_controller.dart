@@ -3,9 +3,8 @@
 // found in the LICENSE file.
 
 import 'package:fimber/fimber.dart';
+import 'package:mno_server/src/blocs/server/request_handler.dart';
 import 'package:universal_io/io.dart';
-
-import 'request_handler.dart';
 
 /// A [RequestController] is used to process each request received by the
 /// server.
@@ -42,6 +41,7 @@ class RequestController {
       response.statusCode = HttpStatus.internalServerError;
       Fimber.d("Request error", ex: e, stacktrace: stacktrace);
     } finally {
+      await response.flush();
       await response.close();
     }
   }

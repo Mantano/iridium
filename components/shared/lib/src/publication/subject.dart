@@ -6,8 +6,7 @@ import 'package:dartx/dartx.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/jsonable.dart';
-
-import '../../publication.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Subject of a [Publication].
 ///

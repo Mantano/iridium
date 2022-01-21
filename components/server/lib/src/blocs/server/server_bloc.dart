@@ -7,10 +7,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:mno_server/mno_server.dart';
+import 'package:mno_server/src/blocs/server/request_controller.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:universal_io/io.dart';
-
-import 'request_controller.dart';
 
 /// A ServerBloc is used to start/stop a server instance.
 ///
@@ -24,6 +23,8 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   /// Creates a [ServerBloc] with a [ServerNotStarted] state.
   ServerBloc() : super(ServerNotStarted()) {
     _addressSubject = BehaviorSubject<String>.seeded("");
+    on<StartServer>(_onStartServer);
+    on<ShutdownServer>(_onShutdownServer);
   }
 
   /// Returns the current address of the server.
@@ -32,16 +33,8 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   /// currently used.
   String get address => _addressSubject.value;
 
-  @override
-  Stream<ServerState> mapEventToState(ServerEvent event) async* {
-    if (event is StartServer) {
-      yield* _mapStartServerToState(event);
-    } else if (event is ShutdownServer) {
-      yield* _mapShutdownServerToState();
-    }
-  }
-
-  Stream<ServerState> _mapStartServerToState(StartServer event) async* {
+  Future<void> _onStartServer(
+      StartServer event, Emitter<ServerState> emit) async {
     try {
       HttpServer? server = await _initServer();
       if (server != null) {
@@ -51,11 +44,11 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
         _addressSubject.add("http://${server.address.address}:${server.port}");
         unawaited(_runServer(server));
       }
-      yield ServerStarted(address);
+      emit(ServerStarted(address));
     } on Exception catch (e, stacktrace) {
       Fimber.d("ERROR", ex: e, stacktrace: stacktrace);
       _server = null;
-      yield ServerNotStarted();
+      emit(ServerNotStarted());
     }
   }
 
@@ -75,12 +68,13 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
     return server;
   }
 
-  Stream<ServerState> _mapShutdownServerToState() async* {
+  Future<void> _onShutdownServer(
+      ShutdownServer event, Emitter<ServerState> emit) async {
     if (state is ServerStarted) {
       await _server?.close(force: true);
       _server = null;
       _addressSubject.add("");
-      yield ServerClosed();
+      emit(ServerClosed());
     }
   }
 

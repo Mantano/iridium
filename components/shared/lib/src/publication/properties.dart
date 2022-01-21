@@ -4,9 +4,8 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:mno_commons/utils/jsonable.dart';
-
-import 'encryption.dart';
-import 'presentation/presentation.dart';
+import 'package:mno_shared/src/publication/encryption.dart';
+import 'package:mno_shared/src/publication/presentation/presentation.dart';
 
 /// Set of properties associated with a [Link].
 ///

@@ -5,9 +5,8 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:mno_shared/xml.dart';
 import 'package:xml/xml.dart' as xml;
-
-import '../../xml.dart';
 
 class DataStreamException implements Exception {
   /// Error while reading data.
@@ -19,6 +18,7 @@ class DataStreamException implements Exception {
       DataStreamException("Read out of range (start: $start, length: $length)");
 
   const DataStreamException(this.message);
+
   final String message;
 
   @override

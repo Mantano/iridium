@@ -10,11 +10,10 @@ import 'package:mno_commons/extensions/data.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_shared/archive.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:mno_shared/src/mediatype/mediatype.dart';
+import 'package:mno_shared/src/mediatype/sniffer_context.dart';
 import 'package:path/path.dart';
 import 'package:universal_io/io.dart';
-
-import 'mediatype.dart';
-import 'sniffer_context.dart';
 
 /// Determines if the provided content matches a known MediaType.
 ///

@@ -11,10 +11,9 @@ import 'package:dartx/dartx.dart';
 import 'package:mno_commons/utils/try.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:mno_shared/src/fetcher/resource_exception.dart';
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
-
-import 'resource_exception.dart';
 
 class ResourceTry<SuccessT> extends Try<SuccessT, ResourceException> {
   ResourceTry.success(SuccessT success) : super.success(success);

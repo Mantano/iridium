@@ -4,8 +4,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:mno_shared/publication.dart';
-
-import 'opds_metadata.dart';
+import 'package:mno_shared/src/opds/opds_metadata.dart';
 
 class Group with EquatableMixin {
   final String title;

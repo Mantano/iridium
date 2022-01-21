@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:mno_shared/epub.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/src/epub/constants.dart';
 import 'package:test/test.dart';

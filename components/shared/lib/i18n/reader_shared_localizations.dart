@@ -6,9 +6,9 @@ import 'dart:async';
 
 import 'package:intl/intl.dart';
 import 'package:intl/locale.dart';
+import 'package:mno_shared/i18n/locale_utils.dart';
+import 'package:mno_shared/i18n/localizations/messages_all.dart' as m;
 import 'package:mno_shared/i18n/localizations_repository.dart';
-
-import 'localizations/messages_all.dart' as m;
 
 class ReaderSharedLocalizations implements LocalizationsRepository {
   static const SimpleLocalizationDelegate<ReaderSharedLocalizations> delegate =
@@ -122,8 +122,7 @@ class _ReaderSharedLocalizationsDelegate
       (l) => ReaderSharedLocalizations(l);
 
   @override
-  bool isSupported(Locale locale) =>
-      ['de', 'en', 'es', 'fr'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => LocaleUtils.isSupported(locale);
 
   @override
   Future<bool> initializeMessages(String localeName) =>

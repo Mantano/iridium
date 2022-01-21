@@ -10,8 +10,6 @@ import 'package:mno_commons/utils/href.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_shared/publication.dart';
 
-import 'subcollection_map.dart';
-
 /// Holds the metadata of a Readium publication, as described in the Readium Web Publication Manifest.
 class Manifest with EquatableMixin implements JSONable {
   final List<String> context;

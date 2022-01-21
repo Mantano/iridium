@@ -65,7 +65,7 @@ void main() async {
     });
 
     test("helper for ServicesBuilder works fine", () {
-      factory(context) => MockPositionsService([]);
+      MockPositionsService factory(context) => MockPositionsService([]);
       expect(
           factory,
           ServicesBuilder.create()

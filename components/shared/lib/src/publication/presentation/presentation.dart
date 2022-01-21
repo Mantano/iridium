@@ -7,8 +7,6 @@ import 'package:equatable/equatable.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_shared/publication.dart';
 
-import '../link.dart';
-
 /// The Presentation Hints extension defines a number of hints for User Agents about the way content
 /// should be presented to the user.
 ///
@@ -119,6 +117,7 @@ class PresentationFit with EquatableMixin {
 class EpubLayout with EquatableMixin {
   // Fixed layout.
   static const EpubLayout fixed = EpubLayout._("fixed");
+
   // Apply dynamic pagination when rendering.
   static const EpubLayout reflowable = EpubLayout._("reflowable");
   static const List<EpubLayout> _values = [fixed, reflowable];
@@ -211,10 +210,13 @@ class PresentationPage with EquatableMixin {
 class PresentationSpread with EquatableMixin {
   // Specifies the Reading System can determine when to render a synthetic spread for the readingOrder item.
   static const PresentationSpread auto = PresentationSpread._("auto");
+
   // Specifies the Reading System should render a synthetic spread for the readingOrder item in both portrait and landscape orientations.
   static const PresentationSpread both = PresentationSpread._("both");
+
   // Specifies the Reading System should not render a synthetic spread for the readingOrder item.
   static const PresentationSpread none = PresentationSpread._("none");
+
   // Specifies the Reading System should render a synthetic spread for the readingOrder item only when in landscape orientation.
   static const PresentationSpread landscape = PresentationSpread._("landscape");
   static const List<PresentationSpread> _values = [auto, both, none, landscape];
