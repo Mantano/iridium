@@ -30,7 +30,7 @@ in binary form by [Edrlab](https://edrlab.org) that simply must be dropped into 
 # Test it right now!
 
 ## Pre-built versions
-Pre-built versions of the [Iridium Demo App](https://github.com/Mantano/iridium-demo) are available:
+Pre-built versions of the [Iridium Demo App](https://github.com/Mantano/iridium/tree/main/demo-app) are available:
 - For Android: [Beta on Play Store](https://play.google.com/store/apps/details?id=com.mantano.iridium.IridiumApp)
 - For iOS: [IPA here](https://api.codemagic.io/artifacts/cafe9a91-b4d5-48f0-b716-ca948d8e11ac/3c8b8914-96c5-4597-8c60-3a3ead8eda1f/Iridium.ipa)
 
@@ -40,8 +40,8 @@ Note: The Iridium Demo App is based on the excellent [Jideguru's Flutter Ebook A
 
 ### From the command-line
 ```
-git clone --recurse-submodules https://github.com/Mantano/iridium_demo.git
-cd iridium_demo
+git clone https://github.com/Mantano/iridium.git
+cd iridium/demo-app
 flutter devices <-- Pick a device id in the list (in the 2nd column)
 flutter run -d <device_id>
 ```
@@ -69,31 +69,31 @@ This SDK provides open-source unofficial Dart/Flutter ports of Readium 2 (R2)
 components<sup>[1](#readium_foundation)</sup>, following
 the [Readium 2 architecture](https://github.com/readium/architecture):
 
-| Name                                                                          | Usage                                                                                           |
-|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| [**mno_shared_dart**](https://github.com/Mantano/mno_shared_dart)             | Shared Publication models and utilities                                                         |
-| [**mno_streamer_dart**](https://github.com/Mantano/mno_streamer_dart)         | Publication parsers                                                                             |
-| [**mno_server_dart**](https://github.com/Mantano/mno_server_dart)             | Local HTTP server                                                                               |
-| [**mno_navigator_flutter**](https://github.com/Mantano/mno_navigator_flutter) | Navigator                                                                                       |
-| [**mno_opds_dart**](https://github.com/Mantano/mno_opds_dart)                 | Parsers for OPDS catalog feeds                                                                  |
-| [**mno_commons_dart**](https://github.com/Mantano/mno_commons_dart)           | Other misc. utilities (specific to this Flutter port, not found in Readium)                     |
-| [**mno_lcp_dart**](https://github.com/Mantano/mno_lcp_dart)                   | Service and models for Readium LCP                                                              |
-| [**mno_lcp_native_dart**](https://github.com/Mantano/mno_lcp_native_dart)     | Native interface for Readium                                                                    |
+| Name                                                                               | Usage                                                                                           |
+|------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
+| [**shared**](https://github.com/Mantano/iridium/tree/main/components/shared) | Shared Publication models and utilities                                                         |
+| [**streamer**](https://github.com/Mantano/iridium/tree/main/components/streamer)              | Publication parsers                                                                             |
+| [**server**](https://github.com/Mantano/iridium/tree/main/components/mno_server)                          | Local HTTP server                                                                               |
+| [**navigator_flutter**](https://github.com/Mantano/iridium/tree/main/components/navigator)              | Navigator                                                                                       |
+| [**opds**](https://github.com/Mantano/iridium/tree/main/components/opds)                              | Parsers for OPDS catalog feeds                                                                  |
+| [**commons**](https://github.com/Mantano/iridium/tree/main/components/commons)                        | Other misc. utilities (specific to this Flutter port, not found in Readium)                     |
+| [**lcp**](https://github.com/Mantano/iridium/tree/main/components/lcp)                                | Service and models for Readium LCP                                                              |
+| [**lcp_native**](https://github.com/Mantano/mno_lcp_native)                  | Native interface for Readium                                                                    |
 
 Beyond these Readium 2 inspired modules, Iridium provides 2 conveniences:
 
 | Name                                                                          | Usage                                                                                           |
 |-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| [**iridium_reader_widget**](https://github.com/Mantano/iridium_reader_widget) | Plug and play reader widget                                                                     |
-| [**iridium_demo**](https://github.com/Mantano/iridium_demo)                   | A demo app based on [JideGuru's Flutter Ebook App](https://github.com/JideGuru/FlutterEbookApp) |
+| [**iridium_reader_widget**](https://github.com/Mantano/iridium/tree/main/reader_widget) | Plug and play reader widget                                                                     |
+| [**iridium_demo**](https://github.com/Mantano/iridium/tree/main/demo-app)               | A demo app based on [JideGuru's Flutter Ebook App](https://github.com/JideGuru/FlutterEbookApp) |
 
 # Integrating into your app
 
 There are 3 main options, from simplest to most advanced
 
 - Option 1: Fork and tailor the Iridium Demo App
-- Option 2: Integrate the [**iridium_reader_widget**](https://github.com/Mantano/iridium_reader_widget) into your app
-- Option 3: Integrate the Iridium modules the way you want. The [**iridium_reader_widget**](https://github.com/Mantano/iridium_reader_widget) source code
+- Option 2: Integrate the [**iridium_reader_widget**](https://github.com/Mantano/iridium/tree/main/reader_widget) into your app
+- Option 3: Integrate the Iridium modules the way you want. The [**iridium_reader_widget**](https://github.com/Mantano/iridium/tree/main/reader_widget) source code
 provides a lot of clues bout the relationships between the Iridium modules, and the workflows required to open and display a book.
 
 # Iridium vs Readium
