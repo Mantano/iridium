@@ -57,6 +57,11 @@ the [Readium 2 architecture](https://github.com/readium/architecture):
 | [**mno_commons_dart**](https://github.com/Mantano/mno_commons_dart)           | Other misc. utilities (specific to this Flutter port, not found in Readium)                     |
 | [**mno_lcp_dart**](https://github.com/Mantano/mno_lcp_dart)                   | Service and models for Readium LCP                                                              |
 | [**mno_lcp_native_dart**](https://github.com/Mantano/mno_lcp_native_dart)     | Native interface for Readium                                                                    |
+
+Beyond these Readium 2 inspired modules, Iridium provides 2 conveniences:
+
+| Name                                                                          | Usage                                                                                           |
+|-------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | [**iridium_reader_widget**](https://github.com/Mantano/iridium_reader_widget) | Plug and play reader widget                                                                     |
 | [**iridium_demo**](https://github.com/Mantano/iridium_demo)                   | A demo app based on [JideGuru's Flutter Ebook App](https://github.com/JideGuru/FlutterEbookApp) |
 
