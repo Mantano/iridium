@@ -54,8 +54,8 @@ apply [the fix mentioned in this post](https://github.com/flutter/flutter/issues
 
 ### From Android Studio or Intellij IDEA:
 
-- File / New / From Version Control (https://github.com/Mantano/iridium_demo.git)
-- Run
+- File / New / From Version Control (https://github.com/Mantano/iridium.git)
+- Run the project in the `demo-app` subdirectory
 
 # Supported platforms
 
