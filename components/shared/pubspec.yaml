@@ -23,7 +23,7 @@ dependencies:
   universal_io: ^2.0.4
   xml: ^5.3.1
   mno_commons:
-    ../commons
+    path: ../commons
 
 dev_dependencies:
   image_compare: ^1.1.2

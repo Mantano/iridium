@@ -16,9 +16,9 @@ dependencies:
   universal_io: ^2.0.4
   xml: ^5.3.1
   mno_commons:
-    ../commons
+    path: ../commons
   mno_shared:
-    ../shared
+    path: ../shared
 
 dev_dependencies:
   lints: ^1.0.1
