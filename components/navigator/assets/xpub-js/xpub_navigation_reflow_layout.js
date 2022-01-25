@@ -275,7 +275,7 @@
     xpub.navigateToEnd = function() {
         xpub.initPagination();
         let xpubContainer = $('.xpub_container');
-        let nbCols = $('#xpub_contenuSpineItem').howMuchCols();
+        let nbCols = $('#xpub_spineItemContents').howMuchCols();
         let scrollLeft = (nbCols - 1) * xpubContainer[0].clientWidth;
         xpubContainer.eq(0).scrollLeft(scrollLeft);
     };
@@ -352,7 +352,7 @@
             let paginator = $('#xpub_paginator');
             paginator.empty();
 
-            let nbCols = $('#xpub_contenuSpineItem').howMuchCols();
+            let nbCols = $('#xpub_spineItemContents').howMuchCols();
 //            flutter_log.postMessage("=========== nbCols: " + nbCols);
             xpub.paginationInfo.columnCount = nbCols;
             if (xpub.screenshotConfig) {
@@ -434,7 +434,7 @@
                     let translateLeft = -(containerWidth / nbThumbnails * ((nbThumbnails - 1) / 2));
                     let translateTop = -(containerHeight / nbThumbnails * ((nbThumbnails - 1) / 2));
                     let scale = 1 / nbThumbnails;
-                    $('#xpub_contenuSpineItem')[0].style.transform = "translate(" + translateLeft + "px, " + translateTop + "px) scale(" + scale + ")";
+                    $('#xpub_spineItemContents')[0].style.transform = "translate(" + translateLeft + "px, " + translateTop + "px) scale(" + scale + ")";
                     if (paginator.length == 0) {
                         document.fonts.ready.then(function () {
                             xpub.triggerOnPaginationChanged();

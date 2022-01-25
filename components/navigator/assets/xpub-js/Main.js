@@ -7,7 +7,7 @@
             nbThumbnails = (nbThumbnails) ? nbThumbnails : 1;
             const windowWidth = $(window).width();
             // See https://www.codegrepper.com/code-examples/javascript/jquery+detect+if+element+has+overflow
-            const spineItemDiv = $('#xpub_contenuSpineItem');
+            const spineItemDiv = $('#xpub_spineItemContents');
             const contentsWidth = spineItemDiv.prop('scrollWidth');
             const contentsHeight = spineItemDiv.prop('scrollHeight');
             // flutter_log.postMessage("=============== windowWidth: " + windowWidth + ", contentsWidth: " + contentsWidth + ", contentsHeight: " + contentsHeight);

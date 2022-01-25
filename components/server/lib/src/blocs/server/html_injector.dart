@@ -130,8 +130,11 @@ class _InjectHtmlResource extends TransformingResource {
   /// Wraps the HTML for pagination.
   String _wrapHtmlContent(String html, EpubLayout renditionLayout) {
     if (renditionLayout == EpubLayout.reflowable) {
-      html = _insertString('(<body[^>]*>)', html,
-          '<div class="xpub_container"><div id="xpub_contenuSpineItem">', true);
+      html = _insertString(
+          '(<body[^>]*>)',
+          html,
+          '<div class="xpub_container"><div id="xpub_spineItemContents">',
+          true);
       html = _insertString('(</body>)', html,
           '</div><div id="xpub_paginator"></div></div>', false);
     }

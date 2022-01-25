@@ -10,7 +10,7 @@
 
 }
 
-#xpub_contenuSpineItem {
+#xpub_spineItemContents {
     /* We fix the position to be able to add positioned pages at the end*/
     position: relative;
 
