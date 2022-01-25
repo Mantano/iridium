@@ -6,7 +6,7 @@ import 'package:iridium_app/components/loading_widget.dart';
 import 'package:iridium_app/database/download_helper.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/util/router.dart';
-import 'package:iridium_app/views/viewers/epub_screen.dart';
+import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:uuid/uuid.dart';
 

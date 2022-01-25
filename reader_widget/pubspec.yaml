@@ -1,7 +1,8 @@
 name: iridium_reader_widget
 description: Plug and play ebook reader widget
 version: 0.0.1
-homepage:
+publish_to: none
+homepage: https://iridium.rocks
 
 environment:
   sdk: ">=2.16.0-134.1.beta <3.0.0"

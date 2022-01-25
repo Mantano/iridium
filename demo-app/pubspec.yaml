@@ -21,18 +21,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  mno_commons:
-    path: ../components/commons
-  mno_navigator:
-    path: ../components/navigator
-  mno_server:
-    path: ../components/server
-  mno_streamer:
-    path: ../components/streamer
-  mno_opds:
-    path: ../components/opds
-  mno_shared:
-    path: ../components/shared
+  iridium_reader_widget:
+    path: ../reader_widget
   cupertino_icons: ^1.0.4
   provider: ^6.0.2
   shared_preferences: ^2.0.12
@@ -52,8 +42,8 @@ dependencies:
   idb_shim: ^2.0.1
   idb_sqflite: ^1.1.0
   sqflite_common_ffi: ^2.1.0+2
-  flutter_fimber: ^0.6.4
-  fimber: ^0.6.4
+  flutter_fimber: ^0.6.5
+  fimber: ^0.6.5
   bloc: ^8.0.2
   flutter_bloc: ^8.0.1
   flutter_inappwebview: ^5.3.2
@@ -62,6 +52,7 @@ dependencies:
 
 dependency_overrides:
   platform: ^3.1.0
+  path: ^1.8.1
 
 dev_dependencies:
   flutter_lints: ^1.0.4

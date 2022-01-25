@@ -16,13 +16,13 @@ dependencies:
   device_info: ^2.0.3
   dfunc: ^0.7.2
   either_option: ^2.0.0
-  fimber: ^0.6.4
+  fimber: ^0.6.5
   flutter_archive: ^4.1.1
   hex: ^0.2.0
   intl: ^0.17.0
   mno_fsm: ^0.1.1
   multiple_localization: ^0.2.2
-  path: ^1.8.0
+  path: ^1.8.1
   path_provider: ^2.0.8
   shared_preferences: ^2.0.12
   sqflite: ^2.0.2

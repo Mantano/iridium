@@ -9,7 +9,7 @@ import 'package:iridium_app/components/description_text.dart';
 import 'package:iridium_app/components/loading_widget.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/view_models/details_provider.dart';
-import 'package:iridium_app/views/viewers/epub_screen.dart';
+import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
