@@ -15,13 +15,13 @@ class WebViewHorizontalGestureRecognizer
   bool isBeginningVisible = true;
   bool isEndVisible = false;
 
-  void setBeginningVisible(bool visibility) {
-//    Fimber.d(">>> setBeginningVisible[$chapNumber], visibility: $visibility");
+  void setLeftOverlayVisible(bool visibility) {
+//    Fimber.d(">>> setLeftOverlayVisible[$chapNumber], visibility: $visibility");
     isBeginningVisible = visibility;
   }
 
-  void setEndVisible(bool visibility) {
-//    Fimber.d(">>> setEndVisible[$chapNumber], visibility: $visibility");
+  void setRightOverlayVisible(bool visibility) {
+//    Fimber.d(">>> setRightOverlayVisible[$chapNumber], visibility: $visibility");
     isEndVisible = visibility;
   }
 

@@ -24,21 +24,21 @@
         }
     }
 
-    function onBeginningVisibilityChanged(value) {
+    function onLeftOverlayVisibilityChanged(value) {
         if (window.flutter_inappwebview) {
-            window.flutter_inappwebview.callHandler('GestureCallbacksOnBeginningVisibilityChanged', value);
+            window.flutter_inappwebview.callHandler('GestureCallbacksOnLeftOverlayVisibilityChanged', value);
         } else {
-//          flutter_log.postMessage("====== onBeginningVisibilityChanged, URL: " + window.location.href);
-            GestureCallbacksOnBeginningVisibilityChanged.postMessage(value);
+//          flutter_log.postMessage("====== onLeftOverlayVisibilityChanged, URL: " + window.location.href);
+            GestureCallbacksOnLeftOverlayVisibilityChanged.postMessage(value);
         }
     }
 
-    function onEndVisibilityChanged(value) {
+    function onRightOverlayVisibilityChanged(value) {
         if (window.flutter_inappwebview) {
-            window.flutter_inappwebview.callHandler('GestureCallbacksOnEndVisibilityChanged', value);
+            window.flutter_inappwebview.callHandler('GestureCallbacksOnRightOverlayVisibilityChanged', value);
         } else {
-//            flutter_log.postMessage("====== onBeginningVisibilityChanged, URL: " + window.location.href);
-            GestureCallbacksOnEndVisibilityChanged.postMessage(value);
+//            flutter_log.postMessage("====== onLeftOverlayVisibilityChanged, URL: " + window.location.href);
+            GestureCallbacksRightOverlayVisibilityChanged.postMessage(value);
         }
     }
 
@@ -98,7 +98,7 @@
             pageIndex = 0;
         }
 
-        // START Mantano (Mickaël)
+        // START Mantano
         // This is to avoid blank page when giving a column that is out of the
         // bounds of the spine item.
         pageIndex = Math.min(pageIndex, paginationInfo.columnCount - 1);
@@ -371,8 +371,8 @@
             }
             paginator.show();
 
-            let firstDivSelector = '#xpub_page_0';
-            let lastDivSelector = '#xpub_page_' + (nbCols - 1);
+            let leftDivSelector = '#xpub_page_0';
+            let rightDivSelector = '#xpub_page_' + (nbCols - 1);
 
             for (let i = 0; i < nbCols; i++) {
                 let observer = new IntersectionObserver(function (entries) {
@@ -393,29 +393,29 @@
                 xpub.navigation.toggleBookmark();
             });
 
-            let observerBeginning = new IntersectionObserver(function (entries) {
+            let observerLeft = new IntersectionObserver(function (entries) {
                 // isIntersecting is true when element and viewport are overlapping
                 // isIntersecting is false when element and viewport don't overlap
-//                 flutter_log.postMessage("=========== observerBeginning, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
-                onBeginningVisibilityChanged(entries[0].isIntersecting);
+//                 flutter_log.postMessage("=========== observerLeft, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
+                onLeftOverlayVisibilityChanged(entries[0].isIntersecting);
             }, {threshold: [0.8]});
-            let observerEnd = new IntersectionObserver(function (entries) {
+            let observerRight = new IntersectionObserver(function (entries) {
                 // isIntersecting is true when element and viewport are overlapping
                 // isIntersecting is false when element and viewport don't overlap
-//                flutter_log.postMessage("=========== observerEnd, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
-                onEndVisibilityChanged(entries[0].isIntersecting);
+//                flutter_log.postMessage("=========== observerRight, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
+                onRightOverlayVisibilityChanged(entries[0].isIntersecting);
             }, {threshold: [0.8]});
-            xpub.observers.push(observerBeginning);
-            xpub.observers.push(observerEnd);
-            let firstDivQuerySelector = document.querySelector(firstDivSelector);
+            xpub.observers.push(observerLeft);
+            xpub.observers.push(observerRight);
+            let firstDivQuerySelector = document.querySelector(leftDivSelector);
 //             flutter_log.postMessage("=========== firstDivQuerySelector: " + firstDivQuerySelector);
             if (firstDivQuerySelector != null) {
-                observerBeginning.observe(firstDivQuerySelector);
+                observerLeft.observe(firstDivQuerySelector);
             }
-            let lastDivQuerySelector = document.querySelector(lastDivSelector);
+            let lastDivQuerySelector = document.querySelector(rightDivSelector);
 //             flutter_log.postMessage("=========== lastDivQuerySelector: " + lastDivQuerySelector);
             if (lastDivQuerySelector != null) {
-                observerEnd.observe(lastDivQuerySelector);
+                observerRight.observe(lastDivQuerySelector);
             }
             xpub.bookmarks.generatePageNumberForCfi();
             xpub.elementIdsWithPageIndex = new Map();

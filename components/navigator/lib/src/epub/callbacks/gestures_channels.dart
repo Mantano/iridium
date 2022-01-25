@@ -31,12 +31,12 @@ class GesturesChannels extends JavascriptChannels {
           onMessageReceived: _onSwipeDown,
         ),
         JavascriptChannel(
-          name: 'GestureCallbacksOnBeginningVisibilityChanged',
-          onMessageReceived: _onBeginningVisibilityChanged,
+          name: 'GestureCallbacksOnLeftOverlayVisibilityChanged',
+          onMessageReceived: _onLeftOverlayVisibilityChanged,
         ),
         JavascriptChannel(
-          name: 'GestureCallbacksOnEndVisibilityChanged',
-          onMessageReceived: _onEndVisibilityChanged,
+          name: 'GestureCallbacksOnRightOverlayVisibilityChanged',
+          onMessageReceived: _onRightOverlayVisibilityChanged,
         ),
       ];
 
@@ -59,19 +59,19 @@ class GesturesChannels extends JavascriptChannels {
     viewerSettingsBloc?.add(DecrFontSizeEvent());
   }
 
-  void _onBeginningVisibilityChanged(JavascriptMessage message) {
-//    Fimber.d("================== _onBeginningVisibilityChanged, message: " +
+  void _onLeftOverlayVisibilityChanged(JavascriptMessage message) {
+//    Fimber.d("================== _onLeftOverlayVisibilityChanged, message: " +
 //        message.message);
     bool visibility = message.message.toLowerCase() == 'true' ||
         message.message.toLowerCase() == '1';
-    webViewHorizontalGestureRecognizer?.setBeginningVisible(visibility);
+    webViewHorizontalGestureRecognizer?.setLeftOverlayVisible(visibility);
   }
 
-  void _onEndVisibilityChanged(JavascriptMessage message) {
-//    Fimber.d("================== _onEndVisibilityChanged, message: " +
+  void _onRightOverlayVisibilityChanged(JavascriptMessage message) {
+//    Fimber.d("================== _onRightOverlayVisibilityChanged, message: " +
 //        message.message);
     bool visibility = message.message.toLowerCase() == 'true' ||
         message.message.toLowerCase() == '1';
-    webViewHorizontalGestureRecognizer?.setEndVisible(visibility);
+    webViewHorizontalGestureRecognizer?.setRightOverlayVisible(visibility);
   }
 }
