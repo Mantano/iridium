@@ -4,9 +4,11 @@ import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // var dirPath =
+  //     (await Utils.getFileFromAsset('assets/books/accessible_epub_3.epub'))
+  //         .path;
   var dirPath =
-      (await Utils.getFileFromAsset('assets/books/accessible_epub_3.epub'))
-          .path;
+      (await Utils.getFileFromAsset('assets/books/9089_rtl.epub')).path;
   runApp(MyApp(dirPath));
 }
 
