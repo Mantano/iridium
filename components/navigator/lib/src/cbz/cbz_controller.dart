@@ -47,11 +47,11 @@ class CbzController extends PublicationController {
       PageController(keepPage: true, initialPage: initialPage);
 
   @override
-  void onPrevious() => _pageController?.previousPage(
+  void onSkipLeft() => _pageController?.previousPage(
       duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
 
   @override
-  void onNext() => _pageController?.nextPage(
+  void onSkipRight() => _pageController?.nextPage(
       duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
 
   @override

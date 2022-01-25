@@ -119,8 +119,8 @@ abstract class BookScreenState<T extends BookScreen,
           alignment: Alignment.bottomCenter,
           child: ReaderToolbar(
             readerContext: readerContext,
-            onPrevious: publicationController.onPrevious,
-            onNext: publicationController.onNext,
+            onSkipLeft: publicationController.onSkipLeft,
+            onSkipRight: publicationController.onSkipRight,
           ),
         ),
         SafeArea(

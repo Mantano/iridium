@@ -8,14 +8,14 @@ import 'package:mno_navigator/publication.dart';
 
 class ReaderToolbar extends StatefulWidget {
   final ReaderContext readerContext;
-  final VoidCallback onPrevious;
-  final VoidCallback onNext;
+  final VoidCallback onSkipLeft;
+  final VoidCallback onSkipRight;
 
   const ReaderToolbar(
       {Key? key,
       required this.readerContext,
-      required this.onPrevious,
-      required this.onNext})
+      required this.onSkipLeft,
+      required this.onSkipRight})
       : super(key: key);
 
   @override
@@ -31,9 +31,9 @@ class ReaderToolbarState extends State<ReaderToolbar> {
 
   ReaderContext get readerContext => widget.readerContext;
 
-  Function() get onPrevious => widget.onPrevious;
+  Function() get onSkipLeft => widget.onSkipLeft;
 
-  Function() get onNext => widget.onNext;
+  Function() get onSkipRight => widget.onSkipRight;
 
   @override
   void initState() {
@@ -77,8 +77,8 @@ class ReaderToolbarState extends State<ReaderToolbar> {
   Widget _firstRow(BuildContext context) => Row(
         children: <Widget>[
           ToolbarButton(
-            asset: 'assets/images/ic_skip_previous_white_24dp.png',
-            onPressed: onPrevious,
+            asset: 'assets/images/ic_skip_left_white_24dp.png',
+            onPressed: onSkipLeft,
           ),
           const SizedBox(width: 8.0),
           _builderCurrentPage(),
@@ -86,8 +86,8 @@ class ReaderToolbarState extends State<ReaderToolbar> {
           _buildNbPages(context),
           const SizedBox(width: 8.0),
           ToolbarButton(
-            asset: 'assets/images/ic_skip_next_white_24dp.png',
-            onPressed: onNext,
+            asset: 'assets/images/ic_skip_right_white_24dp.png',
+            onPressed: onSkipRight,
           ),
         ],
       );

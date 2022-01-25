@@ -51,10 +51,52 @@ class EpubController extends PublicationController {
       viewportFraction: 0.9999);
 
   @override
-  void onPrevious() => _pageController?.previousPage(
-      duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+  void onSkipLeft() {
+    /*
+        R2 - EpubNavigatorFragment:
+        override fun goBackward(animated: Boolean, completion: () -> Unit): Boolean {
+          if (publication.metadata.presentation.layout == EpubLayout.FIXED) {
+              return goToPreviousResource(animated, completion)
+          }
+        etc.
+      }
+     */
+    var progression = readerContext?.readingProgression;
+    var fn = ((progression == ReadingProgression.ltr) ||
+            (progression == ReadingProgression.ttb ||
+                (progression == ReadingProgression.auto))
+        ? _pageController?.previousPage
+        : _pageController?.nextPage);
+    skip(fn);
+  }
 
   @override
-  void onNext() => _pageController?.nextPage(
-      duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+  void onSkipRight() {
+    /*
+        R2 - EpubNavigatorFragment:
+        override fun goForward(animated: Boolean, completion: () -> Unit): Boolean {
+          if (publication.metadata.presentation.layout == EpubLayout.FIXED) {
+              return goToNextResource(animated, completion)
+          }
+          etc.
+      }
+     */
+    var progression = readerContext?.readingProgression;
+    var fn = ((progression == ReadingProgression.ltr) ||
+            (progression == ReadingProgression.ttb ||
+                (progression == ReadingProgression.auto))
+        ? _pageController?.nextPage
+        : _pageController?.previousPage);
+    skip(fn);
+  }
+
+  void skip(
+      Future<void> Function({required Duration duration, required Curve curve})?
+          fn) {
+    if (fn != null) {
+      fn(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+    } else {
+      throw Exception("Navigation function is null, should never happen");
+    }
+  }
 }

@@ -47,6 +47,8 @@ class ReaderContext {
   Link? currentSpineItem;
   SpineItemContext? currentSpineItemContext;
 
+  ReadingProgression? readingProgression;
+
   Fetcher get fetcher => publication!.fetcher;
 
   List<Link> get tableOfContents => _tableOfContents;
@@ -99,6 +101,7 @@ class ReaderContext {
             publication, _flattenedTableOfContents);
     _toolbarStreamController.add(toolbarVisibility);
     currentSpineItem = publication?.readingOrder.first;
+    readingProgression = publication?.metadata.effectiveReadingProgression;
   }
 
   bool get hasError => userException != null;
