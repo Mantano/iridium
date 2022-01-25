@@ -25,6 +25,9 @@ dependencies:
   mno_commons:
     path: ../commons
 
+dependency_overrides:
+  path: ^1.8.1
+
 dev_dependencies:
   image_compare: ^1.1.2
   lints: ^1.0.1
