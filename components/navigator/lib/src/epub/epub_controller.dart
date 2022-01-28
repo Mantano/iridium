@@ -61,12 +61,10 @@ class EpubController extends PublicationController {
         etc.
       }
      */
-    var progression = readerContext?.readingProgression;
-    var fn = ((progression == ReadingProgression.ltr) ||
-            (progression == ReadingProgression.ttb ||
-                (progression == ReadingProgression.auto))
-        ? _pageController?.previousPage
-        : _pageController?.nextPage);
+    var fn = readerContext?.readingProgression?.isReverseOrder() ??
+            false // false if progression is null: we make the assumption that it is ltr
+        ? _pageController?.nextPage
+        : _pageController?.previousPage;
     skip(fn);
   }
 
@@ -81,12 +79,10 @@ class EpubController extends PublicationController {
           etc.
       }
      */
-    var progression = readerContext?.readingProgression;
-    var fn = ((progression == ReadingProgression.ltr) ||
-            (progression == ReadingProgression.ttb ||
-                (progression == ReadingProgression.auto))
-        ? _pageController?.nextPage
-        : _pageController?.previousPage);
+    var fn = readerContext?.readingProgression?.isReverseOrder() ??
+            false // false if progression is null: we make the assumption that it is ltr
+        ? _pageController?.previousPage
+        : _pageController?.nextPage;
     skip(fn);
   }
 

@@ -1,4 +1,4 @@
-(function() {
+(function () {
 
     function onPaginationChanged(value) {
         if (window.flutter_inappwebview) {
@@ -28,7 +28,7 @@
         if (window.flutter_inappwebview) {
             window.flutter_inappwebview.callHandler('GestureCallbacksOnLeftOverlayVisibilityChanged', value);
         } else {
-//          flutter_log.postMessage("====== onLeftOverlayVisibilityChanged, URL: " + window.location.href);
+            // flutter_log.postMessage("====== onLeftOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
             GestureCallbacksOnLeftOverlayVisibilityChanged.postMessage(value);
         }
     }
@@ -37,12 +37,12 @@
         if (window.flutter_inappwebview) {
             window.flutter_inappwebview.callHandler('GestureCallbacksOnRightOverlayVisibilityChanged', value);
         } else {
-//            flutter_log.postMessage("====== onLeftOverlayVisibilityChanged, URL: " + window.location.href);
-            GestureCallbacksRightOverlayVisibilityChanged.postMessage(value);
+            // flutter_log.postMessage("====== onRightOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
+            GestureCallbacksOnRightOverlayVisibilityChanged.postMessage(value);
         }
     }
 
-    xpub.navigation.openPage = function(pageRequest) {
+    xpub.navigation.openPage = function (pageRequest) {
         let pageIndex = undefined;
         let paginationInfo = xpub.paginationInfo;
 
@@ -55,13 +55,10 @@
 
         if (pageRequest.spineItemPageIndex !== undefined) {
             pageIndex = pageRequest.spineItemPageIndex;
-        }
-        else if (pageRequest.elementId) {
+        } else if (pageRequest.elementId) {
             pageIndex = cfiNavigationLogic.getPageForElementId(pageRequest.elementId);
-        }
-        else if (pageRequest.elementCfi) {
-            try
-            {
+        } else if (pageRequest.elementCfi) {
+            try {
                 let elementCfi = pageRequest.elementCfi;
                 if (elementCfi.startsWith("epubcfi(") && elementCfi.endsWith(")")) {
                     elementCfi = elementCfi.substring(8, elementCfi.length - 1);
@@ -77,23 +74,17 @@
                 if (isNaN(pageIndex)) {
                     pageIndex = 0;
                 }
-            }
-            catch (e)
-            {
+            } catch (e) {
                 pageIndex = 0;
                 console.error(e);
             }
-        }
-        else if (pageRequest.firstPage) {
+        } else if (pageRequest.firstPage) {
             pageIndex = 0;
-        }
-        else if (pageRequest.lastPage) {
+        } else if (pageRequest.lastPage) {
             pageIndex = xpub.paginationInfo.columnCount - 1;
-        }
-        else if (pageRequest.spineItemPercentage > 0 && paginationInfo.columnCount > 1) {
+        } else if (pageRequest.spineItemPercentage > 0 && paginationInfo.columnCount > 1) {
             pageIndex = Math.floor(pageRequest.spineItemPercentage * (paginationInfo.columnCount - 1));
-        }
-        else {
+        } else {
             console.debug("No criteria in pageRequest");
             pageIndex = 0;
         }
@@ -112,15 +103,14 @@
             if (pageRequest.startTts) {
                 xpub.tts.start(pageRequest.lastPage);
             }
-        }
-        else {
+        } else {
             console.log('Illegal pageIndex value: ', pageIndex, 'column count is ', paginationInfo.columnCount);
         }
     };
 
     function getPaginationInfo(refreshAnnotations) {
         let paginationInfo = new CurrentPagesInfo(xpub.package, xpub.currentSpineItem, false,
-                xpub.paginationInfo.pageOffset, xpub.paginationInfo.columnWidth);
+            xpub.paginationInfo.pageOffset, xpub.paginationInfo.columnWidth);
 
         if (!xpub.currentSpineItem) {
             return paginationInfo;
@@ -137,9 +127,9 @@
         let pageIndexes = getOpenPageIndexes();
         for (let i = 0, count = pageIndexes.length; i < count; i++) {
             paginationInfo.addOpenPage(pageIndexes[i], xpub.paginationInfo.columnCount,
-                        xpub.paginationInfo.nbThumbnailsCount, xpub.currentSpineItem.idref,
-                        xpub.currentSpineItem.index);
-            xpub.bookmarks.pages.forEach(function(pageIndex, bookmarkId, pages) {
+                xpub.paginationInfo.nbThumbnailsCount, xpub.currentSpineItem.idref,
+                xpub.currentSpineItem.index);
+            xpub.bookmarks.pages.forEach(function (pageIndex, bookmarkId, pages) {
                 if (pageIndex === pageIndexes[i]) {
                     paginationInfo.pageBookmarks.push(bookmarkId);
                 }
@@ -169,19 +159,19 @@
         let _$contentFrame = xpub.$epubHtml;
         let columnsLeftOfViewport = Math.round(_paginationInfo.pageOffset / (_paginationInfo.columnWidth + _paginationInfo.columnGap));
 
-        let topOffset =  columnsLeftOfViewport * _$contentFrame.height();
+        let topOffset = columnsLeftOfViewport * _$contentFrame.height();
         let bottomOffset = topOffset + _paginationInfo.visibleColumnCount * _$contentFrame.height();
 
         return {top: topOffset, bottom: bottomOffset};
     }
 
     // START Mantano (Mickaël)
-    xpub.navigation.onPaginationChanged = function(paginationRequest_elementId, refreshAnnotations) {
+    xpub.navigation.onPaginationChanged = function (paginationRequest_elementId, refreshAnnotations) {
         xpub.navigation.refreshPaginationInfo();
         onPaginationChanged(JSON.stringify(getPaginationInfo(refreshAnnotations)));
     };
 
-    xpub.navigation.refreshPaginationInfo = function() {
+    xpub.navigation.refreshPaginationInfo = function () {
         let paginationInfo = xpub.paginationInfo;
         paginationInfo.pageOffset = (paginationInfo.columnWidth + paginationInfo.columnGap) * paginationInfo.visibleColumnCount * paginationInfo.currentSpreadIndex;
 
@@ -191,18 +181,17 @@
         // END Mantano
     };
 
-    xpub.navigation.redraw = function() {
+    xpub.navigation.redraw = function () {
         // START Mantano (Mickaël)
 //        this.offsetPage(xpub.paginationInfo.pageOffset);
         // END Mantano
     };
 
-    xpub.navigation.toggleBookmark = function()  {
+    xpub.navigation.toggleBookmark = function () {
         xpub.navigation.refreshPaginationInfo();
         let paginationInfo = getPaginationInfo();
         let pageIndex = paginationInfo.openPages[0].spineItemPageIndex;
-        $('.xpub_page_bookmark[data-page=' + pageIndex + '] img').
-                toggle(paginationInfo.pageBookmarks.length === 0);
+        $('.xpub_page_bookmark[data-page=' + pageIndex + '] img').toggle(paginationInfo.pageBookmarks.length === 0);
         paginationInfo.location.text.highlight = xpub.bookmarks.getTextSnippet();
         onToggleBookmark(JSON.stringify(paginationInfo));
     };
@@ -215,9 +204,9 @@
         }
     };
 
-    xpub.navigation.computePagesForElementId = function(contentRefUrls, sourceFileHref) {
+    xpub.navigation.computePagesForElementId = function (contentRefUrls, sourceFileHref) {
         let result = {};
-        $.each( contentRefUrls, function( i, contentRefUrl ) {
+        $.each(contentRefUrls, function (i, contentRefUrl) {
             let combinedPath = Helpers.ResolveContentRef(contentRefUrl, sourceFileHref);
             let hashIndex = combinedPath.indexOf("#");
             let elementId;
@@ -231,17 +220,17 @@
         contentRefUrlsPageComputed(JSON.stringify(result));
     };
 
-    xpub.navigation.getFirstVisibleElement = function() {
+    xpub.navigation.getFirstVisibleElement = function () {
         let contentOffsets = getVisibleContentOffsets();
         return cfiNavigationLogic.findFirstVisibleElement(contentOffsets);
     };
 
-    xpub.navigation.getLastVisibleElement = function() {
+    xpub.navigation.getLastVisibleElement = function () {
         let contentOffsets = getVisibleContentOffsets();
         return cfiNavigationLogic.findLastVisibleElement(contentOffsets);
     };
 
-    xpub.navigation.insureElementVisibility = function(spineItemId, element, initiator) {
+    xpub.navigation.insureElementVisibility = function (spineItemId, element, initiator) {
         let $element = $(element);
         if (cfiNavigationLogic.isElementVisible($element, getVisibleContentOffsets())) {
             return;
@@ -267,12 +256,27 @@
         xpub.navigation.openPage(openPageRequest);
     };
 
-    xpub.navigateToStart = function() {
+    xpub.navigateToStart = function () {
+        const reverseOrder = spineItemContentsDiv.css('direction') === "rtl"
+        if (reverseOrder)
+            xpub.navigateToRight();
+        else
+            xpub.navigateToLeft();
+    };
+
+    xpub.navigateToEnd = function (reverseOrder) {
+        if (reverseOrder)
+            xpub.navigateToLeft();
+        else
+            xpub.navigateToRight();
+    };
+
+    xpub.navigateToLeft = function (reverseOrder) {
         xpub.initPagination();
         $('.xpub_container').eq(0).scrollLeft(0);
     };
 
-    xpub.navigateToEnd = function() {
+    xpub.navigateToRight = function () {
         xpub.initPagination();
         let xpubContainer = $('.xpub_container');
         let nbCols = $('#xpub_spineItemContents').howMuchCols();
@@ -280,7 +284,7 @@
         xpubContainer.eq(0).scrollLeft(scrollLeft);
     };
 
-    xpub.updatePagination = function() {
+    xpub.updatePagination = function () {
         // At 100% font-size = 16px (on HTML, not body or descendant markup!)
         // START Mantano (Yonathan)
         if (!xpub.package) {
@@ -329,18 +333,18 @@
         // TODO callback to inform that another spine item must be loaded
     };
 
-    xpub.updateNavigationToCurrentSpreadIndex = function() {
+    xpub.updateNavigationToCurrentSpreadIndex = function () {
         let xpubContainer = $('.xpub_container');
         let nbCols = $('#xpub_contenuSpineItem').howMuchCols();
-        let scrollLeft = ( xpub.paginationInfo.currentSpreadIndex) * xpubContainer[0].clientWidth;
+        let scrollLeft = (xpub.paginationInfo.currentSpreadIndex) * xpubContainer[0].clientWidth;
         xpubContainer.eq(0).scrollLeft(scrollLeft);
     };
 
-    xpub.triggerOnPaginationChanged = function() {
+    xpub.triggerOnPaginationChanged = function () {
         xpub.navigation.onPaginationChanged();
     }
 
-    xpub.initPagination = function() {
+    xpub.initPagination = function () {
         document.fonts.ready.then(function () {
             if (xpub.observers !== undefined) {
                 for (i = 0; i < xpub.observers.length; i++) {
@@ -351,28 +355,38 @@
 
             let paginator = $('#xpub_paginator');
             paginator.empty();
+            const spineItemContentsDiv = $('#xpub_spineItemContents');
+            flutter_log.postMessage("=========== DIRECTION: " + spineItemContentsDiv.css('direction'));
+            const isRtl = spineItemContentsDiv.css('direction') === "rtl";
 
-            let nbCols = $('#xpub_spineItemContents').howMuchCols();
-//            flutter_log.postMessage("=========== nbCols: " + nbCols);
+            let nbCols = spineItemContentsDiv.howMuchCols();
+            flutter_log.postMessage("=========== " + window.location.href + ", nbCols: " + nbCols);
+
             xpub.paginationInfo.columnCount = nbCols;
+            spineItemContentsDiv.css('column-count', nbCols);
+            let paginatorWidth = (nbCols * 100) + '%';
+            paginator.css('width', paginatorWidth);
+            paginator.css('max-width', paginatorWidth);
+
             if (xpub.screenshotConfig) {
-                let spineItemPageThumbnailsCount = $('#xpub_contenuSpineItem').
-                            howMuchCols(xpub.screenshotConfig.nbThumbnails);
+                let spineItemPageThumbnailsCount = $('#xpub_contenuSpineItem').howMuchCols(xpub.screenshotConfig.nbThumbnails);
                 xpub.paginationInfo.nbThumbnailsCount = spineItemPageThumbnailsCount;
             }
 
             for (let i = 0; i < nbCols; i++) {
                 let divText = "<div id=\"xpub_page_" + i + "\" data-page=\"" + i + "\" class=\"xpub_page_overlay\">" +
-                "   <div class=\"xpub_page_bookmark\" data-page=\"" + i + "\" data-prevent-tap=\"true\">" +
-                "      <img src=\"/xpub-assets/bookmark.svg\" />" +
-                "   </div>" +
-                "</div>";
+                    "   <div class=\"xpub_page_bookmark\" data-page=\"" + i + "\" data-prevent-tap=\"true\">" +
+                    "      <img src=\"/xpub-assets/bookmark.svg\" />" +
+                    "   </div>" +
+                    "</div>";
                 paginator.eq(0).append(divText);
             }
             paginator.show();
 
-            let leftDivSelector = '#xpub_page_0';
-            let rightDivSelector = '#xpub_page_' + (nbCols - 1);
+            let lowestPageNumberDivSelector = '#xpub_page_0';
+            let highestPageNumberDivSelector = '#xpub_page_' + (nbCols - 1);
+            let leftDivSelector = isRtl ? highestPageNumberDivSelector : lowestPageNumberDivSelector;
+            let rightDivSelector = isRtl ? lowestPageNumberDivSelector : highestPageNumberDivSelector;
 
             for (let i = 0; i < nbCols; i++) {
                 let observer = new IntersectionObserver(function (entries) {
@@ -389,7 +403,7 @@
                 }
             }
 
-            $('.xpub_page_bookmark').click(function(event) {
+            $('.xpub_page_bookmark').click(function (event) {
                 xpub.navigation.toggleBookmark();
             });
 
@@ -434,7 +448,7 @@
                     let translateLeft = -(containerWidth / nbThumbnails * ((nbThumbnails - 1) / 2));
                     let translateTop = -(containerHeight / nbThumbnails * ((nbThumbnails - 1) / 2));
                     let scale = 1 / nbThumbnails;
-                    $('#xpub_spineItemContents')[0].style.transform = "translate(" + translateLeft + "px, " + translateTop + "px) scale(" + scale + ")";
+                    spineItemContentsDiv[0].style.transform = "translate(" + translateLeft + "px, " + translateTop + "px) scale(" + scale + ")";
                     if (paginator.length == 0) {
                         document.fonts.ready.then(function () {
                             xpub.triggerOnPaginationChanged();
@@ -442,6 +456,7 @@
                     }
                 });
             }
+            // $('#xpub_spineItemContents')[0].style.transform = "scale(" + 0.1 + ")";
         });
     };
 })();

@@ -32,6 +32,8 @@ dependencies:
   iridium_reader_widget:
     path: ..
 
+  flutter_fimber: ^0.6.5
+  fimber: ^0.6.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

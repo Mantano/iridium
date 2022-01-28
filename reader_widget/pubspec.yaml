@@ -49,6 +49,10 @@ dependencies:
   flutter_inappwebview: ^5.3.2
   json_theme: ^3.2.5
   new_version: ^0.3.0
+  flutter_xlider:
+    git:
+      url: https://github.com/Ali-Azmoud/flutter_xlider.git
+      ref: master # branch name
 
 dependency_overrides:
   platform: ^3.1.0

@@ -20,7 +20,7 @@ in binary form by [Edrlab](https://edrlab.org) that simply must be dropped into 
 - [x] Table of contents
 - [x] OPDS 1.x and 2.0 support
 - [ ] FXL support
-- [ ] RTL support
+- [x] RTL support
 - [ ] Search in EPUB
 - [ ] Highlights/annotations
 - [ ] TTS

@@ -1,14 +1,22 @@
 import 'package:example/utils/utils.dart';
+import 'package:fimber/fimber.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_fimber/flutter_fimber.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // var dirPath =
-  //     (await Utils.getFileFromAsset('assets/books/accessible_epub_3.epub'))
-  //         .path;
-  var dirPath =
-      (await Utils.getFileFromAsset('assets/books/9089_rtl.epub')).path;
+  if (kReleaseMode) {
+    Fimber.plantTree(FimberTree());
+  } else {
+    Fimber.plantTree(DebugBufferTree());
+  }
+  bool testRtl = true;
+  var dirPath = (await Utils.getFileFromAsset(testRtl
+          ? 'assets/books/9089_rtl.epub'
+          : 'assets/books/accessible_epub_3.epub'))
+      .path;
   runApp(MyApp(dirPath));
 }
 

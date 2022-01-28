@@ -149,7 +149,7 @@ packages:
     source: hosted
     version: "6.1.2"
   fimber:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fimber
       url: "https://pub.dartlang.org"
@@ -168,7 +168,7 @@ packages:
     source: hosted
     version: "8.0.1"
   flutter_fimber:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flutter_fimber
       url: "https://pub.dartlang.org"
@@ -205,6 +205,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_xlider:
+    dependency: transitive
+    description:
+      path: "."
+      ref: master
+      resolved-ref: ef4a358f84bb6a6119b213fef6f759f22246c882
+      url: "https://github.com/Ali-Azmoud/flutter_xlider.git"
+    source: git
+    version: "3.4.0"
   fluttertoast:
     dependency: transitive
     description:

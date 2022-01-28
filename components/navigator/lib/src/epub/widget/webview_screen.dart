@@ -79,9 +79,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     _viewerSettingsBloc = BlocProvider.of<ViewerSettingsBloc>(context);
     _currentSpineItemBloc = BlocProvider.of<CurrentSpineItemBloc>(context);
     webViewHorizontalGestureRecognizer = WebViewHorizontalGestureRecognizer(
-      chapNumber: position,
-      webView: widget,
-    );
+        chapNumber: position, webView: widget, readerContext: readerContext);
     epubCallbacks = EpubCallbacks(
         _spineItemContext,
         _viewerSettingsBloc,
