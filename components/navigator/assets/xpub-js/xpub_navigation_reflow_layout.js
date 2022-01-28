@@ -256,31 +256,21 @@
         xpub.navigation.openPage(openPageRequest);
     };
 
-    xpub.navigateToStart = function () {
-        const reverseOrder = $('#xpub_spineItemContents').css('direction') === "rtl"
-        if (reverseOrder)
-            xpub.navigateToRight();
-        else
-            xpub.navigateToLeft();
-    };
-
-    xpub.navigateToEnd = function (reverseOrder) {
-        if (reverseOrder)
-            xpub.navigateToLeft();
-        else
-            xpub.navigateToRight();
-    };
-
-    xpub.navigateToLeft = function (reverseOrder) {
+    xpub.navigateToStart = function() {
         xpub.initPagination();
         $('.xpub_container').eq(0).scrollLeft(0);
     };
 
-    xpub.navigateToRight = function () {
+    xpub.navigateToEnd = function() {
         xpub.initPagination();
         let xpubContainer = $('.xpub_container');
-        let nbCols = $('#xpub_spineItemContents').howMuchCols();
-        let scrollLeft = (nbCols - 1) * xpubContainer[0].clientWidth;
+        let nbCols = $('#xpub_spineItemContents').css('column-count');
+
+        const reverseOrder = $('#xpub_spineItemContents').css('direction') === "rtl";
+        const nbColsToScroll = (reverseOrder ? nbCols : nbCols - 1);
+        let scrollLeft = nbColsToScroll * xpubContainer[0].clientWidth;
+        if (reverseOrder)
+            scrollLeft *= -1;
         xpubContainer.eq(0).scrollLeft(scrollLeft);
     };
 
