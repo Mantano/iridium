@@ -14,7 +14,7 @@ Future<void> main() async {
   }
   bool testRtl = true;
   var dirPath = (await Utils.getFileFromAsset(testRtl
-          ? 'assets/books/9089_rtl.epub'
+          ? 'assets/books/39419251_rtl.epub'
           : 'assets/books/accessible_epub_3.epub'))
       .path;
   runApp(MyApp(dirPath));
