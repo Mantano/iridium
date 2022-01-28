@@ -448,7 +448,7 @@
                     let translateLeft = -(containerWidth / nbThumbnails * ((nbThumbnails - 1) / 2));
                     let translateTop = -(containerHeight / nbThumbnails * ((nbThumbnails - 1) / 2));
                     let scale = 1 / nbThumbnails;
-                    spineItemContentsDiv[0].style.transform = "translate(" + translateLeft + "px, " + translateTop + "px) scale(" + scale + ")";
+                    $('#xpub_spineItemContents')[0].style.transform = "translate(" + translateLeft + "px, " + translateTop + "px) scale(" + scale + ")";
                     if (paginator.length == 0) {
                         document.fonts.ready.then(function () {
                             xpub.triggerOnPaginationChanged();
