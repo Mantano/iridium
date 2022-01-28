@@ -257,7 +257,7 @@
     };
 
     xpub.navigateToStart = function () {
-        const reverseOrder = spineItemContentsDiv.css('direction') === "rtl"
+        const reverseOrder = $('#xpub_spineItemContents').css('direction') === "rtl"
         if (reverseOrder)
             xpub.navigateToRight();
         else
