@@ -13,7 +13,9 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:webview_flutter/platform_interface.dart';
+// import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewScreen extends StatefulWidget {
   final WidgetKeepAliveListener widgetKeepAliveListener;
@@ -52,10 +54,14 @@ class WebViewScreenState extends State<WebViewScreen> {
 
   bool isLoaded = false;
 
+  InAppWebViewController? _controller;
+
   int get position => widget.position;
 
   Link get spineItem => widget.link;
+
   ReaderContext get readerContext => widget.readerContext;
+
   Publication get publication => readerContext.publication!;
 
   @override
@@ -115,13 +121,20 @@ class WebViewScreenState extends State<WebViewScreen> {
       );
 
   Widget buildWebViewComponent(Link link) => isLoaded
-      ? WebView(
-          debuggingEnabled: true,
-          initialUrl: '${widget.address}/${link.href.removePrefix("/")}',
-          javascriptMode: JavascriptMode.unrestricted,
-          javascriptChannels: epubCallbacks.channels,
-          navigationDelegate: _navigationDelegate,
-          onPageFinished: _onPageFinished,
+      ? InAppWebView(
+          initialUrlRequest: URLRequest(
+              url: Uri.parse(
+                  '${widget.address}/${link.href.removePrefix("/")}')),
+          initialOptions: InAppWebViewGroupOptions(
+            //android: AndroidInAppWebViewOptions(useHybridComposition: true),
+            crossPlatform: InAppWebViewOptions(
+              useShouldOverrideUrlLoading: true,
+              verticalScrollBarEnabled: false,
+            ),
+          ),
+          shouldOverrideUrlLoading: (controller, navigationAction) async =>
+              NavigationActionPolicy.ALLOW,
+          onLoadStop: _onPageFinished,
           gestureRecognizers: {
             Factory(() => webViewHorizontalGestureRecognizer),
           },
@@ -147,10 +160,7 @@ class WebViewScreenState extends State<WebViewScreen> {
 //    Fimber.d("refreshPage[${position}]: ${spineItem.href}");
   }
 
-  NavigationDecision _navigationDelegate(NavigationRequest navigation) =>
-      NavigationDecision.navigate;
-
-  void _onPageFinished(String url) {
+  void _onPageFinished(controller, url) async {
     Fimber.d("_onPageFinished[$position]: $url");
     ReaderThemeConfig theme = _readerThemeBloc.currentTheme;
     try {
@@ -169,24 +179,26 @@ class WebViewScreenState extends State<WebViewScreen> {
       refreshPage();
       _jsApi?.setStyles(theme, settings);
       _updateSpineItemPosition(_currentSpineItemBloc.state);
-      readerContext.readerAnnotationRepository
-          .allWhere(
-              predicate: AnnotationTypeAndDocumentPredicate(
-                  spineItem.id!, AnnotationType.bookmark))
-          .then((annotations) => _jsApi?.computeAnnotationsInfo(annotations));
-      _annotationsSubscription = readerContext
-          .readerAnnotationRepository.deletedIdsStream
-          .listen((deletedIds) => _jsApi?.removeBookmarks(deletedIds));
+      // TODO Reactivate
+      // readerContext.readerAnnotationRepository
+      //     .allWhere(
+      //         predicate: AnnotationTypeAndDocumentPredicate(
+      //             spineItem.id!, AnnotationType.bookmark))
+      //     .then((annotations) => _jsApi?.computeAnnotationsInfo(annotations));
+      // _annotationsSubscription = readerContext
+      //     .readerAnnotationRepository.deletedIdsStream
+      //     .listen((deletedIds) => _jsApi?.removeBookmarks(deletedIds));
     } catch (e, stacktrace) {
       Fimber.d("_onPageFinished ERROR", ex: e, stacktrace: stacktrace);
     }
   }
 
-  void _onWebViewCreated(WebViewController webViewController) {
-    JsApi jsApi = JsApi(position, webViewController.runJavascript);
-    _jsApi = jsApi;
-    _spineItemContext.jsApi = jsApi;
-    epubCallbacks.jsApi = jsApi;
+  void _onWebViewCreated(InAppWebViewController webViewController) {
+    // JsApi jsApi = JsApi(position, webViewController.runJavascript);
+    // _jsApi = jsApi;
+    // _spineItemContext.jsApi = jsApi;
+    // epubCallbacks.jsApi = jsApi;
+    initJsHandlers(webViewController);
     _readerThemeSubscription =
         _readerThemeBloc.stream.listen(_onReaderThemeChanged);
     _viewerSettingsSubscription =
@@ -195,6 +207,26 @@ class WebViewScreenState extends State<WebViewScreen> {
         _currentSpineItemBloc.stream.listen(_updateSpineItemPosition);
     _readerCommandSubscription =
         readerContext.commandsStream.listen(_onReaderCommand);
+    _paginationInfoSubscription =
+        _spineItemContext.paginationInfoStream.listen(_onPaginationInfo);
+  }
+
+  void initJsHandlers(InAppWebViewController webViewController) {
+    // Fimber.d("_onWebViewCreated: $webViewController");
+    _controller = webViewController;
+    _jsApi = JsApi(position,
+        (javascript) => _controller?.evaluateJavascript(source: javascript));
+    _spineItemContext.jsApi = _jsApi;
+    EpubCallbacks epubCallbacks =
+        EpubCallbacks(_spineItemContext, null, null, null);
+    // Fimber.d("epubCallbacks: $epubCallbacks");
+    for (JavascriptChannel channel in epubCallbacks.channels) {
+      _controller?.addJavaScriptHandler(
+          handlerName: channel.name,
+          callback: (List<dynamic> arguments) => channel
+              .onMessageReceived(JavascriptMessage(arguments[0].toString())));
+    }
+    epubCallbacks.jsApi = _jsApi!;
     _paginationInfoSubscription =
         _spineItemContext.paginationInfoStream.listen(_onPaginationInfo);
   }

@@ -44,7 +44,7 @@
 
     function flutter_log(message) {
         if (window.flutter_inappwebview) {
-            window.flutter_inappwebview.callHandler('LauncherUILog', value);
+            window.flutter_inappwebview.callHandler('LauncherUILog', message);
         } else {
             LauncherUILog.postMessage(message);        
         }

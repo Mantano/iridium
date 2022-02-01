@@ -16,15 +16,23 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:json_theme/json_theme.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:universal_io/io.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   if (kReleaseMode) {
     Fimber.plantTree(FimberTree());
   } else {
     Fimber.plantTree(DebugBufferTree());
   }
+
+  if (kDebugMode && Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  }
+
   // Theme was generated with https://zeshuaro.github.io/appainter/#/
-  WidgetsFlutterBinding.ensureInitialized();
   ThemeConfig.lightTheme = await loadTheme('assets/appainter_light_theme.json');
   ThemeConfig.darkTheme = await loadTheme('assets/appainter_dark_theme.json');
   runApp(

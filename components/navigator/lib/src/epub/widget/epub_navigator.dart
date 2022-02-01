@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mno_commons/utils/functions.dart';
@@ -57,7 +59,7 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
         // TODO Currently, with Hybrid Composition activated, preloadPagesCount > 1 provides erratic behavior.
         // To investigate!
         // preloadPagesCount: Platform.isAndroid ? 2 : 1,
-        preloadPagesCount: 1,
+        preloadPagesCount: min(spine.length, 2),
         onPageChanged: epubController.onPageChanged,
         physics: const AlwaysScrollableScrollPhysics(),
         reverse: (readerContext?.readingProgression == ReadingProgression.rtl ||
