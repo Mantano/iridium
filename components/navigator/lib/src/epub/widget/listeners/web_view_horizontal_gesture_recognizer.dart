@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/src/publication/reader_context.dart';
 
@@ -13,8 +14,8 @@ class WebViewHorizontalGestureRecognizer
   final int chapNumber;
   final WebViewScreen webView;
 
-  bool isLeftOverlayVisible = true;
-  bool isRightOverlayVisible = false;
+  bool? isLeftOverlayVisible;
+  bool? isRightOverlayVisible;
 
   ReaderContext readerContext;
 
@@ -74,8 +75,10 @@ class WebViewHorizontalGestureRecognizer
         //} else if (dx > kTouchSlop && dx > dy) {
       } else if (dx > dy) {
         // horizontal drag
-        if ((isRightOverlayVisible && isDraggingTowardsLeft(event)) ||
-            (isLeftOverlayVisible && isDraggingTowardsRight(event))) {
+        if (((isRightOverlayVisible ?? false) &&
+                isDraggingTowardsLeft(event)) ||
+            ((isLeftOverlayVisible ?? false) &&
+                isDraggingTowardsRight(event))) {
           // The enclosing PageView must handle the drag since the webview cannot scroll anymore
           stopTrackingPointer(event.pointer);
         } else {
