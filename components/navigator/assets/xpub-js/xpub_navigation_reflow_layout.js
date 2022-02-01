@@ -28,7 +28,7 @@
         if (window.flutter_inappwebview) {
             window.flutter_inappwebview.callHandler('GestureCallbacksOnLeftOverlayVisibilityChanged', value);
         } else {
-            // flutter_log.postMessage("====== onLeftOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
+            // flutter_log("====== onLeftOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
             GestureCallbacksOnLeftOverlayVisibilityChanged.postMessage(value);
         }
     }
@@ -37,8 +37,16 @@
         if (window.flutter_inappwebview) {
             window.flutter_inappwebview.callHandler('GestureCallbacksOnRightOverlayVisibilityChanged', value);
         } else {
-            // flutter_log.postMessage("====== onRightOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
+            // flutter_log("====== onRightOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
             GestureCallbacksOnRightOverlayVisibilityChanged.postMessage(value);
+        }
+    }
+
+    function flutter_log(message) {
+        if (window.flutter_inappwebview) {
+            window.flutter_inappwebview.callHandler('LauncherUILog', value);
+        } else {
+            LauncherUILog.postMessage(message);        
         }
     }
 
@@ -346,11 +354,11 @@
             let paginator = $('#xpub_paginator');
             paginator.empty();
             const spineItemContentsDiv = $('#xpub_spineItemContents');
-            flutter_log.postMessage("=========== DIRECTION: " + spineItemContentsDiv.css('direction'));
+            flutter_log("=========== DIRECTION: " + spineItemContentsDiv.css('direction'));
             const isRtl = spineItemContentsDiv.css('direction') === "rtl";
 
             let nbCols = spineItemContentsDiv.howMuchCols();
-            flutter_log.postMessage("=========== " + window.location.href + ", nbCols: " + nbCols);
+            flutter_log("=========== " + window.location.href + ", nbCols: " + nbCols);
 
             xpub.paginationInfo.columnCount = nbCols;
             spineItemContentsDiv.css('column-count', nbCols);
@@ -400,24 +408,24 @@
             let observerLeft = new IntersectionObserver(function (entries) {
                 // isIntersecting is true when element and viewport are overlapping
                 // isIntersecting is false when element and viewport don't overlap
-//                 flutter_log.postMessage("=========== observerLeft, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
+//                 flutter_log("=========== observerLeft, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
                 onLeftOverlayVisibilityChanged(entries[0].isIntersecting);
             }, {threshold: [0.8]});
             let observerRight = new IntersectionObserver(function (entries) {
                 // isIntersecting is true when element and viewport are overlapping
                 // isIntersecting is false when element and viewport don't overlap
-//                flutter_log.postMessage("=========== observerRight, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
+//                flutter_log("=========== observerRight, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
                 onRightOverlayVisibilityChanged(entries[0].isIntersecting);
             }, {threshold: [0.8]});
             xpub.observers.push(observerLeft);
             xpub.observers.push(observerRight);
             let firstDivQuerySelector = document.querySelector(leftDivSelector);
-//             flutter_log.postMessage("=========== firstDivQuerySelector: " + firstDivQuerySelector);
+//             flutter_log("=========== firstDivQuerySelector: " + firstDivQuerySelector);
             if (firstDivQuerySelector != null) {
                 observerLeft.observe(firstDivQuerySelector);
             }
             let lastDivQuerySelector = document.querySelector(rightDivSelector);
-//             flutter_log.postMessage("=========== lastDivQuerySelector: " + lastDivQuerySelector);
+//             flutter_log("=========== lastDivQuerySelector: " + lastDivQuerySelector);
             if (lastDivQuerySelector != null) {
                 observerRight.observe(lastDivQuerySelector);
             }
