@@ -409,13 +409,13 @@
                 // isIntersecting is true when element and viewport are overlapping
                 // isIntersecting is false when element and viewport don't overlap
 //                 flutter_log("=========== observerLeft, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
-                onLeftOverlayVisibilityChanged(entries[0].isIntersecting);
+                onLeftOverlayVisibilityChanged(entries[0].intersectionRatio > 0.9);
             }, {threshold: [0.0, 0.5, 0.8, 0.99, 1.0]});
             let observerRight = new IntersectionObserver(function (entries) {
                 // isIntersecting is true when element and viewport are overlapping
                 // isIntersecting is false when element and viewport don't overlap
 //                flutter_log("=========== observerRight, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
-                onRightOverlayVisibilityChanged(entries[0].isIntersecting);
+                onRightOverlayVisibilityChanged(entries[0].intersectionRatio > 0.9);
             }, {threshold: [0.0, 0.5, 0.8, 0.99, 1.0]});
             xpub.observers.push(observerLeft);
             xpub.observers.push(observerRight);

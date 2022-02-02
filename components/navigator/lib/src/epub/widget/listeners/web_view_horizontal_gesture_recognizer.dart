@@ -79,11 +79,13 @@ class WebViewHorizontalGestureRecognizer
         if ((_rightOverlayVisible && isDraggingTowardsLeft(event)) ||
             (_leftOverlayVisible && isDraggingTowardsRight(event))) {
           // The enclosing PageView must handle the drag since the webview cannot scroll anymore
+          Fimber.d(
+              ">>> handleEvent[$chapNumber] =============== REJECT, _leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
           stopTrackingPointer(event.pointer);
         } else {
           // horizontal drag - accept
           Fimber.d(
-              ">>> handleEvent[$chapNumber] =============== ACCEPTING, _leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
+              ">>> handleEvent[$chapNumber] =============== ACCEPT, _leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
           resolve(GestureDisposition.accepted);
           _dragDistance = Offset.zero;
         }
