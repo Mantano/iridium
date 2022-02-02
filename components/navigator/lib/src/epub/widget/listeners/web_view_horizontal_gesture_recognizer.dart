@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/gestures.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/src/publication/reader_context.dart';
@@ -12,20 +13,19 @@ class WebViewHorizontalGestureRecognizer
     extends HorizontalDragGestureRecognizer {
   final int chapNumber;
   final WebViewScreen webView;
-
-  bool? isLeftOverlayVisible;
-  bool? isRightOverlayVisible;
-
   ReaderContext readerContext;
+
+  bool _leftOverlayVisible = false;
+  bool _rightOverlayVisible = false;
 
   void setLeftOverlayVisible(bool visibility) {
 //    Fimber.d(">>> setLeftOverlayVisible[$chapNumber], visibility: $visibility");
-    isLeftOverlayVisible = visibility;
+    _leftOverlayVisible = visibility;
   }
 
   void setRightOverlayVisible(bool visibility) {
 //    Fimber.d(">>> setRightOverlayVisible[$chapNumber], visibility: $visibility");
-    isRightOverlayVisible = visibility;
+    _rightOverlayVisible = visibility;
   }
 
   WebViewHorizontalGestureRecognizer({
@@ -60,8 +60,10 @@ class WebViewHorizontalGestureRecognizer
 
   @override
   void handleEvent(PointerEvent event) {
-//     Fimber.d(">>> handleEvent[$chapNumber] =============== $event");
-//     Fimber.d(">>> handleEvent[$chapNumber] =============== isBeginningVisible: $isBeginningVisible, isEndVisible: $isEndVisible");
+/*
+    Fimber.d(
+        ">>> handleEvent[$chapNumber] =============== i_leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
+*/
     _dragDistance = _dragDistance + event.delta;
     if (event is PointerMoveEvent) {
       final double dy = _dragDistance.dy.abs();
@@ -74,14 +76,14 @@ class WebViewHorizontalGestureRecognizer
         //} else if (dx > kTouchSlop && dx > dy) {
       } else if (dx > dy) {
         // horizontal drag
-        if (((isRightOverlayVisible ?? false) &&
-                isDraggingTowardsLeft(event)) ||
-            ((isLeftOverlayVisible ?? false) &&
-                isDraggingTowardsRight(event))) {
+        if ((_rightOverlayVisible && isDraggingTowardsLeft(event)) ||
+            (_leftOverlayVisible && isDraggingTowardsRight(event))) {
           // The enclosing PageView must handle the drag since the webview cannot scroll anymore
           stopTrackingPointer(event.pointer);
         } else {
           // horizontal drag - accept
+          Fimber.d(
+              ">>> handleEvent[$chapNumber] =============== ACCEPTING, _leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
           resolve(GestureDisposition.accepted);
           _dragDistance = Offset.zero;
         }
