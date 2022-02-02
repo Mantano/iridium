@@ -126,7 +126,7 @@ class WebViewScreenState extends State<WebViewScreen> {
               url: Uri.parse(
                   '${widget.address}/${link.href.removePrefix("/")}')),
           initialOptions: InAppWebViewGroupOptions(
-            //android: AndroidInAppWebViewOptions(useHybridComposition: true),
+            android: AndroidInAppWebViewOptions(useHybridComposition: true),
             crossPlatform: InAppWebViewOptions(
               useShouldOverrideUrlLoading: true,
               verticalScrollBarEnabled: false,
@@ -180,14 +180,14 @@ class WebViewScreenState extends State<WebViewScreen> {
       _jsApi?.setStyles(theme, settings);
       _updateSpineItemPosition(_currentSpineItemBloc.state);
       // TODO Reactivate
-      // readerContext.readerAnnotationRepository
-      //     .allWhere(
-      //         predicate: AnnotationTypeAndDocumentPredicate(
-      //             spineItem.id!, AnnotationType.bookmark))
-      //     .then((annotations) => _jsApi?.computeAnnotationsInfo(annotations));
-      // _annotationsSubscription = readerContext
-      //     .readerAnnotationRepository.deletedIdsStream
-      //     .listen((deletedIds) => _jsApi?.removeBookmarks(deletedIds));
+      readerContext.readerAnnotationRepository
+          .allWhere(
+              predicate: AnnotationTypeAndDocumentPredicate(
+                  spineItem.id!, AnnotationType.bookmark))
+          .then((annotations) => _jsApi?.computeAnnotationsInfo(annotations));
+      _annotationsSubscription = readerContext
+          .readerAnnotationRepository.deletedIdsStream
+          .listen((deletedIds) => _jsApi?.removeBookmarks(deletedIds));
     } catch (e, stacktrace) {
       Fimber.d("_onPageFinished ERROR", ex: e, stacktrace: stacktrace);
     }
@@ -217,10 +217,8 @@ class WebViewScreenState extends State<WebViewScreen> {
     _jsApi = JsApi(position,
         (javascript) => _controller?.evaluateJavascript(source: javascript));
     _spineItemContext.jsApi = _jsApi;
-    EpubCallbacks epubCallbacks =
-        EpubCallbacks(_spineItemContext, null, null, null);
-    // Fimber.d("epubCallbacks: $epubCallbacks");
     for (JavascriptChannel channel in epubCallbacks.channels) {
+      // Fimber.d("========== Adding Handler: ${channel.name}");
       _controller?.addJavaScriptHandler(
           handlerName: channel.name,
           callback: (List<dynamic> arguments) => channel

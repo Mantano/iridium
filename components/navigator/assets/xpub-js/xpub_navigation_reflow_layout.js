@@ -25,19 +25,19 @@
     }
 
     function onLeftOverlayVisibilityChanged(value) {
+        // flutter_log("====== onLeftOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
         if (window.flutter_inappwebview) {
             window.flutter_inappwebview.callHandler('GestureCallbacksOnLeftOverlayVisibilityChanged', value);
         } else {
-            // flutter_log("====== onLeftOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
             GestureCallbacksOnLeftOverlayVisibilityChanged.postMessage(value);
         }
     }
 
     function onRightOverlayVisibilityChanged(value) {
+        // flutter_log("====== onRightOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
         if (window.flutter_inappwebview) {
             window.flutter_inappwebview.callHandler('GestureCallbacksOnRightOverlayVisibilityChanged', value);
         } else {
-            // flutter_log("====== onRightOverlayVisibilityChanged, URL: " + window.location.href + ", value: " + value);
             GestureCallbacksOnRightOverlayVisibilityChanged.postMessage(value);
         }
     }
@@ -410,13 +410,13 @@
                 // isIntersecting is false when element and viewport don't overlap
 //                 flutter_log("=========== observerLeft, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
                 onLeftOverlayVisibilityChanged(entries[0].isIntersecting);
-            }, {threshold: [0.8]});
+            }, {threshold: [0.0, 0.5, 0.8, 0.99, 1.0]});
             let observerRight = new IntersectionObserver(function (entries) {
                 // isIntersecting is true when element and viewport are overlapping
                 // isIntersecting is false when element and viewport don't overlap
 //                flutter_log("=========== observerRight, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
                 onRightOverlayVisibilityChanged(entries[0].isIntersecting);
-            }, {threshold: [0.8]});
+            }, {threshold: [0.0, 0.5, 0.8, 0.99, 1.0]});
             xpub.observers.push(observerLeft);
             xpub.observers.push(observerRight);
             let firstDivQuerySelector = document.querySelector(leftDivSelector);
@@ -447,7 +447,7 @@
                     let translateTop = -(containerHeight / nbThumbnails * ((nbThumbnails - 1) / 2));
                     let scale = 1 / nbThumbnails;
                     $('#xpub_spineItemContents')[0].style.transform = "translate(" + translateLeft + "px, " + translateTop + "px) scale(" + scale + ")";
-                    if (paginator.length == 0) {
+                    if (paginator.length === 0) {
                         document.fonts.ready.then(function () {
                             xpub.triggerOnPaginationChanged();
                         });

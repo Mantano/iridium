@@ -60,16 +60,18 @@ class GesturesChannels extends JavascriptChannels {
   }
 
   void _onLeftOverlayVisibilityChanged(JavascriptMessage message) {
-//    Fimber.d("================== _onLeftOverlayVisibilityChanged, message: " +
-//        message.message);
+    // Fimber.d("================== _onLeftOverlayVisibilityChanged, message: " +
+    //     message.message +
+    //     ", recognizer: $webViewHorizontalGestureRecognizer");
     bool visibility = message.message.toLowerCase() == 'true' ||
         message.message.toLowerCase() == '1';
     webViewHorizontalGestureRecognizer?.setLeftOverlayVisible(visibility);
   }
 
   void _onRightOverlayVisibilityChanged(JavascriptMessage message) {
-//    Fimber.d("================== _onRightOverlayVisibilityChanged, message: " +
-//        message.message);
+    // Fimber.d("================== _onRightOverlayVisibilityChanged, message: " +
+    //     message.message +
+    //     ", recognizer: $webViewHorizontalGestureRecognizer");
     bool visibility = message.message.toLowerCase() == 'true' ||
         message.message.toLowerCase() == '1';
     webViewHorizontalGestureRecognizer?.setRightOverlayVisible(visibility);

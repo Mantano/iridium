@@ -25,7 +25,7 @@
             const clientRects = lastElem.getClientRects();
             if (lastElem.tagName === 'img') {
                 const rect = clientRects[0];
-                flutter_log("=============== IS IMG rect.width: " + rect.width + ", rect.height: " + rect.height);
+                // flutter_log("=============== IS IMG rect.width: " + rect.width + ", rect.height: " + rect.height);
                 if (rect.width > contentsWidth || rect.height > contentsHeight) {
                     result--;
                 }
@@ -81,7 +81,7 @@
         },
 
         initSpineItem: function (openBookData) {
-            flutter_log("initSpineItem, cfiNavigationLogic", window.cfiNavigationLogic);
+//            flutter_log("initSpineItem, cfiNavigationLogic", window.cfiNavigationLogic);
 //            console.log("openPage, openBookData.openPageRequest", openBookData.openPageRequest);
             xpub.$epubBody = $("body", document);
             if (!xpub.initialized) {
