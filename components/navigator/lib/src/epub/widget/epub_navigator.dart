@@ -57,7 +57,7 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
         // TODO Currently, with Hybrid Composition activated, preloadPagesCount > 1 provides erratic behavior.
         // To investigate!
         // preloadPagesCount: Platform.isAndroid ? 2 : 1,
-        preloadPagesCount: 2,
+        preloadPagesCount: 1,
         onPageChanged: epubController.onPageChanged,
         physics: const AlwaysScrollableScrollPhysics(),
         reverse: (readerContext?.readingProgression == ReadingProgression.rtl ||
