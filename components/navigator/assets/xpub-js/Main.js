@@ -2,11 +2,11 @@
 (function() {
 
     function flutter_log(message) {
-        if (window.flutter_inappwebview) {
-            window.flutter_inappwebview.callHandler('LauncherUILog', message);
-        } else {
-            LauncherUILog.postMessage(message);
-        }
+        // if (window.flutter_inappwebview) {
+        //     window.flutter_inappwebview.callHandler('LauncherUILog', message);
+        // } else {
+        //     LauncherUILog.postMessage(message);
+        // }
     }
 
     $( document ).ready(function() {

@@ -8,6 +8,7 @@ import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -52,7 +53,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   late EpubCallbacks epubCallbacks;
   late bool currentSelectedSpineItem;
 
-  bool isLoaded = false;
+  bool isLoaded = true;
 
   InAppWebViewController? _controller;
 
@@ -71,11 +72,11 @@ class WebViewScreenState extends State<WebViewScreen> {
     // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView(); // For Hybrid Composition C (faster) - Default on 3.0.0
     // if (Platform.isAndroid) WebView.platform = AndroidWebView(); // For Virtual Display (slower)
     // Fix for blank WebViews with 3.0.0 (https://github.com/flutter/flutter/issues/74626)
-    WidgetsBinding.instance!.addPostFrameCallback((callback) {
-      setState(() {
-        isLoaded = true;
-      });
-    });
+    // WidgetsBinding.instance!.addPostFrameCallback((callback) {
+    //   setState(() {
+    //     isLoaded = true;
+    //   });
+    // });
     LinkPagination linkPagination = publication.paginationInfo[spineItem]!;
     _spineItemContext = SpineItemContext(
       readerContext: readerContext,
@@ -130,6 +131,7 @@ class WebViewScreenState extends State<WebViewScreen> {
             crossPlatform: InAppWebViewOptions(
               useShouldOverrideUrlLoading: true,
               verticalScrollBarEnabled: false,
+              horizontalScrollBarEnabled: false,
             ),
           ),
           shouldOverrideUrlLoading: (controller, navigationAction) async =>

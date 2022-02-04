@@ -69,9 +69,9 @@ class GesturesChannels extends JavascriptChannels {
   }
 
   void _onRightOverlayVisibilityChanged(JavascriptMessage message) {
-    // Fimber.d("================== _onRightOverlayVisibilityChanged, message: " +
-    //     message.message +
-    //     ", recognizer: $webViewHorizontalGestureRecognizer");
+    Fimber.d("================== _onRightOverlayVisibilityChanged, message: " +
+        message.message +
+        ", recognizer: $webViewHorizontalGestureRecognizer");
     bool visibility = message.message.toLowerCase() == 'true' ||
         message.message.toLowerCase() == '1';
     webViewHorizontalGestureRecognizer?.setRightOverlayVisible(visibility);
