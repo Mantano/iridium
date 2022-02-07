@@ -1,5 +1,6 @@
 :root {
     --RS__viewportHeight: 99.9vh;
+    --RS__scroll-snap-stop: always;
 }
 
 .xpub_container {
@@ -49,6 +50,7 @@
 */
 .xpub_page_overlay {
     scroll-snap-align: center;
+    scroll-snap-stop: var(--RS__scroll-snap-stop);
     height: var(--RS__viewportHeight);
     min-height: var(--RS__viewportHeight);
     width: 100vw;

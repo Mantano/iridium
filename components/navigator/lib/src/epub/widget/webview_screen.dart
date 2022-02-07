@@ -53,7 +53,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   late EpubCallbacks epubCallbacks;
   late bool currentSelectedSpineItem;
 
-  bool isLoaded = true;
+  bool isLoaded = false;
 
   InAppWebViewController? _controller;
 
@@ -72,11 +72,11 @@ class WebViewScreenState extends State<WebViewScreen> {
     // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView(); // For Hybrid Composition C (faster) - Default on 3.0.0
     // if (Platform.isAndroid) WebView.platform = AndroidWebView(); // For Virtual Display (slower)
     // Fix for blank WebViews with 3.0.0 (https://github.com/flutter/flutter/issues/74626)
-    // WidgetsBinding.instance!.addPostFrameCallback((callback) {
-    //   setState(() {
-    //     isLoaded = true;
-    //   });
-    // });
+    WidgetsBinding.instance!.addPostFrameCallback((callback) {
+      setState(() {
+        isLoaded = true;
+      });
+    });
     LinkPagination linkPagination = publication.paginationInfo[spineItem]!;
     _spineItemContext = SpineItemContext(
       readerContext: readerContext,
@@ -236,8 +236,10 @@ class WebViewScreenState extends State<WebViewScreen> {
     _jsApi?.setStyles(state.readerTheme, settings);
   }
 
-  void _onViewerSettingsChanged(ViewerSettingsState state) =>
-      _jsApi?.updateFontSize(state.viewerSettings);
+  void _onViewerSettingsChanged(ViewerSettingsState state) {
+    _jsApi?.updateFontSize(state.viewerSettings);
+    _jsApi?.updateScrollSnapStop(state.viewerSettings.scrollSnapShouldStop);
+  }
 
   void _updateSpineItemPosition(CurrentSpineItemState state) {
     this.currentSelectedSpineItem = state.spineItemIdx == position;

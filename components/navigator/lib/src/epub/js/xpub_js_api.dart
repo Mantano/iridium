@@ -69,6 +69,12 @@ class JsApi {
     initPagination();
   }
 
+  void updateScrollSnapStop(bool shouldStop) {
+    loadJS(
+        "xpub.theme.updateProperty('--RS__scroll-snap-stop', '${shouldStop ? "always" : "normal"}');");
+    initPagination();
+  }
+
   void initPagination() {
     loadJS("xpub.initPagination();");
   }

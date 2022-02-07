@@ -46,6 +46,11 @@ class GesturesChannels extends JavascriptChannels {
       Coord coord = Coord.fromJson(message.message);
       Fimber.d("onTap, coord: $coord");
       _spineItemContext.onTap();
+      bool scrollSnapShouldStop =
+          !_spineItemContext.readerContext.toolbarVisibility;
+      Fimber.d(
+          "================ Setting scroll-snap-stop to: ${scrollSnapShouldStop ? "always" : "normal"}");
+      viewerSettingsBloc?.add(ScrollSnapShouldStopEvent(scrollSnapShouldStop));
     } on Exception catch (e, stacktrace) {
       Fimber.d("onTap: $e, $stacktrace");
     }
