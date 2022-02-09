@@ -7,6 +7,7 @@ import 'dart:typed_data';
 
 import 'package:dartx/dartx.dart';
 import 'package:dfunc/dfunc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/exceptions.dart';
 import 'package:mno_shared/fetcher.dart';
@@ -52,9 +53,14 @@ class EntryResource extends Resource {
   Future<ResourceTry<ArchiveEntry>> entry() async {
     if (_entry == null) {
       try {
+        Stopwatch stopwatch = Stopwatch();
+        stopwatch.start();
         ArchiveEntry entry =
             await _archive.entry(_originalLink.href.removePrefix("/"));
         _entry = ResourceTry.success(entry);
+        stopwatch.stop();
+        Fimber.d(
+            "========= fetcher HREF: ${_originalLink.href}, time: ${stopwatch.elapsedMilliseconds}ms");
       } on Exception {
         _entry = ResourceTry.failure(ResourceException.notFound);
       }
