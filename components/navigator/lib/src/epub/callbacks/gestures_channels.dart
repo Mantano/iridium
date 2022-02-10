@@ -46,6 +46,11 @@ class GesturesChannels extends JavascriptChannels {
       Coord coord = Coord.fromJson(message.message);
       Fimber.d("onTap, coord: $coord");
       _spineItemContext.onTap();
+      bool scrollSnapShouldStop =
+          !_spineItemContext.readerContext.toolbarVisibility;
+      Fimber.d(
+          "================ Setting scroll-snap-stop to: ${scrollSnapShouldStop ? "always" : "normal"}");
+      viewerSettingsBloc?.add(ScrollSnapShouldStopEvent(scrollSnapShouldStop));
     } on Exception catch (e, stacktrace) {
       Fimber.d("onTap: $e, $stacktrace");
     }
@@ -60,16 +65,18 @@ class GesturesChannels extends JavascriptChannels {
   }
 
   void _onLeftOverlayVisibilityChanged(JavascriptMessage message) {
-//    Fimber.d("================== _onLeftOverlayVisibilityChanged, message: " +
-//        message.message);
+    // Fimber.d("================== _onLeftOverlayVisibilityChanged, message: " +
+    //     message.message +
+    //     ", recognizer: $webViewHorizontalGestureRecognizer");
     bool visibility = message.message.toLowerCase() == 'true' ||
         message.message.toLowerCase() == '1';
     webViewHorizontalGestureRecognizer?.setLeftOverlayVisible(visibility);
   }
 
   void _onRightOverlayVisibilityChanged(JavascriptMessage message) {
-//    Fimber.d("================== _onRightOverlayVisibilityChanged, message: " +
-//        message.message);
+    Fimber.d("================== _onRightOverlayVisibilityChanged, message: " +
+        message.message +
+        ", recognizer: $webViewHorizontalGestureRecognizer");
     bool visibility = message.message.toLowerCase() == 'true' ||
         message.message.toLowerCase() == '1';
     webViewHorizontalGestureRecognizer?.setRightOverlayVisible(visibility);

@@ -48,7 +48,7 @@ class EpubController extends PublicationController {
       // to < 1.0, in order to get the WebViews to render! Otherwise they do load the data but don't render...
       keepPage: true,
       initialPage: initialPage,
-      viewportFraction: 0.9999);
+      viewportFraction: 0.99);
 
   @override
   void onSkipLeft() {

@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:fimber/fimber.dart';
 import 'package:objectdb/objectdb.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:objectdb/src/objectdb_storage_filesystem.dart';
-
 
 class DownloadsDB {
   getPath() async {
@@ -29,9 +29,9 @@ class DownloadsDB {
   Future removeAllWithId(Map item) async {
     final db = ObjectDB(FileSystemStorage(await getPath()));
     List val = await db.find({});
-    val.forEach((element) {
+    for (var element in val) {
       db.remove(element);
-    });
+    }
     await db.close();
   }
 
@@ -39,7 +39,7 @@ class DownloadsDB {
     final db = ObjectDB(FileSystemStorage(await getPath()));
     List val = await db.find({});
     await db.close();
-    print(val);
+    Fimber.d("val: $val");
     return val;
   }
 

@@ -1,6 +1,14 @@
 
 (function() {
 
+    function flutter_log(message) {
+        // if (window.flutter_inappwebview) {
+        //     window.flutter_inappwebview.callHandler('LauncherUILog', message);
+        // } else {
+        //     LauncherUILog.postMessage(message);
+        // }
+    }
+
     $( document ).ready(function() {
         // Add a function in jQuery to compute how many columns are created for a specific element
         $.fn.howMuchCols = function(nbThumbnails){
@@ -10,14 +18,14 @@
             const spineItemDiv = $('#xpub_spineItemContents');
             const contentsWidth = spineItemDiv.prop('scrollWidth');
             const contentsHeight = spineItemDiv.prop('scrollHeight');
-            // flutter_log.postMessage("=============== windowWidth: " + windowWidth + ", contentsWidth: " + contentsWidth + ", contentsHeight: " + contentsHeight);
+            flutter_log("=============== windowWidth: " + windowWidth + ", contentsWidth: " + contentsWidth + ", contentsHeight: " + contentsHeight);
             const columnWidth = windowWidth / nbThumbnails;
             let result = Math.ceil(contentsWidth / columnWidth);
             const lastElem = $(this).find(':last')[0];
             const clientRects = lastElem.getClientRects();
             if (lastElem.tagName === 'img') {
                 const rect = clientRects[0];
-                // flutter_log.postMessage("=============== IS IMG rect.width: " + rect.width + ", rect.height: " + rect.height);
+                // flutter_log("=============== IS IMG rect.width: " + rect.width + ", rect.height: " + rect.height);
                 if (rect.width > contentsWidth || rect.height > contentsHeight) {
                     result--;
                 }
@@ -73,7 +81,7 @@
         },
 
         initSpineItem: function (openBookData) {
-//            console.log("initSpineItem, cfiNavigationLogic", window.cfiNavigationLogic);
+//            flutter_log("initSpineItem, cfiNavigationLogic", window.cfiNavigationLogic);
 //            console.log("openPage, openBookData.openPageRequest", openBookData.openPageRequest);
             xpub.$epubBody = $("body", document);
             if (!xpub.initialized) {

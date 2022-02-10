@@ -12,6 +12,8 @@ class ViewerSettingsBloc
   ViewerSettingsBloc(EpubReaderState _readerState)
       : super(ViewerSettingsState(
             ViewerSettings.defaultSettings(fontSize: _readerState.fontSize))) {
+    on<ScrollSnapShouldStopEvent>((event, emit) => emit(ViewerSettingsState(
+        state.viewerSettings.setScrollSnapShouldStop(event.shouldStop))));
     on<IncrFontSizeEvent>((event, emit) =>
         emit(ViewerSettingsState(state.viewerSettings.incrFontSize())));
     on<DecrFontSizeEvent>((event, emit) =>
@@ -25,6 +27,15 @@ class ViewerSettingsBloc
 abstract class ViewerSettingsEvent extends Equatable {
   @override
   List<Object> get props => [];
+}
+
+class ScrollSnapShouldStopEvent extends ViewerSettingsEvent {
+  final bool shouldStop;
+
+  ScrollSnapShouldStopEvent(this.shouldStop);
+
+  @override
+  String toString() => 'ScrollSnapShouldStopEvent {}';
 }
 
 class IncrFontSizeEvent extends ViewerSettingsEvent {

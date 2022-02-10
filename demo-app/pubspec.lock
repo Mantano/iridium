@@ -269,7 +269,7 @@ packages:
       name: google_fonts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "2.3.0"
   html:
     dependency: transitive
     description:
@@ -925,7 +925,7 @@ packages:
       name: webview_flutter_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.0+1"
   webview_flutter_wkwebview:
     dependency: transitive
     description:

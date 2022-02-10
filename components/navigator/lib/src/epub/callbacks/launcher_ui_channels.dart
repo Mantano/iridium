@@ -39,7 +39,7 @@ class LauncherUIChannels extends JavascriptChannels {
           onMessageReceived: _openSpineItemForTts,
         ),
         JavascriptChannel(
-          name: 'flutter_log',
+          name: 'LauncherUILog',
           onMessageReceived: _flutterLog,
         ),
       ];

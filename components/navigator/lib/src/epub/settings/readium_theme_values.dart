@@ -37,6 +37,7 @@ class ReadiumThemeValues {
         "--RS__verticalMargin": verticalMargin,
         "--RS__backgroundColor": backgroundColor,
         "--RS__textColor": textColor,
+        "--RS__scroll-snap-stop": scrollSnapShouldStop,
         ReadiumCSSName.textAlignment.name: textAlign,
         ReadiumCSSName.lineHeight.name: lineHeight,
         ReadiumCSSName.wordSpacing.name: wordSpacing,
@@ -82,6 +83,9 @@ class ReadiumThemeValues {
 
   String get letterSpacing =>
       readerTheme.letterSpacing?.let((it) => "${it.value}em") ?? "";
+
+  String get scrollSnapShouldStop =>
+      viewerSettings.scrollSnapShouldStop ? "always" : "normal";
 
   String get fontSize => '${viewerSettings.fontSize}%';
 

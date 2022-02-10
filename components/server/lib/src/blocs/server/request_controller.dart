@@ -28,8 +28,13 @@ class RequestController {
     }
 
     try {
+      Stopwatch stopwatch = Stopwatch();
+      stopwatch.start();
       for (RequestHandler handler in handlers) {
         if (await handler.handle(requestId, request, href)) {
+          stopwatch.stop();
+          Fimber.d(
+              "========= REQUEST HREF: $href, time: ${stopwatch.elapsedMilliseconds}ms");
           return;
         }
       }

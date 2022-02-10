@@ -1,9 +1,10 @@
 import 'package:example/utils/utils.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fimber/flutter_fimber.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:universal_io/io.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,11 +13,14 @@ Future<void> main() async {
   } else {
     Fimber.plantTree(DebugBufferTree());
   }
-  bool testRtl = true;
-  var dirPath = (await Utils.getFileFromAsset(testRtl
-          ? 'assets/books/39419251_rtl.epub'
-          : 'assets/books/accessible_epub_3.epub'))
-      .path;
+  if (kDebugMode && Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  }
+  // var fileName = "assets/books/accessible_epub_3.epub";
+  // var fileName = "assets/books/39419251_rtl.epub";
+  var fileName = "assets/books/9782067179578_GM_PARIS_2012_ANDROID.epub";
+  // var fileName = "assets/books/Code du travail.epub";
+  var dirPath = (await Utils.getFileFromAsset(fileName)).path;
   runApp(MyApp(dirPath));
 }
 
