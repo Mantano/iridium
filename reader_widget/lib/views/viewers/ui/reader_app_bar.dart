@@ -69,7 +69,7 @@ class ReaderAppBarState extends State<ReaderAppBar> {
                     onPressed: _onBookmarkPressed,
                     icon: const ImageIcon(
                       AssetImage(
-                        'assets/images/icon_bookmark.png',
+                        'packages/iridium_reader_widget/assets/images/icon_bookmark.png',
                       ),
                     ),
                   ),
@@ -78,7 +78,7 @@ class ReaderAppBarState extends State<ReaderAppBar> {
                     onPressed: _onSettingsPressed,
                     icon: const ImageIcon(
                       AssetImage(
-                        'assets/images/icon_settings.png',
+                        'packages/iridium_reader_widget/assets/images/icon_settings.png',
                       ),
                     ),
                   ),
@@ -86,7 +86,7 @@ class ReaderAppBarState extends State<ReaderAppBar> {
                     onPressed: _onMenuPressed,
                     icon: const ImageIcon(
                       AssetImage(
-                        'assets/images/icon_menu.png',
+                        'packages/iridium_reader_widget/assets/images/icon_menu.png',
                       ),
                     ),
                   ),
