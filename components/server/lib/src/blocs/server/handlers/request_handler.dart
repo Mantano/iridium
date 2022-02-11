@@ -9,6 +9,7 @@ import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:intl/intl.dart';
 import 'package:mno_commons/extensions/data.dart';
+import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:universal_io/io.dart';
@@ -28,26 +29,25 @@ abstract class RequestHandler {
   /// resource demanded.
   ///
   /// Returns true if the request has been handled
-  Future<bool> handle(int requestId, HttpRequest request, String href);
+  Future<bool> handle(int requestId, Request request, String href);
 
   final bool _shouldAddCacheHeaders = false;
 
   /// Enable this method when debugging is over.
-  void _addCacheHeaders(HttpResponse response) {
+  void _addCacheHeaders(Response response) {
     DateTime now = DateTime.now();
     DateFormat formatter = DateFormat('EEE, dd MMM yyyy HH:mm:ss', _dateLocale);
     DateTime expiration = now.add(_expirationDelay);
-    response.headers.set(HttpHeaders.cacheControlHeader, _cacheControlValue);
-    response.headers
-        .set(HttpHeaders.expiresHeader, formatter.format(expiration));
-    response.headers.set(HttpHeaders.lastModifiedHeader, formatter.format(now));
+    response.setHeader(HttpHeaders.cacheControlHeader, _cacheControlValue);
+    response.setHeader(HttpHeaders.expiresHeader, formatter.format(expiration));
+    response.setHeader(HttpHeaders.lastModifiedHeader, formatter.format(now));
   }
 
   /// Extract a [request] param [name] and convert it to [int]
   ///
   /// A [defaultValue] may be provided if no param exists or if the parsing as
   /// [int] fails.
-  int getParamAsInt(HttpRequest request, String name, {int defaultValue = 0}) {
+  int getParamAsInt(Request request, String name, {int defaultValue = 0}) {
     String? valueStr = request.uri.queryParameters[name];
     return (valueStr != null)
         ? int.tryParse(valueStr) ?? defaultValue
@@ -55,33 +55,33 @@ abstract class RequestHandler {
   }
 
   /// Sends a bytes buffer as the request response.
-  Future<void> sendData(HttpRequest request,
+  Future<void> sendData(Request request,
       {required List<int> data, MediaType? mediaType}) async {
-    HttpResponse response = request.response;
+    Response response = request.response;
 
     if (_shouldAddCacheHeaders) {
       _addCacheHeaders(response);
     }
 
     response
-      ..headers.contentType = mediaType?.contentType
+      ..contentType = mediaType?.contentType
       ..add(data);
   }
 
   /// Sends a byte stream (supporting range access) as the request response.
-  Future<void> sendResource(HttpRequest request,
+  Future<void> sendResource(Request request,
       {required Resource resource, MediaType? mediaType}) async {
-    HttpResponse response = request.response;
+    Response response = request.response;
 
     if (_shouldAddCacheHeaders) {
       _addCacheHeaders(response);
     }
 
-    response.headers
+    response
       ..contentType = mediaType?.contentType
-      ..set(HttpHeaders.acceptRangesHeader, 'bytes');
+      ..setHeader(HttpHeaders.acceptRangesHeader, 'bytes');
 
-    String? range = request.headers.value(HttpHeaders.rangeHeader);
+    String? range = request.getHeader(HttpHeaders.rangeHeader);
     if (range != null) {
       int length = (await resource.length()).getOrNull() ?? 0;
       int start = 0;
@@ -104,8 +104,8 @@ abstract class RequestHandler {
         }
         response
           ..statusCode = HttpStatus.partialContent
-          ..headers
-              .set(HttpHeaders.contentRangeHeader, 'bytes $start-$end/$length');
+          ..setHeader(
+              HttpHeaders.contentRangeHeader, 'bytes $start-$end/$length');
 
         ByteData? data =
             (await resource.read(range: IntRange(start, end))).getOrNull();

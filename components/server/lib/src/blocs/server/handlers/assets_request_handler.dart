@@ -7,7 +7,6 @@ import 'dart:typed_data';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart';
 
 /// Function to transform a response data based on href provided.
 typedef TransformData = Uint8List Function(String href, Uint8List data);
@@ -36,7 +35,7 @@ class AssetsRequestHandler extends RequestHandler {
   }) : this.transformData = transformData ?? _defaultTransformData;
 
   @override
-  Future<bool> handle(int requestId, HttpRequest request, String href) async {
+  Future<bool> handle(int requestId, Request request, String href) async {
     try {
       Uint8List uint8List =
           (await assetProvider.load(p.join(path, href))).buffer.asUint8List();

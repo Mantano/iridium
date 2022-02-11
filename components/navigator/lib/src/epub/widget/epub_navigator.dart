@@ -43,9 +43,16 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
   }
 
   @override
-  Widget build(BuildContext context) => BlocProvider<CurrentSpineItemBloc>(
-        create: (BuildContext context) =>
-            publicationController.currentSpineItemBloc,
+  Widget build(BuildContext context) => MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (BuildContext context) =>
+                publicationController.currentSpineItemBloc,
+          ),
+          BlocProvider(
+            create: (BuildContext context) => publicationController.serverBloc,
+          ),
+        ],
         child: super.build(context),
       );
 
