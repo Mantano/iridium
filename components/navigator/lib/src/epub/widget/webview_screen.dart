@@ -161,7 +161,7 @@ class WebViewScreenState extends State<WebViewScreen> {
 //    Fimber.d("refreshPage[${position}]: ${spineItem.href}");
   }
 
-  void _onPageFinished(controller, url) async {
+  void _onPageFinished(InAppWebViewController controller, Uri? url) async {
     Fimber.d("_onPageFinished[$position]: $url");
     ReaderThemeConfig theme = _readerThemeBloc.currentTheme;
     try {

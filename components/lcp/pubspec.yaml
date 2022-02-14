@@ -24,7 +24,7 @@ dependencies:
   multiple_localization: ^0.2.2
   path: ^1.8.1
   path_provider: ^2.0.8
-  shared_preferences: ^2.0.12
+  shared_preferences: ^2.0.13
   sqflite: ^2.0.2
   tuple: ^2.0.0
   universal_io: ^2.0.4
