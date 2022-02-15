@@ -19,12 +19,16 @@ abstract class Predicate<T> {
   }
 
   void addIdInCondition(String field, List<Object> value) {
-    conditionsPredicate
-        .add(ConditionPredicate(ConditionType.arrayContainsAny, field, value));
+    _addInArrayCondition(field, value, ConditionType.whereIn);
+  }
 
-    if (value.length > ConditionType.arrayContainsAny.maxListItems) {
+  void _addInArrayCondition(
+      String field, List<Object> value, ConditionType conditionType) {
+    conditionsPredicate.add(ConditionPredicate(conditionType, field, value));
+
+    if (value.length > conditionType.maxListItems) {
       Fimber.d(
-          "ERROR !!!!!! in , not-in , and array-contains-any cannot contain more than ${ConditionType.arrayContainsAny.maxListItems} values. ");
+          "ERROR !!!!!! in , not-in , and array-contains-any cannot contain more than ${conditionType.maxListItems} values. ");
     }
   }
 
@@ -43,6 +47,10 @@ class AcceptAllPredicate<T> implements Predicate<T> {
 
   @override
   void addEqualsCondition(String field, Object value) {}
+
+  @override
+  void _addInArrayCondition(
+      String field, List<Object> value, ConditionType conditionType) {}
 
   @override
   void addIdInCondition(String field, List<Object> value) {}
