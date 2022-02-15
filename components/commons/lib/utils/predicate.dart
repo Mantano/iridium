@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/condition_predicate.dart';
 import 'package:mno_commons/utils/condition_type.dart';
 
@@ -19,7 +20,12 @@ abstract class Predicate<T> {
 
   void addIdInCondition(String field, List<Object> value) {
     conditionsPredicate
-        .add(ConditionPredicate(ConditionType.arrayContainsAny, field, value));
+        .add(ConditionPredicate(ConditionType.whereIn, field, value));
+
+    if (value.length > ConditionType.whereIn.maxListItems) {
+      Fimber.d(
+          "ERROR !!!!!! in , not-in , and array-contains-any cannot contain more than ${ConditionType.whereIn.maxListItems} values. ");
+    }
   }
 
   bool test(T element);
