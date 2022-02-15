@@ -20,11 +20,11 @@ abstract class Predicate<T> {
 
   void addIdInCondition(String field, List<Object> value) {
     conditionsPredicate
-        .add(ConditionPredicate(ConditionType.whereIn, field, value));
+        .add(ConditionPredicate(ConditionType.arrayContainsAny, field, value));
 
-    if (value.length > ConditionType.whereIn.maxListItems) {
+    if (value.length > ConditionType.arrayContainsAny.maxListItems) {
       Fimber.d(
-          "ERROR !!!!!! in , not-in , and array-contains-any cannot contain more than ${ConditionType.whereIn.maxListItems} values. ");
+          "ERROR !!!!!! in , not-in , and array-contains-any cannot contain more than ${ConditionType.arrayContainsAny.maxListItems} values. ");
     }
   }
 
