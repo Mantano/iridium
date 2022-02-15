@@ -18,6 +18,11 @@ abstract class Predicate<T> {
         .add(ConditionPredicate(ConditionType.isEqualTo, field, value));
   }
 
+  void addGreaterThanCondition(String field, Object value) {
+    conditionsPredicate
+        .add(ConditionPredicate(ConditionType.isGreaterThan, field, value));
+  }
+
   void addIdInCondition(String field, List<Object> value) {
     _addInArrayCondition(field, value, ConditionType.whereIn);
   }
@@ -63,4 +68,7 @@ class AcceptAllPredicate<T> implements Predicate<T> {
 
   @override
   bool get dbOnly => true;
+
+  @override
+  void addGreaterThanCondition(String field, Object value) {}
 }
