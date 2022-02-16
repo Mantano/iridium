@@ -53,6 +53,9 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   }
 
   Future<HttpServer?> _initServer() async {
+    // Could start many servers with the "shared" param added to bind !
+    // See https://groups.google.com/a/dartlang.org/g/misc/c/Ju4f2d5ziwE
+    // and https://github.com/costajob/app-servers/pull/23/commits/4f58ae2d578e3283b534e35821485d0d6c85c862
     HttpServer? server;
     while (server == null) {
       try {
