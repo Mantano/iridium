@@ -10,7 +10,9 @@ class AnnotationTypeAndDocumentPredicate extends Predicate<ReaderAnnotation> {
   final String idref;
   final AnnotationType annotationType;
 
-  AnnotationTypeAndDocumentPredicate(this.idref, this.annotationType);
+  AnnotationTypeAndDocumentPredicate(this.idref, this.annotationType) {
+    addEqualsCondition("annotationType", annotationType.id);
+  }
 
   @override
   bool test(ReaderAnnotation element) =>

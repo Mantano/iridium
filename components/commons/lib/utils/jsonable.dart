@@ -11,7 +11,7 @@ mixin JSONable {
   Map<String, dynamic>? toJson();
 }
 
-extension ListJSONableExtension on List<JSONable> {
+extension IterableJSONableExtension on Iterable<JSONable> {
   /// Serializes a list of [JSONable] into a [List<Map<String, dynamic>>].
   List<Map<String, dynamic>> toJson() =>
       this.map((it) => it.toJson()).whereNotNull().toList();
