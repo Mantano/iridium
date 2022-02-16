@@ -135,6 +135,7 @@ class WebViewScreenState extends State<WebViewScreen> {
               useHybridComposition: true,
               useShouldInterceptRequest: true,
               safeBrowsingEnabled: false,
+              cacheMode: AndroidCacheMode.LOAD_NO_CACHE,
             ),
             crossPlatform: InAppWebViewOptions(
               useShouldOverrideUrlLoading: true,
