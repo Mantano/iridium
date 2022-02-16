@@ -23,12 +23,12 @@ dependencies:
   mno_fsm: ^0.1.1
   multiple_localization: ^0.2.2
   path: ^1.8.1
-  path_provider: ^2.0.8
-  shared_preferences: ^2.0.12
+  path_provider: ^2.0.9
+  shared_preferences: ^2.0.13
   sqflite: ^2.0.2
   tuple: ^2.0.0
   universal_io: ^2.0.4
-  url_launcher: ^6.0.18
+  url_launcher: ^6.0.20
   uuid: ^3.0.5
   mno_commons:
     path: ../commons
