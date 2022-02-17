@@ -11,6 +11,9 @@ class ConditionPredicate {
 
   ConditionPredicate(this.type, this.field, this.value);
 
+  bool get mustSplit =>
+      type.maxListItems > 1 && (value as Iterable).length > type.maxListItems;
+
   @override
   String toString() =>
       'ConditionPredicate{type: $type, field: $field, value: $value}';
