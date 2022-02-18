@@ -1,12 +1,13 @@
 import 'dart:io';
 
+import 'package:awesome_loader/awesome_loader.dart';
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:iridium_reader_widget/views/viewers/model/in_memory_reader_annotation_repository.dart';
 import 'package:iridium_reader_widget/views/viewers/ui/reader_app_bar.dart';
 import 'package:iridium_reader_widget/views/viewers/ui/reader_toolbar.dart';
-import 'package:iridium_reader_widget/views/viewers/model/in_memory_reader_annotation_repository.dart';
 import 'package:mno_commons/utils/functions.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_server/mno_server.dart';
@@ -91,12 +92,19 @@ abstract class BookScreenState<T extends BookScreen,
 
   Future<bool> _onWillPop() async => true;
 
-  Widget buildWaitingScreen(BuildContext context) => Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(
-              Theme.of(context).colorScheme.secondary),
-        ),
-      );
+  Widget buildWaitingScreen(BuildContext context) {
+    //   return Center(
+    //       child: CircularProgressIndicator(
+    //         valueColor: AlwaysStoppedAnimation<Color>(
+    //             Theme.of(context).colorScheme.secondary),
+    //       ),
+    //     );
+    // }
+    return Center(
+        child: AwesomeLoader(
+            color: Theme.of(context).colorScheme.secondary,
+            loaderType: AwesomeLoader.AwesomeLoader3));
+  }
 
   void _displayErrorDialog(BuildContext context, UserException userException) {
     // TODO open error dialog

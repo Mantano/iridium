@@ -54,6 +54,8 @@ dependencies:
       url: https://github.com/Ali-Azmoud/flutter_xlider.git
       ref: master # branch name
 
+  awesome_loader: ^0.0.3
+
 dependency_overrides:
   platform: ^3.1.0
   path: ^1.8.1

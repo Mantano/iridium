@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:awesome_loader/awesome_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mno_commons/utils/functions.dart';
@@ -98,10 +99,15 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
 
   Widget buildReaderView(List<Link> spine, ServerStarted serverState);
 
-  Widget buildProgressIndicator(BuildContext context) => Center(
+  Widget buildProgressIndicatorOld(BuildContext context) => Center(
         child: CircularProgressIndicator(
           valueColor: AlwaysStoppedAnimation<Color>(
               Theme.of(context).colorScheme.secondary),
         ),
       );
+
+  Widget buildProgressIndicator(BuildContext context) => Center(
+      child: AwesomeLoader(
+          color: Theme.of(context).colorScheme.secondary,
+          loaderType: AwesomeLoader.AwesomeLoader3));
 }
