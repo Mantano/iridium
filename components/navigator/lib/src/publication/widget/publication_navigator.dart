@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:awesome_loader/awesome_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mno_commons/utils/functions.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -107,7 +107,9 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
       );
 
   Widget buildProgressIndicator(BuildContext context) => Center(
-      child: AwesomeLoader(
-          color: Theme.of(context).colorScheme.secondary,
-          loaderType: AwesomeLoader.AwesomeLoader3));
+      child: SpinKitChasingDots(
+          size: 100.0, color: Theme.of(context).colorScheme.secondary));
+  // AwesomeLoader(
+  //     color: Theme.of(context).colorScheme.secondary,
+  //     loaderType: AwesomeLoader.AwesomeLoader3));
 }
