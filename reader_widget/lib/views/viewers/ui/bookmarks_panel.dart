@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/publication.dart';
-import 'package:mno_navigator/src/publication/model/annotation_type_predicate.dart';
 import 'package:mno_shared/publication.dart';
 
 class BookmarksPanel extends StatefulWidget {
