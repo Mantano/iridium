@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: EpubScreen.fromPath(filePath: widget.dirPath),
+        child: EpubScreen.fromPath(filePath: widget.dirPath, location: '{"cfi":" ","idref":"file_12.html"}',), //'{"idref":"id-id2640702"}'
       ),
     );
   }

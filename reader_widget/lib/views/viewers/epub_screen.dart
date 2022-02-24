@@ -15,11 +15,12 @@ import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
 
 class EpubScreen extends BookScreen {
-  const EpubScreen({Key? key, required FileAsset asset})
+  final String? location;
+  const EpubScreen({Key? key, required FileAsset asset, this.location})
       : super(key: key, asset: asset);
 
-  factory EpubScreen.fromPath({Key? key, required String filePath}) {
-    return EpubScreen(key: key, asset: FileAsset(File(filePath)));
+  factory EpubScreen.fromPath({Key? key, required String filePath, String? location}) {
+    return EpubScreen(key: key, asset: FileAsset(File(filePath)), location: location);
   }
 
   @override
@@ -36,6 +37,9 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
     _viewerSettingsBloc = ViewerSettingsBloc(EpubReaderState("", 100));
     _readerThemeBloc = ReaderThemeBloc(ReaderThemeConfig.defaultTheme);
   }
+
+  @override
+  Future<String?> get openLocation async => widget.location;
 
   @override
   EpubController createPublicationController(
