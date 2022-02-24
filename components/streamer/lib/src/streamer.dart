@@ -133,7 +133,11 @@ class Streamer {
       PublicationBuilder? builder =
           (await _getParsers().lazyMapFirstNotNullOrNull((it) {
         try {
-          return it.parseFile(asset, fetcher).catchError((e, st) => null);
+          return it.parseFile(asset, fetcher).catchError(
+              (e, st) => it.parseFile(asset, fetcher).catchError((e, st) {
+                    Fimber.d("ERROR $it", ex: e, stacktrace: st);
+                    return null;
+                  }));
         } on Exception catch (e) {
           throw OpeningException.parsingFailed(e);
         }
