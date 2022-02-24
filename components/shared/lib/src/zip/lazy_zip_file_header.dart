@@ -53,7 +53,7 @@ class LazyZipFileHeader {
     }
 
     if (extraLen > 0) {
-      InputStream extra = input.readBytes(extraLen);
+      InputStreamBase extra = input.readBytes(extraLen);
       extraField = extra.toUint8List();
 
       int id = extra.readUint16();
