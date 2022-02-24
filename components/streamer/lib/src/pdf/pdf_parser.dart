@@ -45,12 +45,12 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
     if (pdfLink == null) {
       throw Exception("Unable to find PDF file.");
     }
+    String fileHref = pdfLink.href;
 
     PdfDocument document = await pdfFactory.openResource(fetcher.get(pdfLink));
     String title = document.title?.ifBlank(() => null) ?? fallbackTitle;
 
-    // TODO implement lookup the table of content
-    // List<Link> tableOfContents = document.outline.toLinks(fileHref);
+    List<Link> tableOfContents = document.outline(fileHref);
 
     Manifest manifest = Manifest(
         metadata: Metadata(
@@ -85,8 +85,8 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
                           title: title,
                         )))
           ]
-        }
-        // tableOfContents: tableOfContents
+        },
+        tableOfContents: tableOfContents
         );
     ServicesBuilder servicesBuilder = ServicesBuilder.create(
         positions: PdfPositionsService.create,
