@@ -7,7 +7,9 @@ class ConditionType {
           ConditionType._(0, "isGreaterThan", 1),
       isLessThan = ConditionType._(1, "isLessThan", 1),
       isEqualTo = ConditionType._(2, "isEqualTo", 1),
+      contains = ConditionType._(6, "whereGreaterThanOrEqualTo", 1),
       arrayContainsAny = ConditionType._(3, "arrayContainsAny", 10),
+      arrayContains = ConditionType._(3, "arrayContains", 10),
       whereIn = ConditionType._(4, "whereIn", 10),
       whereNotIn = ConditionType._(5, "whereNotIn", 10);
 
