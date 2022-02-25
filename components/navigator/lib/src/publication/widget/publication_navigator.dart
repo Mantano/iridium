@@ -64,11 +64,11 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
                 return widget.waitingScreenBuilder(context);
               }
               readerContext = snapshot.data;
-              return buildUiForReaderContext(context, readerContext!);
+              return _buildUiForReaderContext(context, readerContext!);
             }),
       );
 
-  Widget buildUiForReaderContext(
+  Widget _buildUiForReaderContext(
       BuildContext context, ReaderContext readerContext) {
     widget.onReaderContextCreated(readerContext);
     if (readerContext.hasError) {
@@ -84,20 +84,20 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
           bloc: publicationController.serverBloc,
           builder: (BuildContext context, ServerState state) =>
               (state is ServerStarted)
-                  ? wrapReaderView(spine, state)
+                  ? _wrapReaderView(spine, state)
                   : widget.waitingScreenBuilder(context)),
     );
   }
 
-  Widget wrapReaderView(List<Link> spine, ServerStarted serverState) {
+  Widget _wrapReaderView(List<Link> spine, ServerStarted serverState) {
     if (widget.wrapper != null) {
       return widget.wrapper!(
-          context, buildReaderView(spine, serverState), spine, serverState);
+          context, _buildReaderView(spine, serverState), spine, serverState);
     }
-    return buildReaderView(spine, serverState);
+    return _buildReaderView(spine, serverState);
   }
 
-  Widget buildReaderView(List<Link> spine, ServerStarted serverState);
+  Widget _buildReaderView(List<Link> spine, ServerStarted serverState);
 
   Widget buildProgressIndicatorOld(BuildContext context) => Center(
         child: CircularProgressIndicator(
