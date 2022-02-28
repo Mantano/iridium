@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 /// Function to transform a response data based on href provided.
 typedef TransformData = Uint8List Function(String href, Uint8List data);

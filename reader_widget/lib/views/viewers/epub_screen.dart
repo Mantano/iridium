@@ -1,5 +1,6 @@
-import 'dart:io';
+// import 'dart:io';
 import 'dart:typed_data';
+import 'package:universal_io/io.dart';
 
 import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,9 @@ class EpubScreen extends BookScreen {
   factory EpubScreen.fromPath({Key? key, required String filePath, String? location}) {
     return EpubScreen(key: key, asset: FileAsset(File(filePath)), location: location);
   }
-
+  factory EpubScreen.fromFile({Key? key, required File file, String? location}) {
+    return EpubScreen(key: key, asset: FileAsset(file), location: location);
+  }
   @override
   State<StatefulWidget> createState() => EpubScreenState();
 }

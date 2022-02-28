@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/mediatype.dart';

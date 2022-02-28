@@ -7,7 +7,7 @@ import 'dart:typed_data';
 import 'package:device_info/device_info.dart';
 import 'package:mno_lcp/lcp.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 import 'package:uuid/uuid.dart';
 
 class DeviceService {

@@ -10,7 +10,7 @@ import 'package:image_compare/image_compare.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 class MockCoverService extends CoverService {
   @override

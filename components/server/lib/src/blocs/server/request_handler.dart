@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:mno_commons/extensions/data.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/mediatype.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 /// The [RequestHandler] provides the means to send data to the HTTP response.
 ///

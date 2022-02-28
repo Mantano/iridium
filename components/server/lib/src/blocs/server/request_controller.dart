@@ -4,7 +4,7 @@
 
 import 'package:fimber/fimber.dart';
 import 'package:mno_server/src/blocs/server/request_handler.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 /// A [RequestController] is used to process each request received by the
 /// server.

@@ -13,7 +13,7 @@ import 'package:mno_shared/src/zip/lazy_archive.dart';
 import 'package:mno_shared/src/zip/lazy_archive_file.dart';
 import 'package:mno_shared/src/zip/lazy_zip_decoder.dart';
 import 'package:mno_shared/src/zip/zip_header.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 class ZipPackage implements JSONable {
   ZipPackage(this.file);
