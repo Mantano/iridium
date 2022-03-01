@@ -92,12 +92,12 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
   Widget _wrapReaderView(List<Link> spine, ServerStarted serverState) {
     if (widget.wrapper != null) {
       return widget.wrapper!(
-          context, _buildReaderView(spine, serverState), spine, serverState);
+          context, buildReaderView(spine, serverState), spine, serverState);
     }
-    return _buildReaderView(spine, serverState);
+    return buildReaderView(spine, serverState);
   }
 
-  Widget _buildReaderView(List<Link> spine, ServerStarted serverState);
+  Widget buildReaderView(List<Link> spine, ServerStarted serverState);
 
   Widget buildProgressIndicatorOld(BuildContext context) => Center(
         child: CircularProgressIndicator(
