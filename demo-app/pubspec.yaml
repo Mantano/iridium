@@ -29,14 +29,14 @@ dependencies:
   #  flutter_icons: ^1.1.0
   flutter_font_icons: ^2.2.4
   xml2json: ^5.3.2
-  fluttertoast: ^8.0.8
+  fluttertoast: ^8.0.9
   cached_network_image: ^3.2.0
   dartx: ^1.0.0
-  uuid: ^3.0.5
+  uuid: ^3.0.6
   objectdb: ^1.2.1+1
   path_provider: ^2.0.9
   dio: ^4.0.4
-  permission_handler: ^8.3.0
+  permission_handler: ^9.2.0
   google_fonts: ^2.3.1
   flutter_spinkit: ^5.1.0
   idb_shim: ^2.0.1
@@ -44,7 +44,7 @@ dependencies:
   sqflite_common_ffi: ^2.1.0+2
   flutter_fimber: ^0.6.5
   fimber: ^0.6.5
-  bloc: ^8.0.2
+  bloc: ^8.0.3
   flutter_bloc: ^8.0.1
   flutter_inappwebview: ^5.3.2
   json_theme: ^3.3.1

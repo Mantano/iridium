@@ -17,17 +17,30 @@ abstract class Predicate<T> {
         .add(ConditionPredicate(ConditionType.isEqualTo, field, value));
   }
 
+  void addContainsCondition(String field, Object value) {
+    conditionsPredicate
+        .add(ConditionPredicate(ConditionType.contains, field, value));
+  }
+
   void addGreaterThanCondition(String field, Object value) {
     conditionsPredicate
         .add(ConditionPredicate(ConditionType.isGreaterThan, field, value));
   }
 
-  void addIdInCondition(String field, List<Object> value) {
-    _addInArrayCondition(field, value, ConditionType.whereIn);
+  void addArrayContainsCondition(String field, String value) {
+    conditionsPredicate
+        .add(ConditionPredicate(ConditionType.arrayContains, field, value));
   }
 
-  void addArrayContainsAnyCondition(String field, List<Object> value) {
-    _addInArrayCondition(field, value, ConditionType.arrayContainsAny);
+  void addValueInCondition(String field, List<Object> values) {
+    //Cette requête renvoie document dans lequel le field est = a l'une des valeurs.
+    _addInArrayCondition(field, values, ConditionType.whereIn);
+  }
+
+  void addArrayContainsAnyCondition(String field, List<Object> values) {
+    //renvoie tous les documents dont field est un tableau qui contient EXACTEMENT
+    // l'un des éléments présent dans value (adapté pour rehcerhce un doc par l'un des metadata de la liste value)
+    _addInArrayCondition(field, values, ConditionType.arrayContainsAny);
   }
 
   void _addInArrayCondition(
@@ -52,11 +65,14 @@ class AcceptAllPredicate<T> implements Predicate<T> {
   void addEqualsCondition(String field, Object value) {}
 
   @override
+  void addContainsCondition(String field, Object value) {}
+
+  @override
   void _addInArrayCondition(
       String field, List<Object> value, ConditionType conditionType) {}
 
   @override
-  void addIdInCondition(String field, List<Object> value) {}
+  void addValueInCondition(String field, List<Object> value) {}
 
   @override
   List<ConditionPredicate> get conditionsPredicate => [];
@@ -72,4 +88,7 @@ class AcceptAllPredicate<T> implements Predicate<T> {
 
   @override
   void addArrayContainsAnyCondition(String field, List<Object> value) {}
+
+  @override
+  void addArrayContainsCondition(String field, String value) {}
 }
