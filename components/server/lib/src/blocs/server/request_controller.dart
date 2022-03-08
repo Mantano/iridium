@@ -21,6 +21,8 @@ class RequestController {
   /// If the [request] is not handled by any [handlers], it will send back a
   /// [HttpStatus.notFound] error.
   void onRequest(int requestId, HttpRequest request) async {
+    Stopwatch stopwatch = Stopwatch();
+    stopwatch.start();
     HttpResponse response = request.response;
     String href = Uri.decodeFull(request.uri.toString());
     if (href.startsWith("/")) {
@@ -28,13 +30,8 @@ class RequestController {
     }
 
     try {
-      Stopwatch stopwatch = Stopwatch();
-      stopwatch.start();
       for (RequestHandler handler in handlers) {
         if (await handler.handle(requestId, request, href)) {
-          stopwatch.stop();
-          Fimber.d(
-              "========= REQUEST HREF: $href, time: ${stopwatch.elapsedMilliseconds}ms");
           return;
         }
       }
@@ -48,6 +45,8 @@ class RequestController {
     } finally {
       await response.flush();
       await response.close();
+      Fimber.d(
+          "========= onRequest, HREF: $href, TOTAL TIME AFTER RESPONSE FLUSH: ${stopwatch.elapsedMilliseconds}ms");
     }
   }
 }

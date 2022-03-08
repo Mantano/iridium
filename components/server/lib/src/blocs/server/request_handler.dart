@@ -24,6 +24,10 @@ abstract class RequestHandler {
   static const String _cacheControlValue =
       "no-transform,public,max-age=3000,s-maxage=9000";
 
+  Future init() async {}
+
+  void dispose() {}
+
   /// This method should handle the requests if the implementation supports the
   /// resource demanded.
   ///
@@ -47,8 +51,18 @@ abstract class RequestHandler {
   ///
   /// A [defaultValue] may be provided if no param exists or if the parsing as
   /// [int] fails.
-  int getParamAsInt(HttpRequest request, String name, {int defaultValue = 0}) {
+  static int getParamAsInt(HttpRequest request, String name,
+      {int defaultValue = 0}) {
     String? valueStr = request.uri.queryParameters[name];
+    return (valueStr != null)
+        ? int.tryParse(valueStr) ?? defaultValue
+        : defaultValue;
+  }
+
+  static int getParamAsIntFromMap(
+      Map<String, String> queryParameters, String name,
+      {int defaultValue = 0}) {
+    String? valueStr = queryParameters[name];
     return (valueStr != null)
         ? int.tryParse(valueStr) ?? defaultValue
         : defaultValue;

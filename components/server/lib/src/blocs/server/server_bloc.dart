@@ -39,6 +39,9 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
       HttpServer? server = await _initServer();
       if (server != null) {
         _server = server;
+        for (RequestHandler handler in event.handlers) {
+          await handler.init();
+        }
         _requestController = RequestController(event.handlers);
         Fimber.d("serverPort: ${server.port}, ${server.address.host}");
         _addressSubject.add("http://${server.address.address}:${server.port}");
@@ -74,6 +77,11 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   Future<void> _onShutdownServer(
       ShutdownServer event, Emitter<ServerState> emit) async {
     if (state is ServerStarted) {
+      if (_requestController != null) {
+        for (RequestHandler handler in _requestController!.handlers) {
+          handler.dispose();
+        }
+      }
       await _server?.close(force: true);
       _server = null;
       _addressSubject.add("");
