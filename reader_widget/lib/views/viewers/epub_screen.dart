@@ -24,8 +24,6 @@ class EpubScreen extends BookScreen {
   const EpubScreen({Key? key, required FileAsset asset, this.location, this.settings, this.theme})
       : super(key: key, asset: asset);
 
-  factory EpubScreen.fromPath({Key? key, required String filePath, String? location}) {
-    return EpubScreen(key: key, asset: FileAsset(File(filePath)), location: location);
   factory EpubScreen.fromPath({Key? key, required String filePath, String? location, String? settings, String? theme}) {
     Map<String,dynamic>? decodedTheme;
     try {
@@ -71,9 +69,6 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
 
   }
 
-
-  @override
-  Future<String?> get openLocation async => widget.location;
 
   @override
   Future<String?> get openLocation async => widget.location;
