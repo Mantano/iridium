@@ -142,8 +142,10 @@ class MediaType {
       MediaType._(type: "video", subtype: "mov", fileExtension: "mov");
   static const MediaType ncx = MediaType._(
       type: "application", subtype: "x-dtbncx+xml", fileExtension: "ncx");
-  static const MediaType ogg =
+  static const MediaType oga =
       MediaType._(type: "application", subtype: "ogg", fileExtension: "oga");
+  static const MediaType ogg =
+      MediaType._(type: "application", subtype: "ogg", fileExtension: "ogg");
   static const MediaType ogv =
       MediaType._(type: "video", subtype: "ogg", fileExtension: "ogv");
   static const MediaType opds1 = MediaType._(
@@ -248,6 +250,9 @@ class MediaType {
   static const MediaType zip =
       MediaType._(type: "application", subtype: "zip", fileExtension: "zip");
 
+  static const MediaType waveform =
+      MediaType._(type: "image", subtype: "png", fileExtension: "wave");
+
   static final List<MediaType> _values = [
     aac,
     acsm,
@@ -278,6 +283,7 @@ class MediaType {
     mp4,
     mpeg,
     ncx,
+    oga,
     ogg,
     ogv,
     opds1,
@@ -499,10 +505,10 @@ class MediaType {
   bool get isHtml => matchesAny([html, xhtml]);
 
   /// Returns whether this media type is of a bitmap image, so excluding vectorial formats.
-  bool get isBitmap => matchesAny([bmp, gif, jpeg, png, tiff, webp]);
+  bool get isBitmap => matchesAny([bmp, gif, jpeg, png, tiff, webp, waveform]);
 
   /// Returns whether this media type is of an audio clip.
-  bool get isAudio => type == "audio";
+  bool get isAudio => type == "audio" || matchesAny([ogg, oga]);
 
   /// Returns whether this media type is of a video clip.
   bool get isVideo => type == "video";
