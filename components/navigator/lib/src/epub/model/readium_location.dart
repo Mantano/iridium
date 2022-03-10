@@ -23,7 +23,7 @@ class ReadiumLocation {
     String? location, {
     bool debug = false,
   }) {
-    print('this is the location: $location');
+    // print('this is the location: $location');
     String idref = "";
     String contentCFI = "";
     String elementId = "";

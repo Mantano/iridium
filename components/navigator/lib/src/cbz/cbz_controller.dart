@@ -36,7 +36,7 @@ class CbzController extends PublicationController {
 
   PageController get pageController => _pageController!;
 
-  @override
+  @overrideReaderAnnotation
   void jumpToPage(int page) => _pageController?.jumpToPage(page);
 
   @override

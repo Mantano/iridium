@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -16,11 +17,21 @@ import 'package:mno_streamer/parser.dart';
 
 class EpubScreen extends BookScreen {
   final String? location;
-  const EpubScreen({Key? key, required FileAsset asset, this.location})
+  final int? settings;
+  final Map<String,dynamic>? theme;
+
+  const EpubScreen({Key? key, required FileAsset asset, this.location, this.settings, this.theme})
       : super(key: key, asset: asset);
 
-  factory EpubScreen.fromPath({Key? key, required String filePath, String? location}) {
-    return EpubScreen(key: key, asset: FileAsset(File(filePath)), location: location);
+  factory EpubScreen.fromPath({Key? key, required String filePath, String? location, String? settings, String? theme}) {
+    Map<String,dynamic>? decodedTheme;
+    try {
+      decodedTheme = json.decode(theme!);
+    }
+    catch (e){
+      debugPrint('failure to decode theme: $e');
+    }
+    return EpubScreen(key: key, asset: FileAsset(File(filePath)), location: location, settings: int.tryParse(settings ?? '100'), theme: decodedTheme,);
   }
 
   @override
@@ -34,9 +45,27 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   @override
   void initState() {
     super.initState();
-    _viewerSettingsBloc = ViewerSettingsBloc(EpubReaderState("", 100));
-    _readerThemeBloc = ReaderThemeBloc(ReaderThemeConfig.defaultTheme);
+    _viewerSettingsBloc = ViewerSettingsBloc(EpubReaderState("", widget.settings ?? 100));
+    debugPrint(widget.theme.toString());
+    _readerThemeBloc = ReaderThemeBloc(widget.theme!=null ? ReaderThemeConfig.fromJson(widget.theme!) : ReaderThemeConfig.defaultTheme);
   }
+
+  @override
+  Future<bool> onWillPop() async {
+    try {
+      Navigator.pop(context, {
+        'location': readerContext.paginationInfo!.location.json,
+        'settings': _viewerSettingsBloc.viewerSettings.fontSize.toString(),
+        'theme': json.encode(_readerThemeBloc.currentTheme.toJson()),
+      });
+    } catch (e) {
+      // perhaps a snackbar notification can be added to indicate that there was a problem saving last location and settings
+      debugPrint('error returning location and settings');
+    }
+    return true;
+
+  }
+
 
   @override
   Future<String?> get openLocation async => widget.location;
