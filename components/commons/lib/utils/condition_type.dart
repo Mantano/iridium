@@ -7,11 +7,11 @@ class ConditionType {
           ConditionType._(0, "isGreaterThan", 1),
       isLessThan = ConditionType._(1, "isLessThan", 1),
       isEqualTo = ConditionType._(2, "isEqualTo", 1),
-      contains = ConditionType._(6, "whereGreaterThanOrEqualTo", 1),
-      arrayContainsAny = ConditionType._(3, "arrayContainsAny", 10),
-      arrayContains = ConditionType._(3, "arrayContains", 10),
-      whereIn = ConditionType._(4, "whereIn", 10),
-      whereNotIn = ConditionType._(5, "whereNotIn", 10);
+      contains = ConditionType._(4, "whereGreaterThanOrEqualTo", 1),
+      arrayContainsAny = ConditionType._(4, "arrayContainsAny", 10),
+      arrayContains = ConditionType._(5, "arrayContains", 10),
+      whereIn = ConditionType._(6, "whereIn", 10),
+      whereNotIn = ConditionType._(7, "whereNotIn", 10);
 
   static const List<ConditionType> _values = [
     isGreaterThan,
@@ -21,6 +21,7 @@ class ConditionType {
 
   final int id;
   final String name;
+
   // FOLLOWING Firestore Documentation https://firebase.google.com/docs/firestore/query-data/queries
   final int maxListItems;
 
