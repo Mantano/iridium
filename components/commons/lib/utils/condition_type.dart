@@ -4,14 +4,14 @@
 
 class ConditionType {
   static const ConditionType isGreaterThan =
-          ConditionType._(0, "isGreaterThan", 1),
-      isLessThan = ConditionType._(1, "isLessThan", 1),
-      isEqualTo = ConditionType._(2, "isEqualTo", 1),
-      contains = ConditionType._(4, "whereGreaterThanOrEqualTo", 1),
-      arrayContainsAny = ConditionType._(4, "arrayContainsAny", 10),
-      arrayContains = ConditionType._(5, "arrayContains", 10),
-      whereIn = ConditionType._(6, "whereIn", 10),
-      whereNotIn = ConditionType._(7, "whereNotIn", 10);
+          ConditionType._(0, "isGreaterThan", 1, true),
+      isLessThan = ConditionType._(1, "isLessThan", 1, true),
+      isEqualTo = ConditionType._(2, "isEqualTo", 1, false),
+      contains = ConditionType._(3, "isEqualTo", 1, true),
+      arrayContainsAny = ConditionType._(4, "arrayContainsAny", 10, false),
+      arrayContains = ConditionType._(5, "arrayContains", 10, false),
+      whereIn = ConditionType._(6, "whereIn", 10, false),
+      whereNotIn = ConditionType._(7, "whereNotIn", 10, true);
 
   static const List<ConditionType> _values = [
     isGreaterThan,
@@ -24,8 +24,10 @@ class ConditionType {
 
   // FOLLOWING Firestore Documentation https://firebase.google.com/docs/firestore/query-data/queries
   final int maxListItems;
+  final bool inequalityOperator;
 
-  const ConditionType._(this.id, this.name, this.maxListItems);
+  const ConditionType._(
+      this.id, this.name, this.maxListItems, this.inequalityOperator);
 
   static ConditionType from(int id) =>
       _values.firstWhere((type) => type.id == id);
