@@ -5,7 +5,7 @@ import 'package:dfunc/dfunc.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
 import 'package:test/test.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 import 'package:xml/xml.dart';
 
 Future<Manifest> parsePackageDocument(String resource,

@@ -14,7 +14,7 @@ import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/mediatype/mediatype.dart';
 import 'package:mno_shared/src/util/archive/archive.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 /// Provides access to entries of an archive.
 class ArchiveFetcher extends Fetcher {
