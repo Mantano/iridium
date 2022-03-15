@@ -28,7 +28,7 @@ void main() {
 
 class _HelloWorldRequestHandler extends RequestHandler {
   @override
-  Future<bool> handle(int requestId, HttpRequest request, String href) async {
+  Future<bool> handle(int requestId, Request request, String href) async {
     await sendData(
       request,
       data: "Hello world".codeUnits,
