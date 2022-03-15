@@ -37,7 +37,7 @@ abstract class PublicationController {
     this.streamerFuture,
     this.readerAnnotationRepository,
     this.handlersProvider,
-  )   : serverBloc = ServerBloc(startHttpServer: !Platform.isAndroid),
+  )   : serverBloc = ServerBloc(startHttpServer: true),
         currentSpineItemBloc = CurrentSpineItemBloc();
 
   void init() {
