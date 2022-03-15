@@ -69,7 +69,7 @@ class _SettingsRowState<T extends ValueSettings> extends State<SettingsRow<T>> {
                 padding: EdgeInsets.all(8.0),
                 child: ImageIcon(
                   AssetImage(
-                    'assets/images/icon_minus.png',
+                    'packages/iridium_reader_widget/assets/images/icon_minus.png',
                   ),
                 ),
               ),
@@ -92,7 +92,7 @@ class _SettingsRowState<T extends ValueSettings> extends State<SettingsRow<T>> {
                 padding: EdgeInsets.all(8.0),
                 child: ImageIcon(
                   AssetImage(
-                    'assets/images/icon_plus.png',
+                    'packages/iridium_reader_widget/assets/images/icon_plus.png',
                   ),
                 ),
               ),

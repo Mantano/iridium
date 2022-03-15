@@ -54,8 +54,8 @@ dependency_overrides:
 
 dev_dependencies:
   flutter_lints: ^1.0.4
-  flutter_test:
-    sdk: flutter
+#  flutter_test:
+#    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,6 +66,8 @@ flutter:
   # To add assets to your package, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/fonts/
+#    - assets/images/icon_menu.png
 
   #
   # For details regarding assets in packages, see

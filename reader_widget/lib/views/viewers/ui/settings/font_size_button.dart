@@ -22,8 +22,8 @@ class FontSizeButton extends StatelessWidget {
           icon: ImageIcon(
             AssetImage(
               (increase)
-                  ? 'assets/images/icon_font_increase.png'
-                  : 'assets/images/icon_font_decrease.png',
+                  ? 'packages/iridium_reader_widget/assets/images/icon_font_increase.png'
+                  : 'packages/iridium_reader_widget/assets/images/icon_font_decrease.png',
             ),
           ),
         ),
