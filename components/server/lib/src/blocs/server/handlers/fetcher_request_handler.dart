@@ -7,7 +7,6 @@ import 'package:mno_server/mno_server.dart';
 import 'package:mno_server/src/blocs/server/html_injector.dart';
 import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:universal_io/io.dart';
 
 /// Serves the resources of a [Publication] [Fetcher] from a [ServerBloc].
 class FetcherRequestHandler extends RequestHandler {
@@ -24,7 +23,7 @@ class FetcherRequestHandler extends RequestHandler {
   Fetcher get _fetcher => publication.fetcher;
 
   @override
-  Future<bool> handle(int requestId, HttpRequest request, String href) async {
+  Future<bool> handle(int requestId, Request request, String href) async {
     Link? link = publication.linkWithHref(href);
     if (link == null) {
       return false;

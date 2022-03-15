@@ -13,6 +13,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
+import 'package:mno_server/mno_server.dart';
+import 'package:mno_server/src/blocs/server/handlers/android/android_request.dart';
+import 'package:mno_server/src/blocs/server/handlers/android/android_response.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:webview_flutter/platform_interface.dart';
@@ -38,6 +41,7 @@ class WebViewScreen extends StatefulWidget {
 
 class WebViewScreenState extends State<WebViewScreen> {
   JsApi? _jsApi;
+  late ServerBloc _serverBloc;
   late ReaderThemeBloc _readerThemeBloc;
   late ViewerSettingsBloc _viewerSettingsBloc;
   late CurrentSpineItemBloc _currentSpineItemBloc;
@@ -81,6 +85,7 @@ class WebViewScreenState extends State<WebViewScreen> {
       readerContext: readerContext,
       linkPagination: linkPagination,
     );
+    _serverBloc = BlocProvider.of<ServerBloc>(context);
     _readerThemeBloc = BlocProvider.of<ReaderThemeBloc>(context);
     _viewerSettingsBloc = BlocProvider.of<ViewerSettingsBloc>(context);
     _currentSpineItemBloc = BlocProvider.of<CurrentSpineItemBloc>(context);
@@ -126,13 +131,27 @@ class WebViewScreenState extends State<WebViewScreen> {
               url: Uri.parse(
                   '${widget.address}/${link.href.removePrefix("/")}')),
           initialOptions: InAppWebViewGroupOptions(
-            android: AndroidInAppWebViewOptions(useHybridComposition: true),
+            android: AndroidInAppWebViewOptions(
+              useHybridComposition: true,
+              useShouldInterceptRequest: true,
+              safeBrowsingEnabled: false,
+              cacheMode: AndroidCacheMode.LOAD_NO_CACHE,
+            ),
             crossPlatform: InAppWebViewOptions(
               useShouldOverrideUrlLoading: true,
               verticalScrollBarEnabled: false,
               horizontalScrollBarEnabled: false,
             ),
           ),
+          androidShouldInterceptRequest:
+              (controller, WebResourceRequest request) async {
+            if (!_serverBloc.startHttpServer &&
+                request.url.toString().startsWith(_serverBloc.address)) {
+              return _serverBloc
+                  .onRequest(AndroidRequest(request))
+                  .then((androidResponse) => androidResponse.response);
+            }
+          },
           shouldOverrideUrlLoading: (controller, navigationAction) async =>
               NavigationActionPolicy.ALLOW,
           onLoadStop: _onPageFinished,
@@ -142,20 +161,6 @@ class WebViewScreenState extends State<WebViewScreen> {
           onWebViewCreated: _onWebViewCreated,
         )
       : const SizedBox.shrink();
-
-//  @override
-//  bool get wantKeepAlive {
-//    int position = position;
-//    WidgetKeepAliveListener widgetKeepAliveListener = widget._widgetKeepAliveListener;
-//    if (widgetKeepAliveListener != null) {
-//      bool keepAlive = (position - widgetKeepAliveListener.position).abs() < 2;
-//      if (!keepAlive) {
-//        widgetKeepAliveListener.unregister(position);
-//      }
-//      return keepAlive;
-//    }
-//    return true;
-//  }
 
   void refreshPage() {
 //    Fimber.d("refreshPage[${position}]: ${spineItem.href}");
