@@ -9,10 +9,16 @@ class ConditionPredicate {
   final String field;
   final Object value;
 
+  static String fullTextField = "keywords";
+
   ConditionPredicate(this.type, this.field, this.value);
+
+  bool get isFullTextField => field == fullTextField;
 
   bool get mustSplit =>
       type.maxListItems > 1 && (value as Iterable).length > type.maxListItems;
+
+  String get orderByField => isFullTextField ? "title" : field;
 
   @override
   String toString() =>
