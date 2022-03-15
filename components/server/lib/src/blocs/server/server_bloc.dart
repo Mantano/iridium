@@ -10,7 +10,7 @@ import 'package:mno_server/mno_server.dart';
 import 'package:mno_server/src/blocs/server/handlers/http/http_request.dart';
 import 'package:mno_server/src/blocs/server/request_controller.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:universal_io/io.dart' hide Link;
+import 'package:universal_io/io.dart' as io hide Link;
 
 /// A ServerBloc is used to start/stop a server instance.
 ///
