@@ -93,7 +93,7 @@ class _InjectHtmlResource extends TransformingResource {
         '/xpub-js/pagination.css',
         '/xpub-shared-js/polyfill.js',
         '/xpub-shared-js/underscore-min.js',
-        '/xpub-shared-js/jquery-2.1.0.min.js',
+        '/xpub-shared-js/jquery-3.6.0.min.js',
         '/xpub-shared-js/jquery.mobile-1.4.5.min.js',
         '/xpub-shared-js/jquerymobile-swipeupdown.js',
         '/xpub-shared-js/readium-cfi-js.js',
