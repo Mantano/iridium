@@ -13,7 +13,6 @@ import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/epub.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
-import 'package:universal_io/io.dart';
 
 abstract class PublicationController {
   final Function onServerClosed;
@@ -36,8 +35,9 @@ abstract class PublicationController {
     this.fileAsset,
     this.streamerFuture,
     this.readerAnnotationRepository,
-    this.handlersProvider,
-  )   : serverBloc = ServerBloc(startHttpServer: true),
+    this.handlersProvider, [
+    bool startHttpServer = true,
+  ])  : serverBloc = ServerBloc(startHttpServer: startHttpServer),
         currentSpineItemBloc = CurrentSpineItemBloc();
 
   void init() {
