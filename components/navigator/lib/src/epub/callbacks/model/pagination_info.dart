@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:mno_shared/publication.dart';
 
 class PaginationInfo {
@@ -36,6 +37,7 @@ class PaginationInfo {
 
   static PaginationInfo fromJson(
       String jsonString, LinkPagination linkPagination) {
+    // debugPrint('\npaginating: \n$jsonString');
     Map<String, dynamic> json = const JsonCodec().decode(jsonString);
     SpineItem spineItem = _spineItemFromJson(json);
     Location location = _locationFromJson(json);

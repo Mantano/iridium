@@ -75,7 +75,7 @@ abstract class BookScreenState<T extends BookScreen,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
         if (snapshot.data!) {
           return WillPopScope(
-            onWillPop: _onWillPop,
+            onWillPop: onWillPop,
             child: Scaffold(
               body: createPublicationNavigator(
                 waitingScreenBuilder: buildWaitingScreen,
@@ -90,7 +90,7 @@ abstract class BookScreenState<T extends BookScreen,
         return const SizedBox.shrink();
       });
 
-  Future<bool> _onWillPop() async => true;
+  Future<bool> onWillPop() async => true;
 
   Widget buildWaitingScreen(BuildContext context) {
     //   return Center(

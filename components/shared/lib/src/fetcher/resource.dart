@@ -12,7 +12,7 @@ import 'package:mno_commons/utils/try.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_shared/src/fetcher/resource_exception.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 import 'package:xml/xml.dart';
 
 class ResourceTry<SuccessT> extends Try<SuccessT, ResourceException> {

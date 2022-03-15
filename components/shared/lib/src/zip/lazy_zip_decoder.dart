@@ -9,7 +9,7 @@ import 'package:mno_shared/src/zip/lazy_archive_file.dart';
 import 'package:mno_shared/src/zip/lazy_zip_directory.dart';
 import 'package:mno_shared/src/zip/lazy_zip_file.dart';
 import 'package:mno_shared/src/zip/lazy_zip_file_header.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 /// Decode a zip formatted buffer into an [Archive] object.
 class LazyZipDecoder {

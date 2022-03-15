@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:mno_shared/publication.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 class LcpException extends UserException {
   final String? message;
