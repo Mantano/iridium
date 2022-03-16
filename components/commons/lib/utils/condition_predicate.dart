@@ -15,8 +15,13 @@ class ConditionPredicate {
 
   bool get isFullTextField => field == fullTextField;
 
-  bool get mustSplit =>
-      type.maxListItems > 1 && (value as Iterable).length > type.maxListItems;
+  bool get mustSplit {
+    if (type.maxListItems == 1) {
+      return false;
+    }
+    return (value is Iterable) &&
+        (value as Iterable).length > type.maxListItems;
+  }
 
   String get orderByField => isFullTextField ? "title" : field;
 

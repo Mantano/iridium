@@ -13,7 +13,6 @@ import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/epub.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
-import 'package:universal_io/io.dart';
 
 abstract class PublicationController {
   final Function onServerClosed;

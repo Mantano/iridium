@@ -11,7 +11,8 @@ class ConditionType {
       arrayContainsAny = ConditionType._(4, "arrayContainsAny", 10, false),
       arrayContains = ConditionType._(5, "arrayContains", 10, false),
       whereIn = ConditionType._(6, "whereIn", 10, false),
-      whereNotIn = ConditionType._(7, "whereNotIn", 10, true);
+      whereNotIn = ConditionType._(7, "whereNotIn", 10, true),
+      arrayContainsAll = ConditionType._(8, "arrayContainsAll", 1, false);
 
   static const List<ConditionType> _values = [
     isGreaterThan,

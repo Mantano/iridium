@@ -43,6 +43,13 @@ abstract class Predicate<T> {
     _addInArrayCondition(field, values, ConditionType.arrayContainsAny);
   }
 
+  void addArrayContainsAllCondition(String field, List<Object> values) {
+    for (Object value in values) {
+      conditionsPredicate
+          .add(ConditionPredicate(ConditionType.arrayContains, field, value));
+    }
+  }
+
   void _addInArrayCondition(
       String field, List<Object> value, ConditionType conditionType) {
     conditionsPredicate.add(ConditionPredicate(conditionType, field, value));
@@ -91,4 +98,7 @@ class AcceptAllPredicate<T> implements Predicate<T> {
 
   @override
   void addArrayContainsCondition(String field, String value) {}
+
+  @override
+  void addArrayContainsAllCondition(String field, List<Object> values) {}
 }

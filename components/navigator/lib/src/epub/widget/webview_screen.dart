@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+
 // import 'dart:io';
 
 import 'package:dartx/dartx.dart';
@@ -10,14 +11,13 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_server/src/blocs/server/handlers/android/android_request.dart';
-import 'package:mno_server/src/blocs/server/handlers/android/android_response.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:webview_flutter/platform_interface.dart';
 
 class WebViewScreen extends StatefulWidget {
