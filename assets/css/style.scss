@@ -29,16 +29,24 @@ $hr-border-color: #eff0f1;
 
 $header-heading-color: #fff;
 
-$header-bg-color: #c62641;
+// Prussian red: $header-bg-color: #c62641;
+$header-bg-color: #1a68d3;
 //$header-bg-color-secondary: #5DAED3;
 
 .page-header {
-  color: $header-heading-color;
-  text-align: left;
   background-color: $header-bg-color;
-  background-image: none;
-//  background-image: linear-gradient(285deg, $header-bg-color-secondary 0%, $header-bg-color 100%);
+  background-image: radial-gradient(ellipse at bottom,$header-bg-color 5%,transparent 60%),linear-gradient(136deg,transparent,#71c7ee 290%),linear-gradient(115deg,#9d9af1,transparent 40%),linear-gradient(180deg,transparent 0,#1a68d3 70%),radial-gradient(ellipse at -70% -180%,transparent 80%,#71c7ee 0),radial-gradient(ellipse at bottom,#1a68d3 40%,transparent 80%),radial-gradient(ellipse at 5% 340%,transparent 80%,#bfc2f4 0);
+  overflow: hidden;
+  padding-bottom: var(--gutter-lg);
+  padding-top: calc(var(--ui-header-height) + 80px);
 }
+//.page-header {
+//  color: $header-heading-color;
+//  text-align: left;
+//  background-color: $header-bg-color;
+//  background-image: none;
+////  background-image: linear-gradient(285deg, $header-bg-color-secondary 0%, $header-bg-color 100%);
+//}
 
 .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 {
   color: #333333;
