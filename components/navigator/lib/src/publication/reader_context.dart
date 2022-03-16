@@ -101,6 +101,8 @@ class ReaderContext {
             publication, _flattenedTableOfContents);
     _toolbarStreamController.add(toolbarVisibility);
     currentSpineItem = publication?.readingOrder.first;
+    readerCommand = GoToLocationCommand.readiumLocation(readiumLocation);
+    // execute(GoToLocationCommand.readiumLocation(readiumLocation));
     readingProgression = publication?.metadata.effectiveReadingProgression;
   }
 
@@ -146,6 +148,8 @@ class ReaderContext {
   }
 
   void notifyCurrentLocation(PaginationInfo paginationInfo, Link spineItem) {
+    // currentSpineItemContext!.jsApi!.openPage(OpenPageRequest.fromIdrefAndCfi(
+    //     readiumLocation.idref, readiumLocation.contentCFI));
     this.paginationInfo = paginationInfo;
     this.currentSpineItem = spineItem;
     _currentLocationController.add(paginationInfo);

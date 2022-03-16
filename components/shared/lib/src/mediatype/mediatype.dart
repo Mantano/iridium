@@ -10,7 +10,7 @@ import 'package:fimber/fimber.dart';
 import 'package:mno_commons/utils/take.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 /// Represents a document format, identified by a unique RFC 6838 media type.
 ///

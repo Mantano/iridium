@@ -32,6 +32,7 @@ class CbzController extends PublicationController {
           streamerFuture,
           readerAnnotationRepository,
           handlersProvider,
+          true,
         );
 
   PageController get pageController => _pageController!;

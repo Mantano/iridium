@@ -32,6 +32,7 @@ class EpubController extends PublicationController {
           streamerFuture,
           readerAnnotationRepository,
           handlersProvider,
+          true,
         );
 
   PreloadPageController get pageController => _pageController!;

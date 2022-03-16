@@ -34,7 +34,7 @@ class AlignmentButton extends StatelessWidget {
               padding: const EdgeInsets.all(12.0),
               child: ImageIcon(
                 AssetImage(
-                  'assets/images/icon_${textAlign.name}.png',
+                  'packages/iridium_reader_widget/assets/images/icon_${textAlign.name}.png',
                 ),
               ),
             ),

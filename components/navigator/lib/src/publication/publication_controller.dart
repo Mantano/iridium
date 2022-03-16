@@ -35,8 +35,9 @@ abstract class PublicationController {
     this.fileAsset,
     this.streamerFuture,
     this.readerAnnotationRepository,
-    this.handlersProvider,
-  )   : serverBloc = ServerBloc(startHttpServer: true),
+    this.handlersProvider, [
+    bool startHttpServer = true,
+  ])  : serverBloc = ServerBloc(startHttpServer: startHttpServer),
         currentSpineItemBloc = CurrentSpineItemBloc();
 
   void init() {

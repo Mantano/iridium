@@ -151,6 +151,7 @@ class WebViewScreenState extends State<WebViewScreen> {
                   .onRequest(AndroidRequest(request))
                   .then((androidResponse) => androidResponse.response);
             }
+            return null;
           },
           shouldOverrideUrlLoading: (controller, navigationAction) async =>
               NavigationActionPolicy.ALLOW,

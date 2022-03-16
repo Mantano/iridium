@@ -16,7 +16,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
