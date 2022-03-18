@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:mno_shared/publication.dart';
 
 class PaginationInfo {
