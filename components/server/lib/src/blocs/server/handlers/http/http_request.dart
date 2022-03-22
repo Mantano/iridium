@@ -1,5 +1,4 @@
 import 'package:mno_server/mno_server.dart';
-import 'package:mno_server/src/blocs/server/handlers/http/http_response.dart';
 import 'package:universal_io/io.dart' as io;
 
 class HttpRequest extends Request<HttpResponse> {

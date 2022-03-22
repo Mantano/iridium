@@ -38,10 +38,6 @@ class LauncherUIChannels extends JavascriptChannels {
           name: "LauncherUIOpenSpineItemForTts",
           onMessageReceived: _openSpineItemForTts,
         ),
-        JavascriptChannel(
-          name: 'LauncherUILog',
-          onMessageReceived: _flutterLog,
-        ),
       ];
 
   void _onPaginationChanged(JavascriptMessage message) {
@@ -95,9 +91,5 @@ class LauncherUIChannels extends JavascriptChannels {
     OpenPageRequest request =
         OpenPageRequest.fromIdrefAndLastPageWithTts(idref, lastPage: lastPage);
     Fimber.d("openSpineItemForTts, request: $request");
-  }
-
-  void _flutterLog(JavascriptMessage message) {
-    Fimber.d(message.message);
   }
 }

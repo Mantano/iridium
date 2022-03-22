@@ -16,7 +16,6 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_server/mno_server.dart';
-import 'package:mno_server/src/blocs/server/handlers/android/android_request.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:webview_flutter/platform_interface.dart';
 
@@ -143,8 +142,13 @@ class WebViewScreenState extends State<WebViewScreen> {
               horizontalScrollBarEnabled: false,
             ),
           ),
-          androidShouldInterceptRequest:
-              (controller, WebResourceRequest request) async {
+          onConsoleMessage: (InAppWebViewController controller,
+              ConsoleMessage consoleMessage) {
+            Fimber.d(
+                "WebView[${consoleMessage.messageLevel}]: ${consoleMessage.message}");
+          },
+          androidShouldInterceptRequest: (InAppWebViewController controller,
+              WebResourceRequest request) async {
             if (!_serverBloc.startHttpServer &&
                 request.url.toString().startsWith(_serverBloc.address)) {
               return _serverBloc

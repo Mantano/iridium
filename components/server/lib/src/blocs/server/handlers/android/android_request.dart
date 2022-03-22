@@ -1,6 +1,5 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_server/mno_server.dart';
-import 'package:mno_server/src/blocs/server/handlers/android/android_response.dart';
 
 class AndroidRequest extends Request<AndroidResponse> {
   WebResourceRequest request;
