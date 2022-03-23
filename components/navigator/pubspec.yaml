@@ -40,6 +40,14 @@ dev_dependencies:
 flutter:
 
   assets:
+    - assets/readium/divina/
+    - assets/readium/fonts/
+    - assets/readium/readium-css/
+    - assets/readium/readium-css/cjk-horizontal/
+    - assets/readium/readium-css/cjk-vertical/
+    - assets/readium/readium-css/fonts/
+    - assets/readium/readium-css/rtl/
+    - assets/readium/scripts/
     - assets/xpub-assets/
     - assets/xpub-shared-js/
     - assets/xpub-js/
