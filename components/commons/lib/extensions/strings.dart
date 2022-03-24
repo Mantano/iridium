@@ -17,6 +17,9 @@ extension StringExtension on String {
   String? ifBlank(String? Function() defaultValue) =>
       isBlank ? defaultValue() : this;
 
+  String insert(int index, String value) =>
+      substring(0, index) + value + substring(index);
+
   String substringBefore(String? separator) {
     if (isEmpty) {
       return this;

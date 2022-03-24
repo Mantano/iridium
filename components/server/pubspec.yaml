@@ -22,6 +22,8 @@ dependencies:
     path: ../commons
   mno_shared:
     path: ../shared
+  mno_streamer:
+    path: ../streamer
 
 dev_dependencies:
   lints: ^1.0.1
