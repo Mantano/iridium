@@ -4,8 +4,6 @@
 
 import 'dart:async';
 
-// import 'dart:io';
-
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
@@ -14,10 +12,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
+import 'package:mno_navigator/src/epub/callbacks/epub_webview_listener.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:webview_flutter/platform_interface.dart';
 
 class WebViewScreen extends StatefulWidget {
   final WidgetKeepAliveListener widgetKeepAliveListener;
@@ -94,7 +92,8 @@ class WebViewScreenState extends State<WebViewScreen> {
         _spineItemContext,
         _viewerSettingsBloc,
         readerContext.readerAnnotationRepository,
-        webViewHorizontalGestureRecognizer);
+        webViewHorizontalGestureRecognizer,
+        EpubWebViewListener(_spineItemContext, _viewerSettingsBloc));
   }
 
   @override
@@ -225,15 +224,16 @@ class WebViewScreenState extends State<WebViewScreen> {
   void initJsHandlers(InAppWebViewController webViewController) {
     // Fimber.d("_onWebViewCreated: $webViewController");
     _controller = webViewController;
-    _jsApi = JsApi(position,
-        (javascript) => _controller?.evaluateJavascript(source: javascript));
+    _jsApi = JsApi(
+        position,
+        (javascript) =>
+            webViewController.evaluateJavascript(source: javascript));
     _spineItemContext.jsApi = _jsApi;
-    for (JavascriptChannel channel in epubCallbacks.channels) {
-      // Fimber.d("========== Adding Handler: ${channel.name}");
+    for (MapEntry<String, JavaScriptHandlerCallback> entry
+        in epubCallbacks.channels.entries) {
+      Fimber.d("========== Adding Handler: ${entry.key}");
       _controller?.addJavaScriptHandler(
-          handlerName: channel.name,
-          callback: (List<dynamic> arguments) => channel
-              .onMessageReceived(JavascriptMessage(arguments[0].toString())));
+          handlerName: entry.key, callback: entry.value);
     }
     epubCallbacks.jsApi = _jsApi!;
     _paginationInfoSubscription =

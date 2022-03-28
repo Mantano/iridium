@@ -84,7 +84,11 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
           bloc: publicationController.serverBloc,
           builder: (BuildContext context, ServerState state) =>
               (state is ServerStarted)
-                  ? _wrapReaderView(spine, state)
+                  ? LayoutBuilder(builder: (context, constraints) {
+                      readerContext.viewportWidth =
+                          constraints.maxWidth.toInt();
+                      return _wrapReaderView(spine, state);
+                    })
                   : widget.waitingScreenBuilder(context)),
     );
   }

@@ -80,7 +80,7 @@ export function handleDecorationClickEvent(event, clickEvent) {
     return false;
   }
 
-  return Android.onDecorationActivated(
+  return Flutter.onDecorationActivated(
     JSON.stringify({
       id: target.item.decoration.id,
       group: target.group,

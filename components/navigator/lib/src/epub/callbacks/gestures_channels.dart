@@ -3,9 +3,9 @@
 // found in the LICENSE file.
 
 import 'package:fimber/fimber.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class GesturesChannels extends JavascriptChannels {
   final SpineItemContext _spineItemContext;
@@ -17,68 +17,63 @@ class GesturesChannels extends JavascriptChannels {
       this.webViewHorizontalGestureRecognizer);
 
   @override
-  List<JavascriptChannel> get channels => [
-        JavascriptChannel(
-          name: "GestureCallbacksOnTap",
-          onMessageReceived: _onTap,
-        ),
-        JavascriptChannel(
-          name: "GestureCallbacksOnSwipeUp",
-          onMessageReceived: _onSwipeUp,
-        ),
-        JavascriptChannel(
-          name: "GestureCallbacksOnSwipeDown",
-          onMessageReceived: _onSwipeDown,
-        ),
-        JavascriptChannel(
-          name: 'GestureCallbacksOnLeftOverlayVisibilityChanged',
-          onMessageReceived: _onLeftOverlayVisibilityChanged,
-        ),
-        JavascriptChannel(
-          name: 'GestureCallbacksOnRightOverlayVisibilityChanged',
-          onMessageReceived: _onRightOverlayVisibilityChanged,
-        ),
-      ];
+  Map<String, JavaScriptHandlerCallback> get channels => {
+        "GestureCallbacksOnTap": _onTap,
+        "GestureCallbacksOnSwipeUp": _onSwipeUp,
+        "GestureCallbacksOnSwipeDown": _onSwipeDown,
+        "GestureCallbacksOnLeftOverlayVisibilityChanged":
+            _onLeftOverlayVisibilityChanged,
+        "GestureCallbacksOnRightOverlayVisibilityChanged":
+            _onRightOverlayVisibilityChanged,
+      };
 
-  void _onTap(JavascriptMessage message) {
-    Fimber.d("onTap: ${message.message}");
-    try {
-      Coord coord = Coord.fromJson(message.message);
-      Fimber.d("onTap, coord: $coord");
-      _spineItemContext.onTap();
-      bool scrollSnapShouldStop =
-          !_spineItemContext.readerContext.toolbarVisibility;
-      Fimber.d(
-          "================ Setting scroll-snap-stop to: ${scrollSnapShouldStop ? "always" : "normal"}");
-      viewerSettingsBloc?.add(ScrollSnapShouldStopEvent(scrollSnapShouldStop));
-    } on Exception catch (e, stacktrace) {
-      Fimber.d("onTap: $e, $stacktrace");
+  void _onTap(List<dynamic> arguments) {
+    Fimber.d("onTap: $arguments");
+    if (arguments.isNotEmpty) {
+      try {
+        Coord coord = Coord.fromJson(arguments.first);
+        Fimber.d("onTap, coord: $coord");
+        _spineItemContext.onTap();
+        bool scrollSnapShouldStop =
+            !_spineItemContext.readerContext.toolbarVisibility;
+        Fimber.d(
+            "================ Setting scroll-snap-stop to: ${scrollSnapShouldStop ? "always" : "normal"}");
+        viewerSettingsBloc
+            ?.add(ScrollSnapShouldStopEvent(scrollSnapShouldStop));
+      } on Exception catch (e, stacktrace) {
+        Fimber.d("onTap: $e, $stacktrace");
+      }
     }
   }
 
-  void _onSwipeUp(JavascriptMessage message) {
+  void _onSwipeUp(List<dynamic> arguments) {
     viewerSettingsBloc?.add(IncrFontSizeEvent());
   }
 
-  void _onSwipeDown(JavascriptMessage message) {
+  void _onSwipeDown(List<dynamic> arguments) {
     viewerSettingsBloc?.add(DecrFontSizeEvent());
   }
 
-  void _onLeftOverlayVisibilityChanged(JavascriptMessage message) {
-    // Fimber.d("================== _onLeftOverlayVisibilityChanged, message: " +
-    //     message.message +
-    //     ", recognizer: $webViewHorizontalGestureRecognizer");
-    bool visibility = message.message.toLowerCase() == 'true' ||
-        message.message.toLowerCase() == '1';
-    webViewHorizontalGestureRecognizer?.setLeftOverlayVisible(visibility);
+  void _onLeftOverlayVisibilityChanged(List<dynamic> arguments) {
+    if (arguments.isNotEmpty) {
+      Fimber.d("================== _onLeftOverlayVisibilityChanged, message: " +
+          arguments.first +
+          ", recognizer: $webViewHorizontalGestureRecognizer");
+      bool visibility = arguments.first.toLowerCase() == 'true' ||
+          arguments.first.toLowerCase() == '1';
+      webViewHorizontalGestureRecognizer?.setLeftOverlayVisible(visibility);
+    }
   }
 
-  void _onRightOverlayVisibilityChanged(JavascriptMessage message) {
-    Fimber.d("================== _onRightOverlayVisibilityChanged, message: " +
-        message.message +
-        ", recognizer: $webViewHorizontalGestureRecognizer");
-    bool visibility = message.message.toLowerCase() == 'true' ||
-        message.message.toLowerCase() == '1';
-    webViewHorizontalGestureRecognizer?.setRightOverlayVisible(visibility);
+  void _onRightOverlayVisibilityChanged(List<dynamic> arguments) {
+    if (arguments.isNotEmpty) {
+      Fimber.d(
+          "================== _onRightOverlayVisibilityChanged, message: " +
+              arguments.first +
+              ", recognizer: $webViewHorizontalGestureRecognizer");
+      bool visibility = arguments.first.toLowerCase() == 'true' ||
+          arguments.first.toLowerCase() == '1';
+      webViewHorizontalGestureRecognizer?.setRightOverlayVisible(visibility);
+    }
   }
 }

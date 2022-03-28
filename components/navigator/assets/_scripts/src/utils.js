@@ -10,7 +10,7 @@ import { TextQuoteAnchor } from "./vendor/hypothesis/anchoring/types";
 window.addEventListener(
   "error",
   function (event) {
-    Android.logError(event.message, event.filename, event.lineno);
+    Flutter.logError(event.message, event.filename, event.lineno);
   },
   false
 );
@@ -70,7 +70,7 @@ function onViewportWidthChanged() {
   //
   // See https://github.com/readium/readium-css/issues/97
   // and https://github.com/readium/r2-navigator-kotlin/issues/146
-  var width = Android.getViewportWidth();
+  var width = Flutter.getViewportWidth();
   pageWidth = width / window.devicePixelRatio;
   setProperty(
     "--RS__viewportWidth",
@@ -111,7 +111,7 @@ export function scrollToId(id) {
 
 // Position must be in the range [0 - 1], 0-100%.
 export function scrollToPosition(position) {
-  //        Android.log("scrollToPosition " + position);
+  //        Flutter.log("scrollToPosition " + position);
   if (position < 0 || position > 1) {
     throw "scrollToPosition() must be given a position from 0.0 to  1.0";
   }
@@ -158,7 +158,7 @@ function scrollToRect(rect) {
 }
 
 export function scrollToStart() {
-  //        Android.log("scrollToStart");
+  //        Flutter.log("scrollToStart");
   if (!isScrollModeEnabled()) {
     document.scrollingElement.scrollLeft = 0;
   } else {
@@ -168,7 +168,7 @@ export function scrollToStart() {
 }
 
 export function scrollToEnd() {
-  //        Android.log("scrollToEnd");
+  //        Flutter.log("scrollToEnd");
   if (!isScrollModeEnabled()) {
     var factor = isRTL() ? -1 : 1;
     document.scrollingElement.scrollLeft = snapOffset(
@@ -199,7 +199,7 @@ export function scrollRight() {
 // Scrolls to the given left offset.
 // Returns false if the page scroll position is already close enough to the given offset.
 function scrollToOffset(offset) {
-  //        Android.log("scrollToOffset " + offset);
+  //        Flutter.log("scrollToOffset " + offset);
   if (isScrollModeEnabled()) {
     throw "Called scrollToOffset() with scroll mode enabled. This can only be used in paginated mode.";
   }
@@ -219,7 +219,7 @@ function snapOffset(offset) {
 
 // Snaps the current offset to the page width.
 function snapCurrentOffset() {
-  //        Android.log("snapCurrentOffset");
+  //        Flutter.log("snapCurrentOffset");
   if (isScrollModeEnabled()) {
     return;
   }
@@ -267,9 +267,9 @@ export function removeProperty(key) {
 
 export function log() {
   var message = Array.prototype.slice.call(arguments).join(" ");
-  Android.log(message);
+  Flutter.log(message);
 }
 
 export function logError(message) {
-  Android.logError(message, "", 0);
+  Flutter.logError(message, "", 0);
 }

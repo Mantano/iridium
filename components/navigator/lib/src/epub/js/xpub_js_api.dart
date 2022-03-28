@@ -12,14 +12,11 @@ import 'package:mno_shared/publication.dart';
 
 class JsApi {
   final int index;
-  final Function _jsLoader;
+  final Future<dynamic> Function(String) _jsLoader;
 
   JsApi(this.index, this._jsLoader);
 
-  void loadJS(String jScript) {
-    // Fimber.d("loadJS[$index]: $jScript");
-    _jsLoader("javascript:(function(){if (xpub) { $jScript }})()");
-  }
+  Future<dynamic> loadJS(String jScript) => _jsLoader(jScript);
 
   void initSpineItem(
       Publication publication,
@@ -104,6 +101,10 @@ class JsApi {
   void gotoPrevPage() => loadJS("xpub.openPagePrev();");
 
   void gotoNextPage() => loadJS("xpub.openPageNext();");
+
+  Future<dynamic> scrollLeft() => loadJS("readium.scrollLeft();");
+
+  Future<dynamic> scrollRight() => loadJS("readium.scrollRight();");
 
   void computeAnnotationsInfo(List<ReaderAnnotation> bookmarkList) {
     for (ReaderAnnotation bookmark in bookmarkList) {

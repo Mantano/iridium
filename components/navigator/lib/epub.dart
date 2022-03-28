@@ -11,6 +11,7 @@ export 'package:mno_navigator/src/epub/callbacks/javascript_channels.dart';
 export 'package:mno_navigator/src/epub/callbacks/launcher_ui_channels.dart';
 export 'package:mno_navigator/src/epub/callbacks/model/coord.dart';
 export 'package:mno_navigator/src/epub/callbacks/model/pagination_info.dart';
+export 'package:mno_navigator/src/epub/callbacks/readium_gestures_channels.dart';
 export 'package:mno_navigator/src/epub/epub_controller.dart';
 export 'package:mno_navigator/src/epub/epub_controller.dart';
 export 'package:mno_navigator/src/epub/js/xpub_js_api.dart';

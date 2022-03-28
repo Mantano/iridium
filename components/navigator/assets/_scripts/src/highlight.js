@@ -312,7 +312,7 @@ function processTouchEvent(win, ev) {
         console.log(foundHighlight.id.includes("R2_ANNOTATION_"));
         if (foundHighlight.id.search("R2_ANNOTATION_") >= 0) {
           if (navigator.userAgent.match(/Android/i)) {
-            Android.highlightAnnotationMarkActivated(foundHighlight.id);
+            Flutter.highlightAnnotationMarkActivated(foundHighlight.id);
           } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
             webkit.messageHandlers.highlightAnnotationMarkActivated.postMessage(
               foundHighlight.id
@@ -320,7 +320,7 @@ function processTouchEvent(win, ev) {
           }
         } else if (foundHighlight.id.search("R2_HIGHLIGHT_") >= 0) {
           if (navigator.userAgent.match(/Android/i)) {
-            Android.highlightActivated(foundHighlight.id);
+            Flutter.highlightActivated(foundHighlight.id);
           } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
             webkit.messageHandlers.highlightActivated.postMessage(
               foundHighlight.id
@@ -470,7 +470,7 @@ function processMouseEvent(win, ev) {
       } else if (window.webkitURL) {
         if (foundHighlight.id.search("R2_ANNOTATION_") >= 0) {
           if (navigator.userAgent.match(/Android/i)) {
-            Android.highlightAnnotationMarkActivated(foundHighlight.id);
+            Flutter.highlightAnnotationMarkActivated(foundHighlight.id);
           } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
             webkit.messageHandlers.highlightAnnotationMarkActivated.postMessage(
               foundHighlight.id
@@ -478,7 +478,7 @@ function processMouseEvent(win, ev) {
           }
         } else if (foundHighlight.id.search("R2_HIGHLIGHT_") >= 0) {
           if (navigator.userAgent.match(/Android/i)) {
-            Android.highlightActivated(foundHighlight.id);
+            Flutter.highlightActivated(foundHighlight.id);
           } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
             webkit.messageHandlers.highlightActivated.postMessage(
               foundHighlight.id

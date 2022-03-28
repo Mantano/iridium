@@ -181,11 +181,11 @@ class _InjectHtmlResource extends TransformingResource {
         "/readium/readium-css/${layout.readiumCSSPath}ReadiumCSS-after.css"));
     endIncludes.add(getHtmlLink("/xpub-js/pagination.css"));
     endIncludes.add(getHtmlScript("/readium/scripts/readium-reflowable.js"));
-    for (String script in defaultJsLinks) {
-      endIncludes.add(getHtmlScript(script));
-    }
-    endIncludes.add(getHtmlScript('/xpub-js/xpub_navigation_reflow_layout.js'));
-    endIncludes.add(getHtmlScript('/xpub-js/Reflowable_Viewport.js'));
+    // for (String script in defaultJsLinks) {
+    //   endIncludes.add(getHtmlScript(script));
+    // }
+    // endIncludes.add(getHtmlScript('/xpub-js/xpub_navigation_reflow_layout.js'));
+    // endIncludes.add(getHtmlScript('/xpub-js/Reflowable_Viewport.js'));
     endIncludes.add(_createGoogleFontsHtml());
 
     customResources?.let((it) {
@@ -300,10 +300,10 @@ class _InjectHtmlResource extends TransformingResource {
     }
     List<String> includes = [];
     includes.add(getHtmlScript("/readium/scripts/readium-fixed.js"));
-    for (String script in defaultJsLinks) {
-      includes.add(getHtmlScript(script));
-    }
-    includes.add(getHtmlScript('/xpub-js/xpub_navigation_fixed_layout.js'));
+    // for (String script in defaultJsLinks) {
+    //   includes.add(getHtmlScript(script));
+    // }
+    // includes.add(getHtmlScript('/xpub-js/xpub_navigation_fixed_layout.js'));
     includes.add(_createGoogleFontsHtml());
     return resourceHtml.insert(endHeadIndex, includes.join());
   }
@@ -358,7 +358,7 @@ class _InjectHtmlResource extends TransformingResource {
         }
 
         return properties;
-      } on Exception catch (e) {
+      } on Exception {
         return null;
       }
     });

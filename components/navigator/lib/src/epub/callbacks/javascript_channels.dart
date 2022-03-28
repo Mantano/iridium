@@ -2,8 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 abstract class JavascriptChannels {
-  List<JavascriptChannel> get channels;
+  Map<String, JavaScriptHandlerCallback> get channels;
 }

@@ -46,6 +46,7 @@ class ReaderContext {
   late Map<Type, ReaderCommandProcessor> readerCommandProcessors;
   Link? currentSpineItem;
   SpineItemContext? currentSpineItemContext;
+  int viewportWidth = 0;
 
   ReadingProgression? readingProgression;
 
