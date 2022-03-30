@@ -23,13 +23,15 @@ class WebViewScreen extends StatefulWidget {
   final int position;
   final String address;
   final ReaderContext readerContext;
+  final PublicationController publicationController;
 
   WebViewScreen(
       {required this.widgetKeepAliveListener,
       required this.link,
       required this.position,
       required this.address,
-      required this.readerContext})
+      required this.readerContext,
+      required this.publicationController})
       : super(key: PageStorageKey(link.id ?? link.href));
 
   @override
@@ -93,7 +95,8 @@ class WebViewScreenState extends State<WebViewScreen> {
         _viewerSettingsBloc,
         readerContext.readerAnnotationRepository,
         webViewHorizontalGestureRecognizer,
-        EpubWebViewListener(_spineItemContext, _viewerSettingsBloc));
+        EpubWebViewListener(_spineItemContext, _viewerSettingsBloc,
+            widget.publicationController));
   }
 
   @override

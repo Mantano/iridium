@@ -67,8 +67,7 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
         preloadPagesCount: 1,
         onPageChanged: epubController.onPageChanged,
         physics: const AlwaysScrollableScrollPhysics(),
-        reverse: (readerContext?.readingProgression == ReadingProgression.rtl ||
-            readerContext?.readingProgression == ReadingProgression.btt),
+        reverse: readerContext?.readingProgression?.isReverseOrder() ?? false,
         itemCount: spine.length,
         itemBuilder: (context, position) => WebViewScreen(
           widgetKeepAliveListener: epubController.widgetKeepAliveListener,
@@ -77,6 +76,7 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
           link: spine[position],
           position: position,
           readerContext: readerContext!,
+          publicationController: epubController,
         ),
       );
 }

@@ -113,9 +113,9 @@ abstract class PublicationController {
 
   void initPageController(int initialPage);
 
-  void onSkipRight();
+  void onSkipRight({bool animated = true});
 
-  void onSkipLeft();
+  void onSkipLeft({bool animated = true});
 
   void onPageChanged(int position) =>
       currentSpineItemBloc.add(CurrentSpineItemEvent(position));

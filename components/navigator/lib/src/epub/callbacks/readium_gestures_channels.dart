@@ -9,7 +9,6 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/callbacks/model/tap_event.dart';
 import 'package:mno_navigator/src/epub/callbacks/webview_listener.dart';
-import 'package:mno_shared/publication.dart';
 
 class ReadiumChannels extends JavascriptChannels {
   final SpineItemContext _spineItemContext;
@@ -75,8 +74,7 @@ class ReadiumChannels extends JavascriptChannels {
 
   /// TODO implement find real horizontal scroll extent
   double computeHorizontalScrollExtent() =>
-      _spineItemContext.readerContext.viewportWidth.toDouble() *
-      devicePixelRatio;
+      _spineItemContext.readerContext.viewportWidth.toDouble();
 
   /// TODO implement display footnote
   bool handleFootnote(String targetElement) => true;
@@ -84,18 +82,10 @@ class ReadiumChannels extends JavascriptChannels {
   void _scrollRight(bool animated) {
     Fimber.d("animated: $animated");
 
-    void goRight() {
-      if (listener.readingProgression == ReadingProgression.rtl) {
-        listener.goBackward(animated: animated);
-      } else {
-        listener.goForward(animated: animated);
-      }
-    }
-
     jsApi.scrollRight().then((success) {
       Fimber.d("success: $success");
       if (success is bool && !success) {
-        goRight();
+        listener.goRight(animated: animated);
       }
     });
   }
@@ -103,18 +93,10 @@ class ReadiumChannels extends JavascriptChannels {
   void _scrollLeft(bool animated) {
     Fimber.d("animated: $animated");
 
-    void goLeft() {
-      if (listener.readingProgression == ReadingProgression.rtl) {
-        listener.goForward(animated: animated);
-      } else {
-        listener.goBackward(animated: animated);
-      }
-    }
-
     jsApi.scrollLeft().then((success) {
       Fimber.d("success: $success");
       if (success is bool && !success) {
-        goLeft();
+        listener.goLeft(animated: animated);
       }
     });
   }

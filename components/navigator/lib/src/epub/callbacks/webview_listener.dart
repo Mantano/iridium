@@ -30,9 +30,9 @@ abstract class WebViewListener {
 
   void onHighlightAnnotationMarkActivated(String id);
 
-  bool goForward({bool animated = false, Function completion = emptyFunc});
+  bool goRight({bool animated = false, Function completion = emptyFunc});
 
-  bool goBackward({bool animated = false, Function completion = emptyFunc});
+  bool goLeft({bool animated = false, Function completion = emptyFunc});
 
   /// Returns the custom [ActionMode.Callback] to be used with the text selection menu.
 //   ActionMode.Callback? get selectionActionModeCallback  => null;

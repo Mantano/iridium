@@ -10,8 +10,10 @@ import 'package:mno_shared/publication.dart';
 class EpubWebViewListener extends WebViewListener {
   final SpineItemContext _spineItemContext;
   final ViewerSettingsBloc? viewerSettingsBloc;
+  final PublicationController publicationController;
 
-  EpubWebViewListener(this._spineItemContext, this.viewerSettingsBloc);
+  EpubWebViewListener(this._spineItemContext, this.viewerSettingsBloc,
+      this.publicationController);
 
   @override
   ReadingProgression get readingProgression => ReadingProgression.ltr;
@@ -57,16 +59,22 @@ class EpubWebViewListener extends WebViewListener {
   void onHighlightAnnotationMarkActivated(String id) {}
 
   @override
-  bool goForward(
-          {bool animated = false,
-          Function completion = WebViewListener.emptyFunc}) =>
-      true;
+  bool goRight(
+      {bool animated = false,
+      Function completion = WebViewListener.emptyFunc}) {
+    publicationController.onSkipRight(animated: animated);
+    completion();
+    return true;
+  }
 
   @override
-  bool goBackward(
-          {bool animated = false,
-          Function completion = WebViewListener.emptyFunc}) =>
-      true;
+  bool goLeft(
+      {bool animated = false,
+      Function completion = WebViewListener.emptyFunc}) {
+    publicationController.onSkipLeft(animated: animated);
+    completion();
+    return true;
+  }
 
   /// Returns the custom [ActionMode.Callback] to be used with the text selection menu.
 //   ActionMode.Callback? get selectionActionModeCallback  => null;

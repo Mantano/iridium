@@ -6,6 +6,8 @@
 
 // Base script used by both reflowable and fixed layout resources.
 
+import "core-js";
+import "regenerator-runtime/runtime.js";
 import "./gestures";
 import {
   removeProperty,

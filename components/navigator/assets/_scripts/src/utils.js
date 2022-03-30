@@ -24,9 +24,10 @@ window.addEventListener(
     });
     observer.observe(document.body);
 
-    window.addEventListener("orientationchange", function () {
-      onViewportWidthChanged();
-      snapCurrentOffset();
+    window.addEventListener("orientationchange",  function () {
+      onViewportWidthChanged().then(() => {
+        snapCurrentOffset();
+      });
     });
     onViewportWidthChanged();
   },
@@ -64,14 +65,15 @@ function appendVirtualColumnIfNeeded() {
 
 var pageWidth = 1;
 
-function onViewportWidthChanged() {
+async function onViewportWidthChanged() {
   // We can't rely on window.innerWidth for the pageWidth on Android, because if the
   // device pixel ratio is not an integer, we get rounding issues offsetting the pages.
   //
   // See https://github.com/readium/readium-css/issues/97
   // and https://github.com/readium/r2-navigator-kotlin/issues/146
-  var width = Flutter.getViewportWidth();
+  var width = await Flutter.getViewportWidth();
   pageWidth = width / window.devicePixelRatio;
+  Flutter.log("width: " + width + ", pageWidth: " + pageWidth);
   setProperty(
     "--RS__viewportWidth",
     "calc(" + width + "px / " + window.devicePixelRatio + ")"

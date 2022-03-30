@@ -85,8 +85,9 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
           builder: (BuildContext context, ServerState state) =>
               (state is ServerStarted)
                   ? LayoutBuilder(builder: (context, constraints) {
-                      readerContext.viewportWidth =
-                          constraints.maxWidth.toInt();
+                      readerContext.viewportWidth = (constraints.maxWidth *
+                              WidgetsBinding.instance!.window.devicePixelRatio)
+                          .toInt();
                       return _wrapReaderView(spine, state);
                     })
                   : widget.waitingScreenBuilder(context)),
