@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:dfunc/dfunc.dart';
+import 'package:fimber/fimber.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_shared/epub.dart';
@@ -16,7 +17,10 @@ class JsApi {
 
   JsApi(this.index, this._jsLoader);
 
-  Future<dynamic> loadJS(String jScript) => _jsLoader(jScript);
+  Future<dynamic> loadJS(String jScript) {
+    Fimber.d(jScript);
+    return _jsLoader(jScript);
+  }
 
   void initSpineItem(
       Publication publication,
@@ -53,27 +57,27 @@ class JsApi {
       ReadiumThemeValues values =
           ReadiumThemeValues(readerTheme, viewerSettings);
       values.cssVarsAndValues.forEach((key, value) {
-        loadJS("xpub.theme.updateProperty('$key', '$value');");
+        loadJS("readium.setProperty('$key', '$value');");
       });
-      loadJS("xpub.theme.setVerticalMargin(${values.verticalMarginInt});");
+      // loadJS("xpub.theme.setVerticalMargin(${values.verticalMarginInt});");
       initPagination();
     }
   }
 
   void updateFontSize(ViewerSettings viewerSettings) {
     loadJS(
-        "xpub.theme.updateProperty('--USER__fontSize', '${viewerSettings.fontSize}%');");
+        "readium.setProperty('$fontSizeName', '${viewerSettings.fontSize}%');");
     initPagination();
   }
 
   void updateScrollSnapStop(bool shouldStop) {
     loadJS(
-        "xpub.theme.updateProperty('--RS__scroll-snap-stop', '${shouldStop ? "always" : "normal"}');");
+        "readium.setProperty('--RS__scroll-snap-stop', '${shouldStop ? "always" : "normal"}');");
     initPagination();
   }
 
   void initPagination() {
-    loadJS("xpub.initPagination();");
+    // loadJS("xpub.initPagination();");
   }
 
   void navigateToStart() {
