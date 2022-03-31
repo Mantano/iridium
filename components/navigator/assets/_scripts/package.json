@@ -9,7 +9,7 @@
     "bundle": "webpack",
     "lint": "eslint src",
     "checkformat": "prettier --check '**/*.js'",
-    "format": "prettier --list-different --write '**/*.js'"
+    "format": "prettier --list-different --write **/*.js"
   },
   "browserslist": [
     "Android >= 4"

@@ -9,6 +9,7 @@ import {
   rectContainsPoint,
   toNativeRect,
 } from "./rect";
+import flutter from "./flutter";
 import { log, logError, rangeFromLocator } from "./utils";
 
 let styles = new Map();
@@ -80,7 +81,7 @@ export function handleDecorationClickEvent(event, clickEvent) {
     return false;
   }
 
-  return Flutter.onDecorationActivated(
+  return flutter.onDecorationActivated(
     JSON.stringify({
       id: target.item.decoration.id,
       group: target.group,

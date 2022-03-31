@@ -8,6 +8,8 @@
 
 import "core-js";
 import "regenerator-runtime/runtime.js";
+import flutter from "./flutter";
+window.flutter = flutter;
 import "./gestures";
 import {
   removeProperty,
@@ -51,29 +53,6 @@ window.readium = {
   // decoration
   registerDecorationTemplates: registerTemplates,
   getDecorations: getDecorations,
-};
-
-window.Flutter = {};
-window.Flutter.onDecorationActivated = function(value) {
-    return window.flutter_inappwebview.callHandler('onDecorationActivated', value);
-};;
-window.Flutter.onTap = function(event) {
-    return window.flutter_inappwebview.callHandler('onTap', event);
-};
-window.Flutter.highlightAnnotationMarkActivated = function(highlightId) {
-    window.flutter_inappwebview.callHandler('highlightAnnotationMarkActivated', highlightId);
-};
-window.Flutter.highlightActivated = function(highlightId) {
-    window.flutter_inappwebview.callHandler('highlightActivated', highlightId);
-};
-window.Flutter.logError = function(message, filename, lineno) {
-    window.flutter_inappwebview.callHandler('logError', message, filename, lineno);
-};
-window.Flutter.log = function(message) {
-    window.flutter_inappwebview.callHandler('log', message);
-};
-window.Flutter.getViewportWidth = function(message) {
-    return window.flutter_inappwebview.callHandler('getViewportWidth', message);
 };
 
 // Legacy highlights API.

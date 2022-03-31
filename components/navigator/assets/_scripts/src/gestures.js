@@ -5,12 +5,13 @@
  */
 
 import { handleDecorationClickEvent } from "./decorator";
+import flutter from "./flutter";
 
 window.addEventListener("DOMContentLoaded", function () {
   document.addEventListener("click", onClick, false);
 });
 
-function onClick(event) {
+async function onClick(event) {
   if (!window.getSelection().isCollapsed) {
     // There's an on-going selection, the tap will dismiss it so we don't forward it.
     return;
@@ -25,18 +26,19 @@ function onClick(event) {
     interactiveElement: nearestInteractiveElement(event.target),
   };
 
-  if (handleDecorationClickEvent(event, clickEvent)) {
+  if (await handleDecorationClickEvent(event, clickEvent)) {
     return;
   }
 
   // Send the tap data over the JS bridge even if it's been handled within the web view, so that
   // it can be preserved and used by the toolkit if needed.
-  var shouldPreventDefault = Flutter.onTap(JSON.stringify(clickEvent));
-
-  if (shouldPreventDefault) {
-    event.stopPropagation();
-    event.preventDefault();
-  }
+  flutter.onTap(JSON.stringify(clickEvent)).then((shouldPreventDefault) => {
+    flutter.log("shouldPreventDefault: " + shouldPreventDefault);
+    if (shouldPreventDefault) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+  });
 }
 
 // See. https://github.com/JayPanoz/architecture/tree/touch-handling/misc/touch-handling
