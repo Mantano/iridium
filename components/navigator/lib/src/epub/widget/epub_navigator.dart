@@ -37,10 +37,12 @@ class EpubNavigator extends PublicationNavigator {
 class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
   EpubController get epubController => widget.epubController;
 
+  double get verticalPadding =>
+      MediaQuery.of(context).orientation == Orientation.portrait ? 40.0 : 20.0;
+
   @override
-  void initState() {
-    super.initState();
-  }
+  EdgeInsets get readerPadding =>
+      EdgeInsets.symmetric(vertical: verticalPadding);
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(

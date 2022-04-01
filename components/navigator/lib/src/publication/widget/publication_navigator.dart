@@ -52,6 +52,8 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
     super.dispose();
   }
 
+  EdgeInsets get readerPadding => EdgeInsets.zero;
+
   @override
   Widget build(BuildContext context) => BlocProvider<CurrentSpineItemBloc>(
         create: (BuildContext context) =>
@@ -88,18 +90,22 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
                       readerContext.viewportWidth = (constraints.maxWidth *
                               WidgetsBinding.instance!.window.devicePixelRatio)
                           .toInt();
-                      return _wrapReaderView(spine, state);
+                      return wrapReaderView(spine, state);
                     })
                   : widget.waitingScreenBuilder(context)),
     );
   }
 
-  Widget _wrapReaderView(List<Link> spine, ServerStarted serverState) {
+  @protected
+  Widget wrapReaderView(List<Link> spine, ServerStarted serverState) {
+    Widget readerWidget = Padding(
+      padding: readerPadding,
+      child: buildReaderView(spine, serverState),
+    );
     if (widget.wrapper != null) {
-      return widget.wrapper!(
-          context, buildReaderView(spine, serverState), spine, serverState);
+      return widget.wrapper!(context, readerWidget, spine, serverState);
     }
-    return buildReaderView(spine, serverState);
+    return readerWidget;
   }
 
   Widget buildReaderView(List<Link> spine, ServerStarted serverState);
@@ -114,7 +120,4 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
   Widget buildProgressIndicator(BuildContext context) => Center(
       child: SpinKitChasingDots(
           size: 100.0, color: Theme.of(context).colorScheme.secondary));
-  // AwesomeLoader(
-  //     color: Theme.of(context).colorScheme.secondary,
-  //     loaderType: AwesomeLoader.AwesomeLoader3));
 }

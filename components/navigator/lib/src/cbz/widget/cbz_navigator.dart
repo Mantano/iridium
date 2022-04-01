@@ -41,11 +41,6 @@ class CbzNavigatorState extends PublicationNavigatorState<CbzNavigator> {
   CbzController get cbzController => widget.cbzController;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget buildReaderView(List<Link> spine, ServerStarted serverState) =>
       TapGesture(
         onTap: onTap,
