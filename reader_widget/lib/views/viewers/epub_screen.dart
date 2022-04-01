@@ -7,7 +7,7 @@ import 'package:dartx/dartx.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'book_screen.dart';
+import 'package:iridium_reader_widget/views/viewers/book_screen.dart';
 import 'package:iridium_reader_widget/views/viewers/model/fonts.dart';
 import 'package:mno_commons/utils/functions.dart';
 import 'package:mno_navigator/epub.dart';
@@ -19,24 +19,41 @@ import 'package:mno_streamer/parser.dart';
 class EpubScreen extends BookScreen {
   final String? location;
   final int? settings;
-  final Map<String,dynamic>? theme;
+  final Map<String, dynamic>? theme;
 
-  const EpubScreen({Key? key, required FileAsset asset, this.location, this.settings, this.theme})
+  const EpubScreen(
+      {Key? key,
+      required FileAsset asset,
+      this.location,
+      this.settings,
+      this.theme})
       : super(key: key, asset: asset);
 
-  factory EpubScreen.fromPath({Key? key, required String filePath, String? location, String? settings, String? theme}) {
-    Map<String,dynamic>? decodedTheme;
+  factory EpubScreen.fromPath(
+      {Key? key,
+      required String filePath,
+      String? location,
+      String? settings,
+      String? theme}) {
+    Map<String, dynamic>? decodedTheme;
     try {
       decodedTheme = json.decode(theme!);
-    }
-    catch (e){
+    } catch (e) {
       debugPrint('failure to decode theme: $e');
     }
-    return EpubScreen(key: key, asset: FileAsset(File(filePath)), location: location, settings: int.tryParse(settings ?? '100'), theme: decodedTheme,);
+    return EpubScreen(
+      key: key,
+      asset: FileAsset(File(filePath)),
+      location: location,
+      settings: int.tryParse(settings ?? '100'),
+      theme: decodedTheme,
+    );
   }
-  factory EpubScreen.fromFile({Key? key, required File file, String? location}) {
-    return EpubScreen(key: key, asset: FileAsset(file), location: location);
-  }
+
+  factory EpubScreen.fromFile(
+          {Key? key, required File file, String? location}) =>
+      EpubScreen(key: key, asset: FileAsset(file), location: location);
+
   @override
   State<StatefulWidget> createState() => EpubScreenState();
 }
@@ -48,9 +65,12 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   @override
   void initState() {
     super.initState();
-    _viewerSettingsBloc = ViewerSettingsBloc(EpubReaderState("", widget.settings ?? 100));
+    _viewerSettingsBloc =
+        ViewerSettingsBloc(EpubReaderState("", widget.settings ?? 100));
     debugPrint(widget.theme.toString());
-    _readerThemeBloc = ReaderThemeBloc(widget.theme!=null ? ReaderThemeConfig.fromJson(widget.theme!) : ReaderThemeConfig.defaultTheme);
+    _readerThemeBloc = ReaderThemeBloc(widget.theme != null
+        ? ReaderThemeConfig.fromJson(widget.theme!)
+        : ReaderThemeConfig.defaultTheme);
   }
 
   @override
@@ -66,22 +86,20 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
       debugPrint('error returning location and settings');
     }
     return true;
-
   }
-
 
   @override
   Future<String?> get openLocation async => widget.location;
 
   @override
   EpubController createPublicationController(
-      Function onServerClosed,
-      Function? onPageJump,
-      Future<String?> locationFuture,
-      FileAsset fileAsset,
-      Future<Streamer> streamerFuture,
-      ReaderAnnotationRepository readerAnnotationRepository,
-      Function0<List<RequestHandler>> handlersProvider) =>
+          Function onServerClosed,
+          Function? onPageJump,
+          Future<String?> locationFuture,
+          FileAsset fileAsset,
+          Future<Streamer> streamerFuture,
+          ReaderAnnotationRepository readerAnnotationRepository,
+          Function0<List<RequestHandler>> handlersProvider) =>
       EpubController(onServerClosed, onPageJump, locationFuture, fileAsset,
           streamerFuture, readerAnnotationRepository, handlersProvider);
 
@@ -102,31 +120,31 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
 
   @override
   Widget build(BuildContext context) => MultiBlocProvider(
-    providers: [
-      BlocProvider(create: (context) => _viewerSettingsBloc),
-      BlocProvider(create: (context) => _readerThemeBloc),
-    ],
-    child: super.build(context),
-  );
+        providers: [
+          BlocProvider(create: (context) => _viewerSettingsBloc),
+          BlocProvider(create: (context) => _readerThemeBloc),
+        ],
+        child: super.build(context),
+      );
 
   @override
   Widget buildBackground() => BlocBuilder(
-    bloc: _readerThemeBloc,
-    builder: (BuildContext context, ReaderThemeState state) => Container(
-      color: state.readerTheme.backgroundColor,
-    ),
-  );
+        bloc: _readerThemeBloc,
+        builder: (BuildContext context, ReaderThemeState state) => Container(
+          color: state.readerTheme.backgroundColor,
+        ),
+      );
 
   @override
   Function0<List<RequestHandler>> get handlersProvider => () => [
-    AssetsRequestHandler(
-      'packages/mno_navigator/assets',
-      assetProvider: _AssetProvider(),
-      transformData: _transformAssetData,
-    ),
-    FetcherRequestHandler(readerContext.publication!,
-        googleFonts: Fonts.googleFonts)
-  ];
+        AssetsRequestHandler(
+          'packages/mno_navigator/assets',
+          assetProvider: _AssetProvider(),
+          transformData: _transformAssetData,
+        ),
+        FetcherRequestHandler(readerContext.publication!,
+            googleFonts: Fonts.googleFonts)
+      ];
   Uint8List _transformAssetData(String href, Uint8List data) {
     if (href == 'xpub-js/ReadiumCSS-after.css') {
       ReadiumThemeValues values = ReadiumThemeValues(

@@ -12,15 +12,13 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  startTimeout() {
-    return Timer(const Duration(seconds: 2), handleTimeout);
-  }
+  Timer startTimeout() => Timer(const Duration(seconds: 2), handleTimeout);
 
   void handleTimeout() {
     changeScreen();
   }
 
-  changeScreen() async {
+  Future changeScreen() async {
     MyRouter.pushPageReplacement(
       context,
       const MainScreen(),
@@ -34,21 +32,19 @@ class _SplashState extends State<Splash> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              "assets/images/app-icon.png",
-              height: 300.0,
-              width: 300.0,
-            ),
-          ],
+  Widget build(BuildContext context) => Scaffold(
+        body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                "assets/images/app-icon.png",
+                height: 300.0,
+                width: 300.0,
+              ),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 }

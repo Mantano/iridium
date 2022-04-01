@@ -21,13 +21,11 @@ class BookmarksPanelState extends State<BookmarksPanel> {
   Widget build(BuildContext context) => FutureBuilder<List<ReaderAnnotation>>(
         initialData: const [],
         future: _readerAnnotationsStream,
-        builder: (context, snapshot) {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) =>
-                itemBuilder(context, snapshot.data![index]),
-          );
-        },
+        builder: (context, snapshot) => ListView.builder(
+          itemCount: snapshot.data!.length,
+          itemBuilder: (context, index) =>
+              itemBuilder(context, snapshot.data![index]),
+        ),
       );
 
   Widget itemBuilder(BuildContext context, ReaderAnnotation readerAnnotation) {

@@ -17,52 +17,51 @@ class _MainScreenState extends State<MainScreen> {
   int _page = 0;
 
   @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => Dialogs().showExitDialog(context),
-      child: Scaffold(
-        body: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          controller: _pageController,
-          onPageChanged: onPageChanged,
-          children: const <Widget>[
-            Home(),
-            Explore(),
-            Profile(),
-          ],
+  Widget build(BuildContext context) => WillPopScope(
+        onWillPop: () async =>
+            (await Dialogs().showExitDialog(context)) ?? false,
+        child: Scaffold(
+          body: PageView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _pageController,
+            onPageChanged: onPageChanged,
+            children: const <Widget>[
+              Home(),
+              Explore(),
+              Profile(),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Theme.of(context).bottomAppBarColor,
+            selectedItemColor: Theme.of(context).colorScheme.secondary,
+            unselectedItemColor: Colors.grey[500],
+            elevation: 20,
+            type: BottomNavigationBarType.fixed,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Feather.home,
+                ),
+                label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Feather.compass,
+                ),
+                label: 'Explore',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Feather.settings,
+                ),
+                label: 'Settings',
+              ),
+            ],
+            onTap: navigationTapped,
+            currentIndex: _page,
+          ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Theme.of(context).bottomAppBarColor,
-          selectedItemColor: Theme.of(context).colorScheme.secondary,
-          unselectedItemColor: Colors.grey[500],
-          elevation: 20,
-          type: BottomNavigationBarType.fixed,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Feather.home,
-              ),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Feather.compass,
-              ),
-              label: 'Explore',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Feather.settings,
-              ),
-              label: 'Settings',
-            ),
-          ],
-          onTap: navigationTapped,
-          currentIndex: _page,
-        ),
-      ),
-    );
-  }
+      );
 
   void navigationTapped(int page) {
     _pageController.jumpToPage(page);

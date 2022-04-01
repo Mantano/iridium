@@ -4,16 +4,15 @@ import 'package:objectdb/objectdb.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:objectdb/src/objectdb_storage_filesystem.dart';
 
-
 class FavoriteDB {
-  getPath() async {
+  Future<String> getPath() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     final path = documentDirectory.path + '/favorites.db';
     return path;
   }
 
   //Insertion
-  add(Map item) async {
+  Future add(Map item) async {
     final db = ObjectDB(FileSystemStorage(await getPath()));
     db.insert(item);
     await db.close();

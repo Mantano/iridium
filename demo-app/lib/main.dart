@@ -59,15 +59,10 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // https://pub.dev/packages/new_version
-    // TODO debuguer
-    // final newVersion = NewVersion();
-    // newVersion.showAlertIfNecessary(context: context);
-
-    return Consumer<AppProvider>(
-      builder: (BuildContext context, AppProvider appProvider, Widget? child) {
-        return MaterialApp(
+  Widget build(BuildContext context) => Consumer<AppProvider>(
+        builder:
+            (BuildContext context, AppProvider appProvider, Widget? child) =>
+                MaterialApp(
           key: appProvider.key,
           debugShowCheckedModeBanner: false,
           navigatorKey: appProvider.navigatorKey,
@@ -75,17 +70,13 @@ class MyApp extends StatelessWidget {
           theme: themeData(appProvider.theme),
           darkTheme: themeData(ThemeConfig.darkTheme!),
           home: const Splash(),
-        );
-      },
-    );
-  }
+        ),
+      );
 
   // Apply font to our app's theme
-  ThemeData themeData(ThemeData theme) {
-    return theme.copyWith(
-      textTheme: GoogleFonts.sourceSansProTextTheme(
-        theme.textTheme,
-      ),
-    );
-  }
+  ThemeData themeData(ThemeData theme) => theme.copyWith(
+        textTheme: GoogleFonts.sourceSansProTextTheme(
+          theme.textTheme,
+        ),
+      );
 }

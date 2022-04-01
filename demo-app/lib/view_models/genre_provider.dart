@@ -18,7 +18,7 @@ class GenreProvider extends ChangeNotifier {
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
   Api api = Api();
 
-  listener(url) {
+  void listener(url) {
     controller.addListener(() {
       if (controller.position.pixels == controller.position.maxScrollExtent) {
         if (!loadingMore) {
@@ -36,7 +36,7 @@ class GenreProvider extends ChangeNotifier {
     });
   }
 
-  getFeed(String url) async {
+  Future getFeed(String url) async {
     setApiRequestStatus(APIRequestStatus.loading);
     Fimber.d("getFeed: $url");
     try {
@@ -53,7 +53,7 @@ class GenreProvider extends ChangeNotifier {
     }
   }
 
-  paginate(String url) async {
+  Future paginate(String url) async {
     if (apiRequestStatus != APIRequestStatus.loading &&
         !loadingMore &&
         loadMore) {
@@ -90,7 +90,7 @@ class GenreProvider extends ChangeNotifier {
     }
   }
 
-  showToast(msg) {
+  void showToast(msg) {
     Fluttertoast.showToast(
       msg: '$msg',
       toastLength: Toast.LENGTH_SHORT,

@@ -83,49 +83,43 @@ class _ProfileState extends State<Profile> {
             ),
           );
         },
-        separatorBuilder: (BuildContext context, int index) {
-          return const Divider();
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+      ),
+    );
+  }
+
+  Widget _buildThemeSwitch(Map item) => SwitchListTile(
+        secondary: Icon(
+          item['icon'],
+        ),
+        title: Text(
+          item['title'],
+        ),
+        value: Provider.of<AppProvider>(context).theme == ThemeConfig.lightTheme
+            ? false
+            : true,
+        onChanged: (v) {
+          if (v) {
+            Provider.of<AppProvider>(context, listen: false)
+                .setTheme(ThemeConfig.darkTheme, 'dark');
+          } else {
+            Provider.of<AppProvider>(context, listen: false)
+                .setTheme(ThemeConfig.lightTheme, 'light');
+          }
         },
-      ),
-    );
-  }
+      );
 
-  Widget _buildThemeSwitch(Map item) {
-    return SwitchListTile(
-      secondary: Icon(
-        item['icon'],
-      ),
-      title: Text(
-        item['title'],
-      ),
-      value: Provider.of<AppProvider>(context).theme == ThemeConfig.lightTheme
-          ? false
-          : true,
-      onChanged: (v) {
-        if (v) {
-          Provider.of<AppProvider>(context, listen: false)
-              .setTheme(ThemeConfig.darkTheme, 'dark');
-        } else {
-          Provider.of<AppProvider>(context, listen: false)
-              .setTheme(ThemeConfig.lightTheme, 'light');
-        }
-      },
-    );
-  }
-
-  _pushPage(Widget page) {
+  void _pushPage(Widget page) {
     MyRouter.pushPage(context, page);
   }
 
-  _pushPageDialog(Widget page) {
+  void _pushPageDialog(Widget page) {
     MyRouter.pushPageDialog(context, page);
   }
 
-  showAbout() {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
+  void showAbout() => showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
           title: const Text(
             'About',
           ),
@@ -144,8 +138,6 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ],
-        );
-      },
-    );
-  }
+        ),
+      );
 }

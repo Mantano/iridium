@@ -29,9 +29,7 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ThemeData getTheme(value) {
-    return theme;
-  }
+  ThemeData getTheme(value) => theme;
 
   Future<ThemeData> checkTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

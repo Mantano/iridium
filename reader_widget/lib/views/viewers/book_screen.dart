@@ -92,18 +92,9 @@ abstract class BookScreenState<T extends BookScreen,
 
   Future<bool> onWillPop() async => true;
 
-  Widget buildWaitingScreen(BuildContext context) {
-    //   return Center(
-    //       child: CircularProgressIndicator(
-    //         valueColor: AlwaysStoppedAnimation<Color>(
-    //             Theme.of(context).colorScheme.secondary),
-    //       ),
-    //     );
-    // }
-    return Center(
-        child: SpinKitChasingDots(
-            size: 100, color: Theme.of(context).colorScheme.secondary));
-  }
+  Widget buildWaitingScreen(BuildContext context) => Center(
+      child: SpinKitChasingDots(
+          size: 100, color: Theme.of(context).colorScheme.secondary));
 
   void _displayErrorDialog(BuildContext context, UserException userException) {
     // TODO open error dialog
@@ -115,34 +106,33 @@ abstract class BookScreenState<T extends BookScreen,
   }
 
   Widget buildWidgetWrapper(BuildContext context, Widget child,
-      List<Link> spineItems, ServerStarted state) {
-    return Stack(
-      children: <Widget>[
-        buildBackground(),
-        SafeArea(
-          child: child,
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: ReaderToolbar(
-            readerContext: readerContext,
-            onSkipLeft: publicationController.onSkipLeft,
-            onSkipRight: publicationController.onSkipRight,
+          List<Link> spineItems, ServerStarted state) =>
+      Stack(
+        children: <Widget>[
+          buildBackground(),
+          SafeArea(
+            child: child,
           ),
-        ),
-        SafeArea(
-          top: false,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: ReaderAppBar(
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ReaderToolbar(
               readerContext: readerContext,
-              publicationController: publicationController,
+              onSkipLeft: publicationController.onSkipLeft,
+              onSkipRight: publicationController.onSkipRight,
             ),
           ),
-        ),
-      ],
-    );
-  }
+          SafeArea(
+            top: false,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ReaderAppBar(
+                readerContext: readerContext,
+                publicationController: publicationController,
+              ),
+            ),
+          ),
+        ],
+      );
 
   Widget buildBackground() => const SizedBox.shrink();
 

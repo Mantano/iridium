@@ -11,7 +11,7 @@ class HomeProvider with ChangeNotifier {
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
   Api api = Api();
 
-  getFeeds() async {
+  Future getFeeds() async {
     setApiRequestStatus(APIRequestStatus.loading);
     try {
       ParseData popular = await api.getCategory(Api.popular);
@@ -42,16 +42,12 @@ class HomeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  ParseData? getTop() {
-    return top;
-  }
+  ParseData? getTop() => top;
 
   void setRecent(value) {
     recent = value;
     notifyListeners();
   }
 
-  ParseData? getRecent() {
-    return recent;
-  }
+  ParseData? getRecent() => recent;
 }

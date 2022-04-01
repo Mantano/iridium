@@ -16,9 +16,7 @@ class BodyBuilder extends StatelessWidget {
       : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return _buildBody();
-  }
+  Widget build(BuildContext context) => _buildBody();
 
   Widget _buildBody() {
     switch (apiRequestStatus) {
