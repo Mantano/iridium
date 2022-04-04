@@ -7,3 +7,4 @@
 // Script used for fixed layouts resources.
 
 import "./index";
+readium.initPagination = function () {};

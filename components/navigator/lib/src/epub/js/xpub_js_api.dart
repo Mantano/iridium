@@ -77,7 +77,7 @@ class JsApi {
   }
 
   void initPagination() {
-    // loadJS("xpub.initPagination();");
+    loadJS("readium.initPagination();");
   }
 
   void navigateToStart() {

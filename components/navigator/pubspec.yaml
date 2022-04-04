@@ -20,8 +20,6 @@ dependencies:
   photo_view: ^0.13.0
   preload_page_view: ^0.1.6
   universal_io: ^2.0.4
-  webview_flutter: ^3.0.1
-  webview_flutter_web: ^0.1.0+1
   flutter_spinkit: ^5.1.0
 
   mno_commons:

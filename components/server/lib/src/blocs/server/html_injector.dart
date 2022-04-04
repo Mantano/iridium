@@ -122,9 +122,7 @@ class _InjectHtmlResource extends TransformingResource {
       return content;
     }
     int insertionPoint = insertAfter ? match.end : match.start;
-    return content.substring(0, insertionPoint) +
-        contentToAdd +
-        content.substring(insertionPoint);
+    return content.insert(insertionPoint, contentToAdd);
   }
 
   Match? _matchRegex(String pattern, String html) {
@@ -138,7 +136,7 @@ class _InjectHtmlResource extends TransformingResource {
       return "";
     }
     String fontList = googleFonts.map((f) => f.replaceAll(" ", "+")).join("|");
-    return "<style>@import url('https://fonts.googleapis.com/css?family=$fontList');</style>";
+    return "<style>@import url('https://fonts.googleapis.com/css?family=$fontList');</style>\n";
   }
 
   String injectReflowableHtml(String content) {
@@ -218,8 +216,7 @@ class _InjectHtmlResource extends TransformingResource {
         getHtmlFont(
             fontFamily: "OpenDyslexic",
             href: "/readium/fonts/OpenDyslexic-Regular.otf"));
-    resourceHtml = resourceHtml.insert(endHeadIndex,
-        "<style>@import url('https://fonts.googleapis.com/css?family=PT+Serif|Roboto|Source+Sans+Pro|Vollkorn');</style>\n");
+    resourceHtml = resourceHtml.insert(endHeadIndex, _createGoogleFontsHtml());
 
     // Disable the text selection if the publication is protected.
     // FIXME: This is a hack until proper LCP copy is implemented, see https://github.com/readium/r2-testapp-kotlin/issues/266
@@ -263,6 +260,8 @@ class _InjectHtmlResource extends TransformingResource {
       }
     });
     resourceHtml = applyDirectionAttribute(resourceHtml, publication);
+    resourceHtml = _insertString(
+        '(</body>)', resourceHtml, '<div id="xpub_paginator"></div>', false);
 
     return resourceHtml;
   }

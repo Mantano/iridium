@@ -31,4 +31,30 @@ export default {
   getViewportWidth: function (message) {
     return window.flutter_inappwebview.callHandler("getViewportWidth", message);
   },
+
+  onLeftOverlayVisibilityChanged: function (value) {
+    console.log(
+      "====== onLeftOverlayVisibilityChanged, URL: " +
+        window.location.href +
+        ", value: " +
+        value
+    );
+    window.flutter_inappwebview.callHandler(
+      "GestureCallbacksOnLeftOverlayVisibilityChanged",
+      value
+    );
+  },
+
+  onRightOverlayVisibilityChanged: function (value) {
+    console.log(
+      "====== onRightOverlayVisibilityChanged, URL: " +
+        window.location.href +
+        ", value: " +
+        value
+    );
+    window.flutter_inappwebview.callHandler(
+      "GestureCallbacksOnRightOverlayVisibilityChanged",
+      value
+    );
+  },
 };
