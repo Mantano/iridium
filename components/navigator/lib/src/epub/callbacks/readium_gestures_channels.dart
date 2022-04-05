@@ -23,6 +23,8 @@ class ReadiumChannels extends JavascriptChannels {
   @override
   Map<String, JavaScriptHandlerCallback> get channels => {
         "onTap": _onTap,
+        "onSwipeUp": _onSwipeUp,
+        "onSwipeDown": _onSwipeDown,
         "scrollRight": (args) => _scrollRight(args.first),
         "scrollLeft": (args) => _scrollLeft(args.first),
         "onDecorationActivated": _onDecorationActivated,
@@ -31,6 +33,8 @@ class ReadiumChannels extends JavascriptChannels {
         "logError": _logError,
         "log": _log,
         "getViewportWidth": _getViewportWidth,
+        "onLeftOverlayVisibilityChanged": _onLeftOverlayVisibilityChanged,
+        "onRightOverlayVisibilityChanged": _onRightOverlayVisibilityChanged,
       };
 
   bool _onTap(List<dynamic> arguments) {
@@ -79,6 +83,14 @@ class ReadiumChannels extends JavascriptChannels {
   /// TODO implement display footnote
   bool handleFootnote(String targetElement) => true;
 
+  void _onSwipeUp(List<dynamic> arguments) {
+    viewerSettingsBloc?.add(IncrFontSizeEvent());
+  }
+
+  void _onSwipeDown(List<dynamic> arguments) {
+    viewerSettingsBloc?.add(DecrFontSizeEvent());
+  }
+
   void _scrollRight(bool animated) {
     Fimber.d("animated: $animated");
 
@@ -126,4 +138,22 @@ class ReadiumChannels extends JavascriptChannels {
 
   int _getViewportWidth(List<dynamic> arguments) =>
       _spineItemContext.readerContext.viewportWidth;
+
+  void _onLeftOverlayVisibilityChanged(List<dynamic> arguments) {
+    if (arguments.isNotEmpty) {
+      Fimber.d(
+          "================== _onLeftOverlayVisibilityChanged, message: ${arguments.first}, ${arguments.first.runtimeType}, recognizer: $webViewHorizontalGestureRecognizer");
+      bool visibility = arguments.first;
+      webViewHorizontalGestureRecognizer?.setLeftOverlayVisible(visibility);
+    }
+  }
+
+  void _onRightOverlayVisibilityChanged(List<dynamic> arguments) {
+    if (arguments.isNotEmpty) {
+      Fimber.d(
+          "================== _onRightOverlayVisibilityChanged, message: ${arguments.first}, ${arguments.first.runtimeType}, recognizer: $webViewHorizontalGestureRecognizer");
+      bool visibility = arguments.first;
+      webViewHorizontalGestureRecognizer?.setRightOverlayVisible(visibility);
+    }
+  }
 }

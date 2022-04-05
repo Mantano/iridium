@@ -38,6 +38,7 @@ dev_dependencies:
 flutter:
 
   assets:
+    - assets/readium/assets/
     - assets/readium/divina/
     - assets/readium/fonts/
     - assets/readium/readium-css/
@@ -46,7 +47,6 @@ flutter:
     - assets/readium/readium-css/fonts/
     - assets/readium/readium-css/rtl/
     - assets/readium/scripts/
-    - assets/xpub-assets/
     - assets/xpub-shared-js/
     - assets/xpub-js/
     - assets/xpub-js/controllers/

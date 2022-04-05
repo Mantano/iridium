@@ -9,12 +9,10 @@ import 'package:mno_navigator/src/epub/callbacks/webview_listener.dart';
 
 class EpubCallbacks {
   final LauncherUIChannels _launcherUIChannels;
-  final GesturesChannels _gesturesChannels;
   final ReadiumChannels _readiumGesturesChannels;
 
   set jsApi(JsApi jsApi) {
     _launcherUIChannels.jsApi = jsApi;
-    _gesturesChannels.jsApi = jsApi;
     _readiumGesturesChannels.jsApi = jsApi;
   }
 
@@ -26,14 +24,11 @@ class EpubCallbacks {
       WebViewListener listener)
       : _launcherUIChannels =
             LauncherUIChannels(spineItemContext, bookmarkRepository),
-        _gesturesChannels = GesturesChannels(spineItemContext,
-            viewerSettingsBloc, webViewHorizontalGestureRecognizer),
         _readiumGesturesChannels = ReadiumChannels(spineItemContext,
             viewerSettingsBloc, webViewHorizontalGestureRecognizer, listener);
 
   Map<String, JavaScriptHandlerCallback> get channels => {
         ..._launcherUIChannels.channels,
-        ..._gesturesChannels.channels,
         ..._readiumGesturesChannels.channels,
       };
 }

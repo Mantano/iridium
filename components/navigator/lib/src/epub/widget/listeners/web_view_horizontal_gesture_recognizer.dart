@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter/gestures.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/src/publication/reader_context.dart';
@@ -19,16 +18,14 @@ class WebViewHorizontalGestureRecognizer
   bool _rightOverlayVisible = false;
 
   void setLeftOverlayVisible(bool visibility) {
-    Fimber.d(
-        ">>> setLeftOverlayVisible[$chapNumber][${getSpineItemHref()}][${webView.address}][${webView.position}], visibility: $visibility");
+    // Fimber.d(
+    //     ">>> setLeftOverlayVisible[$chapNumber][${getSpineItemHref()}][${webView.address}][${webView.position}], visibility: $visibility");
     _leftOverlayVisible = visibility;
   }
 
   void setRightOverlayVisible(bool visibility) {
-//    Fimber.d(
-//        ">>> setRightOverlayVisible[$chapNumber][${getSpineItemHref()}][${webView.address}][${webView.position}], visibility: $visibility");
-    Fimber.d(
-        ">>> setRightOverlayVisible[$chapNumber][${getSpineItemHref()}][${webView.position}], visibility: $visibility");
+    // Fimber.d(
+    //     ">>> setRightOverlayVisible[$chapNumber][${getSpineItemHref()}][${webView.position}], visibility: $visibility");
     _rightOverlayVisible = visibility;
   }
 
@@ -42,8 +39,8 @@ class WebViewHorizontalGestureRecognizer
   }
 
   void _onUpdate(DragUpdateDetails details) {
-    Fimber.d(
-        ">>> onUpdate[$chapNumber][${getSpineItemHref()}]: ${details.delta.direction}");
+    // Fimber.d(
+    //     ">>> onUpdate[$chapNumber][${getSpineItemHref()}]: ${details.delta.direction}");
   }
 
   Offset _dragDistance = Offset.zero;
@@ -51,8 +48,8 @@ class WebViewHorizontalGestureRecognizer
   @override
   void addPointer(PointerEvent event) {
     startTrackingPointer(event.pointer);
-    Fimber.d(
-        ">>> Pointer tracking STARTED, pointer[$chapNumber][${getSpineItemHref()}]: ${event.pointer}");
+    // Fimber.d(
+    //     ">>> Pointer tracking STARTED, pointer[$chapNumber][${getSpineItemHref()}]: ${event.pointer}");
   }
 
   @override
@@ -60,16 +57,16 @@ class WebViewHorizontalGestureRecognizer
 
   @override
   void didStopTrackingLastPointer(int pointer) {
-    Fimber.d(
-        ">>> didStopTrackingLastPointer [$chapNumber][${getSpineItemHref()}]");
+    // Fimber.d(
+    //     ">>> didStopTrackingLastPointer [$chapNumber][${getSpineItemHref()}]");
   }
 
   @override
   void handleEvent(PointerEvent event) {
     // TODO Fix this: readerContext.currentSpineItem?.title is null, so we are using this path to access the title of the current spine item
     var curHRef = getSpineItemHref();
-    Fimber.d(
-        ">>> handleEvent[$chapNumber][$curHRef] =============== i_leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
+    // Fimber.d(
+    //     ">>> handleEvent[$chapNumber][$curHRef] =============== i_leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
     _dragDistance = _dragDistance + event.delta;
     if (event is PointerMoveEvent) {
       final double dy = _dragDistance.dy.abs();
@@ -85,13 +82,13 @@ class WebViewHorizontalGestureRecognizer
         if ((_rightOverlayVisible && isDraggingTowardsLeft(event)) ||
             (_leftOverlayVisible && isDraggingTowardsRight(event))) {
           // The enclosing PageView must handle the drag since the webview cannot scroll anymore
-          Fimber.d(
-              ">>> handleEvent[$chapNumber][$curHRef] =============== REJECT, _leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
+          // Fimber.d(
+          //     ">>> handleEvent[$chapNumber][$curHRef] =============== REJECT, _leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
           stopTrackingPointer(event.pointer);
         } else {
           // horizontal drag - accept
-          Fimber.d(
-              ">>> handleEvent[$chapNumber][$curHRef] =============== ACCEPT, _leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
+          // Fimber.d(
+          //     ">>> handleEvent[$chapNumber][$curHRef] =============== ACCEPT, _leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
           resolve(GestureDisposition.accepted);
           _dragDistance = Offset.zero;
         }

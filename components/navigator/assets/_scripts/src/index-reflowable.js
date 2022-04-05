@@ -8,6 +8,17 @@
 
 import "./index";
 import flutter from "./flutter";
+import "tocca";
+
+document.scrollingElement.addEventListener("swipeup", function (event) {
+  event.stopPropagation();
+  flutter.onSwipeUp();
+});
+
+document.scrollingElement.addEventListener("swipedown", function (event) {
+  event.stopPropagation();
+  flutter.onSwipeDown();
+});
 
 /**
  * Remove all child nodes from an element
@@ -38,12 +49,8 @@ readium.initPagination = function () {
     }
     observers = [];
 
-    let paginator = document.getElementById("xpub_paginator");
+    let paginator = document.getElementById("readium_paginator");
     empty(paginator);
-    // const spineItemContentsDiv = document.getElementById(
-    //   "xpub_spineItemContents"
-    // );
-    // console.log("=========== DIRECTION: " + spineItemContentsDiv.css('direction'));
     const isRtl = getDirection() === "rtl";
 
     var documentWidth = document.scrollingElement.scrollWidth;
@@ -63,7 +70,6 @@ readium.initPagination = function () {
     // console.log("=========== " + window.location.href + ", nbCols: " + nbCols);
 
     // xpub.paginationInfo.columnCount = nbCols;
-    // spineItemContentsDiv.style.columnCount = nbCols;
     paginator.style.width = documentWidth;
     paginator.style.maxWidth = documentWidth;
 
@@ -76,15 +82,15 @@ readium.initPagination = function () {
 
     for (let i = 0; i < nbCols; i++) {
       let divText =
-        '<div id="xpub_page_' +
+        '<div id="readium_page_' +
         i +
         '" data-page="' +
         i +
-        '" class="xpub_page_overlay">' +
-        '   <div class="xpub_page_bookmark" data-page="' +
+        '" class="readium_page_overlay">' +
+        '   <div class="readium_page_bookmark" data-page="' +
         i +
         '" data-prevent-tap="true">' +
-        '      <img src="/xpub-assets/bookmark.svg" />' +
+        '      <img src="/readium/assets/bookmark.svg" />' +
         "   </div>" +
         "</div>";
       paginator.appendChild(
@@ -94,8 +100,8 @@ readium.initPagination = function () {
     }
     //    paginator.show();
 
-    let lowestPageNumberDivSelector = "#xpub_page_0";
-    let highestPageNumberDivSelector = "#xpub_page_" + (nbCols - 1);
+    let lowestPageNumberDivSelector = "#readium_page_0";
+    let highestPageNumberDivSelector = "#readium_page_" + (nbCols - 1);
     let leftDivSelector = isRtl
       ? highestPageNumberDivSelector
       : lowestPageNumberDivSelector;
@@ -115,14 +121,14 @@ readium.initPagination = function () {
         },
         { threshold: [0.99] }
       );
-      let querySelector = document.querySelector("#xpub_page_" + i);
+      let querySelector = document.querySelector("#readium_page_" + i);
       if (querySelector != null) {
         observer.observe(querySelector);
         observers.push(observer);
       }
     }
 
-    let queryBookmarks = document.querySelector(".xpub_page_bookmark");
+    let queryBookmarks = document.querySelector(".readium_page_bookmark");
     for (let i = 0; i < queryBookmarks.length; i++) {
       queryBookmarks[i].addEventListener(
         "click",
@@ -141,7 +147,7 @@ readium.initPagination = function () {
         // isIntersecting is false when element and viewport don't overlap
         // console.log("=========== observerLeft, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
         flutter.onLeftOverlayVisibilityChanged(
-          entries[0].intersectionRatio === 1.0
+          entries[0].intersectionRatio >= 0.99
         );
       },
       { threshold: [0.0, 0.1, 0.2, 0.9, 0.95, 0.99, 1.0] }
@@ -152,7 +158,7 @@ readium.initPagination = function () {
         // isIntersecting is false when element and viewport don't overlap
         //                console.log("=========== observerRight, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
         flutter.onRightOverlayVisibilityChanged(
-          entries[0].intersectionRatio === 1.0
+          entries[0].intersectionRatio >= 0.99
         );
       },
       { threshold: [0.0, 0.1, 0.2, 0.9, 0.95, 0.99, 1.0] }

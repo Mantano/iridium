@@ -16,7 +16,7 @@ import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
 import 'package:universal_io/io.dart';
 
-/// Inject the XPUB CSS and JS links in a publication HTML resources.
+/// Inject the Readium CSS and JS links in a publication HTML resources.
 class HtmlInjector {
   /// The [publication] that is the context for the HTML injection.
   final Publication publication;
@@ -66,52 +66,6 @@ class _InjectHtmlResource extends TransformingResource {
           : injectFixedLayoutHtml(trimmedText);
       return res.toByteData();
     });
-  }
-
-  static const List<String> defaultJsLinks = [
-    '/xpub-shared-js/polyfill.js',
-    '/xpub-shared-js/underscore-min.js',
-    '/xpub-shared-js/jquery-2.1.0.min.js',
-    // '/xpub-shared-js/jquery-3.6.0.min.js',
-    '/xpub-shared-js/jquery.mobile-1.4.5.min.js',
-    '/xpub-shared-js/jquerymobile-swipeupdown.js',
-    '/xpub-shared-js/readium-cfi-js.js',
-    '/xpub-shared-js/globals.js',
-    '/xpub-shared-js/helpers.js',
-    '/xpub-js/model/bookmark_data.js',
-    '/xpub-js/model/current_pages_info.js',
-    '/xpub-js/model/spine_item.js',
-    '/xpub-js/model/location.js',
-    '/xpub-js/model/page_open_request.js',
-    '/xpub-js/model/package_data.js',
-    '/xpub-js/model/package.js',
-    '/xpub-js/utils/rangefix.js',
-    '/xpub-js/utils/cfi_navigation_logic.js',
-    '/xpub-js/utils/cfi.js',
-    '/xpub-js/utils/tools.js',
-    '/xpub-js/controllers/bookmarks.js',
-    '/xpub-js/controllers/highlight.js',
-    '/xpub-js/controllers/tts.js',
-    '/xpub-js/Main.js',
-    '/xpub-js/xpub_location.js',
-    '/xpub-js/xpub_navigation.js',
-    '/xpub-js/Gestures.js',
-    '/xpub-js/Recordings.js',
-    '/xpub-js/Theme.js',
-  ];
-
-  /// Wraps the HTML for pagination.
-  String _wrapHtmlContent(String html, EpubLayout renditionLayout) {
-    if (renditionLayout == EpubLayout.reflowable) {
-      html = _insertString(
-          '(<body[^>]*>)',
-          html,
-          '<div class="xpub_container"><div id="xpub_spineItemContents">',
-          true);
-      html = _insertString('(</body>)', html,
-          '</div><div id="xpub_paginator"></div></div>', false);
-    }
-    return html;
   }
 
   String _insertString(
@@ -177,13 +131,12 @@ class _InjectHtmlResource extends TransformingResource {
 
     endIncludes.add(getHtmlLink(
         "/readium/readium-css/${layout.readiumCSSPath}ReadiumCSS-after.css"));
-    endIncludes.add(getHtmlLink("/xpub-js/pagination.css"));
+    endIncludes.add(getHtmlLink(
+        "/readium/readium-css/${layout.readiumCSSPath}ReadiumCSS-pagination.css"));
     endIncludes.add(getHtmlScript("/readium/scripts/readium-reflowable.js"));
     // for (String script in defaultJsLinks) {
     //   endIncludes.add(getHtmlScript(script));
     // }
-    // endIncludes.add(getHtmlScript('/xpub-js/xpub_navigation_reflow_layout.js'));
-    // endIncludes.add(getHtmlScript('/xpub-js/Reflowable_Viewport.js'));
     endIncludes.add(_createGoogleFontsHtml());
 
     customResources?.let((it) {
@@ -261,7 +214,7 @@ class _InjectHtmlResource extends TransformingResource {
     });
     resourceHtml = applyDirectionAttribute(resourceHtml, publication);
     resourceHtml = _insertString(
-        '(</body>)', resourceHtml, '<div id="xpub_paginator"></div>', false);
+        '(</body>)', resourceHtml, '<div id="readium_paginator"></div>', false);
 
     return resourceHtml;
   }
@@ -302,7 +255,6 @@ class _InjectHtmlResource extends TransformingResource {
     // for (String script in defaultJsLinks) {
     //   includes.add(getHtmlScript(script));
     // }
-    // includes.add(getHtmlScript('/xpub-js/xpub_navigation_fixed_layout.js'));
     includes.add(_createGoogleFontsHtml());
     return resourceHtml.insert(endHeadIndex, includes.join());
   }
