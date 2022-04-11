@@ -5,6 +5,7 @@
 import 'dart:async';
 
 import 'package:dartx/dartx.dart';
+import 'package:dfunc/dfunc.dart';
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -102,15 +103,14 @@ class ReaderContext {
             publication, _flattenedTableOfContents);
     _toolbarStreamController.add(toolbarVisibility);
     currentSpineItem = publication?.readingOrder.first;
-    readerCommand = GoToLocationCommand.readiumLocation(readiumLocation);
+    readerCommand = locator?.let((it) => GoToLocationCommand.locator(it));
     // execute(GoToLocationCommand.readiumLocation(readiumLocation));
     readingProgression = publication?.metadata.effectiveReadingProgression;
   }
 
   bool get hasError => userException != null;
 
-  ReadiumLocation get readiumLocation =>
-      ReadiumLocation.createLocation(location);
+  Locator? get locator => location?.let((it) => Locator.fromJsonString(it));
 
   int get currentPageNumber =>
       publication!.paginationInfo[currentSpineItem]?.firstPageNumber ?? 1;
@@ -132,7 +132,12 @@ class ReaderContext {
     _toolbarStreamController.add(toolbarVisibility);
   }
 
-  void toggleBookmark() => currentSpineItemContext?.jsApi?.toggleBookmark();
+  void toggleBookmark() {
+    PaginationInfo? paginationInfo = this.paginationInfo;
+    if (paginationInfo != null) {
+      readerAnnotationRepository.createReaderAnnotation(paginationInfo);
+    }
+  }
 
   List<String> getElementIdsFromSpineItem(int spineItemIndex) =>
       getTocItemsFromSpineItem(spineItemIndex)
@@ -164,7 +169,7 @@ class ReaderContext {
     _createOpenPageRequestForCommand(command);
     this.readerCommand = command;
     // Fimber.d("readerCommand: $readerCommand");
-    _commandsStreamController.sink.add(command);
+    _commandsStreamController.add(command);
   }
 
   void _updateSpineItemIndexForCommand(ReaderCommand command) {

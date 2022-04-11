@@ -81,6 +81,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     });
     LinkPagination linkPagination = publication.paginationInfo[spineItem]!;
     _spineItemContext = SpineItemContext(
+      spineItemIndex: position,
       readerContext: readerContext,
       linkPagination: linkPagination,
     );
@@ -175,28 +176,18 @@ class WebViewScreenState extends State<WebViewScreen> {
 
   void _onPageFinished(InAppWebViewController controller, Uri? url) async {
     Fimber.d("_onPageFinished[$position]: $url");
-    ReaderThemeConfig theme = _readerThemeBloc.currentTheme;
     try {
       OpenPageRequest? openPageRequestData =
           _getOpenPageRequestFromCommand(readerContext.readerCommand);
-      List<String> elementIds =
-          readerContext.getElementIdsFromSpineItem(position);
-      ViewerSettings settings = _viewerSettingsBloc.viewerSettings;
-      _jsApi?.initSpineItem(
-        publication,
-        spineItem,
-        settings,
-        openPageRequestData,
-        elementIds,
-      );
-      refreshPage();
-      _jsApi?.setStyles(theme, settings);
+      if (openPageRequestData != null) {
+        _jsApi?.openPage(openPageRequestData);
+      }
       _updateSpineItemPosition(_currentSpineItemBloc.state);
       // TODO Reactivate
       readerContext.readerAnnotationRepository
           .allWhere(
               predicate: AnnotationTypeAndDocumentPredicate(
-                  spineItem.id!, AnnotationType.bookmark))
+                  spineItem.href, AnnotationType.bookmark))
           .then((annotations) => _jsApi?.computeAnnotationsInfo(annotations));
       _annotationsSubscription = readerContext
           .readerAnnotationRepository.deletedIdsStream

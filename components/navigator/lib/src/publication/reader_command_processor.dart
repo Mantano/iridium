@@ -20,8 +20,8 @@ class GoToHrefCommandProcessor extends ReaderCommandProcessor<GoToHrefCommand> {
 
   @override
   int findSpineItemIndex(GoToHrefCommand command, Publication publication) =>
-      publication.pageLinks.indexWhere(
-              (spineItem) => spineItem.href.removePrefix("/") == command.href.removePrefix("/"));
+      publication.pageLinks.indexWhere((spineItem) =>
+          spineItem.href.removePrefix("/") == command.href.removePrefix("/"));
   @override
   OpenPageRequest createOpenPageRequestForCommand(GoToHrefCommand command) =>
       OpenPageRequest.fromElementId(command.href, command.fragment);
@@ -33,16 +33,19 @@ class GoToLocationCommandProcessor
 
   @override
   int findSpineItemIndex(GoToLocationCommand command, Publication publication) {
-    ReadiumLocation readiumLocation = command.readiumLocation;
+    Locator locator = command.locator;
     return publication.pageLinks
-        .indexWhere((spineItem) => spineItem.id == readiumLocation.idref);
+        .indexWhere((spineItem) => spineItem.href == locator.href);
   }
 
   @override
   OpenPageRequest createOpenPageRequestForCommand(GoToLocationCommand command) {
-    ReadiumLocation readiumLocation = command.readiumLocation;
-    return OpenPageRequest.fromIdrefAndCfi(
-        readiumLocation.idref, readiumLocation.contentCFI);
+    Locator locator = command.locator;
+    double? progression = locator.locations.progression;
+    if (progression != null) {
+      return OpenPageRequest.fromIdrefAndPercentage(locator.href, progression);
+    }
+    return OpenPageRequest.fromIdref(locator.href);
   }
 }
 

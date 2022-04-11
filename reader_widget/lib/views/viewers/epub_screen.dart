@@ -77,7 +77,7 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   Future<bool> onWillPop() async {
     try {
       Navigator.pop(context, {
-        'location': readerContext.paginationInfo!.location.json,
+        'locator': readerContext.paginationInfo!.locator.json,
         'settings': _viewerSettingsBloc.viewerSettings.fontSize.toString(),
         'theme': json.encode(_readerThemeBloc.currentTheme.toJson()),
       });

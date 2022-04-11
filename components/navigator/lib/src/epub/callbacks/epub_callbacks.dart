@@ -22,10 +22,13 @@ class EpubCallbacks {
       ReaderAnnotationRepository? bookmarkRepository,
       WebViewHorizontalGestureRecognizer? webViewHorizontalGestureRecognizer,
       WebViewListener listener)
-      : _launcherUIChannels =
-            LauncherUIChannels(spineItemContext, bookmarkRepository),
-        _readiumGesturesChannels = ReadiumChannels(spineItemContext,
-            viewerSettingsBloc, webViewHorizontalGestureRecognizer, listener);
+      : _launcherUIChannels = LauncherUIChannels(),
+        _readiumGesturesChannels = ReadiumChannels(
+            spineItemContext,
+            bookmarkRepository,
+            viewerSettingsBloc,
+            webViewHorizontalGestureRecognizer,
+            listener);
 
   Map<String, JavaScriptHandlerCallback> get channels => {
         ..._launcherUIChannels.channels,

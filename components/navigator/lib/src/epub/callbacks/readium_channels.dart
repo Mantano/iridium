@@ -9,19 +9,33 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/callbacks/model/tap_event.dart';
 import 'package:mno_navigator/src/epub/callbacks/webview_listener.dart';
+import 'package:mno_shared/publication.dart';
 
 class ReadiumChannels extends JavascriptChannels {
   final SpineItemContext _spineItemContext;
+  final ReaderAnnotationRepository? _bookmarkRepository;
   final ViewerSettingsBloc? viewerSettingsBloc;
   final WebViewHorizontalGestureRecognizer? webViewHorizontalGestureRecognizer;
   final WebViewListener listener;
+  final Locator locator;
   late JsApi jsApi;
 
-  ReadiumChannels(this._spineItemContext, this.viewerSettingsBloc,
-      this.webViewHorizontalGestureRecognizer, this.listener);
+  ReadiumChannels(
+      this._spineItemContext,
+      this._bookmarkRepository,
+      this.viewerSettingsBloc,
+      this.webViewHorizontalGestureRecognizer,
+      this.listener)
+      : locator = Locator(
+          href: _spineItemContext.spineItem.href,
+          type: _spineItemContext.spineItem.type ?? "text/html",
+          title: _spineItemContext.spineItem.title,
+        );
 
   @override
   Map<String, JavaScriptHandlerCallback> get channels => {
+        "onPaginationInfo": _onPaginationChanged,
+        "oOnToggleBookmark": _onToggleBookmark,
         "onTap": _onTap,
         "onSwipeUp": _onSwipeUp,
         "onSwipeDown": _onSwipeDown,
@@ -36,6 +50,47 @@ class ReadiumChannels extends JavascriptChannels {
         "onLeftOverlayVisibilityChanged": _onLeftOverlayVisibilityChanged,
         "onRightOverlayVisibilityChanged": _onRightOverlayVisibilityChanged,
       };
+
+  void _onPaginationChanged(List<dynamic> arguments) {
+    if (arguments.isNotEmpty) {
+      Fimber.d("onPaginationChanged: ${arguments.first}");
+      try {
+        PaginationInfo paginationInfo = PaginationInfo.fromJson(
+            arguments.first,
+            _spineItemContext.spineItemIndex,
+            locator,
+            _spineItemContext.linkPagination);
+        _spineItemContext.notifyPaginationInfo(paginationInfo);
+      } on Object catch (e, stacktrace) {
+        Fimber.d("onPaginationChanged error: $e, $stacktrace",
+            ex: e, stacktrace: stacktrace);
+      }
+    }
+  }
+
+  void _onToggleBookmark(List<dynamic> arguments) {
+    if (arguments.isNotEmpty) {
+      // Fimber.d("onToggleBookmark: ${arguments.first}");
+      try {
+        PaginationInfo paginationInfo = PaginationInfo.fromJson(
+            arguments.first,
+            _spineItemContext.spineItemIndex,
+            locator,
+            _spineItemContext.linkPagination);
+        if (paginationInfo.pageBookmarks.isNotEmpty) {
+          _bookmarkRepository?.delete(paginationInfo.pageBookmarks);
+          jsApi.removeBookmark(paginationInfo);
+        } else {
+          _bookmarkRepository
+              ?.createReaderAnnotation(paginationInfo)
+              .then((ReaderAnnotation bookmark) => jsApi.addBookmark(bookmark));
+        }
+      } on Object catch (e, stacktrace) {
+        Fimber.d("onToggleBookmark error: $e, $stacktrace",
+            ex: e, stacktrace: stacktrace);
+      }
+    }
+  }
 
   bool _onTap(List<dynamic> arguments) {
     TapEvent? event = TapEvent.fromJSON(arguments.first);

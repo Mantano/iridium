@@ -7,58 +7,18 @@ import 'dart:convert';
 import 'package:fimber/fimber.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
-import 'package:mno_navigator/publication.dart';
 
 class LauncherUIChannels extends JavascriptChannels {
-  final SpineItemContext _spineItemContext;
-  final ReaderAnnotationRepository? _bookmarkRepository;
   late JsApi jsApi;
 
-  LauncherUIChannels(this._spineItemContext, this._bookmarkRepository);
+  LauncherUIChannels();
 
   @override
   Map<String, JavaScriptHandlerCallback> get channels => {
-        "LauncherUIOnPaginationChanged": _onPaginationChanged,
-        "LauncherUIOnToggleBookmark": _onToggleBookmark,
         "LauncherUIContentRefUrlsPageComputed": _contentRefUrlsPageComputed,
         "LauncherUIImageZoomed": _imageZoomed,
         "LauncherUIOpenSpineItemForTts": _openSpineItemForTts,
       };
-
-  void _onPaginationChanged(List<dynamic> arguments) {
-    if (arguments.isNotEmpty) {
-      // Fimber.d("onPaginationChanged: ${arguments.first}");
-      try {
-        PaginationInfo paginationInfo = PaginationInfo.fromJson(
-            arguments.first, _spineItemContext.linkPagination);
-        _spineItemContext.notifyPaginationInfo(paginationInfo);
-      } on Object catch (e, stacktrace) {
-        Fimber.d("onPaginationChanged error: $e, $stacktrace",
-            ex: e, stacktrace: stacktrace);
-      }
-    }
-  }
-
-  void _onToggleBookmark(List<dynamic> arguments) {
-    if (arguments.isNotEmpty) {
-      // Fimber.d("onToggleBookmark: ${arguments.first}");
-      try {
-        PaginationInfo paginationInfo = PaginationInfo.fromJson(
-            arguments.first, _spineItemContext.linkPagination);
-        if (paginationInfo.pageBookmarks.isNotEmpty) {
-          _bookmarkRepository?.delete(paginationInfo.pageBookmarks);
-          jsApi.removeBookmark(paginationInfo);
-        } else {
-          _bookmarkRepository
-              ?.createReaderAnnotation(paginationInfo)
-              .then((ReaderAnnotation bookmark) => jsApi.addBookmark(bookmark));
-        }
-      } on Object catch (e, stacktrace) {
-        Fimber.d("onToggleBookmark error: $e, $stacktrace",
-            ex: e, stacktrace: stacktrace);
-      }
-    }
-  }
 
   void _contentRefUrlsPageComputed(List<dynamic> arguments) {
     if (arguments.isNotEmpty) {

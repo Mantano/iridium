@@ -38,6 +38,34 @@ function getDirection() {
   return window.getComputedStyle(document.body).getPropertyValue("direction");
 }
 
+function getNbScreenshotThumbnails() {
+  let nbScreenshotThumbnails = window
+    .getComputedStyle(document.body)
+    .getPropertyValue("--RS__nbScreenshotThumbnails");
+  return nbScreenshotThumbnails === undefined || nbScreenshotThumbnails == ""
+    ? 1
+    : nbScreenshotThumbnails;
+}
+
+function createPaginationInfo(index, nbCols, nbThumbnails) {
+  let progression =
+    (Math.floor(getComputedStyle(document.body)["width"].replace("px", "")) *
+      index) /
+    document.body.getBoundingClientRect().width;
+  return JSON.stringify({
+    location: {
+      version: 2,
+      idref: "idref",
+      progression: progression,
+    },
+    openPage: {
+      spineItemPageIndex: index,
+      spineItemPageCount: nbCols,
+      nbThumbnails: nbThumbnails,
+    },
+  });
+}
+
 var observers = [];
 
 readium.initPagination = function () {
@@ -53,25 +81,14 @@ readium.initPagination = function () {
     empty(paginator);
     const isRtl = getDirection() === "rtl";
 
-    var documentWidth = document.scrollingElement.scrollWidth;
-    var width = await flutter.getViewportWidth();
-    var pageWidth = width / window.devicePixelRatio;
+    let documentWidth = document.scrollingElement.scrollWidth;
+    let pageWidth = document.body.clientWidth;
     let nbCols = Math.round(documentWidth / pageWidth);
-    console.log(
-      "documentWidth: " +
-        documentWidth +
-        ", width: " +
-        width +
-        ", pageWidth: " +
-        pageWidth +
-        ", nbCols: " +
-        nbCols
-    );
-    // console.log("=========== " + window.location.href + ", nbCols: " + nbCols);
 
-    // xpub.paginationInfo.columnCount = nbCols;
     paginator.style.width = documentWidth;
     paginator.style.maxWidth = documentWidth;
+    let nbThumbnails = getNbScreenshotThumbnails();
+    // let nbThumbnailsCount = Math.ceil(nbCols / nbThumbnails);
 
     //    if (xpub.screenshotConfig) {
     //      let spineItemPageThumbnailsCount = $(
@@ -113,10 +130,9 @@ readium.initPagination = function () {
       let observer = new IntersectionObserver(
         function (entries) {
           if (entries[0].isIntersecting) {
-            // TODO implement triggerOnPaginationChanged
-            // let index = entries[0].target.getAttribute("page");
-            // xpub.paginationInfo.currentSpreadIndex = index;
-            // xpub.triggerOnPaginationChanged();
+            flutter.onPaginationInfo(
+              createPaginationInfo(i, nbCols, nbThumbnails)
+            );
           }
         },
         { threshold: [0.99] }
@@ -134,8 +150,9 @@ readium.initPagination = function () {
         "click",
         function (event) {
           flutter.log(event);
-          // TODO implement toggleBookmark
-          // xpub.navigation.toggleBookmark();
+          flutter.oOnToggleBookmark(
+            createPaginationInfo(i, nbCols, nbThumbnails)
+          );
         },
         false
       );
@@ -145,7 +162,7 @@ readium.initPagination = function () {
       function (entries) {
         // isIntersecting is true when element and viewport are overlapping
         // isIntersecting is false when element and viewport don't overlap
-        // console.log("=========== observerLeft, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
+        // flutter.log("=========== observerLeft, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
         flutter.onLeftOverlayVisibilityChanged(
           entries[0].intersectionRatio >= 0.99
         );
@@ -156,7 +173,7 @@ readium.initPagination = function () {
       function (entries) {
         // isIntersecting is true when element and viewport are overlapping
         // isIntersecting is false when element and viewport don't overlap
-        //                console.log("=========== observerRight, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
+        // flutter.log("=========== observerRight, entry dimensions: " + entries[0].boundingClientRect.width + "x" + + entries[0].boundingClientRect.height + ", intersectionRatio: " + entries[0].intersectionRatio + ", isIntersecting? " + entries[0].isIntersecting);
         flutter.onRightOverlayVisibilityChanged(
           entries[0].intersectionRatio >= 0.99
         );
@@ -166,12 +183,12 @@ readium.initPagination = function () {
     observers.push(observerLeft);
     observers.push(observerRight);
     let firstDivQuerySelector = document.querySelector(leftDivSelector);
-    //             console.log("=========== firstDivQuerySelector: " + firstDivQuerySelector);
+    // flutter.log("=========== firstDivQuerySelector: " + firstDivQuerySelector);
     if (firstDivQuerySelector != null) {
       observerLeft.observe(firstDivQuerySelector);
     }
     let lastDivQuerySelector = document.querySelector(rightDivSelector);
-    //             console.log("=========== lastDivQuerySelector: " + lastDivQuerySelector);
+    // flutter.log("=========== lastDivQuerySelector: " + lastDivQuerySelector);
     if (lastDivQuerySelector != null) {
       observerRight.observe(lastDivQuerySelector);
     }
@@ -183,36 +200,35 @@ readium.initPagination = function () {
     //      xpub.elementIdsWithPageIndex.set(elementId, pageIndex);
     //    }
 
-    //    if (xpub.screenshotConfig) {
-    //      document.fonts.ready.then(function () {
-    //        let nbThumbnails = xpub.screenshotConfig.nbThumbnails;
-    //        let xpubContainer = $(".xpub_container");
-    //        let containerHeight = xpubContainer[0].clientHeight;
-    //        let containerWidth = xpubContainer[0].clientWidth;
-    //        let translateLeft = -(
-    //          (containerWidth / nbThumbnails) *
-    //          ((nbThumbnails - 1) / 2)
-    //        );
-    //        let translateTop = -(
-    //          (containerHeight / nbThumbnails) *
-    //          ((nbThumbnails - 1) / 2)
-    //        );
-    //        let scale = 1 / nbThumbnails;
-    //        $("#xpub_spineItemContents")[0].style.transform =
-    //          "translate(" +
-    //          translateLeft +
-    //          "px, " +
-    //          translateTop +
-    //          "px) scale(" +
-    //          scale +
-    //          ")";
-    //        if (paginator.length === 0) {
-    //          document.fonts.ready.then(function () {
-    //            xpub.triggerOnPaginationChanged();
-    //          });
-    //        }
-    //      });
-    //    }
+    if (nbThumbnails > 1) {
+      //      document.fonts.ready.then(function () {
+      //        let xpubContainer = $(".xpub_container");
+      //        let containerHeight = xpubContainer[0].clientHeight;
+      //        let containerWidth = xpubContainer[0].clientWidth;
+      //        let translateLeft = -(
+      //          (containerWidth / nbThumbnails) *
+      //          ((nbThumbnails - 1) / 2)
+      //        );
+      //        let translateTop = -(
+      //          (containerHeight / nbThumbnails) *
+      //          ((nbThumbnails - 1) / 2)
+      //        );
+      //        let scale = 1 / nbThumbnails;
+      //        $("#xpub_spineItemContents")[0].style.transform =
+      //          "translate(" +
+      //          translateLeft +
+      //          "px, " +
+      //          translateTop +
+      //          "px) scale(" +
+      //          scale +
+      //          ")";
+      //        if (paginator.length === 0) {
+      //          document.fonts.ready.then(function () {
+      //            xpub.triggerOnPaginationChanged();
+      //          });
+      //        }
+      //      });
+    }
     //     $('#xpub_spineItemContents')[0].style.transform = "scale(" + 0.1 + ")";
   });
 };

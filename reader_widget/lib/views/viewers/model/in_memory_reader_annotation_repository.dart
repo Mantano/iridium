@@ -16,7 +16,7 @@ class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
   Future<ReaderAnnotation> createReaderAnnotation(
       PaginationInfo paginationInfo) async {
     ReaderAnnotation readerAnnotation = ReaderAnnotation(
-        "$_currentId", paginationInfo.location.json, AnnotationType.bookmark);
+        "$_currentId", paginationInfo.locator.json, AnnotationType.bookmark);
     _currentId++;
     annotations.add(readerAnnotation);
     return readerAnnotation;

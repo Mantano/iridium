@@ -12,3 +12,6 @@ Run `npm install`, then use one of the following:
 * `yarn run lint` Check code quality.
 * `yarn run checkformat` Check if there's any formatting issues.
 * `yarn run format` Automatically format JavaScript sources.
+
+In case `bundle` does not work with recent NodeJS versions (17+), a workaround is:
+`export NODE_OPTIONS=--openssl-legacy-provider`

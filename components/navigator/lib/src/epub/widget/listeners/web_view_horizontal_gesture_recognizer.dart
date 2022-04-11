@@ -64,7 +64,6 @@ class WebViewHorizontalGestureRecognizer
   @override
   void handleEvent(PointerEvent event) {
     // TODO Fix this: readerContext.currentSpineItem?.title is null, so we are using this path to access the title of the current spine item
-    var curHRef = getSpineItemHref();
     // Fimber.d(
     //     ">>> handleEvent[$chapNumber][$curHRef] =============== i_leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
     _dragDistance = _dragDistance + event.delta;

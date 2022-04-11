@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
+import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_shared/epub.dart';
@@ -22,35 +23,17 @@ class JsApi {
     return _jsLoader(jScript);
   }
 
-  void initSpineItem(
-      Publication publication,
-      Link link,
-      ViewerSettings viewerSettings,
-      OpenPageRequest? openPageRequestData,
-      List<String> elementIds,
-      {ScreenshotConfig? screenshotConfig}) {
-    Link? previousSpineItem = getPreviousSpineItem(publication, link);
-    Link? nextSpineItem = getNextSpineItem(publication, link);
-
-    Map<String, dynamic> openBookData = {
-      'package': publicationToJson(publication, link),
-      'spineItem': spineItemToJson(publication, link),
-      if (previousSpineItem != null)
-        'previousSpineItem': spineItemToJson(publication, previousSpineItem),
-      if (nextSpineItem != null)
-        'nextSpineItem': spineItemToJson(publication, nextSpineItem),
-      'settings': viewerSettings.toJson(),
-      if (openPageRequestData != null)
-        'openPageRequest': openPageRequestData.toJson(),
-      if (screenshotConfig != null)
-        'screenshotConfig': screenshotConfig.toJson(),
-      if (elementIds.isNotEmpty) 'elementIds': elementIds,
-    };
-    loadJS("xpub.initSpineItem(${const JsonCodec().encode(openBookData)});");
+  void openPage(OpenPageRequest openPageRequestData) {
+    if (openPageRequestData.spineItemPercentage != null) {
+      loadJS(
+          "readium.scrollToPosition(\"${openPageRequestData.spineItemPercentage}\");");
+    } else if (openPageRequestData.elementId != null) {
+      loadJS("readium.scrollToId(\"${openPageRequestData.elementId}\");");
+    } else if (openPageRequestData.text != null) {
+      String data = json.encode(openPageRequestData.text!.toJson());
+      loadJS("readium.scrollToText($data);");
+    }
   }
-
-  void openPage(OpenPageRequest openPageRequestData) => loadJS(
-      "xpub.navigation.openPage(${const JsonCodec().encode(openPageRequestData.toJson())});");
 
   void setStyles(ReaderThemeConfig readerTheme, ViewerSettings viewerSettings) {
     if (!hasNoStyle()) {
@@ -59,7 +42,6 @@ class JsApi {
       values.cssVarsAndValues.forEach((key, value) {
         loadJS("readium.setProperty('$key', '$value');");
       });
-      // loadJS("xpub.theme.setVerticalMargin(${values.verticalMarginInt});");
       initPagination();
     }
   }
@@ -81,11 +63,11 @@ class JsApi {
   }
 
   void navigateToStart() {
-    loadJS("xpub.navigateToStart();");
+    loadJS("readium.scrollToStart();");
   }
 
   void navigateToEnd() {
-    loadJS("xpub.navigateToEnd();");
+    loadJS("readium.scrollToEnd();");
   }
 
   bool hasNoStyle() => false;
@@ -102,10 +84,6 @@ class JsApi {
     return spineItemIdx < spine.length - 1 ? spine[spineItemIdx + 1] : null;
   }
 
-  void gotoPrevPage() => loadJS("xpub.openPagePrev();");
-
-  void gotoNextPage() => loadJS("xpub.openPageNext();");
-
   Future<dynamic> scrollLeft() => loadJS("readium.scrollLeft();");
 
   Future<dynamic> scrollRight() => loadJS("readium.scrollRight();");
@@ -118,11 +96,10 @@ class JsApi {
   }
 
   void computeAnnotationInfo(ReaderAnnotation bookmark) {
-    ReadiumLocation location =
-        ReadiumLocation.createLocation(bookmark.location);
-    if (bookmark.isHighlight) {
+    Locator? locator = Locator.fromJson(bookmark.location.toJsonOrNull());
+    if (locator != null && bookmark.isHighlight) {
       loadJS(
-          "xpub.highlight.computeBoxesForCfi('${location.idref}', '${bookmark.id}', '${location.contentCFI}');");
+          "xpub.highlight.computeBoxesForCfi('${locator.href}', '${bookmark.id}', '${locator.locations.partialCfi}');");
     } else if (bookmark.isBookmark) {
       addBookmark(bookmark);
     }

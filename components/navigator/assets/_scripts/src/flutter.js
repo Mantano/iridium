@@ -49,4 +49,10 @@ export default {
   onSwipeUp: function (value) {
     window.flutter_inappwebview.callHandler("onSwipeUp", value);
   },
+  onPaginationInfo: function (value) {
+    window.flutter_inappwebview.callHandler("onPaginationInfo", value);
+  },
+  oOnToggleBookmark: function (value) {
+    window.flutter_inappwebview.callHandler("oOnToggleBookmark", value);
+  },
 };

@@ -22,6 +22,7 @@ class SpineItemContextWidget extends InheritedWidget {
 }
 
 class SpineItemContext {
+  final int spineItemIndex;
   final ReaderContext readerContext;
   final LinkPagination linkPagination;
   final StreamController<PaginationInfo> _paginationInfoStreamController;
@@ -29,11 +30,14 @@ class SpineItemContext {
   JsApi? jsApi;
 
   SpineItemContext({
+    required this.spineItemIndex,
     required this.readerContext,
     required this.linkPagination,
   }) : _paginationInfoStreamController = StreamController.broadcast();
 
   Publication get publication => readerContext.publication!;
+
+  Link get spineItem => publication.readingOrder[spineItemIndex];
 
   Stream<PaginationInfo> get paginationInfoStream =>
       _paginationInfoStreamController.stream;

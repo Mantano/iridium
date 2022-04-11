@@ -74,27 +74,20 @@ class CbzController extends PublicationController {
     Link spineItem = spine[position];
     LinkPagination linkPagination = publication.paginationInfo[spineItem]!;
     Map data = {
-      "spineItem": {
-        "idref": spineItem.href,
-        "href": spineItem.href,
-      },
       "location": {
-        "version": ReadiumLocation.currentVersion,
         "idref": spineItem.href,
+        "progression": 0.0,
       },
-      "openPages": [
-        {
-          "spineItemPageIndex": 0,
-          "spineItemPageCount": 1,
-          "idref": spineItem.href,
-          "spineItemIndex": position,
-        },
-      ],
+      "openPage": {
+        "spineItemPageIndex": 0,
+        "spineItemPageCount": 1,
+      },
     };
     String json = const JsonCodec().encode(data);
+    Locator locator = spineItem.toLocator();
     try {
       PaginationInfo paginationInfo =
-          PaginationInfo.fromJson(json, linkPagination);
+          PaginationInfo.fromJson(json, position, locator, linkPagination);
       readerContext!.notifyCurrentLocation(paginationInfo, spineItem);
     } catch (e, stacktrace) {
       Fimber.d("error: $e", ex: e, stacktrace: stacktrace);

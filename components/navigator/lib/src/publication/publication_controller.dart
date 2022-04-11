@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:dartx/dartx.dart';
+import 'package:dfunc/dfunc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -91,20 +92,16 @@ abstract class PublicationController {
 
   void initReaderContext(ReaderContext readerContext) {
     this.readerContext = readerContext;
-    int initialPage = _initPageFromLocation(readerContext.readiumLocation);
+    int initialPage =
+        readerContext.locator?.let((it) => _initPageFromLocation(it)) ?? 0;
     initPageController(initialPage);
     onPageChanged(initialPage);
   }
 
-  int _initPageFromLocation(ReadiumLocation readiumLocation) {
-    int page = 0;
-    page = publication.readingOrder
-        .indexWhere((link) => link.id == readiumLocation.idref);
-    if (page < 0) {
-      page = publication.pageList
-          .indexWhere((link) => link.id == readiumLocation.idref);
-    }
-    return max(0, page);
+  int _initPageFromLocation(Locator locator) {
+    int? page = publication.readingOrder.indexOfFirstWithHref(locator.href) ??
+        publication.pageList.indexOfFirstWithHref(locator.href);
+    return max(0, page ?? -1);
   }
 
   void jumpToPage(int page);
@@ -125,7 +122,7 @@ abstract class PublicationController {
     readerCommandSubscription =
         readerContext.commandsStream.listen(_onReaderCommand);
     if (readerContext.location != null) {
-      readerContext.execute(GoToLocationCommand(readerContext.location));
+      readerContext.execute(GoToLocationCommand(readerContext.location!));
     }
   }
 
