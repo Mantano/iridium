@@ -12,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
-import 'package:mno_navigator/src/epub/callbacks/epub_webview_listener.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
@@ -179,6 +178,9 @@ class WebViewScreenState extends State<WebViewScreen> {
     try {
       OpenPageRequest? openPageRequestData =
           _getOpenPageRequestFromCommand(readerContext.readerCommand);
+      List<String> elementIds =
+          readerContext.getElementIdsFromSpineItem(position);
+      _jsApi?.setElementIds(elementIds);
       if (openPageRequestData != null) {
         _jsApi?.openPage(openPageRequestData);
       }

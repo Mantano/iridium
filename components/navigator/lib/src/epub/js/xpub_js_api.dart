@@ -23,6 +23,10 @@ class JsApi {
     return _jsLoader(jScript);
   }
 
+  void setElementIds(List<String> elementIds) {
+    loadJS("readium.elementIds = ${json.encode(elementIds)};");
+  }
+
   void openPage(OpenPageRequest openPageRequestData) {
     if (openPageRequestData.spineItemPercentage != null) {
       loadJS(
@@ -92,7 +96,6 @@ class JsApi {
     for (ReaderAnnotation bookmark in bookmarkList) {
       computeAnnotationInfo(bookmark);
     }
-    _triggerOnPaginationChanged();
   }
 
   void computeAnnotationInfo(ReaderAnnotation bookmark) {
@@ -123,50 +126,6 @@ class JsApi {
           "xpub.bookmarks.removeBookmarks(${const JsonCodec().encode(bookmarkIds)});");
     }
   }
-
-  void _triggerOnPaginationChanged() =>
-      loadJS("xpub.triggerOnPaginationChanged();");
-
-  Map<String, dynamic> publicationToJson(Publication publication, Link link) =>
-      {
-        'rootUrl': '',
-        'rootUrlMO': '',
-        'rendition_layout':
-            epubLayoutToJson(publication.metadata.presentation.layoutOf(link)),
-        'rendition_flow':
-            renditionOverflowToJson(publication.metadata.presentation),
-        'rendition_orientation': renditionOrientationToJson(
-            publication.metadata.presentation.orientation),
-        'rendition_spread':
-            renditionSpreadToJson(publication.metadata.presentation.spread),
-        // FIXME: pagesCount
-//        'pagesCount':
-        'direction':
-            readingProgressionToJson(publication.metadata.readingProgression),
-        'spineItemCount': publication.readingOrder.length,
-      };
-
-  Map<String, dynamic> spineItemToJson(Publication publication, Link link) => {
-        'index': publication.readingOrder.indexOf(link),
-        'href': link.href,
-        'media_type': link.type,
-        if (publication.metadata.presentation.spread != PresentationSpread.none)
-          'page_spread': pageToJson(link.properties.page),
-        'idref': link.id,
-        'rendition_layout':
-            epubLayoutToJson(publication.metadata.presentation.layoutOf(link)),
-        'rendition_flow':
-            renditionOverflowToJson(publication.metadata.presentation),
-        'rendition_orientation': renditionOrientationToJson(
-            publication.metadata.presentation.orientation),
-        'rendition_spread':
-            renditionSpreadToJson(publication.metadata.presentation.spread),
-        'linear': 'yes',
-        // FIXME: pagesCount and firstPageNumber
-//        'pagesCount': link.pagesCount,
-//        'firstPageNumber': link.firstPageNumber,
-        'media_overlay_id': '',
-      };
 
   String? epubLayoutToJson(EpubLayout layout) {
     if (layout == EpubLayout.fixed) {

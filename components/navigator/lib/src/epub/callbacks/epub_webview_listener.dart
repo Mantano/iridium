@@ -10,10 +10,10 @@ import 'package:mno_shared/publication.dart';
 class EpubWebViewListener extends WebViewListener {
   final SpineItemContext _spineItemContext;
   final ViewerSettingsBloc? viewerSettingsBloc;
-  final PublicationController publicationController;
+  final NavigationController navigator;
 
-  EpubWebViewListener(this._spineItemContext, this.viewerSettingsBloc,
-      this.publicationController);
+  EpubWebViewListener(
+      this._spineItemContext, this.viewerSettingsBloc, this.navigator);
 
   @override
   ReadingProgression get readingProgression => ReadingProgression.ltr;
@@ -60,18 +60,16 @@ class EpubWebViewListener extends WebViewListener {
 
   @override
   bool goRight(
-      {bool animated = false,
-      Function completion = WebViewListener.emptyFunc}) {
-    publicationController.onSkipRight(animated: animated);
+      {bool animated = false, Function completion = NavigationController.emptyFunc}) {
+    navigator.onSkipRight(animated: animated);
     completion();
     return true;
   }
 
   @override
   bool goLeft(
-      {bool animated = false,
-      Function completion = WebViewListener.emptyFunc}) {
-    publicationController.onSkipLeft(animated: animated);
+      {bool animated = false, Function completion = NavigationController.emptyFunc}) {
+    navigator.onSkipLeft(animated: animated);
     completion();
     return true;
   }

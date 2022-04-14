@@ -14,9 +14,10 @@ class PaginationInfo {
   final List<String> pageBookmarks = [];
   final Page openPage;
   final LinkPagination linkPagination;
+  final Map<String, int> elementIdsWithPageIndex;
 
   PaginationInfo(this.json, this.spineItemIndex, this.locator, this.location,
-      this.openPage, this.linkPagination);
+      this.openPage, this.linkPagination, this.elementIdsWithPageIndex);
 
   static PaginationInfo fromJson(String jsonString, int spineItemIndex,
       Locator locator, LinkPagination linkPagination) {
@@ -24,13 +25,16 @@ class PaginationInfo {
     Map<String, dynamic> json = const JsonCodec().decode(jsonString);
     Location location = _locationFromJson(json);
     Page openPage = _openPageFromJson(json);
+    Map<String, int> elementIdsWithPageIndex =
+        _elementIdsWithPageIndexFromJson(json);
     PaginationInfo paginationInfo = PaginationInfo(
         json,
         spineItemIndex,
         locator.copyWithLocations(progression: location.progression),
         location,
         openPage,
-        linkPagination);
+        linkPagination,
+        elementIdsWithPageIndex);
     List<dynamic> pageBookmarks = json["pageBookmarks"] ?? [];
     paginationInfo.pageBookmarks.addAll(pageBookmarks.map((s) => s.toString()));
     return paginationInfo;
@@ -62,6 +66,17 @@ class PaginationInfo {
     Map<String, dynamic> openPage = json["openPage"];
     return Page(openPage["spineItemPageIndex"], openPage["spineItemPageCount"],
         openPage["spineItemPageThumbnailsCount"] ?? 1);
+  }
+
+  static Map<String, int> _elementIdsWithPageIndexFromJson(
+      Map<String, dynamic> json) {
+    Map<String, dynamic>? elementIdsWithPageIndexJson =
+        json["elementIdsWithPageIndex"];
+    if (elementIdsWithPageIndexJson != null) {
+      return elementIdsWithPageIndexJson
+          .map((key, value) => MapEntry(key, int.parse(value.toString())));
+    }
+    return {};
   }
 
   String? getString(String name) =>

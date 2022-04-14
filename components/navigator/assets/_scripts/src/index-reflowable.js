@@ -9,6 +9,7 @@
 import "./index";
 import flutter from "./flutter";
 import "tocca";
+import { isScrollModeEnabled } from "./utils";
 
 document.scrollingElement.addEventListener("swipeup", function (event) {
   event.stopPropagation();
@@ -34,6 +35,13 @@ function empty(element) {
   });
 }
 
+function mapToObj(m) {
+  return Array.from(m).reduce((obj, [key, value]) => {
+    obj[key] = value;
+    return obj;
+  }, {});
+}
+
 function getDirection() {
   return window.getComputedStyle(document.body).getPropertyValue("direction");
 }
@@ -48,10 +56,24 @@ function getNbScreenshotThumbnails() {
 }
 
 function createPaginationInfo(index, nbCols, nbThumbnails) {
+  let pageWidth = Math.floor(
+    getComputedStyle(document.body)["width"].replace("px", "")
+  );
   let progression =
-    (Math.floor(getComputedStyle(document.body)["width"].replace("px", "")) *
-      index) /
-    document.body.getBoundingClientRect().width;
+    (pageWidth * index) / document.body.getBoundingClientRect().width;
+  let elementIdsWithPageIndex = new Map();
+  if (!isScrollModeEnabled() && readium.elementIds !== undefined) {
+    for (let i in readium.elementIds) {
+      let elementId = readium.elementIds[i];
+      let element = document.getElementById(elementId);
+      if (element === undefined) {
+        break;
+      }
+      let offset = element.getBoundingClientRect().left + window.scrollX;
+      let pageIndex = Math.floor(offset / pageWidth);
+      elementIdsWithPageIndex.set(elementId, pageIndex);
+    }
+  }
   return JSON.stringify({
     location: {
       version: 2,
@@ -63,6 +85,7 @@ function createPaginationInfo(index, nbCols, nbThumbnails) {
       spineItemPageCount: nbCols,
       nbThumbnails: nbThumbnails,
     },
+    elementIdsWithPageIndex: mapToObj(elementIdsWithPageIndex),
   });
 }
 

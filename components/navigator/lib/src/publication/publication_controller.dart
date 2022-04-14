@@ -15,7 +15,7 @@ import 'package:mno_shared/epub.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
 
-abstract class PublicationController {
+abstract class PublicationController extends NavigationController {
   final Function onServerClosed;
   final Function? onPageJump;
   final Future<String?> locationFuture;
@@ -109,10 +109,6 @@ abstract class PublicationController {
   bool get pageControllerAttached;
 
   void initPageController(int initialPage);
-
-  void onSkipRight({bool animated = true});
-
-  void onSkipLeft({bool animated = true});
 
   void onPageChanged(int position) =>
       currentSpineItemBloc.add(CurrentSpineItemEvent(position));
