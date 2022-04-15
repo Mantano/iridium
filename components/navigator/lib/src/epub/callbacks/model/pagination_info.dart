@@ -10,14 +10,13 @@ class PaginationInfo {
   final Map<String, dynamic> json;
   final int spineItemIndex;
   final Locator locator;
-  final Location location;
   final List<String> pageBookmarks = [];
   final Page openPage;
   final LinkPagination linkPagination;
   final Map<String, int> elementIdsWithPageIndex;
 
-  PaginationInfo(this.json, this.spineItemIndex, this.locator, this.location,
-      this.openPage, this.linkPagination, this.elementIdsWithPageIndex);
+  PaginationInfo(this.json, this.spineItemIndex, this.locator, this.openPage,
+      this.linkPagination, this.elementIdsWithPageIndex);
 
   static PaginationInfo fromJson(String jsonString, int spineItemIndex,
       Locator locator, LinkPagination linkPagination) {
@@ -31,7 +30,6 @@ class PaginationInfo {
         json,
         spineItemIndex,
         locator.copyWithLocations(progression: location.progression),
-        location,
         openPage,
         linkPagination,
         elementIdsWithPageIndex);
@@ -56,7 +54,6 @@ class PaginationInfo {
     Map<String, dynamic> locationJson = json["location"];
     return Location(
         const JsonCodec().encode(locationJson),
-        locationJson["version"] as int,
         locationJson["cfi"],
         locationJson["elementCfi"],
         (locationJson["progression"] as num?)?.toDouble());
@@ -105,18 +102,15 @@ class Page {
 }
 
 class Location {
-  final int version;
   final String json;
   final String? cfi;
   final String? elementCfi;
   final double? progression;
 
-  Location(
-      this.json, this.version, this.cfi, this.elementCfi, this.progression);
+  Location(this.json, this.cfi, this.elementCfi, this.progression);
 
   @override
-  String toString() => 'Location{version: $version, '
-      'cfi: $cfi, '
+  String toString() => 'Location{cfi: $cfi, '
       'elementCfi: $elementCfi, '
       'progression: $progression}';
 }
