@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   bloc: ^8.0.3
-  dartx: ^1.0.0
+  dartx: ^1.1.0
   dfunc: ^0.7.2
   equatable: ^2.0.3
   fimber: ^0.6.5
@@ -32,7 +32,7 @@ dependencies:
     path: ../streamer
 
 dev_dependencies:
-  test: ^1.20.1
+  test: ^1.21.0
   lints: ^1.0.1
 
 flutter:
