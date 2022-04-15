@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   bloc: ^8.0.3
-  dartx: ^1.0.0
+  dartx: ^1.1.0
   dfunc: ^0.7.2
   equatable: ^2.0.3
   fimber: ^0.6.5
@@ -20,7 +20,7 @@ dependencies:
   photo_view: ^0.13.0
   preload_page_view: ^0.1.6
   universal_io: ^2.0.4
-  webview_flutter: ^3.0.1
+  webview_flutter: ^3.0.2
   webview_flutter_web: ^0.1.0+1
   flutter_spinkit: ^5.1.0
 
@@ -34,7 +34,7 @@ dependencies:
     path: ../streamer
 
 dev_dependencies:
-  test: ^1.20.1
+  test: ^1.21.0
   lints: ^1.0.1
 
 flutter:

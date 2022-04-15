@@ -117,8 +117,3 @@ extension StringHashExtension on String {
   /// hexadecimal digits.
   String get sha1 => crypto.sha1.convert(toUtf8()).toString();
 }
-
-extension NullableStringIsNullOrBlankExtension on String? {
-  /// Returns `true` if the String is either null or empty.
-  bool get isNullOrBlank => this?.isBlank ?? true;
-}

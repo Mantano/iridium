@@ -74,7 +74,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView(); // For Hybrid Composition C (faster) - Default on 3.0.0
     // if (Platform.isAndroid) WebView.platform = AndroidWebView(); // For Virtual Display (slower)
     // Fix for blank WebViews with 3.0.0 (https://github.com/flutter/flutter/issues/74626)
-    WidgetsBinding.instance!.addPostFrameCallback((callback) {
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
       setState(() {
         isLoaded = true;
       });
