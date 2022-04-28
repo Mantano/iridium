@@ -4,6 +4,7 @@
 
 export 'package:mno_navigator/src/publication/model/annotation_type.dart';
 export 'package:mno_navigator/src/publication/model/annotation_type_predicate.dart';
+export 'package:mno_navigator/src/publication/model/highlight_style.dart';
 export 'package:mno_navigator/src/publication/model/reader_annotation.dart';
 export 'package:mno_navigator/src/publication/model/reader_annotation_repository.dart';
 export 'package:mno_navigator/src/publication/publication_controller.dart';

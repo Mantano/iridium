@@ -48,6 +48,7 @@ class ReaderContext {
   Link? currentSpineItem;
   SpineItemContext? currentSpineItemContext;
   int viewportWidth = 0;
+  SelectionListenerFactory selectionListenerFactory;
 
   ReadingProgression? readingProgression;
 
@@ -91,9 +92,11 @@ class ReaderContext {
     required this.location,
     required this.readerAnnotationRepository,
     Map<Type, ReaderCommandProcessor> readerCommandProcessorMap = const {},
+    SelectionListenerFactory? factory,
   })  : assert(userException != null || publication != null),
         spineItemContextMap = {},
-        toolbarVisibility = false {
+        toolbarVisibility = false,
+        this.selectionListenerFactory = SimpleSelectionListenerFactory() {
     readerCommandProcessors = Map.of(_defaultReaderCommandProcessors)
       ..addAll(readerCommandProcessorMap);
     _tableOfContents = publication?.tableOfContents ?? [];
@@ -135,7 +138,7 @@ class ReaderContext {
   void toggleBookmark() {
     PaginationInfo? paginationInfo = this.paginationInfo;
     if (paginationInfo != null) {
-      readerAnnotationRepository.createReaderAnnotation(paginationInfo);
+      readerAnnotationRepository.createBookmark(paginationInfo);
     }
   }
 
@@ -154,8 +157,6 @@ class ReaderContext {
   }
 
   void notifyCurrentLocation(PaginationInfo paginationInfo, Link spineItem) {
-    // currentSpineItemContext!.jsApi!.openPage(OpenPageRequest.fromIdrefAndCfi(
-    //     readiumLocation.idref, readiumLocation.contentCFI));
     this.paginationInfo = paginationInfo;
     this.currentSpineItem = spineItem;
     _currentLocationController.add(paginationInfo);

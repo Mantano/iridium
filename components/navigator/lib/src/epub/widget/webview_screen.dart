@@ -5,13 +5,18 @@
 import 'dart:async';
 
 import 'package:dartx/dartx.dart';
+import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart' hide Decoration;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
+import 'package:mno_navigator/src/epub/decoration.dart';
+import 'package:mno_navigator/src/epub/extensions/decoration_change.dart';
+import 'package:mno_navigator/src/epub/html/html_decoration_template.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
@@ -38,6 +43,7 @@ class WebViewScreen extends StatefulWidget {
 }
 
 class WebViewScreenState extends State<WebViewScreen> {
+  final GlobalKey _webViewKey = GlobalKey();
   JsApi? _jsApi;
   late ServerBloc _serverBloc;
   late ReaderThemeBloc _readerThemeBloc;
@@ -53,6 +59,9 @@ class WebViewScreenState extends State<WebViewScreen> {
   StreamSubscription<PaginationInfo>? _paginationInfoSubscription;
   late EpubCallbacks epubCallbacks;
   late bool currentSelectedSpineItem;
+  late SelectionListener selectionListener;
+  late StreamController<Selection?> selectionController;
+  late StreamSubscription<Selection?> selectionSubscription;
 
   bool isLoaded = false;
 
@@ -62,9 +71,17 @@ class WebViewScreenState extends State<WebViewScreen> {
 
   Link get spineItem => widget.link;
 
+  Locator get currentLocator => spineItem.toLocator();
+
   ReaderContext get readerContext => widget.readerContext;
 
   Publication get publication => readerContext.publication!;
+
+  Offset webViewOffset() {
+    RenderBox? renderBox =
+        _webViewKey.currentContext?.findRenderObject() as RenderBox?;
+    return renderBox?.localToGlobal(Offset.zero) ?? Offset.zero;
+  }
 
   @override
   void initState() {
@@ -89,14 +106,25 @@ class WebViewScreenState extends State<WebViewScreen> {
     _viewerSettingsBloc = BlocProvider.of<ViewerSettingsBloc>(context);
     _currentSpineItemBloc = BlocProvider.of<CurrentSpineItemBloc>(context);
     webViewHorizontalGestureRecognizer = WebViewHorizontalGestureRecognizer(
-        chapNumber: position, webView: widget, readerContext: readerContext);
+        chapNumber: position, link: spineItem, readerContext: readerContext);
+    selectionListener =
+        readerContext.selectionListenerFactory.create(readerContext, context);
     epubCallbacks = EpubCallbacks(
         _spineItemContext,
         _viewerSettingsBloc,
         readerContext.readerAnnotationRepository,
         webViewHorizontalGestureRecognizer,
         EpubWebViewListener(_spineItemContext, _viewerSettingsBloc,
-            widget.publicationController));
+            widget.publicationController, selectionListener, webViewOffset));
+    currentSelectedSpineItem = false;
+    selectionController = StreamController.broadcast();
+    selectionSubscription = selectionController.stream.listen((selection) {
+      if (selection != null) {
+        selectionListener.displayPopup(selection);
+      } else {
+        selectionListener.hidePopup();
+      }
+    });
   }
 
   @override
@@ -110,24 +138,27 @@ class WebViewScreenState extends State<WebViewScreen> {
     _currentSpineItemSubscription?.cancel();
     _readerCommandSubscription?.cancel();
     _paginationInfoSubscription?.cancel();
+    selectionSubscription.cancel();
+    selectionController.close();
+    selectionListener.hidePopup();
   }
 
   @override
   Widget build(BuildContext context) {
     widget.widgetKeepAliveListener.register(position, this);
-    currentSelectedSpineItem = false;
-    print(
+    Fimber.d(
         '=== INITIAL URL: ${widget.address}/${spineItem.href.removePrefix("/")}');
-    return buildWebView(spineItem);
+    return buildWebView();
   }
 
-  Widget buildWebView(Link link) => SpineItemContextWidget(
+  Widget buildWebView() => SpineItemContextWidget(
         spineItemContext: _spineItemContext,
-        child: buildWebViewComponent(link),
+        child: buildWebViewComponent(spineItem),
       );
 
   Widget buildWebViewComponent(Link link) => isLoaded
       ? InAppWebView(
+          key: _webViewKey,
           initialUrlRequest: URLRequest(
               url: Uri.parse(
                   '${widget.address}/${link.href.removePrefix("/")}')),
@@ -137,6 +168,10 @@ class WebViewScreenState extends State<WebViewScreen> {
               useShouldInterceptRequest: true,
               safeBrowsingEnabled: false,
               cacheMode: AndroidCacheMode.LOAD_NO_CACHE,
+              disabledActionModeMenuItems:
+                  AndroidActionModeMenuItem.MENU_ITEM_SHARE |
+                      AndroidActionModeMenuItem.MENU_ITEM_WEB_SEARCH |
+                      AndroidActionModeMenuItem.MENU_ITEM_PROCESS_TEXT,
             ),
             crossPlatform: InAppWebViewOptions(
               useShouldOverrideUrlLoading: true,
@@ -163,8 +198,26 @@ class WebViewScreenState extends State<WebViewScreen> {
               NavigationActionPolicy.ALLOW,
           onLoadStop: _onPageFinished,
           gestureRecognizers: {
-            Factory(() => webViewHorizontalGestureRecognizer),
+            Factory<WebViewHorizontalGestureRecognizer>(
+                () => webViewHorizontalGestureRecognizer),
+            Factory<LongPressGestureRecognizer>(
+                () => LongPressGestureRecognizer()),
           },
+          contextMenu: ContextMenu(
+            options:
+                ContextMenuOptions(hideDefaultSystemContextMenuItems: true),
+            onCreateContextMenu: (hitTestResult) async {
+              _jsApi?.let((jsApi) async {
+                Selection? selection =
+                    await jsApi.getCurrentSelection(currentLocator);
+                selection?.offset = webViewOffset();
+                selectionController.add(selection);
+              });
+            },
+            onHideContextMenu: () {
+              selectionController.add(null);
+            },
+          ),
           onWebViewCreated: _onWebViewCreated,
         )
       : const SizedBox.shrink();
@@ -185,25 +238,29 @@ class WebViewScreenState extends State<WebViewScreen> {
         _jsApi?.openPage(openPageRequestData);
       }
       _updateSpineItemPosition(_currentSpineItemBloc.state);
-      // TODO Reactivate
-      readerContext.readerAnnotationRepository
-          .allWhere(
-              predicate: AnnotationTypeAndDocumentPredicate(
-                  spineItem.href, AnnotationType.bookmark))
-          .then((annotations) => _jsApi?.computeAnnotationsInfo(annotations));
-      _annotationsSubscription = readerContext
-          .readerAnnotationRepository.deletedIdsStream
-          .listen((deletedIds) => _jsApi?.removeBookmarks(deletedIds));
+      await _loadDecorations();
     } catch (e, stacktrace) {
       Fimber.d("_onPageFinished ERROR", ex: e, stacktrace: stacktrace);
     }
   }
 
+  Future _loadDecorations() async {
+    String activeId = "";
+    List<ReaderAnnotation> highlights =
+        await readerContext.readerAnnotationRepository.allWhere(
+            predicate: AnnotationTypeAndDocumentPredicate(
+                spineItem.href, AnnotationType.highlight));
+    Map<String, List<Decoration>> decorators = {
+      "highlights": highlights.fold(
+          [],
+          (list, highlight) => list
+            ..addAll(
+                highlight.toDecorations(isActive: highlight.id == activeId)))
+    };
+    _jsApi?.registerDecorationTemplates(decorators);
+  }
+
   void _onWebViewCreated(InAppWebViewController webViewController) {
-    // JsApi jsApi = JsApi(position, webViewController.runJavascript);
-    // _jsApi = jsApi;
-    // _spineItemContext.jsApi = jsApi;
-    // epubCallbacks.jsApi = jsApi;
     initJsHandlers(webViewController);
     _readerThemeSubscription =
         _readerThemeBloc.stream.listen(_onReaderThemeChanged);
@@ -222,6 +279,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     _controller = webViewController;
     _jsApi = JsApi(
         position,
+        HtmlDecorationTemplates.defaultTemplates(),
         (javascript) =>
             webViewController.evaluateJavascript(source: javascript));
     _spineItemContext.jsApi = _jsApi;
@@ -251,8 +309,10 @@ class WebViewScreenState extends State<WebViewScreen> {
     _jsApi?.initPagination();
     if (state.spineItemIdx > position) {
       _jsApi?.navigateToEnd();
+      _jsApi?.clearSelection();
     } else if (state.spineItemIdx < position) {
       _jsApi?.navigateToStart();
+      _jsApi?.clearSelection();
     } else {
       _onPaginationInfo(_spineItemContext.currentPaginationInfo);
     }

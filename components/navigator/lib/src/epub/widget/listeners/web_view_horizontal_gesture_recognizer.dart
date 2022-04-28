@@ -3,15 +3,15 @@
 // found in the LICENSE file.
 
 import 'package:flutter/gestures.dart';
-import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/src/publication/reader_context.dart';
+import 'package:mno_shared/publication.dart';
 
 /// Inspired by https://stackoverflow.com/questions/57069716/scrolling-priority-when-combining-pageview-with-webview-in-flutter-1-7-8/57150906#57150906
 ///
 class WebViewHorizontalGestureRecognizer
     extends HorizontalDragGestureRecognizer {
   final int chapNumber;
-  final WebViewScreen webView;
+  final Link link;
   ReaderContext readerContext;
 
   bool _leftOverlayVisible = false;
@@ -31,7 +31,7 @@ class WebViewHorizontalGestureRecognizer
 
   WebViewHorizontalGestureRecognizer({
     required this.chapNumber,
-    required this.webView,
+    required this.link,
     PointerDeviceKind? kind,
     required this.readerContext,
   }) : super(supportedDevices: (kind != null) ? {kind} : const {}) {
@@ -65,7 +65,7 @@ class WebViewHorizontalGestureRecognizer
   void handleEvent(PointerEvent event) {
     // TODO Fix this: readerContext.currentSpineItem?.title is null, so we are using this path to access the title of the current spine item
     // Fimber.d(
-    //     ">>> handleEvent[$chapNumber][$curHRef] =============== i_leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
+    //     ">>> handleEvent[$chapNumber][${link.href}] =============== i_leftOverlayVisible: $_leftOverlayVisible, _rightOverlayVisible: $_rightOverlayVisible");
     _dragDistance = _dragDistance + event.delta;
     if (event is PointerMoveEvent) {
       final double dy = _dragDistance.dy.abs();

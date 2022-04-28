@@ -37,7 +37,7 @@ dependencies:
   path_provider: ^2.0.9
   dio: ^4.0.6
   permission_handler: ^9.2.0
-  google_fonts: ^2.3.1
+  google_fonts: ^2.3.2
 #  flutter_spinkit: ^5.1.0
   idb_shim: ^2.0.1
 #  idb_sqflite: ^1.1.0
@@ -46,7 +46,7 @@ dependencies:
   fimber: ^0.6.5
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
-  flutter_inappwebview: ^5.3.2
+  flutter_inappwebview: ^5.4.3
   json_theme: ^3.3.1
   new_version: ^0.3.0
   flutter_xlider:

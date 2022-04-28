@@ -37,6 +37,9 @@ class SpineItemContext {
 
   Publication get publication => readerContext.publication!;
 
+  ReaderAnnotationRepository get readerAnnotationRepository =>
+      readerContext.readerAnnotationRepository;
+
   Link get spineItem => publication.readingOrder[spineItemIndex];
 
   Stream<PaginationInfo> get paginationInfoStream =>

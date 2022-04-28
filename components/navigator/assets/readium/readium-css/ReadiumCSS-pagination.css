@@ -10,6 +10,7 @@ html {
 
 #readium_paginator {
     width: calc(var(--RS__colCount) * var(--RS__viewportWidth));
+    pointer-events: none;
     display: flex;
     position: absolute;
     top: 0px;
@@ -28,6 +29,7 @@ html {
 }
 */
 .readium_page_overlay {
+    pointer-events: none;
     scroll-snap-align: center;
     scroll-snap-stop: var(--RS__scroll-snap-stop);
     height: var(--RS__viewportHeight);

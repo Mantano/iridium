@@ -6,17 +6,19 @@ import 'dart:convert';
 
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
-import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_navigator/epub.dart';
-import 'package:mno_navigator/publication.dart';
-import 'package:mno_shared/epub.dart';
+import 'package:mno_navigator/src/epub/decoration.dart';
+import 'package:mno_navigator/src/epub/decoration_change.dart';
+import 'package:mno_navigator/src/epub/extensions/decoration_change.dart';
+import 'package:mno_navigator/src/epub/html/html_decoration_template.dart';
 import 'package:mno_shared/publication.dart';
 
 class JsApi {
   final int index;
+  final HtmlDecorationTemplates htmlDecorationTemplates;
   final Future<dynamic> Function(String) _jsLoader;
 
-  JsApi(this.index, this._jsLoader);
+  JsApi(this.index, this.htmlDecorationTemplates, this._jsLoader);
 
   Future<dynamic> loadJS(String jScript) {
     Fimber.d(jScript);
@@ -50,6 +52,46 @@ class JsApi {
     }
   }
 
+  void registerDecorationTemplates(
+      Map<String, List<Decoration>> decorationsByGroup) {
+    Map<String, dynamic>? templates = htmlDecorationTemplates.toJson();
+    String script =
+        "readium.registerDecorationTemplates(${json.encode(templates)});\n";
+    script +=
+        _buildJavascriptDecorations(decorationsByGroup, DecorationChange.added);
+    loadJS(script);
+  }
+
+  void addDecorations(Map<String, List<Decoration>> decorationsByGroup) {
+    String script =
+        _buildJavascriptDecorations(decorationsByGroup, DecorationChange.added);
+    loadJS(script);
+  }
+
+  void updateDecorations(Map<String, List<Decoration>> decorationsByGroup) {
+    String script = _buildJavascriptDecorations(
+        decorationsByGroup, DecorationChange.updated);
+    loadJS(script);
+  }
+
+  String _buildJavascriptDecorations(
+      Map<String, List<Decoration>> decorationsByGroup,
+      DecorationChange Function(Decoration) transform) {
+    String script = "";
+    for (var entry in decorationsByGroup.entries) {
+      String group = entry.key;
+      List<Decoration> decorations = entry.value;
+      Iterable<DecorationChange> changes = decorations.map(transform);
+      String? groupScript =
+          changes.javascriptForGroup(group, htmlDecorationTemplates);
+      if (groupScript == null) {
+        continue;
+      }
+      script += "$groupScript\n";
+    }
+    return script;
+  }
+
   void updateFontSize(ViewerSettings viewerSettings) {
     loadJS(
         "readium.setProperty('$fontSizeName', '${viewerSettings.fontSize}%');");
@@ -66,13 +108,11 @@ class JsApi {
     loadJS("readium.initPagination();");
   }
 
-  void navigateToStart() {
-    loadJS("readium.scrollToStart();");
-  }
+  void navigateToStart() => loadJS("readium.scrollToStart();");
 
-  void navigateToEnd() {
-    loadJS("readium.scrollToEnd();");
-  }
+  void navigateToEnd() => loadJS("readium.scrollToEnd();");
+
+  void clearSelection() => loadJS("window.getSelection().removeAllRanges();");
 
   bool hasNoStyle() => false;
 
@@ -92,40 +132,14 @@ class JsApi {
 
   Future<dynamic> scrollRight() => loadJS("readium.scrollRight();");
 
-  void computeAnnotationsInfo(List<ReaderAnnotation> bookmarkList) {
-    for (ReaderAnnotation bookmark in bookmarkList) {
-      computeAnnotationInfo(bookmark);
-    }
-  }
-
-  void computeAnnotationInfo(ReaderAnnotation bookmark) {
-    Locator? locator = Locator.fromJson(bookmark.location.toJsonOrNull());
-    if (locator != null && bookmark.isHighlight) {
-      loadJS(
-          "xpub.highlight.computeBoxesForCfi('${locator.href}', '${bookmark.id}', '${locator.locations.partialCfi}');");
-    } else if (bookmark.isBookmark) {
-      addBookmark(bookmark);
-    }
-  }
-
-  void toggleBookmark() {
-    loadJS("xpub.navigation.toggleBookmark();");
-  }
-
-  void addBookmark(ReaderAnnotation annotation) {
-    loadJS(
-        "xpub.bookmarks.addBookmark('${annotation.id}', ${annotation.location});");
-  }
-
-  void removeBookmark(PaginationInfo paginationInfo) =>
-      removeBookmarks(paginationInfo.pageBookmarks);
-
-  void removeBookmarks(Iterable<String> bookmarkIds) {
-    if (bookmarkIds.isNotEmpty) {
-      loadJS(
-          "xpub.bookmarks.removeBookmarks(${const JsonCodec().encode(bookmarkIds)});");
-    }
-  }
+  Future<Selection?> getCurrentSelection(Locator locator) =>
+      loadJS("readium.getCurrentSelection();").then((json) {
+        if ((json is Map<String, dynamic>)) {
+          return Selection.fromJson(json, locator);
+        } else {
+          return null;
+        }
+      });
 
   String? epubLayoutToJson(EpubLayout layout) {
     if (layout == EpubLayout.fixed) {

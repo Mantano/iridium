@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -20,8 +21,8 @@ abstract class WebViewListener {
 
   bool onTap(Offset point);
 
-  bool onDecorationActivated(
-          String id, String group, Rect rect, Offset point) =>
+  Future<bool> onDecorationActivated(String id, String group,
+          Rectangle<double> rect, Offset point) async =>
       false;
 
   void onProgressionChanged();

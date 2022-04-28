@@ -2,9 +2,13 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:fimber/fimber.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/callbacks/model/tap_event.dart';
@@ -79,11 +83,8 @@ class ReadiumChannels extends JavascriptChannels {
             _spineItemContext.linkPagination);
         if (paginationInfo.pageBookmarks.isNotEmpty) {
           _bookmarkRepository?.delete(paginationInfo.pageBookmarks);
-          jsApi.removeBookmark(paginationInfo);
         } else {
-          _bookmarkRepository
-              ?.createReaderAnnotation(paginationInfo)
-              .then((ReaderAnnotation bookmark) => jsApi.addBookmark(bookmark));
+          _bookmarkRepository?.createBookmark(paginationInfo);
         }
       } on Object catch (e, stacktrace) {
         Fimber.d("onToggleBookmark error: $e, $stacktrace",
@@ -129,7 +130,7 @@ class ReadiumChannels extends JavascriptChannels {
   }
 
   double get devicePixelRatio =>
-      WidgetsBinding.instance!.window.devicePixelRatio;
+      WidgetsBinding.instance.window.devicePixelRatio;
 
   /// TODO implement find real horizontal scroll extent
   double computeHorizontalScrollExtent() =>
@@ -168,8 +169,19 @@ class ReadiumChannels extends JavascriptChannels {
     });
   }
 
-  void _onDecorationActivated(List<dynamic> arguments) {
+  Future<bool> _onDecorationActivated(List<dynamic> arguments) async {
     Fimber.d("arguments: $arguments");
+    String eventJson = arguments.first;
+    Map<String, dynamic>? obj = json.decode(eventJson);
+    String? id = obj?.optNullableString("id");
+    String? group = obj?.optNullableString("group");
+    Rectangle<double>? rect = obj?.optJSONObject("rect")?.rect;
+    TapEvent? click = TapEvent.fromJSONObject(obj?.optJSONObject("click"));
+    if (id == null || group == null || rect == null || click == null) {
+      Fimber.e("Invalid JSON for onDecorationActivated: $eventJson");
+      return false;
+    }
+    return listener.onDecorationActivated(id, group, rect, click.point);
   }
 
   void _highlightAnnotationMarkActivated(List<dynamic> arguments) {

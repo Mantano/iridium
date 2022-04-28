@@ -2,20 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_shared/publication.dart';
 
-class BookmarksPanel extends StatefulWidget {
+class AnnotationsPanel extends StatefulWidget {
   final ReaderContext readerContext;
+  final AnnotationType annotationType;
 
-  const BookmarksPanel({Key? key, required this.readerContext})
-      : super(key: key);
+  const AnnotationsPanel({
+    Key? key,
+    required this.readerContext,
+    required this.annotationType,
+  }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => BookmarksPanelState();
+  State<StatefulWidget> createState() => AnnotationsPanelState();
 }
 
-class BookmarksPanelState extends State<BookmarksPanel> {
-  Future<List<ReaderAnnotation>> get _readerAnnotationsStream => widget
-      .readerContext.readerAnnotationRepository
-      .allWhere(predicate: AnnotationTypePredicate(AnnotationType.bookmark));
+class AnnotationsPanelState extends State<AnnotationsPanel> {
+  Future<List<ReaderAnnotation>> get _readerAnnotationsStream =>
+      widget.readerContext.readerAnnotationRepository
+          .allWhere(predicate: AnnotationTypePredicate(widget.annotationType));
 
   @override
   Widget build(BuildContext context) => FutureBuilder<List<ReaderAnnotation>>(
