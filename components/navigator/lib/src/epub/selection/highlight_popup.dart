@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart';
@@ -15,11 +13,9 @@ class HighlightPopup extends SelectionPopup {
     Color.fromARGB(255, 249, 239, 125),
     Color.fromARGB(255, 182, 153, 255),
   ];
-  final SimpleSelectionListener selectionListener;
 
-  HighlightPopup(this.selectionListener);
-
-  ReaderContext get readerContext => selectionListener.readerContext;
+  HighlightPopup(SimpleSelectionListener selectionListener)
+      : super(selectionListener);
 
   @override
   double get optionsWidth => 300.0;
@@ -27,51 +23,34 @@ class HighlightPopup extends SelectionPopup {
   @override
   double get optionsHeight => 48.0;
 
-  JsApi? get jsApi => readerContext.currentSpineItemContext?.jsApi;
-
   void showHighlightPopup(
     BuildContext context,
     Selection selection,
     HighlightStyle style,
     String? highlightId,
   ) {
-    Rectangle<double>? rect = selection.rectOnScreen;
-    OverlayEntry entry = OverlayEntry(
-        builder: (context) => Stack(
-              children: [
-                GestureDetector(
-                  onTap: _close,
-                ),
-                if (rect != null)
-                  Positioned.fromRect(
-                    rect: getPopupRect(context, rect),
-                    child: Material(
-                      type: MaterialType.canvas,
-                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                      elevation: 8.0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ...highlightTints
-                              .map((color) => buildColorOption(color, () {
-                                    Fimber.d("color: $color");
-                                    if (highlightId != null) {
-                                      updateHighlight(
-                                          selection, style, color, highlightId);
-                                    } else {
-                                      createHighlight(selection, style, color);
-                                    }
-                                    _close();
-                                  }))
-                              .toList(),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
-            ));
-    this.entry = entry;
-    Overlay.of(context)?.insert(entry);
+    displayPopup(context, selection,
+        child: Material(
+          type: MaterialType.canvas,
+          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          elevation: 8.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ...highlightTints
+                  .map((color) => buildColorOption(color, () {
+                        Fimber.d("color: $color");
+                        if (highlightId != null) {
+                          updateHighlight(selection, style, color, highlightId);
+                        } else {
+                          createHighlight(selection, style, color);
+                        }
+                        close();
+                      }))
+                  .toList(),
+            ],
+          ),
+        ));
   }
 
   Widget buildColorOption(Color color, VoidCallback action) => IconButton(
@@ -83,11 +62,6 @@ class HighlightPopup extends SelectionPopup {
           ),
         ),
       );
-
-  void _close() {
-    jsApi?.clearSelection();
-    selectionListener.hidePopup();
-  }
 
   void updateHighlight(Selection selection, HighlightStyle style, Color color,
       String highlightId) {
