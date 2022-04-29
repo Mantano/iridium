@@ -14,11 +14,12 @@ class EpubWebViewListener extends WebViewListener {
   final SpineItemContext _spineItemContext;
   final ViewerSettingsBloc? viewerSettingsBloc;
   final NavigationController navigator;
-  final SelectionListener selectionListener;
-  final ValueGetter<Offset> webViewOffset;
+  final SelectionListener? selectionListener;
+  final ValueGetter<Offset>? webViewOffset;
 
-  EpubWebViewListener(this._spineItemContext, this.viewerSettingsBloc,
-      this.navigator, this.selectionListener, this.webViewOffset);
+  EpubWebViewListener(
+      this._spineItemContext, this.viewerSettingsBloc, this.navigator,
+      {this.selectionListener, this.webViewOffset});
 
   ReaderAnnotationRepository get readerAnnotationRepository =>
       _spineItemContext.readerAnnotationRepository;
@@ -66,8 +67,8 @@ class EpubWebViewListener extends WebViewListener {
       return false;
     }
     Selection selection = Selection(locator: locator, rect: rect);
-    selection.offset = webViewOffset();
-    selectionListener.showHighlightPopup(selection, highlight.style!,
+    selection.offset = webViewOffset?.call() ?? Offset.zero;
+    selectionListener?.showHighlightPopup(selection, highlight.style!,
         highlightId: highlightId);
     return true;
   }

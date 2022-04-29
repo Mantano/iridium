@@ -13,6 +13,7 @@ export 'package:mno_navigator/src/epub/callbacks/model/pagination_info.dart';
 export 'package:mno_navigator/src/epub/callbacks/navigation_controller.dart';
 export 'package:mno_navigator/src/epub/callbacks/readium_channels.dart';
 export 'package:mno_navigator/src/epub/epub_controller.dart';
+export 'package:mno_navigator/src/epub/html/html_decoration_template.dart';
 export 'package:mno_navigator/src/epub/js/xpub_js_api.dart';
 export 'package:mno_navigator/src/epub/model/epub_reader_state.dart';
 export 'package:mno_navigator/src/epub/model/open_page_request.dart';

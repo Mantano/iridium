@@ -65,15 +65,17 @@ extension ReaderAnnotationDecoration on ReaderAnnotation {
         );
 
     DecorationStyle? decorationStyle;
-    switch (style) {
-      case HighlightStyle.highlight:
-        decorationStyle =
-            DecorationStyle.highlight(tint: tint!, isActive: isActive);
-        break;
-      case HighlightStyle.underline:
-        decorationStyle =
-            DecorationStyle.underline(tint: tint!, isActive: isActive);
-        break;
+    if (tint != null) {
+      switch (style) {
+        case HighlightStyle.highlight:
+          decorationStyle =
+              DecorationStyle.highlight(tint: tint!, isActive: isActive);
+          break;
+        case HighlightStyle.underline:
+          decorationStyle =
+              DecorationStyle.underline(tint: tint!, isActive: isActive);
+          break;
+      }
     }
     return [
       // Decoration for the actual highlight / underline.

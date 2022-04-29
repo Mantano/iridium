@@ -33,18 +33,17 @@ class Width {
   const Width(this.value);
 }
 
-class Padding {
+class _Padding {
   final int left;
   final int top;
   final int right;
   final int bottom;
 
-  Padding({this.left = 0, this.top = 0, this.right = 0, this.bottom = 0});
+  // ignore: unused_element
+  _Padding({this.left = 0, this.top = 0, this.right = 0, this.bottom = 0});
 }
 
 String _defaultElement(decoration) => "<div/>";
-
-// class Padding(val left: Int = 0, val top: Int = 0, val right: Int = 0, val bottom: Int = 0);
 
 /// An [HtmlDecorationTemplate] renders a [Decoration] into a set of HTML elements and associated
 /// stylesheet.
@@ -123,7 +122,7 @@ class HtmlDecorationTemplate implements JSONable {
       required double alpha}) {
     String className =
         _createUniqueClassName((asHighlight) ? "highlight" : "underline");
-    Padding padding = Padding(left: 1, right: 1);
+    _Padding padding = _Padding(left: 1, right: 1);
     return HtmlDecorationTemplate(
         layout: Layout.boxes,
         element: (decoration) {

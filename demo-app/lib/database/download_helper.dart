@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:fimber/fimber.dart';
 import 'package:objectdb/objectdb.dart';
-import 'package:path_provider/path_provider.dart';
+// ignore: implementation_imports
 import 'package:objectdb/src/objectdb_storage_filesystem.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DownloadsDB {
   Future<String> getPath() async {

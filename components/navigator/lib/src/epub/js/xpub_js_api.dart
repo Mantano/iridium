@@ -10,7 +10,6 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/src/epub/decoration.dart';
 import 'package:mno_navigator/src/epub/decoration_change.dart';
 import 'package:mno_navigator/src/epub/extensions/decoration_change.dart';
-import 'package:mno_navigator/src/epub/html/html_decoration_template.dart';
 import 'package:mno_shared/publication.dart';
 
 class JsApi {

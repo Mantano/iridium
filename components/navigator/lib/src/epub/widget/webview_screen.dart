@@ -16,7 +16,6 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/decoration.dart';
 import 'package:mno_navigator/src/epub/extensions/decoration_change.dart';
-import 'package:mno_navigator/src/epub/html/html_decoration_template.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
@@ -115,7 +114,9 @@ class WebViewScreenState extends State<WebViewScreen> {
         readerContext.readerAnnotationRepository,
         webViewHorizontalGestureRecognizer,
         EpubWebViewListener(_spineItemContext, _viewerSettingsBloc,
-            widget.publicationController, selectionListener, webViewOffset));
+            widget.publicationController,
+            selectionListener: selectionListener,
+            webViewOffset: webViewOffset));
     currentSelectedSpineItem = false;
     selectionController = StreamController.broadcast();
     selectionSubscription = selectionController.stream.listen((selection) {
