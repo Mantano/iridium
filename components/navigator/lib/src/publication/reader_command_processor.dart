@@ -45,6 +45,9 @@ class GoToLocationCommandProcessor
     if (progression != null) {
       return OpenPageRequest.fromIdrefAndPercentage(locator.href, progression);
     }
+    if (locator.text.highlight != null) {
+      return OpenPageRequest.fromText(locator.href, locator.text);
+    }
     return OpenPageRequest.fromIdref(locator.href);
   }
 }
