@@ -28,7 +28,7 @@ dependencies:
   sqflite: ^2.0.2
   tuple: ^2.0.0
   universal_io: ^2.0.4
-  url_launcher: ^6.0.20
+  url_launcher: ^6.1.0
   uuid: ^3.0.6
   mno_commons:
     path: ../commons
