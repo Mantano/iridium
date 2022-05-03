@@ -1,8 +1,6 @@
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_shared/publication.dart';
 
-enum DecorationStyleType { highlight, underline }
-
 /// A type of [Style] which has a tint color.
 mixin Tinted {
   int get tint;

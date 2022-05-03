@@ -73,13 +73,12 @@ class JsApi {
     loadJS(script);
   }
 
-  String _buildJavascriptDecorations(
-      Map<String, List<Decoration>> decorationsByGroup,
-      DecorationChange Function(Decoration) transform) {
+  String _buildJavascriptDecorations<T>(Map<String, List<T>> decorationsByGroup,
+      DecorationChange Function(T) transform) {
     String script = "";
     for (var entry in decorationsByGroup.entries) {
       String group = entry.key;
-      List<Decoration> decorations = entry.value;
+      List<T> decorations = entry.value;
       Iterable<DecorationChange> changes = decorations.map(transform);
       String? groupScript =
           changes.javascriptForGroup(group, htmlDecorationTemplates);
@@ -89,6 +88,12 @@ class JsApi {
       script += "$groupScript\n";
     }
     return script;
+  }
+
+  void deleteDecorations(Map<String, List<String>> decorationIdsByGroup) {
+    String script = _buildJavascriptDecorations(
+        decorationIdsByGroup, DecorationChange.removed);
+    loadJS(script);
   }
 
   void updateFontSize(ViewerSettings viewerSettings) {

@@ -35,6 +35,12 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   /// currently used.
   String get address => _addressSubject.value;
 
+  @override
+  Future<void> close() async {
+    await _shutdownServer();
+    return super.close();
+  }
+
   Future<void> _onStartServer(
       StartServer event, Emitter<ServerState> emit) async {
     try {
@@ -85,16 +91,21 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
   Future<void> _onShutdownServer(
       ShutdownServer event, Emitter<ServerState> emit) async {
     if (state is ServerStarted) {
-      if (_requestController != null) {
-        for (RequestHandler handler in _requestController!.handlers) {
-          handler.dispose();
-        }
-      }
-      await _server?.close(force: true);
-      _server = null;
-      _addressSubject.add("");
+      await _shutdownServer();
       emit(ServerClosed());
     }
+  }
+
+  Future<void> _shutdownServer() async {
+    if (_requestController != null) {
+      for (RequestHandler handler in _requestController!.handlers) {
+        handler.dispose();
+      }
+    }
+    await _server?.close(force: true);
+    _requestController = null;
+    _server = null;
+    _addressSubject.add("");
   }
 
   Future<void> _runServer(io.HttpServer server) async {

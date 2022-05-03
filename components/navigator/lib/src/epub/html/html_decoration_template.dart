@@ -63,6 +63,10 @@ String _defaultElement(decoration) => "<div/>";
 ///        and IDs to avoid conflicts with the HTML resource itself. Best practice is to prefix with
 ///        your app name. r2- and readium- are reserved by the Readium toolkit.
 class HtmlDecorationTemplate implements JSONable {
+  static const String highlightGroup = "highlights";
+  static const String annotationSuffix = "annotation";
+  static const String highlightSuffix = "highlight";
+  static const String underlineSuffix = "underline";
   final Layout layout;
   final Width width;
   final String Function(Decoration) element;
@@ -120,8 +124,8 @@ class HtmlDecorationTemplate implements JSONable {
       required int lineWeight,
       required int cornerRadius,
       required double alpha}) {
-    String className =
-        _createUniqueClassName((asHighlight) ? "highlight" : "underline");
+    String className = _createUniqueClassName(
+        (asHighlight) ? highlightSuffix : underlineSuffix);
     _Padding padding = _Padding(left: 1, right: 1);
     return HtmlDecorationTemplate(
         layout: Layout.boxes,
@@ -171,9 +175,6 @@ class HtmlDecorationTemplates implements JSONable {
       };
 
   HtmlDecorationTemplates copy() => HtmlDecorationTemplates._(Map.of(styles));
-
-  // operator fun invoke(build: HtmlDecorationTemplates.() -> Unit): HtmlDecorationTemplates =
-  //     HtmlDecorationTemplates().apply(build)
 
   /// Creates the default list of decoration styles with associated HTML templates.
   factory HtmlDecorationTemplates.defaultTemplates(

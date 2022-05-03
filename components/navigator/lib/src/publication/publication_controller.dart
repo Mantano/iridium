@@ -54,9 +54,17 @@ abstract class PublicationController extends NavigationController {
 
   String get serverAddress => serverBloc.address;
 
-  void startServer() => serverBloc.add(StartServer(handlersProvider()));
+  void startServer() {
+    if (!serverBloc.isClosed) {
+      serverBloc.add(StartServer(handlersProvider()));
+    }
+  }
 
-  void stopServer() => serverBloc.add(ShutdownServer());
+  void stopServer() {
+    if (!serverBloc.isClosed) {
+      serverBloc.add(ShutdownServer());
+    }
+  }
 
   Publication get publication => readerContext!.publication!;
 

@@ -46,6 +46,8 @@ class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
   void save(ReaderAnnotation readerAnnotation) {}
 
   @override
-  Future<void> delete(List<String> deletedIds) async =>
-      annotations.removeWhere((element) => deletedIds.contains(element.id));
+  Future<void> delete(List<String> deletedIds) async {
+    annotations.removeWhere((element) => deletedIds.contains(element.id));
+    super.delete(deletedIds);
+  }
 }

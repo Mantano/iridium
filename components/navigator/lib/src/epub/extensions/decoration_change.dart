@@ -29,7 +29,7 @@ extension DecorationChangeExt on DecorationChange {
       return toJson((this as DecorationChangeUpdated).decoration)
           ?.let((it) => "group.update(${json.encode(it)});");
     } else if (this is DecorationChangeRemoved) {
-      return "group.update(${(this as DecorationChangeRemoved).id});";
+      return "group.remove('${(this as DecorationChangeRemoved).id}');";
     } else if (this is DecorationChangeMoved) {
       // Not supported for now
       return null;
@@ -81,17 +81,16 @@ extension ReaderAnnotationDecoration on ReaderAnnotation {
       // Decoration for the actual highlight / underline.
       if (decorationStyle != null)
         createDecoration(
-          idSuffix: "highlight",
+          idSuffix: HtmlDecorationTemplate.highlightSuffix,
           style: decorationStyle,
         ),
       // TODO Add support for DecorationStyleAnnotationMark
       // Additional page margin icon decoration, if the highlight has an associated note.
-      // annotation.takeIf { it.isNotEmpty() }?.let {
-      // createDecoration(
-      // idSuffix = "annotation",
-      // style = DecorationStyleAnnotationMark(tint = tint),
-      // )
-      // }
+      // if (annotation != null && annotation!.isNotEmpty)
+      //   createDecoration(
+      //     idSuffix: HtmlDecorationTemplate.annotationSuffix,
+      //     style: DecorationStyleAnnotationMark(tint: tint),
+      //   ),
     ];
   }
 }

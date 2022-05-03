@@ -61,6 +61,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   late SelectionListener selectionListener;
   late StreamController<Selection?> selectionController;
   late StreamSubscription<Selection?> selectionSubscription;
+  late StreamSubscription<List<String>> deletedAnnotationIdsSubscription;
 
   bool isLoaded = false;
 
@@ -126,6 +127,10 @@ class WebViewScreenState extends State<WebViewScreen> {
         selectionListener.hidePopup();
       }
     });
+    deletedAnnotationIdsSubscription = readerContext
+        .readerAnnotationRepository.deletedIdsStream
+        .listen((List<String> deletedIds) => _jsApi?.deleteDecorations(
+            {HtmlDecorationTemplate.highlightGroup: deletedIds}));
   }
 
   @override
@@ -139,6 +144,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     _currentSpineItemSubscription?.cancel();
     _readerCommandSubscription?.cancel();
     _paginationInfoSubscription?.cancel();
+    deletedAnnotationIdsSubscription.cancel();
     selectionSubscription.cancel();
     selectionController.close();
     selectionListener.hidePopup();
@@ -252,7 +258,7 @@ class WebViewScreenState extends State<WebViewScreen> {
             predicate: AnnotationTypeAndDocumentPredicate(
                 spineItem.href, AnnotationType.highlight));
     Map<String, List<Decoration>> decorators = {
-      "highlights": highlights.fold(
+      HtmlDecorationTemplate.highlightGroup: highlights.fold(
           [],
           (list, highlight) => list
             ..addAll(

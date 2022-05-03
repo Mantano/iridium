@@ -56,7 +56,8 @@ class EpubWebViewListener extends WebViewListener {
   @override
   Future<bool> onDecorationActivated(
       String id, String group, Rectangle<double> rect, Offset point) async {
-    String highlightId = id.removeSuffix("-highlight");
+    String highlightId =
+        id.removeSuffix("-${HtmlDecorationTemplate.highlightSuffix}");
     ReaderAnnotation? highlight =
         await readerAnnotationRepository.get(highlightId);
     if (highlight == null) {

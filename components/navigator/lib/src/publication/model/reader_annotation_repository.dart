@@ -22,14 +22,16 @@ abstract class ReaderAnnotationRepository {
 
   Future<ReaderAnnotation?> get(String id);
 
-  void delete(List<String> deletedIds);
+  void delete(List<String> deletedIds) => notifyDeletedIds(deletedIds);
 
   Future<List<ReaderAnnotation>> allWhere({
     Predicate<ReaderAnnotation> predicate = const AcceptAllPredicate(),
   });
 
   void notifyDeletedIds(List<String> deletedIds) =>
-      _deletedIdsController.add(deletedIds);
+      _deletedIdsController.add(deletedIds
+          .map((it) => "$it-${HtmlDecorationTemplate.highlightSuffix}")
+          .toList());
 
   Stream<List<String>> get deletedIdsStream => _deletedIdsController.stream;
 

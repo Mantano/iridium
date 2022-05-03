@@ -8,6 +8,7 @@ import 'package:mno_shared/publication.dart';
 class ReaderAnnotation {
   final String id;
   String location;
+  String? annotation;
   HighlightStyle? style;
   int? tint;
   final AnnotationType annotationType;
@@ -30,6 +31,7 @@ class ReaderAnnotation {
   @override
   String toString() => '$runtimeType{id: $id, '
       'location: $location, '
+      'annotation: $annotation, '
       'style: $style, '
       'tint: $tint, '
       'annotationType: $annotationType}';

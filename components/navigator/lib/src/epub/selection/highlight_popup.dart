@@ -1,4 +1,3 @@
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -39,7 +38,6 @@ class HighlightPopup extends SelectionPopup {
             children: [
               ...highlightTints
                   .map((color) => buildColorOption(color, () {
-                        Fimber.d("color: $color");
                         if (highlightId != null) {
                           updateHighlight(selection, style, color, highlightId);
                         } else {
@@ -48,6 +46,7 @@ class HighlightPopup extends SelectionPopup {
                         close();
                       }))
                   .toList(),
+              if (highlightId != null) buildDeleteOption(context, highlightId),
             ],
           ),
         ));
@@ -63,25 +62,41 @@ class HighlightPopup extends SelectionPopup {
         ),
       );
 
-  void updateHighlight(Selection selection, HighlightStyle style, Color color,
-      String highlightId) {
-    readerContext.readerAnnotationRepository.get(highlightId).then((highlight) {
-      if (highlight != null) {
-        highlight.style = style;
-        highlight.tint = color.value;
-        readerContext.readerAnnotationRepository.save(highlight);
-        jsApi?.updateDecorations(
-            {"highlights": highlight.toDecorations(isActive: false)});
-      }
-    });
-  }
+  Widget buildDeleteOption(BuildContext context, String highlightId) =>
+      IconButton(
+        onPressed: () {
+          deleteHighlight(highlightId);
+          close();
+        },
+        icon: Icon(
+          Icons.close,
+          color: Theme.of(context).primaryColor,
+        ),
+      );
 
-  void createHighlight(Selection selection, HighlightStyle style, Color color) {
-    readerContext.readerAnnotationRepository
-        .createHighlight(selection.locator, style, color.value)
-        .then((highlight) {
-      jsApi?.addDecorations(
-          {"highlights": highlight.toDecorations(isActive: false)});
-    });
-  }
+  void updateHighlight(Selection selection, HighlightStyle style, Color color,
+          String highlightId) =>
+      readerContext.readerAnnotationRepository
+          .get(highlightId)
+          .then((highlight) {
+        if (highlight != null) {
+          highlight.style = style;
+          highlight.tint = color.value;
+          readerContext.readerAnnotationRepository.save(highlight);
+          jsApi?.updateDecorations(
+              {"highlights": highlight.toDecorations(isActive: false)});
+        }
+      });
+
+  void createHighlight(
+          Selection selection, HighlightStyle style, Color color) =>
+      readerContext.readerAnnotationRepository
+          .createHighlight(selection.locator, style, color.value)
+          .then((highlight) {
+        jsApi?.addDecorations(
+            {"highlights": highlight.toDecorations(isActive: false)});
+      });
+
+  void deleteHighlight(String highlightId) =>
+      readerContext.readerAnnotationRepository.delete([highlightId]);
 }
