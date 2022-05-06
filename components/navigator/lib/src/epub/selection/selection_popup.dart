@@ -13,8 +13,6 @@ abstract class SelectionPopup {
 
   ReaderContext get readerContext => selectionListener.readerContext;
 
-  JsApi? get jsApi => readerContext.currentSpineItemContext?.jsApi;
-
   double get optionsWidth;
 
   double get optionsHeight;
@@ -58,7 +56,7 @@ abstract class SelectionPopup {
   }
 
   void close() {
-    jsApi?.clearSelection();
+    selectionListener.jsApi?.clearSelection();
     selectionListener.hidePopup();
   }
 }

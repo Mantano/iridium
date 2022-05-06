@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
-import 'package:mno_navigator/src/epub/extensions/decoration_change.dart';
 import 'package:mno_navigator/src/epub/selection/selection_popup.dart';
 
 class HighlightPopup extends SelectionPopup {
   static const List<Color> highlightTints = [
-    Color.fromARGB(255, 247, 124, 124),
+    Color.fromARGB(255, 249, 239, 125),
     Color.fromARGB(255, 173, 247, 123),
     Color.fromARGB(255, 124, 198, 247),
-    Color.fromARGB(255, 249, 239, 125),
+    Color.fromARGB(255, 247, 124, 124),
     Color.fromARGB(255, 182, 153, 255),
   ];
 
@@ -26,6 +25,7 @@ class HighlightPopup extends SelectionPopup {
     BuildContext context,
     Selection selection,
     HighlightStyle style,
+    Color tint,
     String? highlightId,
   ) {
     displayPopup(context, selection,
@@ -39,9 +39,11 @@ class HighlightPopup extends SelectionPopup {
               ...highlightTints
                   .map((color) => buildColorOption(color, () {
                         if (highlightId != null) {
-                          updateHighlight(selection, style, color, highlightId);
+                          selectionListener.updateHighlight(
+                              selection, style, color, highlightId);
                         } else {
-                          createHighlight(selection, style, color);
+                          selectionListener.createHighlight(
+                              selection, style, color);
                         }
                         close();
                       }))
@@ -65,7 +67,7 @@ class HighlightPopup extends SelectionPopup {
   Widget buildDeleteOption(BuildContext context, String highlightId) =>
       IconButton(
         onPressed: () {
-          deleteHighlight(highlightId);
+          selectionListener.deleteHighlight(highlightId);
           close();
         },
         icon: Icon(
@@ -73,30 +75,4 @@ class HighlightPopup extends SelectionPopup {
           color: Theme.of(context).primaryColor,
         ),
       );
-
-  void updateHighlight(Selection selection, HighlightStyle style, Color color,
-          String highlightId) =>
-      readerContext.readerAnnotationRepository
-          .get(highlightId)
-          .then((highlight) {
-        if (highlight != null) {
-          highlight.style = style;
-          highlight.tint = color.value;
-          readerContext.readerAnnotationRepository.save(highlight);
-          jsApi?.updateDecorations(
-              {"highlights": highlight.toDecorations(isActive: false)});
-        }
-      });
-
-  void createHighlight(
-          Selection selection, HighlightStyle style, Color color) =>
-      readerContext.readerAnnotationRepository
-          .createHighlight(selection.locator, style, color.value)
-          .then((highlight) {
-        jsApi?.addDecorations(
-            {"highlights": highlight.toDecorations(isActive: false)});
-      });
-
-  void deleteHighlight(String highlightId) =>
-      readerContext.readerAnnotationRepository.delete([highlightId]);
 }

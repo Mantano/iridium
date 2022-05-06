@@ -2,6 +2,7 @@ import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
+import 'package:mno_navigator/src/epub/selection/highlight_popup.dart';
 import 'package:mno_navigator/src/epub/selection/selection_popup.dart';
 
 class NewSelectionPopup extends SelectionPopup {
@@ -24,12 +25,12 @@ class NewSelectionPopup extends SelectionPopup {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               buildOption("Highlight", () {
-                selectionListener.showHighlightPopup(
-                    selection, HighlightStyle.highlight);
+                selectionListener.showHighlightPopup(selection,
+                    HighlightStyle.highlight, HighlightPopup.highlightTints[0]);
               }),
               buildOption("Underline", () {
-                selectionListener.showHighlightPopup(
-                    selection, HighlightStyle.underline);
+                selectionListener.showHighlightPopup(selection,
+                    HighlightStyle.underline, HighlightPopup.highlightTints[0]);
               }),
               buildOption("Note", () {
                 Fimber.d("Note");

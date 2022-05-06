@@ -4,7 +4,7 @@ class HighlightStyle {
   static const HighlightStyle highlight = HighlightStyle._(0, "highlight");
   static const HighlightStyle underline = HighlightStyle._(1, "underline");
 
-  static const List<HighlightStyle> _values = [
+  static const List<HighlightStyle> values = [
     highlight,
     underline,
   ];
@@ -14,7 +14,7 @@ class HighlightStyle {
   const HighlightStyle._(this.id, this.value);
 
   static HighlightStyle? from(int id) =>
-      _values.firstOrNullWhere((type) => type.id == id);
+      values.firstOrNullWhere((type) => type.id == id);
 
   @override
   String toString() => '$runtimeType{id: $id, value: $value}';

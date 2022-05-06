@@ -69,7 +69,8 @@ class EpubWebViewListener extends WebViewListener {
     }
     Selection selection = Selection(locator: locator, rect: rect);
     selection.offset = webViewOffset?.call() ?? Offset.zero;
-    selectionListener?.showHighlightPopup(selection, highlight.style!,
+    selectionListener?.showHighlightPopup(
+        selection, highlight.style!, Color(highlight.tint!),
         highlightId: highlightId);
     return true;
   }

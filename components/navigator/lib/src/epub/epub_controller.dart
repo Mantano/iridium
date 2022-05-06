@@ -24,6 +24,7 @@ class EpubController extends PublicationController {
     Future<Streamer> streamerFuture,
     ReaderAnnotationRepository readerAnnotationRepository,
     Function0<List<RequestHandler>> handlersProvider,
+    SelectionListenerFactory? selectionListenerFactory,
   )   : widgetKeepAliveListener = WidgetKeepAliveListener(),
         super(
           onServerClosed,
@@ -34,6 +35,7 @@ class EpubController extends PublicationController {
           readerAnnotationRepository,
           handlersProvider,
           true,
+          selectionListenerFactory,
         );
 
   PreloadPageController get pageController => _pageController!;

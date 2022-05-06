@@ -92,11 +92,12 @@ class ReaderContext {
     required this.location,
     required this.readerAnnotationRepository,
     Map<Type, ReaderCommandProcessor> readerCommandProcessorMap = const {},
-    SelectionListenerFactory? factory,
+    SelectionListenerFactory? selectionListenerFactory,
   })  : assert(userException != null || publication != null),
         spineItemContextMap = {},
         toolbarVisibility = false,
-        this.selectionListenerFactory = SimpleSelectionListenerFactory() {
+        this.selectionListenerFactory =
+            selectionListenerFactory ?? SimpleSelectionListenerFactory() {
     readerCommandProcessors = Map.of(_defaultReaderCommandProcessors)
       ..addAll(readerCommandProcessorMap);
     _tableOfContents = publication?.tableOfContents ?? [];
@@ -107,7 +108,6 @@ class ReaderContext {
     _toolbarStreamController.add(toolbarVisibility);
     currentSpineItem = publication?.readingOrder.first;
     readerCommand = locator?.let((it) => GoToLocationCommand.locator(it));
-    // execute(GoToLocationCommand.readiumLocation(readiumLocation));
     readingProgression = publication?.metadata.effectiveReadingProgression;
   }
 

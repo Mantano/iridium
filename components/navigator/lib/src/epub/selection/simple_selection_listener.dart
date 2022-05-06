@@ -34,10 +34,11 @@ class SimpleSelectionListener extends SelectionListener {
   }
 
   @override
-  void showHighlightPopup(Selection selection, HighlightStyle style,
+  void showHighlightPopup(Selection selection, HighlightStyle style, Color tint,
       {String? highlightId}) {
     _hideSelectionPopup();
     _highlightPopup = HighlightPopup(this);
-    _highlightPopup!.showHighlightPopup(context, selection, style, highlightId);
+    _highlightPopup!
+        .showHighlightPopup(context, selection, style, tint, highlightId);
   }
 }

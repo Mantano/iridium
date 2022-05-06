@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+
 // import 'package:universal_io/io.dart';
 
 import 'package:dartx/dartx.dart';
@@ -101,7 +102,7 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
           ReaderAnnotationRepository readerAnnotationRepository,
           Function0<List<RequestHandler>> handlersProvider) =>
       EpubController(onServerClosed, onPageJump, locationFuture, fileAsset,
-          streamerFuture, readerAnnotationRepository, handlersProvider);
+          streamerFuture, readerAnnotationRepository, handlersProvider, null);
 
   @override
   Widget createPublicationNavigator({
