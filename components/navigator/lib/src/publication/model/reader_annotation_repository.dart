@@ -17,7 +17,7 @@ abstract class ReaderAnnotationRepository {
 
   Future<ReaderAnnotation> createBookmark(PaginationInfo paginationInfo);
 
-  Future<ReaderAnnotation> createHighlight(
+  Future<ReaderAnnotation> createHighlight(PaginationInfo? paginationInfo,
       Locator locator, HighlightStyle style, int tint);
 
   Future<ReaderAnnotation?> get(String id);

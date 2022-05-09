@@ -35,7 +35,8 @@ abstract class SelectionListener {
   void createHighlight(
           Selection selection, HighlightStyle style, Color color) =>
       readerContext.readerAnnotationRepository
-          .createHighlight(selection.locator, style, color.value)
+          .createHighlight(readerContext.paginationInfo, selection.locator,
+              style, color.value)
           .then((highlight) {
         jsApi?.addDecorations(
             {"highlights": highlight.toDecorations(isActive: false)});

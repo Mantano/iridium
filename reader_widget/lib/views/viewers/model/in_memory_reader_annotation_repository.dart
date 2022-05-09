@@ -24,7 +24,7 @@ class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
   }
 
   @override
-  Future<ReaderAnnotation> createHighlight(
+  Future<ReaderAnnotation> createHighlight(PaginationInfo? paginationInfo,
       Locator locator, HighlightStyle style, int tint) async {
     ReaderAnnotation readerAnnotation = ReaderAnnotation(
       "$_currentId",
