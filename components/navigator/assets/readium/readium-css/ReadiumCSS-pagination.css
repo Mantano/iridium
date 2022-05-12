@@ -43,6 +43,7 @@ html {
     top: 0;
     height: 48px;
     width: 48px;
+    pointer-events: auto;
 }
 .readium_page_bookmark img {
     display: none;

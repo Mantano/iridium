@@ -20,6 +20,7 @@ class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
         "$_currentId", paginationInfo.locator.json, AnnotationType.bookmark);
     _currentId++;
     annotations.add(readerAnnotation);
+    notifyBookmark(readerAnnotation);
     return readerAnnotation;
   }
 
@@ -46,7 +47,7 @@ class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
   void save(ReaderAnnotation readerAnnotation) {}
 
   @override
-  Future<void> delete(List<String> deletedIds) async {
+  Future<void> delete(Iterable<String> deletedIds) async {
     annotations.removeWhere((element) => deletedIds.contains(element.id));
     super.delete(deletedIds);
   }

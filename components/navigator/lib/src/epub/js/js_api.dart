@@ -96,6 +96,10 @@ class JsApi {
     loadJS(script);
   }
 
+  void setBookmarkIndexes(Iterable<int> bookmarkIndexes) {
+    loadJS("readium.setBookmarkIndexes(${bookmarkIndexes.toList()})");
+  }
+
   void updateFontSize(ViewerSettings viewerSettings) {
     loadJS(
         "readium.setProperty('$fontSizeName', '${viewerSettings.fontSize}%');");

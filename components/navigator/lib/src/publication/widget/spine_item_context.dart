@@ -4,6 +4,7 @@
 
 import 'dart:async';
 
+import 'package:dfunc/dfunc.dart';
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -24,6 +25,7 @@ class SpineItemContextWidget extends InheritedWidget {
 class SpineItemContext {
   final int spineItemIndex;
   final ReaderContext readerContext;
+  final List<ReaderAnnotation> bookmarks;
   final LinkPagination linkPagination;
   final StreamController<PaginationInfo> _paginationInfoStreamController;
   PaginationInfo? currentPaginationInfo;
@@ -33,7 +35,8 @@ class SpineItemContext {
     required this.spineItemIndex,
     required this.readerContext,
     required this.linkPagination,
-  }) : _paginationInfoStreamController = StreamController.broadcast();
+  })  : bookmarks = [],
+        _paginationInfoStreamController = StreamController.broadcast();
 
   Publication get publication => readerContext.publication!;
 
@@ -62,4 +65,36 @@ class SpineItemContext {
   void onTap() => readerContext.onTap();
 
   void dispose() => _paginationInfoStreamController.close();
+
+  Set<int> getBookmarkIndexes(int nbColumns) {
+    Set<int> bookmarkIndexes = {};
+    for (ReaderAnnotation bookmark in bookmarks) {
+      bookmark.locator?.let((locator) {
+        int? index = locator.getIndex(nbColumns);
+        if (index != null) {
+          bookmarkIndexes.add(index);
+        }
+      });
+    }
+    return bookmarkIndexes;
+  }
+
+  List<ReaderAnnotation> getVisibleBookmarks(int columnIndex, int nbColumns) {
+    List<ReaderAnnotation> visibleBookmarks = [];
+    for (ReaderAnnotation bookmark in bookmarks) {
+      bookmark.locator?.let((locator) {
+        int? index = locator.getIndex(nbColumns);
+        if (index != null && index == columnIndex) {
+          visibleBookmarks.add(bookmark);
+        }
+      });
+    }
+    return visibleBookmarks;
+  }
+}
+
+extension LocatorIndex on Locator {
+  int? getIndex(int nbColumns) => (locations.progression != null)
+      ? (locations.progression! * nbColumns + 0.5).floor()
+      : null;
 }

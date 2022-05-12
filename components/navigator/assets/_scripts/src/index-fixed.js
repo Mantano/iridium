@@ -7,4 +7,7 @@
 // Script used for fixed layouts resources.
 
 import "./index";
+
+/*eslint no-unused-vars: ["error", { "args": "none" }]*/
+readium.setBookmarkIndexes = function (bookmarkIndexes) {};
 readium.initPagination = function () {};

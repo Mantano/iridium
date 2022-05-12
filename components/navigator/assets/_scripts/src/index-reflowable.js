@@ -90,6 +90,22 @@ function createPaginationInfo(index, nbCols, nbThumbnails) {
 }
 
 var observers = [];
+var bookmarkIndexes = [];
+
+readium.setBookmarkIndexes = function (indexList) {
+  if (bookmarkIndexes.sort().toString() != indexList.sort().toString()) {
+    let documentWidth = document.scrollingElement.scrollWidth;
+    let pageWidth = document.body.clientWidth;
+    let nbCols = Math.round(documentWidth / pageWidth);
+    for (let i = 0; i < nbCols; i++) {
+      let bookmark = document.querySelector(
+        ".readium_page_bookmark[data-page='" + i + "'] img"
+      );
+      bookmark.style.display = indexList.includes(i) ? "block" : "none";
+    }
+  }
+  bookmarkIndexes = indexList;
+};
 
 readium.initPagination = function () {
   document.fonts.ready.then(async function () {
@@ -130,7 +146,9 @@ readium.initPagination = function () {
         '   <div class="readium_page_bookmark" data-page="' +
         i +
         '" data-prevent-tap="true">' +
-        '      <img src="/readium/assets/bookmark.svg" />' +
+        '      <img src="/readium/assets/bookmark.svg" style="display: ' +
+        (bookmarkIndexes.includes(i) ? "block" : "none") +
+        '" />' +
         "   </div>" +
         "</div>";
       paginator.appendChild(
@@ -167,12 +185,13 @@ readium.initPagination = function () {
       }
     }
 
-    let queryBookmarks = document.querySelector(".readium_page_bookmark");
+    let queryBookmarks = document.querySelectorAll(".readium_page_bookmark");
     for (let i = 0; i < queryBookmarks.length; i++) {
       queryBookmarks[i].addEventListener(
         "click",
+        /*eslint no-unused-vars: ["error", { "args": "none" }]*/
         function (event) {
-          flutter.log(event);
+          // flutter.log(event);
           flutter.oOnToggleBookmark(
             createPaginationInfo(i, nbCols, nbThumbnails)
           );

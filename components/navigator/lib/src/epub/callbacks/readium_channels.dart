@@ -17,7 +17,7 @@ import 'package:mno_shared/publication.dart';
 
 class ReadiumChannels extends JavascriptChannels {
   final SpineItemContext _spineItemContext;
-  final ReaderAnnotationRepository? _bookmarkRepository;
+  final ReaderAnnotationRepository? _readerAnnotationRepository;
   final ViewerSettingsBloc? viewerSettingsBloc;
   final WebViewHorizontalGestureRecognizer? webViewHorizontalGestureRecognizer;
   final WebViewListener listener;
@@ -26,7 +26,7 @@ class ReadiumChannels extends JavascriptChannels {
 
   ReadiumChannels(
       this._spineItemContext,
-      this._bookmarkRepository,
+      this._readerAnnotationRepository,
       this.viewerSettingsBloc,
       this.webViewHorizontalGestureRecognizer,
       this.listener)
@@ -39,7 +39,7 @@ class ReadiumChannels extends JavascriptChannels {
   @override
   Map<String, JavaScriptHandlerCallback> get channels => {
         "onPaginationInfo": _onPaginationChanged,
-        "oOnToggleBookmark": _onToggleBookmark,
+        "onToggleBookmark": _onToggleBookmark,
         "onTap": _onTap,
         "onSwipeUp": _onSwipeUp,
         "onSwipeDown": _onSwipeDown,
@@ -74,17 +74,22 @@ class ReadiumChannels extends JavascriptChannels {
 
   void _onToggleBookmark(List<dynamic> arguments) {
     if (arguments.isNotEmpty) {
-      // Fimber.d("onToggleBookmark: ${arguments.first}");
+      Fimber.d("onToggleBookmark: ${arguments.first}");
       try {
         PaginationInfo paginationInfo = PaginationInfo.fromJson(
             arguments.first,
             _spineItemContext.spineItemIndex,
             locator,
             _spineItemContext.linkPagination);
-        if (paginationInfo.pageBookmarks.isNotEmpty) {
-          _bookmarkRepository?.delete(paginationInfo.pageBookmarks);
+        List<ReaderAnnotation> visibleBookmarks =
+            _spineItemContext.getVisibleBookmarks(
+                paginationInfo.openPage.spineItemPageIndex,
+                paginationInfo.openPage.spineItemPageCount);
+        if (visibleBookmarks.isNotEmpty) {
+          _readerAnnotationRepository
+              ?.delete(visibleBookmarks.map((b) => b.id));
         } else {
-          _bookmarkRepository?.createBookmark(paginationInfo);
+          _readerAnnotationRepository?.createBookmark(paginationInfo);
         }
       } on Object catch (e, stacktrace) {
         Fimber.d("onToggleBookmark error: $e, $stacktrace",
@@ -132,7 +137,6 @@ class ReadiumChannels extends JavascriptChannels {
   double get devicePixelRatio =>
       WidgetsBinding.instance.window.devicePixelRatio;
 
-  /// TODO implement find real horizontal scroll extent
   double computeHorizontalScrollExtent() =>
       _spineItemContext.readerContext.viewportWidth.toDouble();
 

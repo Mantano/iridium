@@ -10,7 +10,6 @@ class PaginationInfo {
   final Map<String, dynamic> json;
   final int spineItemIndex;
   final Locator locator;
-  final List<String> pageBookmarks = [];
   final Page openPage;
   final LinkPagination linkPagination;
   final Map<String, int> elementIdsWithPageIndex;
@@ -33,8 +32,6 @@ class PaginationInfo {
         openPage,
         linkPagination,
         elementIdsWithPageIndex);
-    List<dynamic> pageBookmarks = json["pageBookmarks"] ?? [];
-    paginationInfo.pageBookmarks.addAll(pageBookmarks.map((s) => s.toString()));
     return paginationInfo;
   }
 
@@ -81,7 +78,6 @@ class PaginationInfo {
 
   @override
   String toString() => 'PaginationInfo{json: $json, '
-      'pageBookmarks: $pageBookmarks,'
       'page: $page, '
       'openPage: $openPage, '
       'linkPagination: $linkPagination}';

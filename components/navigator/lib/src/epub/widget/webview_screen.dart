@@ -50,7 +50,6 @@ class WebViewScreenState extends State<WebViewScreen> {
   late CurrentSpineItemBloc _currentSpineItemBloc;
   late SpineItemContext _spineItemContext;
   late WebViewHorizontalGestureRecognizer webViewHorizontalGestureRecognizer;
-  StreamSubscription<List<String>>? _annotationsSubscription;
   StreamSubscription<ReaderThemeState>? _readerThemeSubscription;
   StreamSubscription<ViewerSettingsState>? _viewerSettingsSubscription;
   StreamSubscription<CurrentSpineItemState>? _currentSpineItemSubscription;
@@ -61,6 +60,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   late SelectionListener selectionListener;
   late StreamController<Selection?> selectionController;
   late StreamSubscription<Selection?> selectionSubscription;
+  late StreamSubscription<ReaderAnnotation> bookmarkSubscription;
   late StreamSubscription<List<String>> deletedAnnotationIdsSubscription;
 
   bool isLoaded = false;
@@ -127,10 +127,28 @@ class WebViewScreenState extends State<WebViewScreen> {
         selectionListener.hidePopup();
       }
     });
+    bookmarkSubscription = readerContext
+        .readerAnnotationRepository.bookmarkStream
+        .listen((ReaderAnnotation bookmark) {
+      if (bookmark.locator?.href == spineItem.href) {
+        _spineItemContext.bookmarks.add(bookmark);
+        readerContext.paginationInfo
+            ?.let((paginationInfo) => _updateBookmarks(paginationInfo));
+      }
+    });
     deletedAnnotationIdsSubscription = readerContext
         .readerAnnotationRepository.deletedIdsStream
-        .listen((List<String> deletedIds) => _jsApi?.deleteDecorations(
-            {HtmlDecorationTemplate.highlightGroup: deletedIds}));
+        .listen((List<String> deletedIds) {
+      _jsApi?.deleteDecorations({
+        HtmlDecorationTemplate.highlightGroup: deletedIds
+            .map((id) => "$id-${HtmlDecorationTemplate.highlightSuffix}")
+            .toList()
+      });
+      _spineItemContext.bookmarks
+          .removeWhere((annotation) => deletedIds.contains(annotation.id));
+      readerContext.paginationInfo
+          ?.let((paginationInfo) => _updateBookmarks(paginationInfo));
+    });
   }
 
   @override
@@ -138,12 +156,12 @@ class WebViewScreenState extends State<WebViewScreen> {
     super.dispose();
     widget.widgetKeepAliveListener.unregister(position);
     _spineItemContext.dispose();
-    _annotationsSubscription?.cancel();
     _readerThemeSubscription?.cancel();
     _viewerSettingsSubscription?.cancel();
     _currentSpineItemSubscription?.cancel();
     _readerCommandSubscription?.cancel();
     _paginationInfoSubscription?.cancel();
+    bookmarkSubscription.cancel();
     deletedAnnotationIdsSubscription.cancel();
     selectionSubscription.cancel();
     selectionController.close();
@@ -246,6 +264,7 @@ class WebViewScreenState extends State<WebViewScreen> {
       }
       _updateSpineItemPosition(_currentSpineItemBloc.state);
       await _loadDecorations();
+      await _loadBookmarks();
     } catch (e, stacktrace) {
       Fimber.d("_onPageFinished ERROR", ex: e, stacktrace: stacktrace);
     }
@@ -343,8 +362,23 @@ class WebViewScreenState extends State<WebViewScreen> {
 
   void _onPaginationInfo(PaginationInfo? paginationInfo) {
     if (currentSelectedSpineItem && paginationInfo != null) {
+      _updateBookmarks(paginationInfo);
       readerContext.notifyCurrentLocation(paginationInfo, spineItem);
       readerContext.currentSpineItemContext = _spineItemContext;
     }
+  }
+
+  void _updateBookmarks(PaginationInfo paginationInfo) {
+    int nbColumns = paginationInfo.openPage.spineItemPageCount;
+    Set<int> bookmarkIndexes = _spineItemContext.getBookmarkIndexes(nbColumns);
+    _jsApi?.setBookmarkIndexes(bookmarkIndexes);
+  }
+
+  Future<void> _loadBookmarks() async {
+    _spineItemContext.bookmarks.addAll(
+        await readerContext.readerAnnotationRepository.allWhere(
+            predicate: AnnotationTypeAndDocumentPredicate(
+                spineItem.href, AnnotationType.bookmark)));
+    _jsApi?.initPagination();
   }
 }

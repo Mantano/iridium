@@ -53,6 +53,6 @@ export default {
     window.flutter_inappwebview.callHandler("onPaginationInfo", value);
   },
   oOnToggleBookmark: function (value) {
-    window.flutter_inappwebview.callHandler("oOnToggleBookmark", value);
+    window.flutter_inappwebview.callHandler("onToggleBookmark", value);
   },
 };
