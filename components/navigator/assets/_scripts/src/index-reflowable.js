@@ -192,6 +192,7 @@ readium.initPagination = function () {
         /*eslint no-unused-vars: ["error", { "args": "none" }]*/
         function (event) {
           // flutter.log(event);
+          event.stopPropagation();
           flutter.oOnToggleBookmark(
             createPaginationInfo(i, nbCols, nbThumbnails)
           );
