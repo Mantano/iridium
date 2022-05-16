@@ -28,6 +28,11 @@ class JsApi {
     loadJS("readium.elementIds = ${json.encode(elementIds)};");
   }
 
+  void setViewportWidth(int viewportWidth) {
+    loadJS(
+        "readium.setProperty('--RS__nativeViewportWidth', '$viewportWidth');");
+  }
+
   void openPage(OpenPageRequest openPageRequestData) {
     if (openPageRequestData.spineItemPercentage != null) {
       loadJS(

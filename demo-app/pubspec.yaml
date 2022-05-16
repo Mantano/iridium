@@ -46,7 +46,7 @@ dependencies:
   fimber: ^0.6.5
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
-  flutter_inappwebview: ^5.4.3
+  flutter_inappwebview: ^5.4.3+7
   json_theme: ^3.3.1
   new_version: ^0.3.0
 

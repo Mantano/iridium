@@ -62,6 +62,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   late StreamSubscription<Selection?> selectionSubscription;
   late StreamSubscription<ReaderAnnotation> bookmarkSubscription;
   late StreamSubscription<List<String>> deletedAnnotationIdsSubscription;
+  late StreamSubscription<int> viewportWidthSubscription;
 
   bool isLoaded = false;
 
@@ -149,6 +150,8 @@ class WebViewScreenState extends State<WebViewScreen> {
       readerContext.paginationInfo
           ?.let((paginationInfo) => _updateBookmarks(paginationInfo));
     });
+    viewportWidthSubscription = readerContext.viewportWidthStream
+        .listen((viewportWidth) => _jsApi?.setViewportWidth(viewportWidth));
   }
 
   @override
@@ -162,6 +165,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     _readerCommandSubscription?.cancel();
     _paginationInfoSubscription?.cancel();
     bookmarkSubscription.cancel();
+    viewportWidthSubscription.cancel();
     deletedAnnotationIdsSubscription.cancel();
     selectionSubscription.cancel();
     selectionController.close();

@@ -66,18 +66,25 @@ function appendVirtualColumnIfNeeded() {
 
 var pageWidth = 1;
 
-async function onViewportWidthChanged() {
+function onViewportWidthChanged() {
   // We can't rely on window.innerWidth for the pageWidth on Android, because if the
   // device pixel ratio is not an integer, we get rounding issues offsetting the pages.
   //
   // See https://github.com/readium/readium-css/issues/97
   // and https://github.com/readium/r2-navigator-kotlin/issues/146
-  var width = await flutter.getViewportWidth();
+  var width = getViewportWidth();
   pageWidth = width / window.devicePixelRatio;
-  flutter.log("width: " + width + ", pageWidth: " + pageWidth);
   setProperty(
     "--RS__viewportWidth",
     "calc(" + width + "px / " + window.devicePixelRatio + ")"
+  );
+}
+
+function getViewportWidth() {
+  return parseInt(
+    window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue("--RS__nativeViewportWidth")
   );
 }
 
@@ -195,7 +202,8 @@ export function scrollLeft() {
 export function scrollRight() {
   var documentWidth = document.scrollingElement.scrollWidth;
   var offset = window.scrollX + pageWidth;
-  var maxOffset = isRTL() ? 0 : documentWidth - pageWidth;
+  var nbColumns = Math.round(documentWidth / pageWidth);
+  var maxOffset = isRTL() ? 0 : (nbColumns - 1) * pageWidth;
   return scrollToOffset(Math.min(offset, maxOffset));
 }
 

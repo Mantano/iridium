@@ -16,7 +16,7 @@ dependencies:
   equatable: ^2.0.3
   fimber: ^0.6.5
   flutter_bloc: ^8.0.1
-  flutter_inappwebview: ^5.4.3
+  flutter_inappwebview: ^5.4.3+7
   photo_view: ^0.13.0
   preload_page_view: ^0.1.6
   universal_io: ^2.0.4

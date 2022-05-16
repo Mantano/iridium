@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'package:fimber/fimber.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_server/src/blocs/server/html_injector.dart';
 import 'package:mno_shared/fetcher.dart';
@@ -12,13 +13,16 @@ import 'package:mno_shared/publication.dart';
 class FetcherRequestHandler extends RequestHandler {
   /// The [publication] where to find the resource
   final Publication publication;
+  final ValueGetter<int> viewportWidthGetter;
   final HtmlInjector _htmlInjector;
 
   /// Creates an instance of [FetcherRequestHandler] for a [publication].
   ///
   /// A [transformData] parameter is optional.
-  FetcherRequestHandler(this.publication, {List<String> googleFonts = const []})
-      : _htmlInjector = HtmlInjector(publication, googleFonts: googleFonts);
+  FetcherRequestHandler(this.publication, this.viewportWidthGetter,
+      {List<String> googleFonts = const []})
+      : _htmlInjector = HtmlInjector(publication, viewportWidthGetter,
+            googleFonts: googleFonts);
 
   Fetcher get _fetcher => publication.fetcher;
 

@@ -6,6 +6,7 @@ import 'dart:typed_data';
 
 import 'package:dfunc/dfunc.dart';
 import 'package:fimber/fimber.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mno_commons/extensions/strings.dart';
 import 'package:mno_commons/utils/injectable.dart';
 import 'package:mno_server/src/blocs/server/resources.dart';
@@ -20,12 +21,13 @@ import 'package:universal_io/io.dart';
 class HtmlInjector {
   /// The [publication] that is the context for the HTML injection.
   final Publication publication;
+  final ValueGetter<int> viewportWidthGetter;
   final String? userPropertiesPath;
   final Resources? customResources;
   final List<String> googleFonts;
 
   /// Create an instance [HtmlInjector] for a [publication].
-  HtmlInjector(this.publication,
+  HtmlInjector(this.publication, this.viewportWidthGetter,
       {this.userPropertiesPath,
       this.customResources,
       this.googleFonts = const []});
@@ -34,8 +36,8 @@ class HtmlInjector {
   Resource transform(Resource resource) => LazyResource(() async {
         Link link = await resource.link();
         if (link.mediaType.isHtml) {
-          return _InjectHtmlResource(publication, userPropertiesPath,
-              customResources, googleFonts, resource);
+          return _InjectHtmlResource(publication, viewportWidthGetter,
+              userPropertiesPath, customResources, googleFonts, resource);
         }
         return resource;
       });
@@ -43,12 +45,18 @@ class HtmlInjector {
 
 class _InjectHtmlResource extends TransformingResource {
   final Publication publication;
+  final ValueGetter<int> viewportWidthGetter;
   final String? userPropertiesPath;
   final Resources? customResources;
   final List<String> googleFonts;
 
-  _InjectHtmlResource(this.publication, this.userPropertiesPath,
-      this.customResources, this.googleFonts, Resource resource)
+  _InjectHtmlResource(
+      this.publication,
+      this.viewportWidthGetter,
+      this.userPropertiesPath,
+      this.customResources,
+      this.googleFonts,
+      Resource resource)
       : super(resource);
 
   @override
@@ -185,7 +193,9 @@ class _InjectHtmlResource extends TransformingResource {
     }
 
     // Inject userProperties
-    getProperties(publication.userSettingsUIPreset)?.let((propertyPair) {
+    getProperties(publication.userSettingsUIPreset).let((propertyPair) {
+      propertyPair["--RS__nativeViewportWidth"] =
+          viewportWidthGetter().toString();
       Match? html =
           regexForOpeningHTMLTag("html").matchAsPrefix(resourceHtml, 0);
       if (html != null) {
@@ -268,7 +278,7 @@ class _InjectHtmlResource extends TransformingResource {
   String getHtmlScript(String resourceName) =>
       "<script type=\"text/javascript\" src=\"$resourceName\"></script>\n";
 
-  Map<String, String>? getProperties(Map<ReadiumCSSName, bool> preset) {
+  Map<String, String> getProperties(Map<ReadiumCSSName, bool> preset) {
     // userProperties is a JSON string containing the css userProperties
     String? userPropertiesString;
     userPropertiesPath?.let((it) async {
@@ -281,38 +291,40 @@ class _InjectHtmlResource extends TransformingResource {
     });
 
     return userPropertiesString?.let((it) {
-      // Parsing of the String into a JSONArray of JSONObject with each "name" and "value" of the css properties
-      // Making that JSONArray a MutableMap<String, String> to make easier the access of data
-      try {
-        List<dynamic>? propertiesArray = it.toJsonArrayOrNull();
-        Map<String, String> properties = {};
-        if (propertiesArray != null) {
-          for (var i = 0; i < propertiesArray.length; i++) {
-            Map<String, dynamic> value =
-                propertiesArray[i].toString().toJsonOrNull()!;
-            bool isInPreset = false;
+          // Parsing of the String into a JSONArray of JSONObject with each "name" and "value" of the css properties
+          // Making that JSONArray a MutableMap<String, String> to make easier the access of data
+          try {
+            List<dynamic>? propertiesArray = it.toJsonArrayOrNull();
+            Map<String, String> properties = {};
+            if (propertiesArray != null) {
+              for (var i = 0; i < propertiesArray.length; i++) {
+                Map<String, dynamic> value =
+                    propertiesArray[i].toString().toJsonOrNull()!;
+                bool isInPreset = false;
 
-            for (MapEntry<ReadiumCSSName, bool> property in preset.entries) {
-              if (property.key.ref == value["name"]) {
-                isInPreset = true;
-                Product2<ReadiumCSSName, bool?> presetPair =
-                    Product2(property.key, preset[property.key]);
-                Map<String, String> presetValue = applyPreset(presetPair);
-                properties[presetValue["name"]!] = presetValue["value"]!;
+                for (MapEntry<ReadiumCSSName, bool> property
+                    in preset.entries) {
+                  if (property.key.ref == value["name"]) {
+                    isInPreset = true;
+                    Product2<ReadiumCSSName, bool?> presetPair =
+                        Product2(property.key, preset[property.key]);
+                    Map<String, String> presetValue = applyPreset(presetPair);
+                    properties[presetValue["name"]!] = presetValue["value"]!;
+                  }
+                }
+
+                if (!isInPreset) {
+                  properties[value["name"]] = value["value"];
+                }
               }
             }
 
-            if (!isInPreset) {
-              properties[value["name"]] = value["value"];
-            }
+            return properties;
+          } on Exception {
+            return null;
           }
-        }
-
-        return properties;
-      } on Exception {
-        return null;
-      }
-    });
+        }) ??
+        {};
   }
 
   Map<String, String> applyPreset(Product2<ReadiumCSSName, bool?> preset) {

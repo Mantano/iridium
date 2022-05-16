@@ -48,8 +48,6 @@ class ReadiumChannels extends JavascriptChannels {
         "onDecorationActivated": _onDecorationActivated,
         "highlightAnnotationMarkActivated": _highlightAnnotationMarkActivated,
         "highlightActivated": _highlightActivated,
-        "logError": _logError,
-        "log": _log,
         "getViewportWidth": _getViewportWidth,
         "onLeftOverlayVisibilityChanged": _onLeftOverlayVisibilityChanged,
         "onRightOverlayVisibilityChanged": _onRightOverlayVisibilityChanged,
@@ -198,17 +196,10 @@ class ReadiumChannels extends JavascriptChannels {
     Fimber.d("highlightId: $highlightId");
   }
 
-  void _logError(List<dynamic> arguments) {
-    Fimber.e(
-        "JavaScript error: ${arguments[1]}:${arguments[2]} ${arguments[0]}");
+  int _getViewportWidth(List<dynamic> arguments) {
+    Fimber.d("viewportWidth: ${_spineItemContext.readerContext.viewportWidth}");
+    return _spineItemContext.readerContext.viewportWidth;
   }
-
-  void _log(List<dynamic> arguments) {
-    Fimber.d("JavaScript: ${arguments.first}");
-  }
-
-  int _getViewportWidth(List<dynamic> arguments) =>
-      _spineItemContext.readerContext.viewportWidth;
 
   void _onLeftOverlayVisibilityChanged(List<dynamic> arguments) {
     if (arguments.isNotEmpty) {

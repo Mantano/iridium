@@ -47,7 +47,6 @@ class ReaderContext {
   late Map<Type, ReaderCommandProcessor> readerCommandProcessors;
   Link? currentSpineItem;
   SpineItemContext? currentSpineItemContext;
-  int viewportWidth = 0;
   SelectionListenerFactory selectionListenerFactory;
 
   ReadingProgression? readingProgression;
@@ -66,6 +65,20 @@ class ReaderContext {
       StreamController.broadcast();
 
   Stream<bool> get toolbarStream => _toolbarStreamController.stream;
+
+  int _viewportWidth = 0;
+
+  int get viewportWidth => _viewportWidth;
+
+  set viewportWidth(int viewportWidth) {
+    _viewportWidth = viewportWidth;
+    _viewportWidthController.add(viewportWidth);
+  }
+
+  final StreamController<int> _viewportWidthController =
+      StreamController.broadcast();
+
+  Stream<int> get viewportWidthStream => _viewportWidthController.stream;
 
   ReaderCommand? readerCommand;
 

@@ -14,23 +14,6 @@ class ReadiumThemeValues {
 
   ReadiumThemeValues(this.readerTheme, this.viewerSettings);
 
-  String replaceValues(String css) => css
-      .replaceFirst("{{pageGutter}}", textMargin)
-      .replaceFirst("{{verticalMargin}}", verticalMargin)
-      .replaceFirst("{{backgroundColor}}", backgroundColor)
-      .replaceFirst("{{textColor}}", textColor)
-      .replaceFirst("{{textAlign}}", textAlign)
-      .replaceFirst("{{lineHeight}}", lineHeight)
-      .replaceFirst("{{wordSpacing}}", wordSpacing)
-      .replaceFirst("{{letterSpacing}}", letterSpacing)
-      .replaceFirst("{{scroll}}",
-          readerTheme.scroll ? "readium-scroll-on" : "readium-scroll-off")
-      .replaceFirst("{{advancedSettings}}",
-          readerTheme.advanced ? "readium-advanced-on" : "readium-advanced-off")
-      .replaceFirst("{{fontOverride}}",
-          (fontFamily != "inherit") ? "readium-font-on" : "readium-font-off")
-      .replaceFirst("{{fontFamily}}", fontFamily);
-
   // c.f. ReadiumCSS-after.css
   Map<String, String> get cssVarsAndValues => {
         ReadiumCSSName.pageMargins.name: textMargin,

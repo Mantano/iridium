@@ -18,18 +18,10 @@ export default {
     window.flutter_inappwebview.callHandler("highlightActivated", highlightId);
   },
   logError: function (message, filename, lineno) {
-    window.flutter_inappwebview.callHandler(
-      "logError",
-      message,
-      filename,
-      lineno
-    );
+    console.error(message, filename, lineno);
   },
   log: function (message) {
-    window.flutter_inappwebview.callHandler("log", message);
-  },
-  getViewportWidth: function (message) {
-    return window.flutter_inappwebview.callHandler("getViewportWidth", message);
+    console.log(message);
   },
   onLeftOverlayVisibilityChanged: function (value) {
     window.flutter_inappwebview.callHandler(

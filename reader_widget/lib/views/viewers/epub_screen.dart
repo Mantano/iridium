@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 // import 'package:universal_io/io.dart';
 
@@ -141,20 +140,11 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
         AssetsRequestHandler(
           'packages/mno_navigator/assets',
           assetProvider: _AssetProvider(),
-          transformData: _transformAssetData,
         ),
-        FetcherRequestHandler(readerContext.publication!,
+        FetcherRequestHandler(
+            readerContext.publication!, () => readerContext.viewportWidth,
             googleFonts: Fonts.googleFonts)
       ];
-  Uint8List _transformAssetData(String href, Uint8List data) {
-    if (href == 'xpub-js/ReadiumCSS-after.css') {
-      ReadiumThemeValues values = ReadiumThemeValues(
-          _readerThemeBloc.currentTheme, _viewerSettingsBloc.viewerSettings);
-      String string = values.replaceValues(String.fromCharCodes(data));
-      return Uint8List.fromList(string.codeUnits);
-    }
-    return data;
-  }
 }
 
 class _AssetProvider implements AssetProvider {
