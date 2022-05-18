@@ -10,7 +10,7 @@ import 'package:xml/xml.dart';
 
 Future<Manifest> parsePackageDocument(String resource,
     {String? displayOptions}) async {
-  String path = "test_resources/epub/" + resource;
+  String path = "test_resources/epub/$resource";
   var document = XmlDocument.parse(await File(path).readAsString());
   var pub = document
       .let((it) => PackageDocument.parse(it.rootElement, "OEBPS/content.opf"))

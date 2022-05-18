@@ -121,8 +121,8 @@ class ZipPackage implements JSONable {
     final cds = <ZipCentralDirectory>[];
 
     try {
-      LazyArchive _archive = await LazyZipDecoder().decodeBuffer(file);
-      for (LazyArchiveFile archiveFile in _archive) {
+      LazyArchive archive = await LazyZipDecoder().decodeBuffer(file);
+      for (LazyArchiveFile archiveFile in archive) {
         if (archiveFile.isFile) {
           final ZipLocalFile f = ZipLocalFile(0x0403);
           f.offsetStart = archiveFile.header.file.offsetStart;

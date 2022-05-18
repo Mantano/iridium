@@ -14,13 +14,14 @@ dependencies:
   dartx: ^1.1.0
   dfunc: ^0.7.2
   equatable: ^2.0.3
-  fimber: ^0.6.5
+  fimber: ^0.6.6
   flutter_bloc: ^8.0.1
   flutter_inappwebview: ^5.4.3+7
+  flutter_spinkit: ^5.1.0
   photo_view: ^0.13.0
   preload_page_view: ^0.1.6
+  rxdart: ^0.27.3
   universal_io: ^2.0.4
-  flutter_spinkit: ^5.1.0
 
   mno_commons:
     path: ../commons
@@ -33,7 +34,7 @@ dependencies:
 
 dev_dependencies:
   test: ^1.21.1
-  lints: ^1.0.1
+  lints: ^2.0.0
 
 flutter:
 

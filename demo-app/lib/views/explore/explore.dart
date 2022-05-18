@@ -14,7 +14,7 @@ class Explore extends StatefulWidget {
   const Explore({Key? key}) : super(key: key);
 
   @override
-  _ExploreState createState() => _ExploreState();
+  State<StatefulWidget> createState() => _ExploreState();
 }
 
 class _ExploreState extends State<Explore> {

@@ -100,7 +100,8 @@ class DetailsProvider extends ChangeNotifier {
     });
   }
 
-  Future downloadFile(BuildContext context, String url, String filename) async {
+  Future downloadFile(
+      BuildContext context, State state, String url, String filename) async {
     PermissionStatus permission = await Permission.storage.status;
 
     if (permission != PermissionStatus.granted) {
@@ -109,8 +110,14 @@ class DetailsProvider extends ChangeNotifier {
       await Permission.accessMediaLocation.request();
       // manage external storage needed for android 11/R
       await Permission.manageExternalStorage.request();
+      if (!state.mounted) {
+        return;
+      }
       startDownload(context, url, filename);
     } else {
+      if (!state.mounted) {
+        return;
+      }
       startDownload(context, url, filename);
     }
   }
@@ -131,8 +138,8 @@ class DetailsProvider extends ChangeNotifier {
     //     : appDocDir.path.split('Android')[0] +
     //         '${Constants.appName}/$filename.epub';
     String path = Platform.isIOS
-        ? appDocDir!.path + '/$filename.epub'
-        : appDocDir!.path + '/$filename.epub';
+        ? '${appDocDir!.path}/$filename.epub'
+        : '${appDocDir!.path}/$filename.epub';
     Fimber.d("path: $path");
     File file = File(path);
     if (!await file.exists()) {

@@ -64,7 +64,7 @@ extension LinkListExtension on List<Link> {
   Link? deepLinkWithHref(String href) {
     for (Link l in this) {
       if (l.href.toLowerCase() == href.toLowerCase() ||
-          l.href.toLowerCase() == '/' + href.toLowerCase()) {
+          l.href.toLowerCase() == '/${href.toLowerCase()}') {
         return l;
       } else {
         Link? alternate = l.alternates.deepLinkWithHref(href);

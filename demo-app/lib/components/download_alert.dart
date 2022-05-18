@@ -12,7 +12,7 @@ class DownloadAlert extends StatefulWidget {
       : super(key: key);
 
   @override
-  _DownloadAlertState createState() => _DownloadAlertState();
+  State<StatefulWidget> createState() => _DownloadAlertState();
 }
 
 class _DownloadAlertState extends State<DownloadAlert> {

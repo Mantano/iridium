@@ -419,7 +419,7 @@ class MediaType {
     params.sort((a, b) => a.compareTo(b));
     String paramsStr = "";
     if (params.isNotEmpty) {
-      paramsStr = ";" + params.join(";");
+      paramsStr = ";${params.join(";")}";
     }
     return "$type/$subtype$paramsStr";
   }

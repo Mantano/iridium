@@ -12,7 +12,7 @@ import 'package:uuid/uuid.dart';
 
 class DeviceService {
   static const String settingsPrefix = "org.readium.r2.settings";
-  static const String lcpDeviceIdPref = settingsPrefix + ".lcp_device_id";
+  static const String lcpDeviceIdPref = "$settingsPrefix.lcp_device_id";
   final DeviceRepository repository;
   final NetworkService network;
   final SharedPreferences preferences;

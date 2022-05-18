@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 class FavoriteDB {
   Future<String> getPath() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    final path = documentDirectory.path + '/favorites.db';
+    final path = '${documentDirectory.path}/favorites.db';
     return path;
   }
 

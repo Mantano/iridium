@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/util/dialogs.dart';
 import 'package:iridium_app/views/explore/explore.dart';
 import 'package:iridium_app/views/home/home.dart';
 import 'package:iridium_app/views/settings/settings.dart';
-import 'package:flutter_font_icons/flutter_font_icons.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  State<StatefulWidget> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {

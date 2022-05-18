@@ -10,7 +10,7 @@ import 'package:xml/xml.dart';
 
 void main() {
   Future<Map<String, Encryption>> parseEncryption(String resource) async {
-    String path = "test_resources/epub/" + resource;
+    String path = "test_resources/epub/$resource";
     var document = XmlDocument.parse(await File(path).readAsString());
     return EncryptionParser.parse(document);
   }

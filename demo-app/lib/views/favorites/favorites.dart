@@ -7,7 +7,7 @@ class Favorites extends StatefulWidget {
   const Favorites({Key? key}) : super(key: key);
 
   @override
-  _FavoritesState createState() => _FavoritesState();
+  State<StatefulWidget> createState() => _FavoritesState();
 }
 
 class _FavoritesState extends State<Favorites> {

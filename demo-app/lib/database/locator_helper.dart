@@ -8,7 +8,7 @@ import 'package:path_provider/path_provider.dart';
 class LocatorDB {
   Future<String> getPath() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    final path = documentDirectory.path + '/locator.db';
+    final path = '${documentDirectory.path}/locator.db';
     return path;
   }
 

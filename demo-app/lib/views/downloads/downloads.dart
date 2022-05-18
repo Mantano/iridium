@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/components/loading_widget.dart';
 import 'package:iridium_app/database/download_helper.dart';
-import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 import 'package:mno_shared/publication.dart';
@@ -14,7 +14,7 @@ class Downloads extends StatefulWidget {
   const Downloads({Key? key}) : super(key: key);
 
   @override
-  _DownloadsState createState() => _DownloadsState();
+  State<StatefulWidget> createState() => _DownloadsState();
 }
 
 class _DownloadsState extends State<Downloads> {

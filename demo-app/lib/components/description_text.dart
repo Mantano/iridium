@@ -6,7 +6,7 @@ class DescriptionTextWidget extends StatefulWidget {
   const DescriptionTextWidget({Key? key, required this.text}) : super(key: key);
 
   @override
-  _DescriptionTextWidgetState createState() => _DescriptionTextWidgetState();
+  State<StatefulWidget> createState() => _DescriptionTextWidgetState();
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
@@ -44,7 +44,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
             : Column(
                 children: <Widget>[
                   Text(
-                    (flag ? (firstHalf + '...') : (firstHalf + secondHalf))
+                    (flag ? ('$firstHalf...') : (firstHalf + secondHalf))
                         .replaceAll(r'\n', '\n\n')
                         .replaceAll(r'\r', '')
                         .replaceAll(r"\'", "'"),

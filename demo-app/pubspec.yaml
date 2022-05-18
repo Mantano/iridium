@@ -23,35 +23,40 @@ dependencies:
     sdk: flutter
   iridium_reader_widget:
     path: ../reader_widget
+  mno_opds:
+    path: ../components/opds
+  mno_shared:
+    path: ../components/shared
+  bloc: ^8.0.3
+  cached_network_image: ^3.2.1
   cupertino_icons: ^1.0.4
-  provider: ^6.0.2
-  shared_preferences: ^2.0.13
-  #  flutter_icons: ^1.1.0
-  flutter_font_icons: ^2.2.4
-  xml2json: ^5.3.2
-  fluttertoast: ^8.0.9
-  cached_network_image: ^3.2.0
   dartx: ^1.1.0
-  uuid: ^3.0.6
-  objectdb: ^1.2.1+1
-  path_provider: ^2.0.9
   dio: ^4.0.6
-  permission_handler: ^9.2.0
-  google_fonts: ^2.3.2
+  fimber: ^0.6.6
+  flutter_bloc: ^8.0.1
+  flutter_fimber: ^0.6.5
+  flutter_font_icons: ^2.2.5
+  #  flutter_icons: ^1.1.0
+  flutter_inappwebview: ^5.4.3+7
   flutter_spinkit: ^5.1.0
+  fluttertoast: ^8.0.9
+  google_fonts: ^2.3.2
   idb_shim: ^2.0.1
   idb_sqflite: ^1.1.0
-  sqflite_common_ffi: ^2.1.1
-  flutter_fimber: ^0.6.5
-  fimber: ^0.6.5
-  bloc: ^8.0.3
-  flutter_bloc: ^8.0.1
-  flutter_inappwebview: ^5.4.3+7
-  json_theme: ^3.3.1
+  json_theme: ^4.0.0
   new_version: ^0.3.0
+  objectdb: ^1.2.1+1
+  path_provider: ^2.0.10
+  permission_handler: ^9.2.0
+  provider: ^6.0.2
+  shared_preferences: ^2.0.15
+  sqflite_common_ffi: ^2.1.1
+  universal_io: ^2.0.4
+  uuid: ^3.0.6
+  xml2json: ^5.3.2
 
 dev_dependencies:
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
 

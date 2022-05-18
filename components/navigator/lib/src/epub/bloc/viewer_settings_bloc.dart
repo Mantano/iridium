@@ -9,9 +9,9 @@ import 'package:mno_navigator/epub.dart';
 
 class ViewerSettingsBloc
     extends Bloc<ViewerSettingsEvent, ViewerSettingsState> {
-  ViewerSettingsBloc(EpubReaderState _readerState)
+  ViewerSettingsBloc(EpubReaderState readerState)
       : super(ViewerSettingsState(
-            ViewerSettings.defaultSettings(fontSize: _readerState.fontSize))) {
+            ViewerSettings.defaultSettings(fontSize: readerState.fontSize))) {
     on<ScrollSnapShouldStopEvent>((event, emit) => emit(ViewerSettingsState(
         state.viewerSettings.setScrollSnapShouldStop(event.shouldStop))));
     on<IncrFontSizeEvent>((event, emit) =>

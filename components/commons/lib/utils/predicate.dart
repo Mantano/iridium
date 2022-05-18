@@ -78,7 +78,7 @@ class AcceptAllPredicate<T> implements Predicate<T> {
   List<ConditionPredicate> get conditionsPredicate => [];
 
   @override
-  set conditionsPredicate(List<ConditionPredicate> _conditionsPredicate) {}
+  set conditionsPredicate(List<ConditionPredicate> conditionsPredicate) {}
 
   @override
   bool get dbOnly => true;

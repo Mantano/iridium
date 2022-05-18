@@ -2,8 +2,8 @@ import 'package:example/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fimber/flutter_fimber.dart';
-import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 import 'package:universal_io/io.dart' hide Link;
 
 Future<void> main() async {
@@ -79,7 +79,10 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: EpubScreen.fromPath(filePath: widget.dirPath, location: '{"cfi":" ","idref":"file_12.html"}',), //'{"idref":"id-id2640702"}'
+        child: EpubScreen.fromPath(
+          filePath: widget.dirPath,
+          location: '{"cfi":" ","idref":"file_12.html"}',
+        ), //'{"idref":"id-id2640702"}'
       ),
     );
   }

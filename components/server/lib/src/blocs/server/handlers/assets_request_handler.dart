@@ -48,7 +48,7 @@ class AssetsRequestHandler extends RequestHandler {
             await MediaType.ofSingleHint(fileExtension: href.extension()),
       );
       return true;
-    } on Error catch (ex, _) {
+    } on Error {
       // For debugging
       // Fimber.d("Error loading: $href", ex: ex, stacktrace: st);
       return false;

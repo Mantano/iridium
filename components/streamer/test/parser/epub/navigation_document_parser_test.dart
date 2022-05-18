@@ -11,7 +11,7 @@ import 'package:xml/xml.dart';
 Future<void> main() async {
   Future<Map<String, List<Link>>> parseNavigationDocument(
       String resource) async {
-    String path = "test_resources/epub/" + resource;
+    String path = "test_resources/epub/$resource";
     var document = XmlDocument.parse(await File(path).readAsString());
     var navigationDocument =
         NavigationDocumentParser.parse(document, "OEBPS/xhtml/nav.xhtml");

@@ -373,7 +373,7 @@ class _InjectHtmlResource extends TransformingResource {
   String buildStringProperties(Map<String, String> list) {
     String string = "";
     for (MapEntry<String, String> property in list.entries) {
-      string = string + " " + property.key + ": " + property.value + ";";
+      string = "$string ${property.key}: ${property.value};";
     }
     return string;
   }

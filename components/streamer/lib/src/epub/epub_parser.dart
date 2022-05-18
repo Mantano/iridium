@@ -100,15 +100,15 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
             displayOptions: await _parseDisplayOptions(fetcher))
         .create();
 
-    Fetcher _fetcher = fetcher;
+    Fetcher finalFetcher = fetcher;
     manifest.metadata.identifier?.let((it) {
-      _fetcher =
+      finalFetcher =
           TransformingFetcher.single(fetcher, EpubDeobfuscator(it).transform);
     });
 
     return PublicationBuilder(
         manifest: manifest,
-        fetcher: _fetcher,
+        fetcher: finalFetcher,
         servicesBuilder:
             ServicesBuilder.create(positions: EpubPositionsService.create));
   }
@@ -180,7 +180,7 @@ class EpubParser extends PublicationParser implements StreamPublicationParser {
           {};
     } else {
       Item? navItem = packageDocument.manifest.firstOrNullWhere(
-          (it) => it.properties.contains(Vocabularies.item + "nav"));
+          (it) => it.properties.contains("${Vocabularies.item}nav"));
       return await navItem?.let((it) async {
             String navPath =
                 Href(navItem.href, baseHref: packageDocument.path).string;

@@ -33,7 +33,10 @@ dependencies:
     path: ..
 
   flutter_fimber: ^0.6.5
-  fimber: ^0.6.5
+  fimber: ^0.6.6
+  flutter_inappwebview: ^5.4.3+7
+  path: ^1.8.1
+  path_provider: ^2.0.10
   universal_io: ^2.0.4
 
   # The following adds the Cupertino Icons font to your application.
@@ -49,7 +52,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

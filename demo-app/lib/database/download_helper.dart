@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 class DownloadsDB {
   Future<String> getPath() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    final path = documentDirectory.path + '/downloads.db';
+    final path = '${documentDirectory.path}/downloads.db';
     return path;
   }
 

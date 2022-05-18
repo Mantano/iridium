@@ -29,7 +29,7 @@ class Details extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DetailsState createState() => _DetailsState();
+  State<StatefulWidget> createState() => _DetailsState();
 }
 
 class _DetailsState extends State<Details> {
@@ -220,6 +220,9 @@ class _DetailsState extends State<Details> {
       // first value from the string as out local book path
       Map dl = dlList[0];
       String path = dl['path'];
+      if (!mounted) {
+        return;
+      }
       MyRouter.pushPage(
         context,
         EpubScreen(
@@ -248,6 +251,7 @@ class _DetailsState extends State<Details> {
               widget.publication?.metadata.title != null) {
             provider.downloadFile(
               context,
+              this,
               epubDownloadLink.href,
               widget.publication!.metadata.title
                   .replaceAll(' ', '_')

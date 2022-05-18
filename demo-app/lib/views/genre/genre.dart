@@ -18,7 +18,7 @@ class Genre extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _GenreState createState() => _GenreState();
+  State<StatefulWidget> createState() => _GenreState();
 }
 
 class _GenreState extends State<Genre> {

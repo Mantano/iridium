@@ -124,8 +124,6 @@ class WebViewScreenState extends State<WebViewScreen> {
     selectionSubscription = selectionController.stream.listen((selection) {
       if (selection != null) {
         selectionListener.displayPopup(selection);
-      } else {
-        selectionListener.hidePopup();
       }
     });
     bookmarkSubscription = readerContext
