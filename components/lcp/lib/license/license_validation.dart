@@ -134,8 +134,8 @@ class LicenseValidation {
   }
 
   Future<bool> _computeIsProduction() async {
-    ByteData prodLicenseInput = await rootBundle
-        .load("packages/mno_lcp_native/assets/prod-license.lcpl");
+    ByteData prodLicenseInput =
+        await rootBundle.load("packages/mno_lcp/assets/prod-license.lcpl");
     LicenseDocument prodLicense = LicenseDocument.parse(prodLicenseInput);
     String passphrase =
         "7B7602FEF5DEDA10F768818FFACBC60B173DB223B7E66D8B2221EBE2C635EFAD";

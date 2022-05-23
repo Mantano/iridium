@@ -78,7 +78,6 @@ the [Readium 2 architecture](https://github.com/readium/architecture):
 | [**opds**](https://github.com/Mantano/iridium/tree/main/components/opds)                              | Parsers for OPDS catalog feeds                                                                  |
 | [**commons**](https://github.com/Mantano/iridium/tree/main/components/commons)                        | Other misc. utilities (specific to this Flutter port, not found in Readium)                     |
 | [**lcp**](https://github.com/Mantano/iridium/tree/main/components/lcp)                                | Service and models for Readium LCP                                                              |
-| [**lcp_native**](https://github.com/Mantano/mno_lcp_native)                  | Native interface for Readium                                                                    |
 
 Beyond these Readium 2 inspired modules, Iridium provides 2 conveniences:
 
