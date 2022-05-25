@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -7,6 +5,7 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/components/book_list_item.dart';
 import 'package:iridium_app/components/description_text.dart';
 import 'package:iridium_app/components/loading_widget.dart';
+import 'package:iridium_app/models/locator_reader_annotation_repository.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/view_models/details_provider.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
@@ -220,13 +219,16 @@ class _DetailsState extends State<Details> {
       // first value from the string as out local book path
       Map dl = dlList[0];
       String path = dl['path'];
+      String id = dl['id'];
       if (!mounted) {
         return;
       }
       MyRouter.pushPage(
         context,
-        EpubScreen(
-          asset: FileAsset(File(path)),
+        EpubScreen.fromPath(
+          filePath: path,
+          readerAnnotationRepository: await LocatorReaderAnnotationRepository
+              .createLocatorReaderAnnotationRepository(id),
         ),
       );
     }

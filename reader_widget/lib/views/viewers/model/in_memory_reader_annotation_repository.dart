@@ -5,8 +5,10 @@ import 'package:mno_navigator/publication.dart';
 import 'package:mno_shared/publication.dart';
 
 class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
+  static const String _bookId = "book";
   int _currentId = 0;
   final List<ReaderAnnotation> annotations = [];
+  ReaderAnnotation? position;
 
   @override
   Future<List<ReaderAnnotation>> allWhere(
@@ -15,9 +17,22 @@ class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
       annotations.where(predicate.test).toList();
 
   @override
+  Future<ReaderAnnotation> savePosition(PaginationInfo paginationInfo) async {
+    ReaderAnnotation readerAnnotation = ReaderAnnotation("$_currentId", _bookId,
+        paginationInfo.locator.json, AnnotationType.bookmark);
+    _currentId++;
+    annotations.add(readerAnnotation);
+    position = readerAnnotation;
+    return readerAnnotation;
+  }
+
+  @override
+  Future<ReaderAnnotation?> getPosition() async => position;
+
+  @override
   Future<ReaderAnnotation> createBookmark(PaginationInfo paginationInfo) async {
-    ReaderAnnotation readerAnnotation = ReaderAnnotation(
-        "$_currentId", paginationInfo.locator.json, AnnotationType.bookmark);
+    ReaderAnnotation readerAnnotation = ReaderAnnotation("$_currentId", _bookId,
+        paginationInfo.locator.json, AnnotationType.bookmark);
     _currentId++;
     annotations.add(readerAnnotation);
     notifyBookmark(readerAnnotation);
@@ -29,6 +44,7 @@ class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
       Locator locator, HighlightStyle style, int tint) async {
     ReaderAnnotation readerAnnotation = ReaderAnnotation(
       "$_currentId",
+      _bookId,
       locator.json,
       AnnotationType.highlight,
       style: style,

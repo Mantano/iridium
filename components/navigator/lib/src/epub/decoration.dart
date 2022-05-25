@@ -67,7 +67,7 @@ class Decoration implements JSONable {
   });
 
   @override
-  Map<String, dynamic>? toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "locator": locator.toJson(),
         "style": style.runtimeType.toString(),

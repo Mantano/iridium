@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/components/loading_widget.dart';
 import 'package:iridium_app/database/download_helper.dart';
+import 'package:iridium_app/models/locator_reader_annotation_repository.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
-import 'package:mno_shared/publication.dart';
 import 'package:uuid/uuid.dart';
 
 class Downloads extends StatefulWidget {
@@ -60,10 +60,14 @@ class _DownloadsState extends State<Downloads> {
             child: InkWell(
               onTap: () async {
                 String path = dl['path'];
+                String id = dl['id'];
                 MyRouter.pushPage(
                   context,
-                  EpubScreen(
-                    asset: FileAsset(File(path)),
+                  EpubScreen.fromPath(
+                    filePath: path,
+                    readerAnnotationRepository:
+                        await LocatorReaderAnnotationRepository
+                            .createLocatorReaderAnnotationRepository(id),
                   ),
                 );
               },

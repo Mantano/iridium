@@ -16,14 +16,22 @@ import 'package:mno_streamer/parser.dart';
 
 abstract class BookScreen extends StatefulWidget {
   final FileAsset asset;
+  final ReaderAnnotationRepository? readerAnnotationRepository;
 
-  const BookScreen({Key? key, required this.asset}) : super(key: key);
+  const BookScreen({
+    Key? key,
+    required this.asset,
+    this.readerAnnotationRepository,
+  }) : super(key: key);
 }
 
 abstract class BookScreenState<T extends BookScreen,
     PubController extends PublicationController> extends State<T> {
   late PubController publicationController;
   late ReaderContext readerContext;
+
+  ReaderAnnotationRepository get readerAnnotationRepository =>
+      widget.readerAnnotationRepository ?? InMemoryReaderAnnotationRepository();
 
   @override
   void initState() {
@@ -34,7 +42,7 @@ abstract class BookScreenState<T extends BookScreen,
         openLocation,
         widget.asset,
         createStreamer(),
-        InMemoryReaderAnnotationRepository(),
+        readerAnnotationRepository,
         handlersProvider);
   }
 

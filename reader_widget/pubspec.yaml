@@ -26,6 +26,7 @@ dependencies:
   bloc: ^8.0.3
   cupertino_icons: ^1.0.4
   dartx: ^1.1.0
+  dfunc: ^0.7.2
   dio: ^4.0.6
   fimber: ^0.6.6
   flutter_bloc: ^8.0.1

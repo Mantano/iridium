@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-// import 'package:universal_io/io.dart';
-
 import 'package:dartx/dartx.dart';
+import 'package:dfunc/dfunc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,14 +23,19 @@ class EpubScreen extends BookScreen {
   const EpubScreen(
       {Key? key,
       required FileAsset asset,
+      ReaderAnnotationRepository? readerAnnotationRepository,
       this.location,
       this.settings,
       this.theme})
-      : super(key: key, asset: asset);
+      : super(
+            key: key,
+            asset: asset,
+            readerAnnotationRepository: readerAnnotationRepository);
 
   factory EpubScreen.fromPath(
       {Key? key,
       required String filePath,
+      ReaderAnnotationRepository? readerAnnotationRepository,
       String? location,
       String? settings,
       String? theme}) {
@@ -44,6 +48,7 @@ class EpubScreen extends BookScreen {
     return EpubScreen(
       key: key,
       asset: FileAsset(File(filePath)),
+      readerAnnotationRepository: readerAnnotationRepository,
       location: location,
       settings: int.tryParse(settings ?? '100'),
       theme: decodedTheme,
@@ -51,8 +56,27 @@ class EpubScreen extends BookScreen {
   }
 
   factory EpubScreen.fromFile(
-          {Key? key, required File file, String? location}) =>
-      EpubScreen(key: key, asset: FileAsset(file), location: location);
+      {Key? key,
+      required File file,
+      ReaderAnnotationRepository? readerAnnotationRepository,
+      String? location,
+      String? settings,
+      String? theme}) {
+    Map<String, dynamic>? decodedTheme;
+    try {
+      decodedTheme = json.decode(theme!);
+    } catch (e) {
+      debugPrint('failure to decode theme: $e');
+    }
+    return EpubScreen(
+      key: key,
+      asset: FileAsset(file),
+      readerAnnotationRepository: readerAnnotationRepository,
+      location: location,
+      settings: int.tryParse(settings ?? '100'),
+      theme: decodedTheme,
+    );
+  }
 
   @override
   State<StatefulWidget> createState() => EpubScreenState();
@@ -76,8 +100,10 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   @override
   Future<bool> onWillPop() async {
     try {
+      readerContext.paginationInfo?.let((paginationInfo) =>
+          readerAnnotationRepository.savePosition(paginationInfo));
       Navigator.pop(context, {
-        'locator': readerContext.paginationInfo!.locator.json,
+        'locator': readerContext.paginationInfo?.locator.json,
         'settings': _viewerSettingsBloc.viewerSettings.fontSize.toString(),
         'theme': json.encode(_readerThemeBloc.currentTheme.toJson()),
       });
@@ -89,7 +115,14 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   }
 
   @override
-  Future<String?> get openLocation async => widget.location;
+  Future<String?> get openLocation async {
+    if (widget.location != null) {
+      return widget.location;
+    }
+    return readerAnnotationRepository
+        .getPosition()
+        .then((position) => position?.location);
+  }
 
   @override
   EpubController createPublicationController(

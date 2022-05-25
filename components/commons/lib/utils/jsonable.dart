@@ -8,7 +8,7 @@ import 'package:mno_commons/utils/take.dart';
 
 mixin JSONable {
   /// Serializes the object to its JSON representation.
-  Map<String, dynamic>? toJson();
+  Map<String, dynamic> toJson();
 }
 
 extension IterableJSONableExtension on Iterable<JSONable> {
@@ -22,7 +22,7 @@ extension MapExtension on Map<String, dynamic>? {
 
   dynamic _wrapJSON(dynamic value) {
     if (value is JSONable) {
-      return value.toJson()?.takeIf((it) => it.isNotEmpty);
+      return value.toJson().takeIf((it) => it.isNotEmpty);
     } else if (value is Map) {
       return (value).takeIf((it) => it.isNotEmpty)?.map(
           (key, value) => MapEntry<dynamic, dynamic>(key, _wrapJSON(value)));

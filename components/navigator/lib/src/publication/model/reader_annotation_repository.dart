@@ -24,6 +24,10 @@ abstract class ReaderAnnotationRepository {
   void notifyBookmark(ReaderAnnotation bookmark) =>
       _bookmarkController.add(bookmark);
 
+  Future<ReaderAnnotation> savePosition(PaginationInfo paginationInfo);
+
+  Future<ReaderAnnotation?> getPosition();
+
   Future<ReaderAnnotation> createHighlight(PaginationInfo? paginationInfo,
       Locator locator, HighlightStyle style, int tint);
 

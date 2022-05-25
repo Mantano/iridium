@@ -84,7 +84,7 @@ class HtmlDecorationTemplate implements JSONable {
       this.element = _defaultElement});
 
   @override
-  Map<String, dynamic>? toJson() => {
+  Map<String, dynamic> toJson() => {
         "layout": layout.value,
         "width": width.value,
         if (stylesheet != null) "stylesheet": stylesheet,
@@ -169,7 +169,7 @@ class HtmlDecorationTemplates implements JSONable {
   }
 
   @override
-  Map<String, dynamic>? toJson() => {
+  Map<String, dynamic> toJson() => {
         for (MapEntry<Type, HtmlDecorationTemplate> it in styles.entries)
           it.key.toString(): it.value.toJson()
       };

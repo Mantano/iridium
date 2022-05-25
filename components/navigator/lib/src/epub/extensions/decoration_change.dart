@@ -19,7 +19,7 @@ extension DecorationChangeExt on DecorationChange {
             "Decoration style not registered: ${decoration.style.runtimeType}");
         return null;
       }
-      return decoration.toJson()!..["element"] = template.element(decoration);
+      return decoration.toJson()..["element"] = template.element(decoration);
     }
 
     if (this is DecorationChangeAdded) {

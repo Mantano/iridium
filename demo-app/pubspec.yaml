@@ -23,6 +23,10 @@ dependencies:
     sdk: flutter
   iridium_reader_widget:
     path: ../reader_widget
+  mno_commons:
+    path: ../components/commons
+  mno_navigator:
+    path: ../components/navigator
   mno_opds:
     path: ../components/opds
   mno_shared:
@@ -31,6 +35,7 @@ dependencies:
   cached_network_image: ^3.2.1
   cupertino_icons: ^1.0.4
   dartx: ^1.1.0
+  dfunc: ^0.7.2
   dio: ^4.0.6
   fimber: ^0.6.6
   flutter_bloc: ^8.0.1
@@ -50,6 +55,7 @@ dependencies:
   permission_handler: ^9.2.0
   provider: ^6.0.2
   shared_preferences: ^2.0.15
+  sqflite: ^2.0.2+1
   sqflite_common_ffi: ^2.1.1
   universal_io: ^2.0.4
   uuid: ^3.0.6
