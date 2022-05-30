@@ -49,7 +49,7 @@ class DetailsProvider extends ChangeNotifier {
   Future addFav() async {
     await favDB.add({
       'id': entry.metadata.identifier.toString(),
-      'item': jsonEncode(entry)
+      'item': jsonEncode(entry.metadata)
     });
     checkFav();
   }

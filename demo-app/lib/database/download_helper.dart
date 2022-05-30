@@ -31,7 +31,9 @@ class DownloadsDB {
     final db = ObjectDB(FileSystemStorage(await getPath()));
     List val = await db.find({});
     for (var element in val) {
-      db.remove(element);
+      if (item["id"] == element["id"]) {
+        db.remove(element);
+      }
     }
     await db.close();
   }
