@@ -26,6 +26,10 @@ class DecorationStyle {
   static UnderlineDecorationStyle underline(
           {required int tint, bool isActive = false}) =>
       UnderlineDecorationStyle._(tint: tint, isActive: isActive);
+
+  static MarginLineDecorationStyle marginLine(
+          {required int tint, bool isActive = false}) =>
+      MarginLineDecorationStyle._(tint: tint, isActive: isActive);
 }
 
 class HighlightDecorationStyle extends DecorationStyle with Tinted, Activable {
@@ -44,6 +48,15 @@ class UnderlineDecorationStyle extends DecorationStyle with Tinted, Activable {
   final bool isActive;
 
   UnderlineDecorationStyle._({required this.tint, this.isActive = false});
+}
+
+class MarginLineDecorationStyle extends DecorationStyle with Tinted, Activable {
+  @override
+  final int tint;
+  @override
+  final bool isActive;
+
+  MarginLineDecorationStyle._({required this.tint, this.isActive = false});
 }
 
 /// A decoration is a user interface element drawn on top of a publication. It associates a [style]
