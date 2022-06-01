@@ -40,8 +40,12 @@ class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
   }
 
   @override
-  Future<ReaderAnnotation> createHighlight(PaginationInfo? paginationInfo,
-      Locator locator, HighlightStyle style, int tint) async {
+  Future<ReaderAnnotation> createHighlight(
+      PaginationInfo? paginationInfo,
+      Locator locator,
+      HighlightStyle style,
+      int tint,
+      String? annotation) async {
     ReaderAnnotation readerAnnotation = ReaderAnnotation(
       "$_currentId",
       _bookId,
@@ -49,6 +53,7 @@ class InMemoryReaderAnnotationRepository extends ReaderAnnotationRepository {
       AnnotationType.highlight,
       style: style,
       tint: tint,
+      annotation: annotation,
     );
     _currentId++;
     annotations.add(readerAnnotation);

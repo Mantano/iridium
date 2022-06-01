@@ -1,6 +1,8 @@
+import 'package:dfunc/dfunc.dart';
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
+import 'package:mno_navigator/src/epub/selection/annotation_popup.dart';
 import 'package:mno_navigator/src/epub/selection/highlight_popup.dart';
 import 'package:mno_navigator/src/epub/selection/new_selection_popup.dart';
 
@@ -40,5 +42,22 @@ class SimpleSelectionListener extends SelectionListener {
     _highlightPopup = HighlightPopup(this);
     _highlightPopup!
         .showHighlightPopup(context, selection, style, tint, highlightId);
+  }
+
+  @override
+  void showAnnotationPopup(Selection selection,
+      {HighlightStyle? style, Color? tint, String? highlightId}) async {
+    hidePopup();
+    jsApi?.clearSelection();
+    style ??= HighlightStyle.highlight;
+    tint ??= HighlightPopup.highlightTints[0];
+    ReaderAnnotation? highlight;
+    if (highlightId != null) {
+      highlight = await readerAnnotationRepository.get(highlightId);
+      style = highlight?.style ?? style;
+      tint = highlight?.tint?.let((it) => Color(it)) ?? tint;
+    }
+    AnnotationPopup.showAnnotationPopup(context, this, selection, style, tint,
+        highlight?.annotation, highlightId);
   }
 }

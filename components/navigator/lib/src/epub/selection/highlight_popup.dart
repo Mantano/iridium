@@ -48,6 +48,7 @@ class HighlightPopup extends SelectionPopup {
                         close();
                       }))
                   .toList(),
+              buildNoteOption(context, selection, highlightId),
               if (highlightId != null) buildDeleteOption(context, highlightId),
             ],
           ),
@@ -61,6 +62,20 @@ class HighlightPopup extends SelectionPopup {
             color: color,
             shape: BoxShape.circle,
           ),
+        ),
+      );
+
+  Widget buildNoteOption(
+          BuildContext context, Selection selection, String? highlightId) =>
+      IconButton(
+        onPressed: () {
+          selectionListener.showAnnotationPopup(selection,
+              highlightId: highlightId);
+          close();
+        },
+        icon: Icon(
+          Icons.edit,
+          color: Theme.of(context).primaryColor,
         ),
       );
 

@@ -29,7 +29,7 @@ abstract class ReaderAnnotationRepository {
   Future<ReaderAnnotation?> getPosition();
 
   Future<ReaderAnnotation> createHighlight(PaginationInfo? paginationInfo,
-      Locator locator, HighlightStyle style, int tint);
+      Locator locator, HighlightStyle style, int tint, String? annotation);
 
   Future<ReaderAnnotation?> get(String id);
 

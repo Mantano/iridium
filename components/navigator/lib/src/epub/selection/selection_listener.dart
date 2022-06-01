@@ -11,6 +11,9 @@ abstract class SelectionListener {
 
   JsApi? get jsApi => readerContext.currentSpineItemContext?.jsApi;
 
+  ReaderAnnotationRepository get readerAnnotationRepository =>
+      readerContext.readerAnnotationRepository;
+
   void displayPopup(Selection selection);
 
   void hidePopup();
@@ -18,30 +21,46 @@ abstract class SelectionListener {
   void showHighlightPopup(Selection selection, HighlightStyle style, Color tint,
       {String? highlightId});
 
+  void showAnnotationPopup(Selection selection,
+      {HighlightStyle? style, Color? tint, String? highlightId});
+
   void updateHighlight(Selection selection, HighlightStyle style, Color color,
-          String highlightId) =>
-      readerContext.readerAnnotationRepository
-          .get(highlightId)
-          .then((highlight) {
+          String highlightId,
+          {String? annotation}) =>
+      readerAnnotationRepository.get(highlightId).then((highlight) {
         if (highlight != null) {
           highlight.style = style;
           highlight.tint = color.value;
-          readerContext.readerAnnotationRepository.save(highlight);
-          jsApi?.updateDecorations(
-              {"highlights": highlight.toDecorations(isActive: false)});
+          if (annotation != null) {
+            highlight.annotation = annotation;
+          }
+          readerAnnotationRepository.save(highlight);
+          jsApi?.updateDecorations({
+            HtmlDecorationTemplate.highlightGroup:
+                highlight.toDecorations(isActive: false)
+          });
+          if (highlight.annotation == null || highlight.annotation!.isEmpty) {
+            jsApi?.deleteDecorations({
+              HtmlDecorationTemplate.highlightGroup: [
+                "${highlight.id}-${HtmlDecorationTemplate.annotationSuffix}"
+              ]
+            });
+          }
         }
       });
 
-  void createHighlight(
-          Selection selection, HighlightStyle style, Color color) =>
-      readerContext.readerAnnotationRepository
+  void createHighlight(Selection selection, HighlightStyle style, Color color,
+          {String? annotation}) =>
+      readerAnnotationRepository
           .createHighlight(readerContext.paginationInfo, selection.locator,
-              style, color.value)
+              style, color.value, annotation)
           .then((highlight) {
-        jsApi?.addDecorations(
-            {"highlights": highlight.toDecorations(isActive: false)});
+        jsApi?.addDecorations({
+          HtmlDecorationTemplate.highlightGroup:
+              highlight.toDecorations(isActive: false)
+        });
       });
 
   void deleteHighlight(String highlightId) =>
-      readerContext.readerAnnotationRepository.delete([highlightId]);
+      readerAnnotationRepository.delete([highlightId]);
 }

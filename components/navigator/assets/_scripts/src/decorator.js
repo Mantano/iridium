@@ -55,7 +55,7 @@ export function getDecorations(groupName) {
  * Handles click events on a Decoration.
  * Returns whether a decoration matched this event.
  */
-export function handleDecorationClickEvent(event, clickEvent) {
+export async function handleDecorationClickEvent(event, clickEvent) {
   if (groups.size === 0) {
     return false;
   }
@@ -81,7 +81,7 @@ export function handleDecorationClickEvent(event, clickEvent) {
     return false;
   }
 
-  return flutter.onDecorationActivated(
+  return await flutter.onDecorationActivated(
     JSON.stringify({
       id: target.item.decoration.id,
       group: target.group,

@@ -2,7 +2,6 @@ import 'dart:math';
 import 'dart:ui';
 
 import 'package:dartx/dartx.dart';
-import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
@@ -47,8 +46,6 @@ class EpubWebViewListener extends WebViewListener {
     _spineItemContext.onTap();
     bool scrollSnapShouldStop =
         !_spineItemContext.readerContext.toolbarVisibility;
-    Fimber.d(
-        "================ Setting scroll-snap-stop to: ${scrollSnapShouldStop ? "always" : "normal"}");
     viewerSettingsBloc?.add(ScrollSnapShouldStopEvent(scrollSnapShouldStop));
     return true;
   }
@@ -56,8 +53,16 @@ class EpubWebViewListener extends WebViewListener {
   @override
   Future<bool> onDecorationActivated(
       String id, String group, Rectangle<double> rect, Offset point) async {
-    String highlightId =
-        id.removeSuffix("-${HtmlDecorationTemplate.highlightSuffix}");
+    String highlightId = id;
+    bool annotation = false;
+    if (id.contains("-${HtmlDecorationTemplate.highlightSuffix}")) {
+      highlightId =
+          id.removeSuffix("-${HtmlDecorationTemplate.highlightSuffix}");
+    } else if (id.contains("-${HtmlDecorationTemplate.annotationSuffix}")) {
+      highlightId =
+          id.removeSuffix("-${HtmlDecorationTemplate.annotationSuffix}");
+      annotation = true;
+    }
     ReaderAnnotation? highlight =
         await readerAnnotationRepository.get(highlightId);
     if (highlight == null) {
@@ -69,9 +74,16 @@ class EpubWebViewListener extends WebViewListener {
     }
     Selection selection = Selection(locator: locator, rect: rect);
     selection.offset = webViewOffset?.call() ?? Offset.zero;
-    selectionListener?.showHighlightPopup(
-        selection, highlight.style!, Color(highlight.tint!),
-        highlightId: highlightId);
+    if (annotation) {
+      selectionListener?.showAnnotationPopup(selection,
+          tint: Color(highlight.tint!),
+          style: highlight.style,
+          highlightId: highlight.id);
+    } else {
+      selectionListener?.showHighlightPopup(
+          selection, highlight.style!, Color(highlight.tint!),
+          highlightId: highlightId);
+    }
     return true;
   }
 

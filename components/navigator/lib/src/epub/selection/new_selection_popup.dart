@@ -1,4 +1,3 @@
-import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -33,7 +32,9 @@ class NewSelectionPopup extends SelectionPopup {
                     HighlightStyle.underline, HighlightPopup.highlightTints[0]);
               }),
               buildOption("Note", () {
-                Fimber.d("Note");
+                selectionListener.showAnnotationPopup(selection,
+                    style: HighlightStyle.highlight,
+                    tint: HighlightPopup.highlightTints[0]);
               }),
             ],
           ),

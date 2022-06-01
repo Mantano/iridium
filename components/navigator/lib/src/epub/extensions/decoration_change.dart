@@ -7,6 +7,7 @@ import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/decoration.dart';
 import 'package:mno_navigator/src/epub/decoration_change.dart';
 import 'package:mno_navigator/src/epub/html/html_decoration_template.dart';
+import 'package:mno_navigator/src/epub/model/decoration_style_annotation_mark.dart';
 import 'package:mno_shared/publication.dart';
 
 extension DecorationChangeExt on DecorationChange {
@@ -86,11 +87,11 @@ extension ReaderAnnotationDecoration on ReaderAnnotation {
         ),
       // TODO Add support for DecorationStyleAnnotationMark
       // Additional page margin icon decoration, if the highlight has an associated note.
-      // if (annotation != null && annotation!.isNotEmpty)
-      //   createDecoration(
-      //     idSuffix: HtmlDecorationTemplate.annotationSuffix,
-      //     style: DecorationStyleAnnotationMark(tint: tint),
-      //   ),
+      if (annotation != null && annotation!.isNotEmpty)
+        createDecoration(
+          idSuffix: HtmlDecorationTemplate.annotationSuffix,
+          style: DecorationStyleAnnotationMark(tint: tint!),
+        ),
     ];
   }
 }

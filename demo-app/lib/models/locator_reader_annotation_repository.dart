@@ -61,8 +61,12 @@ class LocatorReaderAnnotationRepository extends ReaderAnnotationRepository {
   }
 
   @override
-  Future<ReaderAnnotation> createHighlight(PaginationInfo? paginationInfo,
-      Locator locator, HighlightStyle style, int tint) async {
+  Future<ReaderAnnotation> createHighlight(
+      PaginationInfo? paginationInfo,
+      Locator locator,
+      HighlightStyle style,
+      int tint,
+      String? annotation) async {
     String id = uuid.v1();
     ReaderAnnotation readerAnnotation = ReaderAnnotation(
       id,
@@ -71,6 +75,7 @@ class LocatorReaderAnnotationRepository extends ReaderAnnotationRepository {
       AnnotationType.highlight,
       style: style,
       tint: tint,
+      annotation: annotation,
     );
     await locatorDB.add(readerAnnotation.toJson());
     return readerAnnotation;

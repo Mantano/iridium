@@ -16,6 +16,8 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/decoration.dart';
 import 'package:mno_navigator/src/epub/extensions/decoration_change.dart';
+import 'package:mno_navigator/src/epub/model/annotation_mark_template.dart';
+import 'package:mno_navigator/src/epub/model/decoration_style_annotation_mark.dart';
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
@@ -140,8 +142,12 @@ class WebViewScreenState extends State<WebViewScreen> {
         .listen((List<String> deletedIds) {
       _jsApi?.deleteDecorations({
         HtmlDecorationTemplate.highlightGroup: deletedIds
-            .map((id) => "$id-${HtmlDecorationTemplate.highlightSuffix}")
-            .toList()
+            .map((id) => [
+                  "$id-${HtmlDecorationTemplate.highlightSuffix}",
+                  "$id-${HtmlDecorationTemplate.annotationSuffix}"
+                ])
+            .flatten()
+            .toList(),
       });
       _spineItemContext.bookmarks
           .removeWhere((annotation) => deletedIds.contains(annotation.id));
@@ -288,8 +294,8 @@ class WebViewScreenState extends State<WebViewScreen> {
     _jsApi?.registerDecorationTemplates(decorators);
   }
 
-  void _onWebViewCreated(InAppWebViewController webViewController) {
-    initJsHandlers(webViewController);
+  void _onWebViewCreated(InAppWebViewController webViewController) async {
+    await initJsHandlers(webViewController);
     _readerThemeSubscription =
         _readerThemeBloc.stream.listen(_onReaderThemeChanged);
     _viewerSettingsSubscription =
@@ -302,14 +308,19 @@ class WebViewScreenState extends State<WebViewScreen> {
         _spineItemContext.paginationInfoStream.listen(_onPaginationInfo);
   }
 
-  void initJsHandlers(InAppWebViewController webViewController) {
+  Future initJsHandlers(InAppWebViewController webViewController) async {
     // Fimber.d("_onWebViewCreated: $webViewController");
     _controller = webViewController;
-    _jsApi = JsApi(
-        position,
-        HtmlDecorationTemplates.defaultTemplates(),
-        (javascript) =>
-            webViewController.evaluateJavascript(source: javascript));
+    HtmlDecorationTemplates decorationTemplates =
+        HtmlDecorationTemplates.defaultTemplates();
+    decorationTemplates.styles[DecorationStyleAnnotationMark] =
+        await annotationMarkTemplate();
+    _jsApi = JsApi(position, decorationTemplates, (javascript) {
+      if (mounted) {
+        return webViewController.evaluateJavascript(source: javascript);
+      }
+      return Future.value();
+    });
     _spineItemContext.jsApi = _jsApi;
     for (MapEntry<String, JavaScriptHandlerCallback> entry
         in epubCallbacks.channels.entries) {
