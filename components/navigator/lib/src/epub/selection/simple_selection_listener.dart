@@ -7,10 +7,12 @@ import 'package:mno_navigator/src/epub/selection/highlight_popup.dart';
 import 'package:mno_navigator/src/epub/selection/new_selection_popup.dart';
 
 class SimpleSelectionListener extends SelectionListener {
+  final State state;
   NewSelectionPopup? _newSelectionPopup;
   HighlightPopup? _highlightPopup;
 
-  SimpleSelectionListener(ReaderContext readerContext, BuildContext context)
+  SimpleSelectionListener(
+      this.state, ReaderContext readerContext, BuildContext context)
       : super(readerContext, context);
 
   @override
@@ -57,7 +59,9 @@ class SimpleSelectionListener extends SelectionListener {
       style = highlight?.style ?? style;
       tint = highlight?.tint?.let((it) => Color(it)) ?? tint;
     }
-    AnnotationPopup.showAnnotationPopup(context, this, selection, style, tint,
-        highlight?.annotation, highlightId);
+    if (state.mounted) {
+      AnnotationPopup.showAnnotationPopup(context, this, selection, style, tint,
+          highlight?.annotation, highlightId);
+    }
   }
 }

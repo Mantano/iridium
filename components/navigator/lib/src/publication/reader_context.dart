@@ -104,13 +104,11 @@ class ReaderContext {
     required this.publication,
     required this.location,
     required this.readerAnnotationRepository,
+    required this.selectionListenerFactory,
     Map<Type, ReaderCommandProcessor> readerCommandProcessorMap = const {},
-    SelectionListenerFactory? selectionListenerFactory,
   })  : assert(userException != null || publication != null),
         spineItemContextMap = {},
-        toolbarVisibility = false,
-        this.selectionListenerFactory =
-            selectionListenerFactory ?? SimpleSelectionListenerFactory() {
+        toolbarVisibility = false {
     readerCommandProcessors = Map.of(_defaultReaderCommandProcessors)
       ..addAll(readerCommandProcessorMap);
     _tableOfContents = publication?.tableOfContents ?? [];

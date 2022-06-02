@@ -124,6 +124,9 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
         .then((position) => position?.location);
   }
 
+  SelectionListenerFactory get selectionListenerFactory =>
+      SimpleSelectionListenerFactory(this);
+
   @override
   EpubController createPublicationController(
           Function onServerClosed,
@@ -133,8 +136,15 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
           Future<Streamer> streamerFuture,
           ReaderAnnotationRepository readerAnnotationRepository,
           Function0<List<RequestHandler>> handlersProvider) =>
-      EpubController(onServerClosed, onPageJump, locationFuture, fileAsset,
-          streamerFuture, readerAnnotationRepository, handlersProvider, null);
+      EpubController(
+          onServerClosed,
+          onPageJump,
+          locationFuture,
+          fileAsset,
+          streamerFuture,
+          readerAnnotationRepository,
+          handlersProvider,
+          selectionListenerFactory);
 
   @override
   Widget createPublicationNavigator({

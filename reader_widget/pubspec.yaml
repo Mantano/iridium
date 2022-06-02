@@ -34,17 +34,17 @@ dependencies:
   flutter_font_icons: ^2.2.5
   flutter_inappwebview: ^5.4.3+7
   fluttertoast: ^8.0.9
-  google_fonts: ^2.3.2
+  google_fonts: ^3.0.1
   idb_shim: ^2.0.1
-  json_theme: ^4.0.0
+  json_theme: ^4.0.0+1
   new_version: ^0.3.0
   objectdb: ^1.2.1+1
   path_provider: ^2.0.10
   permission_handler: ^9.2.0
-  provider: ^6.0.2
+  provider: ^6.0.3
   shared_preferences: ^2.0.15
   uuid: ^3.0.6
-  xml2json: ^5.3.2
+  xml2json: ^5.3.3
   flutter_xlider:
     git:
       url: https://github.com/Ali-Azmoud/flutter_xlider.git

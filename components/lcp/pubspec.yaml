@@ -16,7 +16,7 @@ dependencies:
   device_info: ^2.0.3
   dfunc: ^0.7.2
   either_option: ^2.0.0
-  ffi: ^1.2.1
+  ffi: ^2.0.0
   fimber: ^0.6.6
   flutter_archive: ^5.0.0
   hex: ^0.2.0

@@ -25,7 +25,7 @@ abstract class PublicationController extends NavigationController {
   final Function0<List<RequestHandler>> handlersProvider;
   final ServerBloc serverBloc;
   final CurrentSpineItemBloc currentSpineItemBloc;
-  final SelectionListenerFactory? selectionListenerFactory;
+  final SelectionListenerFactory selectionListenerFactory;
   ReaderContext? readerContext;
 
   StreamSubscription<ReaderCommand>? readerCommandSubscription;
@@ -37,9 +37,9 @@ abstract class PublicationController extends NavigationController {
     this.fileAsset,
     this.streamerFuture,
     this.readerAnnotationRepository,
-    this.handlersProvider, [
+    this.handlersProvider,
+    this.selectionListenerFactory, [
     bool startHttpServer = true,
-    this.selectionListenerFactory,
   ])  : serverBloc = ServerBloc(startHttpServer: startHttpServer),
         currentSpineItemBloc = CurrentSpineItemBloc();
 

@@ -7,7 +7,11 @@ abstract class SelectionListenerFactory {
 }
 
 class SimpleSelectionListenerFactory extends SelectionListenerFactory {
+  final State state;
+
+  SimpleSelectionListenerFactory(this.state);
+
   @override
   SelectionListener create(ReaderContext readerContext, BuildContext context) =>
-      SimpleSelectionListener(readerContext, context);
+      SimpleSelectionListener(state, readerContext, context);
 }

@@ -24,6 +24,7 @@ class CbzController extends PublicationController {
     Future<Streamer> streamerFuture,
     ReaderAnnotationRepository readerAnnotationRepository,
     Function0<List<RequestHandler>> handlersProvider,
+    SelectionListenerFactory selectionListenerFactory,
   ) : super(
           onServerClosed,
           onPageJump,
@@ -32,6 +33,7 @@ class CbzController extends PublicationController {
           streamerFuture,
           readerAnnotationRepository,
           handlersProvider,
+          selectionListenerFactory,
           true,
         );
 
