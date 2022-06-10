@@ -13,7 +13,7 @@ class HighlightStyle {
 
   const HighlightStyle._(this.id, this.value);
 
-  static HighlightStyle? from(int id) =>
+  static HighlightStyle? from(int? id) =>
       values.firstOrNullWhere((type) => type.id == id);
 
   @override
