@@ -53,41 +53,39 @@ class PdfParser extends PublicationParser implements StreamPublicationParser {
     List<Link> tableOfContents = document.outline(fileHref);
 
     Manifest manifest = Manifest(
-        metadata: Metadata(
-          identifier: document.identifier,
-          localizedTitle: LocalizedString.fromString(title),
-          authors: [document.author]
-              .whereNotNull()
-              .where(((s) => s.isNotBlank))
-              .mapNotNull(Contributor.fromString)
-              .toList(),
-          numberOfPages: document.pageCount,
-        ),
-        readingOrder: [
-          pdfLink
-        ],
-        resources: [
-          Link(
-            href: "cover.png",
-            type: MediaType.png.toString(),
-            rels: {'cover'},
-          )
-        ],
-        subcollections: {
-          "pageList": [
-            PublicationCollection(
-                links: List.generate(
-                    document.pageCount,
-                    (index) => Link(
-                          id: "$_rootHref?page=$index",
-                          href: "$_rootHref?page=$index",
-                          type: MediaType.pdf.toString(),
-                          title: title,
-                        )))
-          ]
-        },
-        tableOfContents: tableOfContents
-        );
+      metadata: Metadata(
+        identifier: document.identifier,
+        localizedTitle: LocalizedString.fromString(title),
+        authors: [document.author]
+            .whereNotNull()
+            .where(((s) => s.isNotBlank))
+            .mapNotNull(Contributor.fromString)
+            .toList(),
+        numberOfPages: document.pageCount,
+      ),
+      readingOrder: [pdfLink],
+      resources: [
+        Link(
+          href: "cover.png",
+          type: MediaType.png.toString(),
+          rels: {'cover'},
+        )
+      ],
+      subcollections: {
+        "pageList": [
+          PublicationCollection(
+              links: List.generate(
+                  document.pageCount,
+                  (index) => Link(
+                        id: "$_rootHref?page=$index",
+                        href: "$_rootHref?page=$index",
+                        type: MediaType.pdf.toString(),
+                        title: title,
+                      )))
+        ]
+      },
+      tableOfContents: tableOfContents,
+    );
     ServicesBuilder servicesBuilder = ServicesBuilder.create(
         positions: PdfPositionsService.create,
         cover: document.cover?.let(InMemoryCoverService.createFactory));

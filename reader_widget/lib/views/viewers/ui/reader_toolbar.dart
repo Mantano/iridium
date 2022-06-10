@@ -81,7 +81,8 @@ class ReaderToolbarState extends State<ReaderToolbar> {
     return Row(
       children: <Widget>[
         ToolbarButton(
-          asset: 'packages/iridium_reader_widget/assets/images/ic_skip_left_white_24dp.png',
+          asset:
+              'packages/iridium_reader_widget/assets/images/ic_skip_left_white_24dp.png',
           onPressed: onSkipLeft,
         ),
         const SizedBox(width: 8.0),
@@ -90,7 +91,8 @@ class ReaderToolbarState extends State<ReaderToolbar> {
         (isReversed ? _builderCurrentPage() : _buildNbPages(context)),
         const SizedBox(width: 8.0),
         ToolbarButton(
-          asset: 'packages/iridium_reader_widget/assets/images/ic_skip_right_white_24dp.png',
+          asset:
+              'packages/iridium_reader_widget/assets/images/ic_skip_right_white_24dp.png',
           onPressed: onSkipRight,
         ),
       ],

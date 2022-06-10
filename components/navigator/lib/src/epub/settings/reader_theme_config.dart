@@ -97,7 +97,9 @@ class ReaderThemeConfig with EquatableMixin implements JSONable {
         "scroll": scroll,
       };
 
-  factory ReaderThemeConfig.fromJson(Map<String, dynamic> data) => // changed Object to dynamic because you do indeed have null values -- advanced and scroll for example
+  factory ReaderThemeConfig.fromJson(
+          Map<String, dynamic>
+              data) => // changed Object to dynamic because you do indeed have null values -- advanced and scroll for example
       ReaderThemeConfig(
         data["name"] as String,
         _asColor(data["textColor"]),
