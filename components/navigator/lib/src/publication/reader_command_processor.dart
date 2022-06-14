@@ -12,7 +12,7 @@ abstract class ReaderCommandProcessor<T extends ReaderCommand> {
 
   int findSpineItemIndex(T command, Publication publication);
 
-  OpenPageRequest createOpenPageRequestForCommand(T command);
+  OpenPageRequest? createOpenPageRequestForCommand(T command);
 }
 
 class GoToHrefCommandProcessor extends ReaderCommandProcessor<GoToHrefCommand> {
@@ -22,8 +22,9 @@ class GoToHrefCommandProcessor extends ReaderCommandProcessor<GoToHrefCommand> {
   int findSpineItemIndex(GoToHrefCommand command, Publication publication) =>
       publication.pageLinks.indexWhere((spineItem) =>
           spineItem.href.removePrefix("/") == command.href.removePrefix("/"));
+
   @override
-  OpenPageRequest createOpenPageRequestForCommand(GoToHrefCommand command) =>
+  OpenPageRequest? createOpenPageRequestForCommand(GoToHrefCommand command) =>
       OpenPageRequest.fromElementId(command.href, command.fragment);
 }
 

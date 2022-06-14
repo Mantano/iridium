@@ -24,13 +24,13 @@ abstract class SelectionListener {
   void showAnnotationPopup(Selection selection,
       {HighlightStyle? style, Color? tint, String? highlightId});
 
-  void updateHighlight(Selection selection, HighlightStyle style, Color? color,
+  void updateHighlight(Selection selection, HighlightStyle? style, Color? color,
           String? highlightId,
           {String? annotation}) =>
       color != null && highlightId != null
           ? readerAnnotationRepository.get(highlightId).then((highlight) {
               if (highlight != null) {
-                highlight.style = style;
+                highlight.style = style ?? HighlightStyle.highlight;
                 highlight.tint = color.value;
                 if (annotation != null) {
                   highlight.annotation = annotation;
@@ -52,11 +52,11 @@ abstract class SelectionListener {
             })
           : null;
 
-  void createHighlight(Selection selection, HighlightStyle style, Color color,
+  void createHighlight(Selection selection, HighlightStyle? style, Color? color,
           {String? annotation}) =>
       readerAnnotationRepository
           .createHighlight(readerContext.paginationInfo, selection.locator,
-              style, color.value, annotation)
+              style, color?.value, annotation)
           .then((highlight) {
         jsApi?.addDecorations({
           HtmlDecorationTemplate.highlightGroup:
