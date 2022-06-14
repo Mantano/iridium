@@ -24,30 +24,33 @@ abstract class SelectionListener {
   void showAnnotationPopup(Selection selection,
       {HighlightStyle? style, Color? tint, String? highlightId});
 
-  void updateHighlight(Selection selection, HighlightStyle style, Color color,
-          String highlightId,
+  void updateHighlight(Selection selection, HighlightStyle style, Color? color,
+          String? highlightId,
           {String? annotation}) =>
-      readerAnnotationRepository.get(highlightId).then((highlight) {
-        if (highlight != null) {
-          highlight.style = style;
-          highlight.tint = color.value;
-          if (annotation != null) {
-            highlight.annotation = annotation;
-          }
-          readerAnnotationRepository.save(highlight);
-          jsApi?.updateDecorations({
-            HtmlDecorationTemplate.highlightGroup:
-                highlight.toDecorations(isActive: false)
-          });
-          if (highlight.annotation == null || highlight.annotation!.isEmpty) {
-            jsApi?.deleteDecorations({
-              HtmlDecorationTemplate.highlightGroup: [
-                "${highlight.id}-${HtmlDecorationTemplate.annotationSuffix}"
-              ]
-            });
-          }
-        }
-      });
+      color != null && highlightId != null
+          ? readerAnnotationRepository.get(highlightId).then((highlight) {
+              if (highlight != null) {
+                highlight.style = style;
+                highlight.tint = color.value;
+                if (annotation != null) {
+                  highlight.annotation = annotation;
+                }
+                readerAnnotationRepository.save(highlight);
+                jsApi?.updateDecorations({
+                  HtmlDecorationTemplate.highlightGroup:
+                      highlight.toDecorations(isActive: false)
+                });
+                if (highlight.annotation == null ||
+                    highlight.annotation!.isEmpty) {
+                  jsApi?.deleteDecorations({
+                    HtmlDecorationTemplate.highlightGroup: [
+                      "${highlight.id}-${HtmlDecorationTemplate.annotationSuffix}"
+                    ]
+                  });
+                }
+              }
+            })
+          : null;
 
   void createHighlight(Selection selection, HighlightStyle style, Color color,
           {String? annotation}) =>
@@ -61,6 +64,10 @@ abstract class SelectionListener {
         });
       });
 
-  void deleteHighlight(String highlightId) =>
-      readerAnnotationRepository.delete([highlightId]);
+  void deleteHighlight(String? highlightId) {
+    if (highlightId == null) {
+      return;
+    }
+    readerAnnotationRepository.delete([highlightId]);
+  }
 }
