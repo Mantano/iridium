@@ -34,8 +34,8 @@ class RequestController {
       for (RequestHandler handler in handlers) {
         if (await handler.handle(requestId, request, href)) {
           stopwatch.stop();
-          Fimber.d(
-              "========= REQUEST HREF: $href, time: ${stopwatch.elapsedMilliseconds}ms");
+          // Fimber.d(
+          //     "========= REQUEST HREF: $href, time: ${stopwatch.elapsedMilliseconds}ms");
           return response;
         }
       }
@@ -49,8 +49,8 @@ class RequestController {
     } finally {
       await response.flush();
       await response.close();
-      Fimber.d(
-          "========= onRequest, HREF: $href, TOTAL TIME AFTER RESPONSE FLUSH: ${stopwatch.elapsedMilliseconds}ms");
+      // Fimber.d(
+      //     "========= onRequest, HREF: $href, TOTAL TIME AFTER RESPONSE FLUSH: ${stopwatch.elapsedMilliseconds}ms");
     }
     return response;
   }

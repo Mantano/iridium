@@ -134,13 +134,7 @@ abstract class RequestHandler {
         return;
       }
     } else {
-      Stopwatch stopwatch = Stopwatch();
-      stopwatch.start();
       ByteData? data = (await resource.read()).getOrNull();
-      stopwatch.stop();
-      Fimber.d(
-          "========= resource.read HREF: ${request.uri}, time: ${stopwatch.elapsedMilliseconds}ms");
-
       if (data != null) {
         await response.addStream(data.asStream());
       }

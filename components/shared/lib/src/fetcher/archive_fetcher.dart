@@ -53,15 +53,12 @@ class EntryResource extends Resource {
   Future<ResourceTry<ArchiveEntry>> entry() async {
     if (_entry == null) {
       try {
-        Stopwatch stopwatch = Stopwatch();
-        stopwatch.start();
         ArchiveEntry entry =
             await _archive.entry(_originalLink.href.removePrefix("/"));
         _entry = ResourceTry.success(entry);
-        stopwatch.stop();
-        Fimber.d(
-            "========= fetcher HREF: ${_originalLink.href}, time: ${stopwatch.elapsedMilliseconds}ms");
+        // Fimber.d("========= fetcher HREF: ${_originalLink.href}");
       } on Exception {
+        Fimber.d("========= resource not found: ${_originalLink.href}");
         _entry = ResourceTry.failure(ResourceException.notFound);
       }
     }

@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:fimber/fimber.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_server/src/blocs/server/html_injector.dart';
@@ -37,16 +36,11 @@ class FetcherRequestHandler extends RequestHandler {
       return false;
     }
 
-    Stopwatch stopwatch = Stopwatch();
-    stopwatch.start();
     await sendResource(
       request,
       resource: _htmlInjector.transform(resource),
       mediaType: link.mediaType,
     );
-    stopwatch.stop();
-    Fimber.d(
-        "========= sendResource HREF: $href, time: ${stopwatch.elapsedMilliseconds}ms");
 
     return true;
   }

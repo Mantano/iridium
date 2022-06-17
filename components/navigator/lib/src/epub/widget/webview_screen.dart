@@ -179,8 +179,8 @@ class WebViewScreenState extends State<WebViewScreen> {
   @override
   Widget build(BuildContext context) {
     widget.widgetKeepAliveListener.register(position, this);
-    Fimber.d(
-        '=== INITIAL URL: ${widget.address}/${spineItem.href.removePrefix("/")}');
+    // Fimber.d(
+    //     '=== INITIAL URL: ${widget.address}/${spineItem.href.removePrefix("/")}');
     return buildWebView();
   }
 
@@ -260,7 +260,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   }
 
   void _onPageFinished(InAppWebViewController controller, Uri? url) async {
-    Fimber.d("_onPageFinished[$position]: $url");
+    // Fimber.d("_onPageFinished[$position]: $url");
     try {
       OpenPageRequest? openPageRequestData =
           _getOpenPageRequestFromCommand(readerContext.readerCommand);
@@ -324,7 +324,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     _spineItemContext.jsApi = _jsApi;
     for (MapEntry<String, JavaScriptHandlerCallback> entry
         in epubCallbacks.channels.entries) {
-      Fimber.d("========== Adding Handler: ${entry.key}");
+      // Fimber.d("========== Adding Handler: ${entry.key}");
       _controller?.addJavaScriptHandler(
           handlerName: entry.key, callback: entry.value);
     }

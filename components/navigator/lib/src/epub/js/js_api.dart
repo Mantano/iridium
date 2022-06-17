@@ -13,6 +13,7 @@ import 'package:mno_navigator/src/epub/extensions/decoration_change.dart';
 import 'package:mno_shared/publication.dart';
 
 class JsApi {
+  static const bool logJs = false;
   final int index;
   final HtmlDecorationTemplates htmlDecorationTemplates;
   final Future<dynamic> Function(String) _jsLoader;
@@ -20,7 +21,9 @@ class JsApi {
   JsApi(this.index, this.htmlDecorationTemplates, this._jsLoader);
 
   Future<dynamic> loadJS(String jScript) {
-    Fimber.d(jScript);
+    if (logJs) {
+      Fimber.d(jScript);
+    }
     return _jsLoader(jScript);
   }
 

@@ -5,7 +5,7 @@ publish_to: none
 homepage: https://iridium.rocks
 
 environment:
-  sdk: ">=2.16.0-134.1.beta <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
   flutter: ">=1.17.0"
 
 dependencies:
@@ -24,9 +24,9 @@ dependencies:
   mno_shared:
     path: ../components/shared
   bloc: ^8.0.3
-  cupertino_icons: ^1.0.4
+  cupertino_icons: ^1.0.5
   dartx: ^1.1.0
-  dfunc: ^0.7.2
+  dfunc: ^0.8.0
   dio: ^4.0.6
   fimber: ^0.6.6
   flutter_bloc: ^8.0.1
@@ -35,12 +35,12 @@ dependencies:
   flutter_inappwebview: ^5.4.3+7
   fluttertoast: ^8.0.9
   google_fonts: ^3.0.1
-  idb_shim: ^2.0.1
-  json_theme: ^4.0.0+1
-  new_version: ^0.3.0
+  idb_shim: ^2.0.1+1
+  json_theme: ^4.0.0+2
+  new_version: ^0.3.1
   objectdb: ^1.2.1+1
-  path_provider: ^2.0.10
-  permission_handler: ^9.2.0
+  path_provider: ^2.0.11
+  permission_handler: ^10.0.0
   provider: ^6.0.3
   shared_preferences: ^2.0.15
   uuid: ^3.0.6

@@ -16,6 +16,7 @@ import 'package:mno_navigator/src/epub/callbacks/webview_listener.dart';
 import 'package:mno_shared/publication.dart';
 
 class ReadiumChannels extends JavascriptChannels {
+  static const bool logArguments = false;
   final SpineItemContext _spineItemContext;
   final ReaderAnnotationRepository? _readerAnnotationRepository;
   final ViewerSettingsBloc? viewerSettingsBloc;
@@ -55,7 +56,9 @@ class ReadiumChannels extends JavascriptChannels {
 
   void _onPaginationChanged(List<dynamic> arguments) {
     if (arguments.isNotEmpty) {
-      Fimber.d("onPaginationChanged: ${arguments.first}");
+      if (logArguments) {
+        Fimber.d("onPaginationChanged: ${arguments.first}");
+      }
       try {
         PaginationInfo paginationInfo = PaginationInfo.fromJson(
             arguments.first,
@@ -72,7 +75,9 @@ class ReadiumChannels extends JavascriptChannels {
 
   void _onToggleBookmark(List<dynamic> arguments) {
     if (arguments.isNotEmpty) {
-      Fimber.d("onToggleBookmark: ${arguments.first}");
+      if (logArguments) {
+        Fimber.d("onToggleBookmark: ${arguments.first}");
+      }
       try {
         PaginationInfo paginationInfo = PaginationInfo.fromJson(
             arguments.first,
@@ -101,7 +106,9 @@ class ReadiumChannels extends JavascriptChannels {
     if (event == null) {
       return false;
     }
-    Fimber.d("event: $event");
+    if (logArguments) {
+      Fimber.d("event: $event");
+    }
 
     // The script prevented the default behavior.
     if (event.defaultPrevented) {
@@ -150,10 +157,10 @@ class ReadiumChannels extends JavascriptChannels {
   }
 
   void _scrollRight(bool animated) {
-    Fimber.d("animated: $animated");
-
+    if (logArguments) {
+      Fimber.d("animated: $animated");
+    }
     jsApi.scrollRight().then((success) {
-      Fimber.d("success: $success");
       if (success is bool && !success) {
         listener.goRight(animated: animated);
       }
@@ -161,10 +168,10 @@ class ReadiumChannels extends JavascriptChannels {
   }
 
   void _scrollLeft(bool animated) {
-    Fimber.d("animated: $animated");
-
+    if (logArguments) {
+      Fimber.d("animated: $animated");
+    }
     jsApi.scrollLeft().then((success) {
-      Fimber.d("success: $success");
       if (success is bool && !success) {
         listener.goLeft(animated: animated);
       }
@@ -172,7 +179,9 @@ class ReadiumChannels extends JavascriptChannels {
   }
 
   Future<bool> _onDecorationActivated(List<dynamic> arguments) async {
-    Fimber.d("arguments: $arguments");
+    if (logArguments) {
+      Fimber.d("arguments: $arguments");
+    }
     String eventJson = arguments.first;
     Map<String, dynamic>? obj = json.decode(eventJson);
     String? id = obj?.optNullableString("id");
@@ -188,23 +197,28 @@ class ReadiumChannels extends JavascriptChannels {
 
   void _highlightAnnotationMarkActivated(List<dynamic> arguments) {
     String highlightId = arguments.first;
-    Fimber.d("highlightId: $highlightId");
+    if (logArguments) {
+      Fimber.d("highlightId: $highlightId");
+    }
   }
 
   void _highlightActivated(List<dynamic> arguments) {
     String highlightId = arguments.first;
-    Fimber.d("highlightId: $highlightId");
+    if (logArguments) {
+      Fimber.d("highlightId: $highlightId");
+    }
   }
 
-  int _getViewportWidth(List<dynamic> arguments) {
-    Fimber.d("viewportWidth: ${_spineItemContext.readerContext.viewportWidth}");
-    return _spineItemContext.readerContext.viewportWidth;
-  }
+  int _getViewportWidth(List<dynamic> arguments) =>
+      _spineItemContext.readerContext.viewportWidth;
 
   void _onLeftOverlayVisibilityChanged(List<dynamic> arguments) {
     if (arguments.isNotEmpty) {
-      Fimber.d(
-          "================== _onLeftOverlayVisibilityChanged, message: ${arguments.first}, ${arguments.first.runtimeType}, recognizer: $webViewHorizontalGestureRecognizer");
+      if (logArguments) {
+        Fimber.d(
+            "================== _onLeftOverlayVisibilityChanged, message: ${arguments.first}, "
+            "${arguments.first.runtimeType}, recognizer: $webViewHorizontalGestureRecognizer");
+      }
       bool visibility = arguments.first;
       webViewHorizontalGestureRecognizer?.setLeftOverlayVisible(visibility);
     }
@@ -212,8 +226,11 @@ class ReadiumChannels extends JavascriptChannels {
 
   void _onRightOverlayVisibilityChanged(List<dynamic> arguments) {
     if (arguments.isNotEmpty) {
-      Fimber.d(
-          "================== _onRightOverlayVisibilityChanged, message: ${arguments.first}, ${arguments.first.runtimeType}, recognizer: $webViewHorizontalGestureRecognizer");
+      if (logArguments) {
+        Fimber.d(
+            "================== _onRightOverlayVisibilityChanged, message: ${arguments.first}, "
+            "${arguments.first.runtimeType}, recognizer: $webViewHorizontalGestureRecognizer");
+      }
       bool visibility = arguments.first;
       webViewHorizontalGestureRecognizer?.setRightOverlayVisible(visibility);
     }
