@@ -137,7 +137,7 @@ class ReaderContext {
 
   static ReaderContext? of(BuildContext context) {
     final ReaderContextWidget? readerContextWidget =
-        context.dependOnInheritedWidgetOfExactType();
+        context.dependOnInheritedWidgetOfExactType<ReaderContextWidget>();
     return readerContextWidget?.readerContext;
   }
 

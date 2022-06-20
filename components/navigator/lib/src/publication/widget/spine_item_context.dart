@@ -49,8 +49,8 @@ class SpineItemContext {
       _paginationInfoStreamController.stream;
 
   static SpineItemContext? of(BuildContext context) {
-    SpineItemContextWidget? readerContextWidget =
-        context.dependOnInheritedWidgetOfExactType();
+    final SpineItemContextWidget? readerContextWidget =
+        context.dependOnInheritedWidgetOfExactType<SpineItemContextWidget>();
     return readerContextWidget?.spineItemContext;
   }
 
