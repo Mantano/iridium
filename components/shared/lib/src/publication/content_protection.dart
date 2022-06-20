@@ -31,7 +31,7 @@ mixin ContentProtection {
       Fetcher fetcher,
       String? credentials,
       bool allowUserInteraction,
-      Object sender);
+      dynamic sender);
 }
 
 /// Holds the result of opening a [File] with a [ContentProtection].

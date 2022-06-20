@@ -51,6 +51,7 @@ class Locator with EquatableMixin implements JSONable {
 
   static Locator? fromJsonString(String jsonString) {
     try {
+      Fimber.d("jsonString $jsonString");
       Map<String, dynamic> json = JsonCodec().decode(jsonString);
       return Locator.fromJson(json);
     } catch (ex, st) {
