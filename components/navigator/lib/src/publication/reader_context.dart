@@ -41,6 +41,7 @@ class ReaderContext {
   final String? location;
   final Map<int, SpineItemContext> spineItemContextMap;
   final ReaderAnnotationRepository readerAnnotationRepository;
+  final bool displayEditAnnotationIcon;
   late List<Link> _tableOfContents;
   late List<Link> _flattenedTableOfContents;
   late Map<Link, int> _tableOfContentsToSpineItemIndex;
@@ -105,6 +106,7 @@ class ReaderContext {
     required this.location,
     required this.readerAnnotationRepository,
     required this.selectionListenerFactory,
+    this.displayEditAnnotationIcon = true,
     Map<Type, ReaderCommandProcessor> readerCommandProcessorMap = const {},
   })  : assert(userException != null || publication != null),
         spineItemContextMap = {},

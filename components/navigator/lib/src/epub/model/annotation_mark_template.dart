@@ -8,14 +8,17 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/src/epub/model/decoration_style_annotation_mark.dart';
 
 Future<HtmlDecorationTemplate> annotationMarkTemplate(
-    {int? defaultTint}) async {
+    {int? defaultTint, bool displayIcon = true}) async {
   // Converts the pen icon to a base 64 data URL, to be embedded in the decoration stylesheet.
   // Alternatively, serve the image with the local HTTP server and use its URL.
-  ByteData imageData = await rootBundle
-      .load("packages/mno_navigator/assets/readium/assets/edit.svg");
-  Uint8List list = imageData.buffer
-      .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes);
-  String imageUrl = "data:image/svg+xml;utf8,${utf8.decode(list).urlEncode}";
+  String imageUrl = "";
+  if (displayIcon) {
+    ByteData imageData = await rootBundle
+        .load("packages/mno_navigator/assets/readium/assets/edit.svg");
+    Uint8List list = imageData.buffer
+        .asUint8List(imageData.offsetInBytes, imageData.lengthInBytes);
+    imageUrl = "data:image/svg+xml;utf8,${utf8.decode(list).urlEncode}";
+  }
 
   String className = "testapp-annotation-mark";
   return HtmlDecorationTemplate(

@@ -26,6 +26,7 @@ abstract class PublicationController extends NavigationController {
   final ServerBloc serverBloc;
   final CurrentSpineItemBloc currentSpineItemBloc;
   final SelectionListenerFactory selectionListenerFactory;
+  final bool displayEditAnnotationIcon;
   ReaderContext? readerContext;
 
   StreamSubscription<ReaderCommand>? readerCommandSubscription;
@@ -40,6 +41,7 @@ abstract class PublicationController extends NavigationController {
     this.handlersProvider,
     this.selectionListenerFactory, [
     bool startHttpServer = true,
+    this.displayEditAnnotationIcon = true,
   ])  : serverBloc = ServerBloc(startHttpServer: startHttpServer),
         currentSpineItemBloc = CurrentSpineItemBloc();
 
@@ -98,6 +100,7 @@ abstract class PublicationController extends NavigationController {
       location: location,
       readerAnnotationRepository: readerAnnotationRepository,
       selectionListenerFactory: selectionListenerFactory,
+      displayEditAnnotationIcon: displayEditAnnotationIcon,
     );
   }
 

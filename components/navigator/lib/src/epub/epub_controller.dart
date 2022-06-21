@@ -17,15 +17,16 @@ class EpubController extends PublicationController {
   final WidgetKeepAliveListener widgetKeepAliveListener;
 
   EpubController(
-    Function onServerClosed,
-    Function? onPageJump,
-    Future<String?> locationFuture,
-    FileAsset fileAsset,
-    Future<Streamer> streamerFuture,
-    ReaderAnnotationRepository readerAnnotationRepository,
-    Function0<List<RequestHandler>> handlersProvider,
-    SelectionListenerFactory selectionListenerFactory,
-  )   : widgetKeepAliveListener = WidgetKeepAliveListener(),
+      Function onServerClosed,
+      Function? onPageJump,
+      Future<String?> locationFuture,
+      FileAsset fileAsset,
+      Future<Streamer> streamerFuture,
+      ReaderAnnotationRepository readerAnnotationRepository,
+      Function0<List<RequestHandler>> handlersProvider,
+      SelectionListenerFactory selectionListenerFactory,
+      [bool displayEditAnnotationIcon = true])
+      : widgetKeepAliveListener = WidgetKeepAliveListener(),
         super(
           onServerClosed,
           onPageJump,
@@ -36,6 +37,7 @@ class EpubController extends PublicationController {
           handlersProvider,
           selectionListenerFactory,
           true,
+          displayEditAnnotationIcon,
         );
 
   PreloadPageController get pageController => _pageController!;

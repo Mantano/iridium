@@ -314,7 +314,8 @@ class WebViewScreenState extends State<WebViewScreen> {
     HtmlDecorationTemplates decorationTemplates =
         HtmlDecorationTemplates.defaultTemplates();
     decorationTemplates.styles[DecorationStyleAnnotationMark] =
-        await annotationMarkTemplate();
+        await annotationMarkTemplate(
+            displayIcon: readerContext.displayEditAnnotationIcon);
     _jsApi = JsApi(position, decorationTemplates, (javascript) {
       if (mounted) {
         return webViewController.evaluateJavascript(source: javascript);
