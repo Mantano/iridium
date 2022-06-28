@@ -131,9 +131,8 @@ abstract class PublicationController extends NavigationController {
     readerCommandSubscription?.cancel();
     readerCommandSubscription =
         readerContext.commandsStream.listen(_onReaderCommand);
-    if (readerContext.location != null) {
-      readerContext.execute(GoToLocationCommand(readerContext.location!));
-    }
+    readerContext.locator
+        ?.let((it) => readerContext.execute(GoToLocationCommand.locator(it)));
   }
 
   void _onReaderCommand(ReaderCommand command) {
