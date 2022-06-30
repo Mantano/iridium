@@ -270,6 +270,8 @@ class WebViewScreenState extends State<WebViewScreen> {
       if (openPageRequestData != null) {
         _jsApi?.openPage(openPageRequestData);
       }
+      _jsApi?.setStyles(_readerThemeBloc.state.readerTheme,
+          _viewerSettingsBloc.viewerSettings);
       _updateSpineItemPosition(_currentSpineItemBloc.state);
       await _loadDecorations();
       await _loadBookmarks();
