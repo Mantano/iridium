@@ -36,7 +36,7 @@ dependencies:
   fluttertoast: ^8.0.9
   google_fonts: ^3.0.1
   idb_shim: ^2.0.1+1
-  json_theme: ^4.0.0+2
+  json_theme: ^4.0.0+5
   new_version: ^0.3.1
   objectdb: ^1.2.1+1
   path_provider: ^2.0.11
