@@ -26,7 +26,7 @@ dependencies:
   bloc: ^8.0.3
   cupertino_icons: ^1.0.5
   dartx: ^1.1.0
-  dfunc: ^0.8.0
+  dfunc: ^0.8.0+1
   dio: ^4.0.6
   fimber: ^0.6.6
   flutter_bloc: ^8.0.1
@@ -36,7 +36,7 @@ dependencies:
   fluttertoast: ^8.0.9
   google_fonts: ^3.0.1
   idb_shim: ^2.0.1+1
-  json_theme: ^4.0.0+5
+  json_theme: ^4.0.0+7
   new_version: ^0.3.1
   objectdb: ^1.2.1+1
   path_provider: ^2.0.11
@@ -44,7 +44,7 @@ dependencies:
   provider: ^6.0.3
   shared_preferences: ^2.0.15
   uuid: ^3.0.6
-  xml2json: ^5.3.3
+  xml2json: ^5.3.4
   flutter_xlider:
     git:
       url: https://github.com/Ali-Azmoud/flutter_xlider.git
