@@ -12,7 +12,7 @@ dependencies:
   dfunc: ^0.8.0+1
   fimber: ^0.6.6
   image: ^3.2.0
-  path: ^1.8.1
+  path: ^1.8.2
   universal_io: ^2.0.4
   xml: ^6.1.0
   mno_commons:

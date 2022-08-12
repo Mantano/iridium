@@ -15,19 +15,16 @@ dependencies:
   dartx: ^1.1.0
   device_info: ^2.0.3
   dfunc: ^0.8.0+1
-  either_option: ^2.0.0
   ffi: ^1.2.1
   fimber: ^0.6.6
   flutter_archive: ^5.0.0
-  hex: ^0.2.0
   intl: ^0.17.0
   mno_fsm: ^0.1.2
   multiple_localization: ^0.3.0
-  path: ^1.8.1
+  path: ^1.8.2
   path_provider: ^2.0.11
   shared_preferences: ^2.0.15
-  sqflite: ^2.0.3
-  tuple: ^2.0.0
+  sqflite: ^2.0.3+1
   universal_io: ^2.0.4
   url_launcher: ^6.1.5
   uuid: ^3.0.6

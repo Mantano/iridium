@@ -16,17 +16,20 @@ dependencies:
     path: ../shared
   mno_streamer:
     path: ../streamer
-  bloc: ^8.0.3
+  bloc: ^8.1.0
   dartx: ^1.1.0
   dfunc: ^0.8.0+1
   equatable: ^2.0.3
   fimber: ^0.6.6
   flutter_inappwebview: ^5.4.3+7
   intl: ^0.17.0
-  meta: ^1.7.0
-  path: ^1.8.1
+  meta: ^1.8.0
+  path: ^1.8.2
   rxdart: ^0.27.5
   universal_io: ^2.0.4
+
+dependency_overrides:
+  meta: ^1.8.0
 
 dev_dependencies:
   lints: ^2.0.0

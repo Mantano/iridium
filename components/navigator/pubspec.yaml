@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  bloc: ^8.0.3
+  bloc: ^8.1.0
   dartx: ^1.1.0
   dfunc: ^0.8.0+1
   equatable: ^2.0.3
@@ -21,7 +21,6 @@ dependencies:
   photo_view: ^0.14.0
   preload_page_view: ^0.1.6
   rxdart: ^0.27.5
-  universal_io: ^2.0.4
 
   mno_commons:
     path: ../commons
@@ -31,6 +30,9 @@ dependencies:
     path: ../shared
   mno_streamer:
     path: ../streamer
+
+dependency_overrides:
+  meta: ^1.8.0
 
 dev_dependencies:
   test: ^1.21.4
