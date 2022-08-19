@@ -7,7 +7,6 @@ import 'dart:math';
 
 import 'package:fimber/fimber.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_commons/utils/jsonable.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -38,7 +37,7 @@ class ReadiumChannels extends JavascriptChannels {
         );
 
   @override
-  Map<String, JavaScriptHandlerCallback> get channels => {
+  Map<String, HandlerCallback> get channels => {
         "onPaginationInfo": _onPaginationChanged,
         "onToggleBookmark": _onToggleBookmark,
         "onTap": _onTap,

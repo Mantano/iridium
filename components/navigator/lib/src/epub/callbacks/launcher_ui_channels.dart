@@ -5,7 +5,6 @@
 import 'dart:convert';
 
 import 'package:fimber/fimber.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
 
 class LauncherUIChannels extends JavascriptChannels {
@@ -14,7 +13,7 @@ class LauncherUIChannels extends JavascriptChannels {
   LauncherUIChannels();
 
   @override
-  Map<String, JavaScriptHandlerCallback> get channels => {
+  Map<String, HandlerCallback> get channels => {
         "LauncherUIContentRefUrlsPageComputed": _contentRefUrlsPageComputed,
         "LauncherUIImageZoomed": _imageZoomed,
         "LauncherUIOpenSpineItemForTts": _openSpineItemForTts,

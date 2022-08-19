@@ -16,6 +16,8 @@ dependencies:
     path: ../shared
   mno_streamer:
     path: ../streamer
+  mno_webview:
+    path: ../webview
   bloc: ^8.1.0
   dartx: ^1.1.0
   dfunc: ^0.8.0+1

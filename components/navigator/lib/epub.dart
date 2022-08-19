@@ -34,5 +34,4 @@ export 'package:mno_navigator/src/epub/settings/word_spacing.dart';
 export 'package:mno_navigator/src/epub/utils/toc_utils.dart';
 export 'package:mno_navigator/src/epub/widget/epub_navigator.dart';
 export 'package:mno_navigator/src/epub/widget/listeners/web_view_horizontal_gesture_recognizer.dart';
-export 'package:mno_navigator/src/epub/widget/listeners/widget_keep_alive_listener.dart';
 export 'package:mno_navigator/src/epub/widget/webview_screen.dart';

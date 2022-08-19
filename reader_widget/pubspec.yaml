@@ -15,14 +15,16 @@ dependencies:
     path: ../components/commons
   mno_navigator:
     path: ../components/navigator
-  mno_server:
-    path: ../components/server
-  mno_streamer:
-    path: ../components/streamer
   mno_opds:
     path: ../components/opds
+  mno_server:
+    path: ../components/server
   mno_shared:
     path: ../components/shared
+  mno_streamer:
+    path: ../components/streamer
+  mno_webview:
+    path: ../components/webview
   cupertino_icons: ^1.0.5
   dartx: ^1.1.0
   dfunc: ^0.8.0+1

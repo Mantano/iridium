@@ -31,6 +31,8 @@ dependencies:
     path: ../components/opds
   mno_shared:
     path: ../components/shared
+  mno_webview:
+    path: ../components/webview
   cached_network_image: ^3.2.1
   cupertino_icons: ^1.0.5
   dartx: ^1.1.0

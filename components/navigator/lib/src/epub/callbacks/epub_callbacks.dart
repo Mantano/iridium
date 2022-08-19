@@ -2,7 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/callbacks/webview_listener.dart';
@@ -30,7 +29,7 @@ class EpubCallbacks {
             webViewHorizontalGestureRecognizer,
             listener);
 
-  Map<String, JavaScriptHandlerCallback> get channels => {
+  Map<String, HandlerCallback> get channels => {
         ..._launcherUIChannels.channels,
         ..._readiumGesturesChannels.channels,
       };

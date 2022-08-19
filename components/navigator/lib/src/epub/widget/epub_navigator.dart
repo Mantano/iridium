@@ -10,6 +10,7 @@ import 'package:mno_navigator/publication.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import 'package:universal_io/io.dart';
 
 class EpubNavigator extends PublicationNavigator {
   final EpubController epubController;
@@ -71,14 +72,15 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
         physics: const AlwaysScrollableScrollPhysics(),
         reverse: readerContext?.readingProgression?.isReverseOrder() ?? false,
         itemCount: spine.length,
-        itemBuilder: (context, position) => WebViewScreen(
-          widgetKeepAliveListener: epubController.widgetKeepAliveListener,
-          // book: book,
-          address: serverState.address,
-          link: spine[position],
-          position: position,
-          readerContext: readerContext!,
-          publicationController: epubController,
-        ),
+        itemBuilder: (context, position) =>
+            (Platform.isAndroid || Platform.isIOS)
+                ? WebViewScreen(
+                    address: serverState.address,
+                    link: spine[position],
+                    position: position,
+                    readerContext: readerContext!,
+                    publicationController: epubController,
+                  )
+                : const SizedBox.shrink(),
       );
 }

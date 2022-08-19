@@ -7,7 +7,7 @@ folders=("commons"
   "server"
   "shared"
   "streamer"
-  #  "pdfium_ffi"
+  "webview"
 )
 for i in "${folders[@]}"; do
   echo "flutter pub get $i"

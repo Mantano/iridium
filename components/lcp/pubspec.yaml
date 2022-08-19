@@ -13,9 +13,9 @@ dependencies:
   collection: ^1.16.0
   crypto: ^3.0.2
   dartx: ^1.1.0
-  device_info: ^2.0.3
+  device_info_plus: ^3.2.4
   dfunc: ^0.8.0+1
-  ffi: ^1.2.1
+  ffi: ^2.0.1
   fimber: ^0.6.6
   flutter_archive: ^5.0.0
   intl: ^0.17.0

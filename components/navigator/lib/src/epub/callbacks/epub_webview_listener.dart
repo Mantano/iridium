@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:dartx/dartx.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/callbacks/webview_listener.dart';
@@ -27,7 +26,7 @@ class EpubWebViewListener extends WebViewListener {
   ReadingProgression get readingProgression => ReadingProgression.ltr;
 
   @override
-  void onResourceLoaded(Link? link, InAppWebView webView, String? url) {}
+  void onResourceLoaded(Link? link, dynamic webView, String? url) {}
 
   @override
   void onPageLoaded() {}
@@ -119,7 +118,5 @@ class EpubWebViewListener extends WebViewListener {
 
   /// Offers an opportunity to override a request loaded by the given web view.
   @override
-  bool shouldOverrideUrlLoading(
-          InAppWebView webView, WebResourceRequest request) =>
-      false;
+  bool shouldOverrideUrlLoading(dynamic webView, dynamic request) => false;
 }

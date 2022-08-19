@@ -1,15 +1,14 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_shared/publication.dart';
 
-abstract class WebViewListener {
+abstract class WebViewListener<WebView, Request> {
   static void emptyFunc() {}
 
   ReadingProgression get readingProgression;
 
-  void onResourceLoaded(Link? link, InAppWebView webView, String? url) {}
+  void onResourceLoaded(Link? link, WebView webView, String? url) {}
 
   void onPageLoaded();
 
@@ -39,7 +38,5 @@ abstract class WebViewListener {
 //   ActionMode.Callback? get selectionActionModeCallback  => null;
 
   /// Offers an opportunity to override a request loaded by the given web view.
-  bool shouldOverrideUrlLoading(
-          InAppWebView webView, WebResourceRequest request) =>
-      false;
+  bool shouldOverrideUrlLoading(WebView webView, Request request) => false;
 }

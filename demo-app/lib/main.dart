@@ -15,7 +15,7 @@ import 'package:iridium_app/views/splash/splash.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:json_theme/json_theme.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:mno_webview/webview.dart';
 import 'package:universal_io/io.dart' hide Link;
 
 void main() async {

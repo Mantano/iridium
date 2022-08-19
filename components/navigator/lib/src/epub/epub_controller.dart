@@ -14,7 +14,6 @@ import 'package:preload_page_view/preload_page_view.dart';
 
 class EpubController extends PublicationController {
   PreloadPageController? _pageController;
-  final WidgetKeepAliveListener widgetKeepAliveListener;
 
   EpubController(
       Function onServerClosed,
@@ -26,8 +25,7 @@ class EpubController extends PublicationController {
       Function0<List<RequestHandler>> handlersProvider,
       SelectionListenerFactory selectionListenerFactory,
       [bool displayEditAnnotationIcon = true])
-      : widgetKeepAliveListener = WidgetKeepAliveListener(),
-        super(
+      : super(
           onServerClosed,
           onPageJump,
           locationFuture,
