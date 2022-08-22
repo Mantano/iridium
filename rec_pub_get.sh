@@ -4,12 +4,13 @@
 # Proprietary and confidential.
 
 folders=("components/commons"
-  "components/lcp"
-  "components/navigator"
-  "components/opds"
-  "components/server"
   "components/shared"
+  "components/webview"
+  "components/server"
   "components/streamer"
+  "components/opds"
+  "components/navigator"
+  "components/lcp"
   "reader_widget"
   "demo-app"
 )
