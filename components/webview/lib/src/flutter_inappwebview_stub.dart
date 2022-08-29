@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:typed_data';
+
 import 'package:flutter/widgets.dart';
 
 typedef JavaScriptHandlerCallback = dynamic Function(List<dynamic> arguments);
@@ -10,6 +12,14 @@ class InAppWebViewController {
   void addJavaScriptHandler(
       {required String handlerName,
       required JavaScriptHandlerCallback callback}) {}
+
+  Future<void> loadUrl(
+      {required URLRequest urlRequest,
+      @Deprecated('Use `allowingReadAccessTo` instead')
+          Uri? iosAllowingReadAccessTo,
+      Uri? allowingReadAccessTo}) async {}
+
+  Future<Uint8List?> takeScreenshot() async => null;
 }
 
 class URLRequest {
@@ -86,11 +96,14 @@ class InAppWebViewOptions {
   bool useShouldOverrideUrlLoading;
   bool verticalScrollBarEnabled;
   bool horizontalScrollBarEnabled;
+  String? userAgent;
 
-  InAppWebViewOptions(
-      {this.useShouldOverrideUrlLoading = false,
-      this.verticalScrollBarEnabled = true,
-      this.horizontalScrollBarEnabled = true});
+  InAppWebViewOptions({
+    this.useShouldOverrideUrlLoading = false,
+    this.verticalScrollBarEnabled = true,
+    this.horizontalScrollBarEnabled = true,
+    this.userAgent,
+  });
 }
 
 class AndroidCacheMode {
@@ -224,4 +237,25 @@ class InAppWebViewHitTestResult {
   String? extra;
 
   InAppWebViewHitTestResult({this.type, this.extra});
+}
+
+class WebResourceResponse {
+  String contentType;
+  String contentEncoding;
+  Uint8List? data;
+  Map<String, String>? headers;
+  int? statusCode;
+  String? reasonPhrase;
+
+  WebResourceResponse(
+      {this.contentType = "",
+      this.contentEncoding = "utf-8",
+      this.data,
+      this.headers,
+      this.statusCode,
+      this.reasonPhrase});
+}
+
+class AndroidInAppWebViewController {
+  static Future<void> setWebContentsDebuggingEnabled(bool enabled) async {}
 }

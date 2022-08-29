@@ -10,7 +10,7 @@ import 'package:mno_navigator/publication.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:preload_page_view/preload_page_view.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 class EpubNavigator extends PublicationNavigator {
   final EpubController epubController;

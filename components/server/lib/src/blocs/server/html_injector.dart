@@ -15,7 +15,7 @@ import 'package:mno_shared/fetcher.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
-import 'package:universal_io/io.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 /// Inject the Readium CSS and JS links in a publication HTML resources.
 class HtmlInjector {
