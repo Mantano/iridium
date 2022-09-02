@@ -36,9 +36,9 @@ class MyErrorWidget extends StatelessWidget {
             ElevatedButton(
               onPressed: refreshCallBack,
               style: ElevatedButton.styleFrom(
-                  primary:
+                  backgroundColor:
                       Theme.of(context).colorScheme.secondary, // background
-                  onPrimary:
+                  foregroundColor:
                       Theme.of(context).colorScheme.primary, // foreground
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),

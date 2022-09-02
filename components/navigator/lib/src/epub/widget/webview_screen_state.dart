@@ -195,11 +195,10 @@ class WebViewScreenState extends State<WebViewScreen> {
               WebResourceRequest request) async {
             if (!_serverBloc.startHttpServer &&
                 request.url.toString().startsWith(_serverBloc.address)) {
-              return _serverBloc
+              _serverBloc
                   .onRequest(AndroidRequest(request))
                   .then((androidResponse) => androidResponse.response);
             }
-            return null;
           },
           shouldOverrideUrlLoading: (controller, navigationAction) async =>
               NavigationActionPolicy.ALLOW,
