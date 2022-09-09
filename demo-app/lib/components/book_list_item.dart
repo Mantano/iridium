@@ -15,13 +15,13 @@ class BookListItem extends StatelessWidget {
   final Publication? publication;
 
   BookListItem({
-    Key? key,
+    super.key,
     this.img,
     this.title,
     this.author,
     this.desc = "** description **",
     this.publication,
-  }) : super(key: key);
+  });
 
   static const uuid = Uuid();
   final String imgTag = uuid.v4();

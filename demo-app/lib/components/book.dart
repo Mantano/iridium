@@ -13,11 +13,11 @@ class BookItem extends StatelessWidget {
   final Publication publication;
 
   BookItem({
-    Key? key,
+    super.key,
     required this.img,
     required this.title,
     required this.publication,
-  }) : super(key: key);
+  });
 
   static const uuid = Uuid();
   final String imgTag = uuid.v4();

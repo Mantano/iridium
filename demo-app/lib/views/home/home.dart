@@ -13,7 +13,7 @@ import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   @override
   State<StatefulWidget> createState() => _HomeState();

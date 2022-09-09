@@ -16,9 +16,9 @@ import 'package:mno_streamer/src/readium/readium_web_pub_parser.dart';
 /// Subclass of [Try<SuccessT, UserException>] that is useful when parsing a
 /// [Publication].
 class PublicationTry<SuccessT> extends Try<SuccessT, UserException> {
-  PublicationTry.success(SuccessT success) : super.success(success);
+  PublicationTry.success(SuccessT super.success) : super.success();
 
-  PublicationTry.failure(UserException failure) : super.failure(failure);
+  PublicationTry.failure(UserException super.failure) : super.failure();
 }
 
 /// Definition of the [OnCreatePublication] callback.

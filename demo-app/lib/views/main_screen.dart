@@ -6,7 +6,7 @@ import 'package:iridium_app/views/home/home.dart';
 import 'package:iridium_app/views/settings/settings.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _MainScreenState();

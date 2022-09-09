@@ -4,7 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 class LoadingWidget extends StatelessWidget {
   final bool isImage;
 
-  const LoadingWidget({Key? key, this.isImage = false}) : super(key: key);
+  const LoadingWidget({super.key, this.isImage = false});
 
   @override
   Widget build(BuildContext context) => Center(

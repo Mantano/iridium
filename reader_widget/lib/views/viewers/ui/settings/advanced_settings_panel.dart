@@ -10,10 +10,10 @@ class AdvancedSettingsPanel extends StatefulWidget {
   final ReaderThemeBloc readerThemeBloc;
 
   const AdvancedSettingsPanel({
-    Key? key,
+    super.key,
     required this.readerContext,
     required this.readerThemeBloc,
-  }) : super(key: key);
+  });
 
   @override
   State<AdvancedSettingsPanel> createState() => _AdvancedSettingsPanelState();

@@ -5,8 +5,7 @@ class MyErrorWidget extends StatelessWidget {
   final bool isConnection;
 
   const MyErrorWidget(
-      {Key? key, required this.refreshCallBack, this.isConnection = false})
-      : super(key: key);
+      {super.key, required this.refreshCallBack, this.isConnection = false});
 
   @override
   Widget build(BuildContext context) => Container(

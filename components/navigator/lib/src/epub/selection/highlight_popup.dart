@@ -12,8 +12,7 @@ class HighlightPopup extends SelectionPopup {
     Color.fromARGB(255, 182, 153, 255),
   ];
 
-  HighlightPopup(SimpleSelectionListener selectionListener)
-      : super(selectionListener);
+  HighlightPopup(super.selectionListener);
 
   @override
   double get optionsWidth => 300.0;

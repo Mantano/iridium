@@ -13,11 +13,10 @@ class ReaderToolbar extends StatefulWidget {
   final VoidCallback onSkipRight;
 
   const ReaderToolbar(
-      {Key? key,
+      {super.key,
       required this.readerContext,
       required this.onSkipLeft,
-      required this.onSkipRight})
-      : super(key: key);
+      required this.onSkipRight});
 
   @override
   State<StatefulWidget> createState() => ReaderToolbarState();

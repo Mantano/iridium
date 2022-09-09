@@ -14,8 +14,7 @@ class SpineItemContextWidget extends InheritedWidget {
   final SpineItemContext spineItemContext;
 
   const SpineItemContextWidget(
-      {Key? key, required Widget child, required this.spineItemContext})
-      : super(key: key, child: child);
+      {super.key, required super.child, required this.spineItemContext});
 
   @override
   bool updateShouldNotify(SpineItemContextWidget oldWidget) =>

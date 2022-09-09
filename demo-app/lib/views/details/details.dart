@@ -20,12 +20,12 @@ class Details extends StatefulWidget {
   final String authorTag;
 
   const Details({
-    Key? key,
+    super.key,
     this.publication,
     required this.imgTag,
     required this.titleTag,
     required this.authorTag,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _DetailsState();

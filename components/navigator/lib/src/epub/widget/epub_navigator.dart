@@ -4,7 +4,6 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mno_commons/utils/functions.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_server/mno_server.dart';
@@ -16,18 +15,13 @@ class EpubNavigator extends PublicationNavigator {
   final EpubController epubController;
 
   EpubNavigator({
-    Key? key,
-    required WidgetBuilder waitingScreenBuilder,
-    required WidgetErrorBuilder displayErrorBuilder,
-    required Consumer<ReaderContext> onReaderContextCreated,
-    required WrapperWidgetBuilder? wrapper,
+    super.key,
+    required super.waitingScreenBuilder,
+    required super.displayErrorBuilder,
+    required super.onReaderContextCreated,
+    required super.wrapper,
     required this.epubController,
   }) : super(
-          key: key,
-          waitingScreenBuilder: waitingScreenBuilder,
-          displayErrorBuilder: displayErrorBuilder,
-          onReaderContextCreated: onReaderContextCreated,
-          wrapper: wrapper,
           publicationController: epubController,
         );
 

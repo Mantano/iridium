@@ -246,8 +246,7 @@ class MetadataAdapter {
 }
 
 class LinkMetadataAdapter extends MetadataAdapter {
-  LinkMetadataAdapter(double epubVersion, Map<String, List<MetadataItem>> items)
-      : super(epubVersion, items);
+  LinkMetadataAdapter(super.epubVersion, super.items);
 }
 
 class PubMetadataAdapter extends MetadataAdapter {

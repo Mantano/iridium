@@ -24,13 +24,13 @@ abstract class PublicationNavigator extends StatefulWidget {
   final PublicationController publicationController;
 
   const PublicationNavigator({
-    Key? key,
+    super.key,
     required this.waitingScreenBuilder,
     required this.displayErrorBuilder,
     required this.onReaderContextCreated,
     required this.wrapper,
     required this.publicationController,
-  }) : super(key: key);
+  });
 }
 
 abstract class PublicationNavigatorState<T extends PublicationNavigator>

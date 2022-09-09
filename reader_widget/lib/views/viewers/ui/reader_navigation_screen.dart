@@ -6,8 +6,7 @@ import 'package:mno_navigator/publication.dart';
 class ReaderNavigationScreen extends StatefulWidget {
   final ReaderContext readerContext;
 
-  const ReaderNavigationScreen({Key? key, required this.readerContext})
-      : super(key: key);
+  const ReaderNavigationScreen({super.key, required this.readerContext});
 
   @override
   State<ReaderNavigationScreen> createState() => _ReaderNavigationScreenState();

@@ -18,10 +18,10 @@ abstract class BookScreen extends StatefulWidget {
   final ReaderAnnotationRepository? readerAnnotationRepository;
 
   const BookScreen({
-    Key? key,
+    super.key,
     required this.asset,
     this.readerAnnotationRepository,
-  }) : super(key: key);
+  });
 }
 
 abstract class BookScreenState<T extends BookScreen,

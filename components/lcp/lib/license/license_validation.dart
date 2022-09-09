@@ -55,11 +55,11 @@ abstract class LicenseValidationDocument {
 }
 
 class LicenseValidationLicenseDocument extends LicenseValidationDocument {
-  LicenseValidationLicenseDocument._(ByteData data) : super._(data);
+  LicenseValidationLicenseDocument._(super.data) : super._();
 }
 
 class LicenseValidationStatusDocument extends LicenseValidationDocument {
-  LicenseValidationStatusDocument._(ByteData data) : super._(data);
+  LicenseValidationStatusDocument._(super.data) : super._();
 }
 
 class LicenseValidation {

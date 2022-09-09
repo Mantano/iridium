@@ -4,7 +4,7 @@ import 'package:iridium_app/view_models/favorites_provider.dart';
 import 'package:provider/provider.dart';
 
 class Favorites extends StatefulWidget {
-  const Favorites({Key? key}) : super(key: key);
+  const Favorites({super.key});
 
   @override
   State<StatefulWidget> createState() => _FavoritesState();

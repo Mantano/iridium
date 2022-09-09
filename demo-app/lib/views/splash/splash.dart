@@ -5,7 +5,7 @@ import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/views/main_screen.dart';
 
 class Splash extends StatefulWidget {
-  const Splash({Key? key}) : super(key: key);
+  const Splash({super.key});
 
   @override
   State<StatefulWidget> createState() => _SplashState();

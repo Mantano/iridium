@@ -8,8 +8,7 @@ class DownloadAlert extends StatefulWidget {
   final String url;
   final String path;
 
-  const DownloadAlert({Key? key, required this.url, required this.path})
-      : super(key: key);
+  const DownloadAlert({super.key, required this.url, required this.path});
 
   @override
   State<StatefulWidget> createState() => _DownloadAlertState();

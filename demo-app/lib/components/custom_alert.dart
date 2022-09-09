@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class CustomAlert extends StatelessWidget {
   final Widget child;
 
-  CustomAlert({Key? key, required this.child}) : super(key: key);
+  CustomAlert({super.key, required this.child});
 
   late double deviceWidth;
   late double deviceHeight;

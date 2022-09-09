@@ -8,7 +8,7 @@ import 'package:iridium_app/views/favorites/favorites.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  const Profile({super.key});
 
   @override
   State<StatefulWidget> createState() => _ProfileState();

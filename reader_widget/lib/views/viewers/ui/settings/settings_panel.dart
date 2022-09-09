@@ -10,11 +10,11 @@ class SettingsPanel extends StatefulWidget {
   final ReaderThemeBloc readerThemeBloc;
 
   const SettingsPanel({
-    Key? key,
+    super.key,
     required this.readerContext,
     required this.viewerSettingsBloc,
     required this.readerThemeBloc,
-  }) : super(key: key);
+  });
 
   @override
   State<SettingsPanel> createState() => _SettingsPanelState();

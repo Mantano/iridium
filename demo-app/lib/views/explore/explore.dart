@@ -11,7 +11,7 @@ import 'package:mno_shared/publication.dart';
 import 'package:provider/provider.dart';
 
 class Explore extends StatefulWidget {
-  const Explore({Key? key}) : super(key: key);
+  const Explore({super.key});
 
   @override
   State<StatefulWidget> createState() => _ExploreState();

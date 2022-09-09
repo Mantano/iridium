@@ -12,10 +12,10 @@ class BookCard extends StatelessWidget {
   final Publication? entry;
 
   BookCard({
-    Key? key,
+    super.key,
     this.img,
     this.entry,
-  }) : super(key: key);
+  });
 
   static const uuid = Uuid();
   final String imgTag = uuid.v4();

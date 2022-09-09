@@ -11,7 +11,7 @@ import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 import 'package:uuid/uuid.dart';
 
 class Downloads extends StatefulWidget {
-  const Downloads({Key? key}) : super(key: key);
+  const Downloads({super.key});
 
   @override
   State<StatefulWidget> createState() => _DownloadsState();

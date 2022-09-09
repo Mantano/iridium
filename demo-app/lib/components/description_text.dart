@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DescriptionTextWidget extends StatefulWidget {
   final String text;
 
-  const DescriptionTextWidget({Key? key, required this.text}) : super(key: key);
+  const DescriptionTextWidget({super.key, required this.text});
 
   @override
   State<StatefulWidget> createState() => _DescriptionTextWidgetState();

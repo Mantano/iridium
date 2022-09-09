@@ -5,8 +5,7 @@ import 'package:mno_navigator/src/epub/selection/highlight_popup.dart';
 import 'package:mno_navigator/src/epub/selection/selection_popup.dart';
 
 class NewSelectionPopup extends SelectionPopup {
-  NewSelectionPopup(SimpleSelectionListener selectionListener)
-      : super(selectionListener);
+  NewSelectionPopup(super.selectionListener);
 
   @override
   double get optionsWidth => 300.0;

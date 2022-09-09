@@ -7,10 +7,10 @@ class AnnotationsPanel extends StatefulWidget {
   final AnnotationType annotationType;
 
   const AnnotationsPanel({
-    Key? key,
+    super.key,
     required this.readerContext,
     required this.annotationType,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => AnnotationsPanelState();

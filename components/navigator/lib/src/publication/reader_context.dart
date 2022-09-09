@@ -17,10 +17,10 @@ class ReaderContextWidget extends InheritedWidget {
   final ReaderContext readerContext;
 
   const ReaderContextWidget({
-    Key? key,
-    required Widget child,
+    super.key,
+    required super.child,
     required this.readerContext,
-  }) : super(key: key, child: child);
+  });
 
   @override
   bool updateShouldNotify(ReaderContextWidget oldWidget) =>

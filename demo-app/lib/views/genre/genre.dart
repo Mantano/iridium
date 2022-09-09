@@ -12,10 +12,10 @@ class Genre extends StatefulWidget {
   final String url;
 
   const Genre({
-    Key? key,
+    super.key,
     required this.title,
     required this.url,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _GenreState();
