@@ -4,38 +4,24 @@
 
 import 'dart:convert';
 
-import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
-import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
-import 'package:mno_streamer/parser.dart';
 
 class CbzController extends PublicationController {
   PageController? _pageController;
 
   CbzController(
-    Function onServerClosed,
-    Function? onPageJump,
-    Future<String?> locationFuture,
-    FileAsset fileAsset,
-    Future<Streamer> streamerFuture,
-    ReaderAnnotationRepository readerAnnotationRepository,
-    Function0<List<RequestHandler>> handlersProvider,
-    SelectionListenerFactory selectionListenerFactory,
-  ) : super(
-          onServerClosed,
-          onPageJump,
-          locationFuture,
-          fileAsset,
-          streamerFuture,
-          readerAnnotationRepository,
-          handlersProvider,
-          selectionListenerFactory,
-          true,
-        );
+      super.onServerClosed,
+      super.onPageJump,
+      super.locationFuture,
+      super.fileAsset,
+      super.streamerFuture,
+      super.readerAnnotationRepository,
+      super.handlersProvider,
+      super.selectionListenerFactory);
 
   PageController get pageController => _pageController!;
 

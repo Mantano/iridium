@@ -21,16 +21,12 @@ class EpubScreen extends BookScreen {
   final Map<String, dynamic>? theme;
 
   const EpubScreen(
-      {Key? key,
-      required FileAsset asset,
-      ReaderAnnotationRepository? readerAnnotationRepository,
+      {super.key,
+      required super.asset,
+      super.readerAnnotationRepository,
       this.location,
       this.settings,
-      this.theme})
-      : super(
-            key: key,
-            asset: asset,
-            readerAnnotationRepository: readerAnnotationRepository);
+      this.theme});
 
   factory EpubScreen.fromPath(
       {Key? key,

@@ -29,7 +29,7 @@ dependencies:
   dartx: ^1.1.0
   dfunc: ^0.8.0+1
   fimber: ^0.6.6
-  flutter_bloc: ^8.0.1
+  flutter_bloc: ^8.1.1
   flutter_fimber: ^0.6.5
   flutter_inappwebview: ^5.4.3+7
   flutter_spinkit: ^5.1.0

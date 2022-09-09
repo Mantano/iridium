@@ -13,9 +13,9 @@ dependencies:
   bloc: ^8.1.0
   dartx: ^1.1.0
   dfunc: ^0.8.0+1
-  equatable: ^2.0.3
+  equatable: ^2.0.5
   fimber: ^0.6.6
-  flutter_bloc: ^8.0.1
+  flutter_bloc: ^8.1.1
   flutter_inappwebview: ^5.4.3+7
   flutter_spinkit: ^5.1.0
   photo_view: ^0.14.0
@@ -38,7 +38,7 @@ dependency_overrides:
   meta: ^1.8.0
 
 dev_dependencies:
-  test: ^1.21.4
+  test: ^1.21.5
   lints: ^2.0.0
 
 flutter:
