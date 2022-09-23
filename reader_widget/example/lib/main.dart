@@ -27,7 +27,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   final String dirPath;
 
-  const MyApp(this.dirPath, {Key? key}) : super(key: key);
+  const MyApp(this.dirPath, {super.key});
 
   // This widget is the root of your application.
   @override
@@ -52,8 +52,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title, required this.dirPath})
-      : super(key: key);
+  const MyHomePage({super.key, required this.title, required this.dirPath});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect

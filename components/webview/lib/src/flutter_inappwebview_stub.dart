@@ -28,7 +28,7 @@ class URLRequest {
 
 class InAppWebView extends StatefulWidget {
   const InAppWebView({
-    Key? key,
+    super.key,
     URLRequest? initialUrlRequest,
     InAppWebViewGroupOptions? initialOptions,
     void Function(
@@ -42,7 +42,7 @@ class InAppWebView extends StatefulWidget {
     gestureRecognizers,
     contextMenu,
     onWebViewCreated,
-  }) : super(key: key);
+  });
 
   @override
   State<StatefulWidget> createState() => _InAppWebViewState();
