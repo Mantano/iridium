@@ -40,9 +40,6 @@ dependencies:
       url: https://github.com/Ali-Azmoud/flutter_xlider.git
       ref: master # branch name
 
-dependency_overrides:
-  meta: ^1.8.0
-
 dev_dependencies:
   flutter_lints: ^2.0.1
 #  flutter_test:

@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:iridium_app/components/custom_alert.dart';
 import 'package:iridium_app/util/consts.dart';
+import 'package:universal_io/io.dart';
 
 class Dialogs {
   Future<bool?> showExitDialog(BuildContext context) => showDialog<bool>(

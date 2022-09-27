@@ -25,13 +25,9 @@ dependencies:
   fimber: ^0.6.6
   flutter_inappwebview: ^5.4.3+7
   intl: ^0.17.0
-  meta: ^1.8.0
   path: ^1.8.2
   rxdart: ^0.27.5
   universal_io: ^2.0.4
-
-dependency_overrides:
-  meta: ^1.8.0
 
 dev_dependencies:
   lints: ^2.0.0
