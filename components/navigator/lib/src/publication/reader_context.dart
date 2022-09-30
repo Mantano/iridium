@@ -35,7 +35,7 @@ class ReaderContext {
     GoToPageCommand: GoToPageCommandProcessor(),
   };
   final UserException? userException;
-  final FileAsset asset;
+  final PublicationAsset asset;
   final MediaType mediaType;
   final Publication? publication;
   final String? location;
@@ -119,7 +119,7 @@ class ReaderContext {
         TocUtils.mapTableOfContentToSpineItemIndex(
             publication, _flattenedTableOfContents);
     _toolbarStreamController.add(toolbarVisibility);
-    currentSpineItem = publication?.readingOrder.first;
+    currentSpineItem = publication?.readingOrder.firstOrNull;
     readerCommand = locator?.let((it) => GoToLocationCommand.locator(it));
     readingProgression = publication?.metadata.effectiveReadingProgression;
   }
@@ -162,7 +162,7 @@ class ReaderContext {
           .toList();
 
   Iterable<Link> getTocItemsFromSpineItem(int spineItemIndex) {
-    Link? spineItem = publication?.readingOrder[spineItemIndex];
+    Link? spineItem = publication?.readingOrder.elementAtOrNull(spineItemIndex);
     return (spineItem != null)
         ? _flattenedTableOfContents
             .where((tocItem) => spineItem.href == tocItem.hrefPart)

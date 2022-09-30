@@ -2,6 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -58,10 +59,10 @@ abstract class PublicationNavigatorState<T extends PublicationNavigator>
   Widget build(BuildContext context) => BlocProvider<CurrentSpineItemBloc>(
         create: (BuildContext context) =>
             publicationController.currentSpineItemBloc,
-        child: FutureBuilder<ReaderContext>(
+        child: FutureBuilder<ReaderContext?>(
             future: publicationController.createReaderContext(context),
             builder:
-                (BuildContext context, AsyncSnapshot<ReaderContext> snapshot) {
+                (BuildContext context, AsyncSnapshot<ReaderContext?> snapshot) {
               if (!snapshot.hasData) {
                 return widget.waitingScreenBuilder(context);
               }

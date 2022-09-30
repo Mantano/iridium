@@ -19,7 +19,7 @@ abstract class PublicationController extends NavigationController {
   final Function onServerClosed;
   final Function? onPageJump;
   final Future<String?> locationFuture;
-  final FileAsset fileAsset;
+  final PublicationAsset publicationAsset;
   final Future<Streamer> streamerFuture;
   final ReaderAnnotationRepository readerAnnotationRepository;
   final Function0<List<RequestHandler>> handlersProvider;
@@ -35,7 +35,7 @@ abstract class PublicationController extends NavigationController {
     this.onServerClosed,
     this.onPageJump,
     this.locationFuture,
-    this.fileAsset,
+    this.publicationAsset,
     this.streamerFuture,
     this.readerAnnotationRepository,
     this.handlersProvider,
@@ -78,7 +78,7 @@ abstract class PublicationController extends NavigationController {
     try {
       Streamer streamer = await streamerFuture;
       PublicationTry<Publication> publicationResult = await streamer
-          .open(fileAsset, true, sender: context)
+          .open(publicationAsset, true, sender: context)
           .onError((error, stackTrace) {
         if (error is UserException) {
           return PublicationTry.failure(error);
@@ -94,8 +94,8 @@ abstract class PublicationController extends NavigationController {
     String? location = await locationFuture;
     return ReaderContext(
       userException: userException,
-      asset: fileAsset,
-      mediaType: await fileAsset.mediaType,
+      asset: publicationAsset,
+      mediaType: await publicationAsset.mediaType,
       publication: publication,
       location: location,
       readerAnnotationRepository: readerAnnotationRepository,

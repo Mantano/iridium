@@ -47,7 +47,15 @@ class HttpResource extends Resource {
   Future<Link> link() async => _link;
 
   Future<ResourceTry<http.Response>> get response async =>
-      _response ??= await catching(() async => http.get(url));
+      _response ??= await catching(() async {
+        Uri uri = Uri.parse("https://cros-anywhere.herokuapp.com/$url");
+        return http.get(uri, headers: {
+          'Access-Control-Allow-Origin': 'http://localhost:49430',
+          'Access-Control-Allow-Methods':
+          'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
+        });
+      });
 
   @override
   Future<void> close() async {}
