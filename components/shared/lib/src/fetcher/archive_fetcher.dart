@@ -19,14 +19,15 @@ import 'package:universal_io/io.dart' hide Link;
 /// Provides access to entries of an archive.
 class ArchiveFetcher extends Fetcher {
   final Archive archive;
+  final bool useSniffers;
 
-  ArchiveFetcher(this.archive);
+  ArchiveFetcher(this.archive, this.useSniffers);
 
   @override
   Future<List<Link>> links() async =>
       waitTryOr(<ArchiveEntry>[], () => archive.entries()).then((entries) =>
           entries
-              ?.map((value) => value.toLink())
+              ?.map((value) => value.toLink(useSniffers))
               .let((links) => Future.wait(links)) ??
           []);
 
@@ -37,10 +38,12 @@ class ArchiveFetcher extends Fetcher {
   Future<void> close() => archive.close();
 
   static Future<ArchiveFetcher?> fromPath(String path,
-          {ArchiveFactory archiveFactory = const DefaultArchiveFactory()}) =>
+          {ArchiveFactory archiveFactory = const DefaultArchiveFactory(),
+          bool useSniffers = true}) =>
       waitTryOrNull(() async => await archiveFactory
           .open(File(path), null)
-          .then((archive) => archive?.let((it) => ArchiveFetcher(it))));
+          .then((archive) =>
+              archive?.let((it) => ArchiveFetcher(it, useSniffers))));
 }
 
 class EntryResource extends Resource {
@@ -102,11 +105,13 @@ class EntryResource extends Resource {
 }
 
 extension ArchiveFileExtension on ArchiveEntry {
-  Future<Link> toLink() async {
+  Future<Link> toLink(bool useSniffers) async {
     Link link = Link(
         id: path.addPrefix("/"),
         href: path.addPrefix("/"),
-        type: (await MediaType.ofSingleHint(fileExtension: path.extension()))
+        type: (await MediaType.ofSingleHint(
+                fileExtension: path.extension(),
+                sniffers: (useSniffers) ? MediaType.sniffers : []))
             ?.toString());
 
     if (compressedLength != null) {

@@ -46,6 +46,10 @@ class Streamer {
   /// a publication.
   final bool ignoreDefaultParsers;
 
+  /// This property indicate that it should use sniffers when searching
+  /// mediaTypes for links in  a publication.
+  final bool useSniffers;
+
   /// List of the [ContentProtection] implementation that are supported.
   final List<ContentProtection> contentProtections;
 
@@ -65,6 +69,7 @@ class Streamer {
   Streamer(
       {List<StreamPublicationParser> parsers = const [],
       this.ignoreDefaultParsers = false,
+      this.useSniffers = true,
       this.contentProtections = const [],
       this.archiveFactory = const DefaultArchiveFactory(),
       this.pdfFactory,
@@ -111,7 +116,8 @@ class Streamer {
     onCreatePublication ??= _emptyOnCreatePublication;
     try {
       Fetcher fetcher = (await asset.createFetcher(
-              PublicationAssetDependencies(archiveFactory), credentials))
+              PublicationAssetDependencies(archiveFactory), credentials,
+              useSniffers: useSniffers))
           .getOrThrow();
 
       Try<ProtectedAsset, UserException>? protectedAssetResult =

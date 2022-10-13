@@ -33,7 +33,8 @@ class FileAsset extends PublicationAsset {
 
   @override
   Future<Try<Fetcher, OpeningException>> createFetcher(
-      PublicationAssetDependencies dependencies, String? credentials) async {
+      PublicationAssetDependencies dependencies, String? credentials,
+      {bool useSniffers = true}) async {
     try {
       Fetcher? fetcher;
       if (await FileSystemEntity.isDirectory(file.path)) {
@@ -41,7 +42,8 @@ class FileAsset extends PublicationAsset {
       } else if (await file.exists()) {
         if ((await mediaType).isZip) {
           fetcher = await ArchiveFetcher.fromPath(file.path,
-              archiveFactory: dependencies.archiveFactory);
+              archiveFactory: dependencies.archiveFactory,
+              useSniffers: useSniffers);
         } else {
           fetcher = FileFetcher.single(href: "/$name", file: file);
         }
