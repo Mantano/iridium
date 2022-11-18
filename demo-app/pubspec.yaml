@@ -41,7 +41,7 @@ dependencies:
   fimber: ^0.6.6
   flutter_fimber: ^0.6.5
   flutter_font_icons: ^2.2.5
-  flutter_inappwebview: ^5.7.1+1
+  flutter_inappwebview: ^5.7.1+2
   flutter_spinkit: ^5.1.0
   fluttertoast: ^8.1.1
   google_fonts: ^3.0.1
@@ -55,6 +55,8 @@ dependencies:
   sqflite_common_ffi: ^2.2.0+1
   universal_io: ^2.0.4
   uuid: ^3.0.7
+  package_info_plus_web: ^2.0.0
+  url_launcher_web: ^2.0.13
 
 dependency_overrides:
   shared_preferences_windows: 2.1.1
