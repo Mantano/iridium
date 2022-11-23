@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   archive: ^3.3.5
-  collection: ^1.17.0
+  collection:
   crypto: ^3.0.2
   dartx: ^1.1.0
   dfunc: ^0.8.0+1

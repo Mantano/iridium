@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/util/dialogs.dart';
+import 'package:iridium_app/views/downloads/downloads.dart';
 import 'package:iridium_app/views/explore/explore.dart';
 import 'package:iridium_app/views/home/home.dart';
 import 'package:iridium_app/views/settings/settings.dart';
@@ -27,6 +28,7 @@ class _MainScreenState extends State<MainScreen> {
             onPageChanged: onPageChanged,
             children: const <Widget>[
               Home(),
+              Downloads(),
               Explore(),
               Profile(),
             ],
@@ -43,6 +45,12 @@ class _MainScreenState extends State<MainScreen> {
                   Feather.home,
                 ),
                 label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Feather.download,
+                ),
+                label: 'Downloads',
               ),
               BottomNavigationBarItem(
                 icon: Icon(

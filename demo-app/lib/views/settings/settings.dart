@@ -3,7 +3,6 @@ import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/theme/theme_config.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/view_models/app_provider.dart';
-import 'package:iridium_app/views/downloads/downloads.dart';
 import 'package:iridium_app/views/favorites/favorites.dart';
 import 'package:provider/provider.dart';
 
@@ -27,14 +26,8 @@ class _ProfileState extends State<Profile> {
         'function': () => _pushPage(const Favorites()),
       },
       {
-        'icon': Feather.download,
-        'title': 'Downloads',
-        'function': () => _pushPage(const Downloads()),
-      },
-      {
         'icon': Feather.moon,
         'title': 'Dark Mode',
-        'function': () => _pushPage(const Downloads()),
       },
       {
         'icon': Feather.info,
