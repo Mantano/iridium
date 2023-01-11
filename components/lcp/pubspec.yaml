@@ -18,13 +18,13 @@ dependencies:
   ffi: ^2.0.1
   fimber: ^0.6.6
   flutter_archive: ^5.0.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   mno_fsm: ^0.1.2
   multiple_localization: ^0.3.0
-  path: ^1.8.2
+  path: ^1.8.3
   path_provider: ^2.0.11
   shared_preferences: ^2.0.15
-  sqflite: ^2.2.0+3
+  sqflite: ^2.2.2
   universal_io: ^2.0.4
   url_launcher: ^6.1.7
   uuid: ^3.0.7
