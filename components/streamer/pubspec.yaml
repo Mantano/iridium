@@ -11,8 +11,8 @@ dependencies:
   dartx: ^1.1.0
   dfunc: ^0.8.0+1
   fimber: ^0.6.6
-  image: ^3.2.2
-  path: ^1.8.2
+  image: ^4.0.8
+  path: ^1.8.3
   universal_io: ^2.0.4
   xml: ^6.2.2
   mno_commons:
@@ -22,4 +22,4 @@ dependencies:
 
 dev_dependencies:
   lints: ^2.0.1
-  test: ^1.22.0
+  test: ^1.22.2
