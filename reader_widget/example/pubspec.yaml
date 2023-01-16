@@ -37,7 +37,6 @@ dependencies:
   flutter_fimber: ^0.6.5
   fimber: ^0.6.6
   flutter_inappwebview: ^5.7.1+2
-  path: ^1.8.2
   path_provider: ^2.0.11
   universal_io: ^2.0.4
 
@@ -51,6 +50,7 @@ dependencies:
 
 dependency_overrides:
   collection: ^1.17.0
+  path: ^1.8.3
 
 dev_dependencies:
 #  flutter_test:

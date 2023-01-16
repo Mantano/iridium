@@ -38,6 +38,9 @@ dev_dependencies:
   test: ^1.22.2
   lints: ^2.0.1
 
+dependency_overrides:
+  path: ^1.8.3
+
 flutter:
 
   assets:

@@ -12,3 +12,6 @@ dependencies:
 
 dev_dependencies:
   lints: ^2.0.0
+
+dependency_overrides:
+  path: ^1.8.3

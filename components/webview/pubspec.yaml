@@ -13,6 +13,9 @@ dependencies:
     sdk: flutter
   flutter_inappwebview: ^5.7.2+3
 
+dependency_overrides:
+  path: ^1.8.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -16,10 +16,9 @@ dependencies:
   equatable: ^2.0.5
   fimber: ^0.6.6
   http: ^0.13.5
-  image: ^4.0.8
+  image: ^4.0.10
   intl: ^0.18.0
   meta: ^1.8.0
-  path: ^1.8.3
   universal_io: ^2.0.4
   xml: ^6.2.2
   mno_commons:
@@ -29,3 +28,6 @@ dev_dependencies:
   image_compare: ^1.1.2
   lints: ^2.0.1
   test: ^1.22.2
+
+dependency_overrides:
+  path: ^1.8.3
