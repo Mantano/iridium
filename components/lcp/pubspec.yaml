@@ -14,7 +14,7 @@ dependencies:
   crypto: ^3.0.2
   dartx: ^1.1.0
   device_info_plus: ^8.0.0
-  dfunc: ^0.8.0+1
+  dfunc: ^0.8.1
   ffi: ^2.0.1
   fimber: ^0.6.6
   flutter_archive: ^5.0.0
@@ -23,8 +23,8 @@ dependencies:
   multiple_localization: ^0.3.0
   path: ^1.8.3
   path_provider: ^2.0.11
-  shared_preferences: ^2.0.15
-  sqflite: ^2.2.2
+  shared_preferences: ^2.0.16
+  sqflite: ^2.2.3
   universal_io: ^2.0.4
   url_launcher: ^6.1.7
   uuid: ^3.0.7
