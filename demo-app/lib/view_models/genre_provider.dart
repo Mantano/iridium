@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iridium_app/util/api.dart';
 import 'package:iridium_app/util/enum/api_request_status.dart';
 import 'package:iridium_app/util/functions.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mno_shared/opds.dart';
 import 'package:mno_shared/publication.dart';
 
@@ -18,7 +18,7 @@ class GenreProvider extends ChangeNotifier {
   APIRequestStatus apiRequestStatus = APIRequestStatus.loading;
   Api api = Api();
 
-  listener(url) {
+  void listener(url) {
     controller.addListener(() {
       if (controller.position.pixels == controller.position.maxScrollExtent) {
         if (!loadingMore) {
@@ -36,7 +36,7 @@ class GenreProvider extends ChangeNotifier {
     });
   }
 
-  getFeed(String url) async {
+  Future getFeed(String url) async {
     setApiRequestStatus(APIRequestStatus.loading);
     Fimber.d("getFeed: $url");
     try {
@@ -53,7 +53,7 @@ class GenreProvider extends ChangeNotifier {
     }
   }
 
-  paginate(String url) async {
+  Future paginate(String url) async {
     if (apiRequestStatus != APIRequestStatus.loading &&
         !loadingMore &&
         loadMore) {
@@ -64,7 +64,7 @@ class GenreProvider extends ChangeNotifier {
       page = page + 1;
       notifyListeners();
       try {
-        ParseData parseData = await api.getCategory(url + '&page=$page');
+        ParseData parseData = await api.getCategory('$url&page=$page');
         var pubs = parseData.feed?.publications;
         if (pubs != null) {
           items.addAll(pubs);
@@ -90,7 +90,7 @@ class GenreProvider extends ChangeNotifier {
     }
   }
 
-  showToast(msg) {
+  void showToast(msg) {
     Fluttertoast.showToast(
       msg: '$msg',
       toastLength: Toast.LENGTH_SHORT,

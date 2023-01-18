@@ -15,14 +15,17 @@ import 'package:url_launcher/url_launcher.dart';
 /// @param [license] LCP license which will be renewed.
 /// @param [context] [BuildContext] used to present the date picker.
 class MaterialRenewListener implements RenewListener {
-  final LcpLicense license;
+  final LcpLicense? license;
   final BuildContext context;
 
   MaterialRenewListener(this.license, this.context);
 
   @override
   Future<DateTime> preferredEndDate(DateTime? maximumDate) async {
-    DateTime start = (license.license.rights.end ?? DateTime.now());
+    if (license == null) {
+      return DateTime.now();
+    }
+    DateTime start = (license!.license.rights.end ?? DateTime.now());
     DateTime end = maximumDate ?? DateTime.now().add(const Duration(days: 365));
     return await showDatePicker(
             context: context,
@@ -34,8 +37,8 @@ class MaterialRenewListener implements RenewListener {
 
   @override
   Future<bool> openWebPage(Uri url) async {
-    if (await canLaunch(url.toString())) {
-      return launch(url.toString());
+    if (await canLaunchUrl(url)) {
+      return launchUrl(url);
     } else {
       throw 'Could not launch $url';
     }

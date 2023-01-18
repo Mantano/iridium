@@ -13,18 +13,25 @@ import 'package:iridium_app/view_models/genre_provider.dart';
 import 'package:iridium_app/view_models/home_provider.dart';
 import 'package:iridium_app/views/splash/splash.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:json_theme/json_theme.dart';
+import 'package:mno_webview/webview.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   if (kReleaseMode) {
     Fimber.plantTree(FimberTree());
   } else {
     Fimber.plantTree(DebugBufferTree());
   }
+
+  if (kDebugMode && Platform.isAndroid) {
+    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  }
+
   // Theme was generated with https://zeshuaro.github.io/appainter/#/
-  WidgetsFlutterBinding.ensureInitialized();
   ThemeConfig.lightTheme = await loadTheme('assets/appainter_light_theme.json');
   ThemeConfig.darkTheme = await loadTheme('assets/appainter_dark_theme.json');
   runApp(
@@ -36,7 +43,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => FavoritesProvider()),
         ChangeNotifierProvider(create: (_) => GenreProvider()),
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -49,18 +56,13 @@ Future<ThemeData> loadTheme(String themeAssetPath) async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    // https://pub.dev/packages/new_version
-    // TODO debuguer
-    // final newVersion = NewVersion();
-    // newVersion.showAlertIfNecessary(context: context);
-
-    return Consumer<AppProvider>(
-      builder: (BuildContext context, AppProvider appProvider, Widget? child) {
-        return MaterialApp(
+  Widget build(BuildContext context) => Consumer<AppProvider>(
+        builder:
+            (BuildContext context, AppProvider appProvider, Widget? child) =>
+                MaterialApp(
           key: appProvider.key,
           debugShowCheckedModeBanner: false,
           navigatorKey: appProvider.navigatorKey,
@@ -68,17 +70,13 @@ class MyApp extends StatelessWidget {
           theme: themeData(appProvider.theme),
           darkTheme: themeData(ThemeConfig.darkTheme!),
           home: const Splash(),
-        );
-      },
-    );
-  }
+        ),
+      );
 
   // Apply font to our app's theme
-  ThemeData themeData(ThemeData theme) {
-    return theme.copyWith(
-      textTheme: GoogleFonts.sourceSansProTextTheme(
-        theme.textTheme,
-      ),
-    );
-  }
+  ThemeData themeData(ThemeData theme) => theme.copyWith(
+        textTheme: GoogleFonts.sourceSansProTextTheme(
+          theme.textTheme,
+        ),
+      );
 }

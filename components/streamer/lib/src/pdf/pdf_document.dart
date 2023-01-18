@@ -5,6 +5,7 @@
 import 'package:dfunc/dfunc.dart';
 import 'package:image/image.dart';
 import 'package:mno_streamer/pdf.dart';
+import 'package:mno_shared/publication.dart';
 
 abstract class PdfDocument {
   String? get identifier;
@@ -36,4 +37,6 @@ abstract class PdfDocument {
   void close();
 
   List<String> get keywordList;
+
+  List<Link> outline(String fileHref);
 }

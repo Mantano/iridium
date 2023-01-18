@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/theme/theme_config.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/view_models/app_provider.dart';
-import 'package:iridium_app/views/downloads/downloads.dart';
 import 'package:iridium_app/views/favorites/favorites.dart';
-import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  const Profile({super.key});
 
   @override
-  _ProfileState createState() => _ProfileState();
+  State<StatefulWidget> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
@@ -27,14 +26,8 @@ class _ProfileState extends State<Profile> {
         'function': () => _pushPage(const Favorites()),
       },
       {
-        'icon': Feather.download,
-        'title': 'Downloads',
-        'function': () => _pushPage(const Downloads()),
-      },
-      {
         'icon': Feather.moon,
         'title': 'Dark Mode',
-        'function': () => _pushPage(const Downloads()),
       },
       {
         'icon': Feather.info,
@@ -83,49 +76,43 @@ class _ProfileState extends State<Profile> {
             ),
           );
         },
-        separatorBuilder: (BuildContext context, int index) {
-          return const Divider();
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+      ),
+    );
+  }
+
+  Widget _buildThemeSwitch(Map item) => SwitchListTile(
+        secondary: Icon(
+          item['icon'],
+        ),
+        title: Text(
+          item['title'],
+        ),
+        value: Provider.of<AppProvider>(context).theme == ThemeConfig.lightTheme
+            ? false
+            : true,
+        onChanged: (v) {
+          if (v) {
+            Provider.of<AppProvider>(context, listen: false)
+                .setTheme(ThemeConfig.darkTheme, 'dark');
+          } else {
+            Provider.of<AppProvider>(context, listen: false)
+                .setTheme(ThemeConfig.lightTheme, 'light');
+          }
         },
-      ),
-    );
-  }
+      );
 
-  Widget _buildThemeSwitch(Map item) {
-    return SwitchListTile(
-      secondary: Icon(
-        item['icon'],
-      ),
-      title: Text(
-        item['title'],
-      ),
-      value: Provider.of<AppProvider>(context).theme == ThemeConfig.lightTheme
-          ? false
-          : true,
-      onChanged: (v) {
-        if (v) {
-          Provider.of<AppProvider>(context, listen: false)
-              .setTheme(ThemeConfig.darkTheme, 'dark');
-        } else {
-          Provider.of<AppProvider>(context, listen: false)
-              .setTheme(ThemeConfig.lightTheme, 'light');
-        }
-      },
-    );
-  }
-
-  _pushPage(Widget page) {
+  void _pushPage(Widget page) {
     MyRouter.pushPage(context, page);
   }
 
-  _pushPageDialog(Widget page) {
+  void _pushPageDialog(Widget page) {
     MyRouter.pushPageDialog(context, page);
   }
 
-  showAbout() {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
+  void showAbout() => showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
           title: const Text(
             'About',
           ),
@@ -144,8 +131,6 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ],
-        );
-      },
-    );
-  }
+        ),
+      );
 }

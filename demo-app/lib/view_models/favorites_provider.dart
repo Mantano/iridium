@@ -6,7 +6,7 @@ class FavoritesProvider extends ChangeNotifier {
   bool loading = true;
   var db = FavoriteDB();
 
-  getFavorites() async {
+  Future getFavorites() async {
     setLoading(true);
     posts.clear();
     List all = await db.listAll();
@@ -24,7 +24,5 @@ class FavoritesProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List getPosts() {
-    return posts;
-  }
+  List getPosts() => posts;
 }

@@ -9,6 +9,12 @@ environment:
 dependencies:
   mno_server:
     path: ../
+  mno_shared:
+    path: ../../shared
+  universal_io: ^2.0.4
 
 dev_dependencies:
-  lints: ^1.0.1
+  lints: ^2.0.1
+
+dependency_overrides:
+  path: ^1.8.3

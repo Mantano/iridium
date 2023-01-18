@@ -17,6 +17,9 @@ extension StringExtension on String {
   String? ifBlank(String? Function() defaultValue) =>
       isBlank ? defaultValue() : this;
 
+  String insert(int index, String value) =>
+      substring(0, index) + value + substring(index);
+
   String substringBefore(String? separator) {
     if (isEmpty) {
       return this;
@@ -116,9 +119,4 @@ extension StringHashExtension on String {
   /// Calculates the SHA1 digest and returns the value as a [String] of
   /// hexadecimal digits.
   String get sha1 => crypto.sha1.convert(toUtf8()).toString();
-}
-
-extension NullableStringIsNullOrBlankExtension on String? {
-  /// Returns `true` if the String is either null or empty.
-  bool get isNullOrBlank => this?.isBlank ?? true;
 }

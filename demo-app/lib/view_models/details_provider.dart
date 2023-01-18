@@ -23,7 +23,7 @@ class DetailsProvider extends ChangeNotifier {
   bool downloaded = false;
   Api api = Api();
 
-  getFeed(String url) async {
+  Future getFeed(String url) async {
     setLoading(true);
     checkFav();
     checkDownload();
@@ -37,7 +37,7 @@ class DetailsProvider extends ChangeNotifier {
   }
 
   // check if book is favorited
-  checkFav() async {
+  Future checkFav() async {
     List c = await favDB.check({'id': entry.metadata.identifier.toString()});
     if (c.isNotEmpty) {
       setFaved(true);
@@ -46,15 +46,15 @@ class DetailsProvider extends ChangeNotifier {
     }
   }
 
-  addFav() async {
+  Future addFav() async {
     await favDB.add({
       'id': entry.metadata.identifier.toString(),
-      'item': jsonEncode(entry)
+      'item': jsonEncode(entry.metadata)
     });
     checkFav();
   }
 
-  removeFav() async {
+  Future removeFav() async {
     if (entry.metadata.identifier != null) {
       favDB.remove({'id': entry.metadata.identifier!}).then((v) {
         Fimber.d("Removed -> v");
@@ -66,7 +66,7 @@ class DetailsProvider extends ChangeNotifier {
   }
 
   // check if book has been downloaded before
-  checkDownload() async {
+  Future checkDownload() async {
     List downloads = await dlDB.check({'id': entry.metadata.identifier});
     if (downloads.isNotEmpty) {
       // check if book has been deleted
@@ -87,20 +87,21 @@ class DetailsProvider extends ChangeNotifier {
     return c;
   }
 
-  addDownload(Map body) async {
+  Future addDownload(Map body) async {
     await dlDB.removeAllWithId({'id': entry.metadata.identifier});
     await dlDB.add(body);
     checkDownload();
   }
 
-  removeDownload() async {
+  Future removeDownload() async {
     dlDB.remove({'id': entry.metadata.identifier.toString()}).then((v) {
       Fimber.d("removing download: $v");
       checkDownload();
     });
   }
 
-  Future downloadFile(BuildContext context, String url, String filename) async {
+  Future downloadFile(
+      BuildContext context, State state, String url, String filename) async {
     PermissionStatus permission = await Permission.storage.status;
 
     if (permission != PermissionStatus.granted) {
@@ -109,13 +110,20 @@ class DetailsProvider extends ChangeNotifier {
       await Permission.accessMediaLocation.request();
       // manage external storage needed for android 11/R
       await Permission.manageExternalStorage.request();
+      if (!state.mounted) {
+        return;
+      }
       startDownload(context, url, filename);
     } else {
+      if (!state.mounted) {
+        return;
+      }
       startDownload(context, url, filename);
     }
   }
 
-  startDownload(BuildContext context, String url, String filename) async {
+  Future startDownload(
+      BuildContext context, String url, String filename) async {
     Directory? appDocDir = Platform.isAndroid
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
@@ -130,8 +138,8 @@ class DetailsProvider extends ChangeNotifier {
     //     : appDocDir.path.split('Android')[0] +
     //         '${Constants.appName}/$filename.epub';
     String path = Platform.isIOS
-        ? appDocDir!.path + '/$filename.epub'
-        : appDocDir!.path + '/$filename.epub';
+        ? '${appDocDir!.path}/$filename.epub'
+        : '${appDocDir!.path}/$filename.epub';
     Fimber.d("path: $path");
     File file = File(path);
     if (!await file.exists()) {
@@ -176,9 +184,7 @@ class DetailsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  ParseData getRelated() {
-    return related;
-  }
+  ParseData getRelated() => related;
 
   void setEntry(value) {
     entry = value;

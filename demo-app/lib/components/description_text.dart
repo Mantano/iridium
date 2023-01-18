@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 class DescriptionTextWidget extends StatefulWidget {
   final String text;
 
-  const DescriptionTextWidget({Key? key, required this.text}) : super(key: key);
+  const DescriptionTextWidget({super.key, required this.text});
 
   @override
-  _DescriptionTextWidgetState createState() => _DescriptionTextWidgetState();
+  State<StatefulWidget> createState() => _DescriptionTextWidgetState();
 }
 
 class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
@@ -29,49 +29,47 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: secondHalf.isEmpty
-          ? Text(
-              (flag ? (firstHalf) : (firstHalf + secondHalf))
-                  .replaceAll(r'\n', '\n')
-                  .replaceAll(r'\r', '')
-                  .replaceAll(r"\'", "'"),
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Theme.of(context).textTheme.caption?.color,
+  Widget build(BuildContext context) => Container(
+        child: secondHalf.isEmpty
+            ? Text(
+                (flag ? (firstHalf) : (firstHalf + secondHalf))
+                    .replaceAll(r'\n', '\n')
+                    .replaceAll(r'\r', '')
+                    .replaceAll(r"\'", "'"),
+                style: TextStyle(
+                  fontSize: 16.0,
+                  color: Theme.of(context).textTheme.caption?.color,
+                ),
+              )
+            : Column(
+                children: <Widget>[
+                  Text(
+                    (flag ? ('$firstHalf...') : (firstHalf + secondHalf))
+                        .replaceAll(r'\n', '\n\n')
+                        .replaceAll(r'\r', '')
+                        .replaceAll(r"\'", "'"),
+                    style: TextStyle(
+                      fontSize: 16.0,
+                      color: Theme.of(context).textTheme.caption?.color,
+                    ),
+                  ),
+                  InkWell(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          flag ? 'show more' : 'show less',
+                          style: const TextStyle(color: Colors.blue),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      setState(() {
+                        flag = !flag;
+                      });
+                    },
+                  ),
+                ],
               ),
-            )
-          : Column(
-              children: <Widget>[
-                Text(
-                  (flag ? (firstHalf + '...') : (firstHalf + secondHalf))
-                      .replaceAll(r'\n', '\n\n')
-                      .replaceAll(r'\r', '')
-                      .replaceAll(r"\'", "'"),
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Theme.of(context).textTheme.caption?.color,
-                  ),
-                ),
-                InkWell(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        flag ? 'show more' : 'show less',
-                        style: const TextStyle(color: Colors.blue),
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    setState(() {
-                      flag = !flag;
-                    });
-                  },
-                ),
-              ],
-            ),
-    );
-  }
+      );
 }

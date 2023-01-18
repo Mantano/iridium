@@ -1,19 +1,20 @@
 import 'dart:io';
 
+import 'package:fimber/fimber.dart';
 import 'package:objectdb/objectdb.dart';
-import 'package:path_provider/path_provider.dart';
+// ignore: implementation_imports
 import 'package:objectdb/src/objectdb_storage_filesystem.dart';
-
+import 'package:path_provider/path_provider.dart';
 
 class DownloadsDB {
-  getPath() async {
+  Future<String> getPath() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    final path = documentDirectory.path + '/downloads.db';
+    final path = '${documentDirectory.path}/downloads.db';
     return path;
   }
 
   //Insertion
-  add(Map item) async {
+  Future add(Map item) async {
     final db = ObjectDB(FileSystemStorage(await getPath()));
     db.insert(item);
     await db.close();
@@ -29,9 +30,11 @@ class DownloadsDB {
   Future removeAllWithId(Map item) async {
     final db = ObjectDB(FileSystemStorage(await getPath()));
     List val = await db.find({});
-    val.forEach((element) {
-      db.remove(element);
-    });
+    for (var element in val) {
+      if (item["id"] == element["id"]) {
+        db.remove(element);
+      }
+    }
     await db.close();
   }
 
@@ -39,7 +42,7 @@ class DownloadsDB {
     final db = ObjectDB(FileSystemStorage(await getPath()));
     List val = await db.find({});
     await db.close();
-    print(val);
+    Fimber.d("val: $val");
     return val;
   }
 
@@ -50,7 +53,7 @@ class DownloadsDB {
     return val;
   }
 
-  clear() async {
+  Future clear() async {
     final db = ObjectDB(FileSystemStorage(await getPath()));
     db.remove({});
   }

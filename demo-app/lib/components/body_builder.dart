@@ -9,16 +9,13 @@ class BodyBuilder extends StatelessWidget {
   final void Function()? reload;
 
   const BodyBuilder(
-      {Key? key,
+      {super.key,
       required this.apiRequestStatus,
       required this.child,
-      required this.reload})
-      : super(key: key);
+      required this.reload});
 
   @override
-  Widget build(BuildContext context) {
-    return _buildBody();
-  }
+  Widget build(BuildContext context) => _buildBody();
 
   Widget _buildBody() {
     switch (apiRequestStatus) {
