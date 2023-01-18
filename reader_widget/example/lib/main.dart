@@ -16,9 +16,9 @@ Future<void> main() async {
   if (kDebugMode && Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
-  // var fileName = "assets/books/accessible_epub_3.epub";
+  var fileName = "assets/books/accessible_epub_3.epub";
   // var fileName = "assets/books/39419251_rtl.epub";
-  var fileName = "assets/books/9782067179578_GM_PARIS_2012_ANDROID.epub";
+  // var fileName = "assets/books/9782067179578_GM_PARIS_2012_ANDROID.epub";
   // var fileName = "assets/books/Code du travail.epub";
   var dirPath = (await Utils.getFileFromAsset(fileName)).path;
   runApp(MyApp(dirPath));
