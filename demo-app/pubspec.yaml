@@ -33,6 +33,9 @@ dependencies:
     path: ../components/shared
   mno_webview:
     path: ../components/webview
+  mno_lcp:
+    path: ../components/lcp
+
   cached_network_image: ^3.2.3
   cupertino_icons: ^1.0.5
   dartx: ^1.1.0
@@ -63,6 +66,7 @@ dependency_overrides:
   collection: ^1.17.0
   file: ^6.1.4
   path: ^1.8.3
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_lints: ^2.0.1

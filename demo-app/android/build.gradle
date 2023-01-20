@@ -15,8 +15,17 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        ivy {
+            url = uri('https://liblcp.dita.digital')
+            patternLayout {
+                artifact ('/readium/liblcp/android/aar/test/3.0.0.aar')
+            }
+            metadataSources { artifact() }
+        }
+
     }
 }
+
 
 rootProject.buildDir = '../build'
 subprojects {
