@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dartx/dartx_io.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
 import 'package:iridium_app/components/loading_widget.dart';
@@ -8,6 +11,11 @@ import 'package:iridium_app/database/download_helper.dart';
 import 'package:iridium_app/models/locator_reader_annotation_repository.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
+import 'package:mno_shared/mediatype.dart';
+import 'package:mno_shared/publication.dart';
+import 'package:mno_streamer/parser.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 class Downloads extends StatefulWidget {
@@ -44,6 +52,14 @@ class _DownloadsState extends State<Downloads> {
           title: const Text('Downloads'),
         ),
         body: dls.isEmpty ? _buildEmptyListView() : _buildBodyList(),
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Import book',
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Fimber.d("Import book");
+            _onImportBook();
+          },
+        ),
       );
 
   Widget _buildBodyList() => ListView.separated(
@@ -185,4 +201,108 @@ class _DownloadsState extends State<Downloads> {
       });
     });
   }
+
+  Future<void> _onImportBook() async {
+    // Show file explorer allowing only ".epub" and ".lcpl" files to be selected
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      withData: true,
+      type: FileType.custom,
+      allowedExtensions: ['epub', 'lcpl'],
+    );
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      print("Filename: ${file.name}");
+      print("Bytes.length: ${file.bytes?.length}");
+      print("Size: ${file.size}");
+      print("Path: ${file.path}");
+
+      copyFile(context, this, file);
+    } else {
+      Fimber.d("Import cancelled");
+    }
+  }
+
+  Future copyFile(
+      BuildContext context, State state, PlatformFile file) async {
+    PermissionStatus permission = await Permission.storage.status;
+
+    if (permission != PermissionStatus.granted) {
+      await Permission.storage.request();
+      // access media location needed for android 10/Q
+      await Permission.accessMediaLocation.request();
+      // manage external storage needed for android 11/R
+      await Permission.manageExternalStorage.request();
+      if (!state.mounted) {
+        return;
+      }
+      doCopyFile(context, file);
+    } else {
+      if (!state.mounted) {
+        return;
+      }
+      doCopyFile(context, file);
+    }
+  }
+
+  Future doCopyFile(
+      BuildContext context, PlatformFile file) async {
+    Directory? appDocDir = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+    if (Platform.isAndroid) {
+      // Directory(appDocDir.path.split('Android')[0] + '${Constants.appName}')
+      //     .createSync();
+      Directory(appDocDir!.path).createSync();
+    }
+
+    // String path = Platform.isIOS
+    //     ? appDocDir.path + '/$filename.epub'
+    //     : appDocDir.path.split('Android')[0] +
+    //         '${Constants.appName}/$filename.epub';
+    String path = Platform.isIOS
+        ? '${appDocDir!.path}/${file.name}'
+        : '${appDocDir!.path}/${file.name}';
+    Fimber.d("Orig path: ${file.path}");
+    Fimber.d("Dest path: $path");
+    File destFile = File(path);
+    if (!await destFile.exists()) {
+      await destFile.create();
+    } else {
+      await destFile.delete();
+      await destFile.create();
+    }
+
+    // copy file to destFile
+    await destFile.writeAsBytes(file.bytes!);
+
+    addDownload(
+      {
+        'id': file.identifier,
+        'path': path,
+        'image': "https://bookstoreromanceday.org/wp-content/uploads/2020/08/book-cover-placeholder.png",
+        'size': fileSizeAsString(file),
+        'name': file.name,
+      },
+    );
+  }
+
+  String fileSizeAsString(PlatformFile file) {
+    String size = (file.size / 1024).toStringAsFixed(2);
+    if (file.size > 1024 * 1024) {
+      size = '${(file.size / (1024 * 1024)).toStringAsFixed(2)} MB';
+    } else {
+      size = '${size} KB';
+    }
+    return size;
+  }
+
+  Future addDownload(Map body) async {
+    Fimber.d("Adding download: $body");
+    await db.removeAllWithId({'id': body['id']});
+    await db.add(body);
+    // checkDownload();
+  }
+
 }
