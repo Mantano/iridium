@@ -17,6 +17,8 @@ import 'package:provider/provider.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:mno_webview/webview.dart';
 import 'package:universal_io/io.dart' hide Link;
+import 'package:mno_lcp/lcp.dart';
+import 'package:mno_lcp/lcp_native.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,6 +32,9 @@ void main() async {
   if (kDebugMode && Platform.isAndroid) {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
+
+  LcpNative.initLcpNative();
+  Lcp.initLcp();
 
   // Theme was generated with https://zeshuaro.github.io/appainter/#/
   ThemeConfig.lightTheme = await loadTheme('assets/appainter_light_theme.json');
