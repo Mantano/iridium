@@ -35,6 +35,8 @@ dependencies:
     path: ../components/webview
   mno_lcp:
     path: ../components/lcp
+  mno_streamer:
+    path: ../components/streamer
 
   cached_network_image: ^3.2.3
   cupertino_icons: ^1.0.5
@@ -60,6 +62,7 @@ dependencies:
   uuid: ^3.0.7
   package_info_plus_web: ^2.0.0
   url_launcher_web: ^2.0.13
+  file_picker: ^5.2.5
 
 dependency_overrides:
   shared_preferences_windows: 2.1.2
