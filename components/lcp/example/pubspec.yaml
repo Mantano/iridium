@@ -14,3 +14,7 @@ dependencies:
 
 dev_dependencies:
   lints: ^2.0.1
+
+dependency_overrides:
+  intl: ^0.18.0
+  collection: ^1.17.0

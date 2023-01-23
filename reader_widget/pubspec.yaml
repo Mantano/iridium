@@ -46,6 +46,7 @@ dev_dependencies:
     sdk: flutter
 
 dependency_overrides:
+  collection: ^1.17.0
   path: ^1.8.3
 
 # The following section is specific to Flutter.

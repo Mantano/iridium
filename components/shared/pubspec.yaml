@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   archive: ^3.3.5
-  collection:
+  collection: ^1.17.0
   crypto: ^3.0.2
   dartx: ^1.1.0
   dfunc: ^0.8.1
@@ -29,3 +29,5 @@ dev_dependencies:
   lints: ^2.0.1
   test: ^1.22.2
 
+dependency_overrides:
+  image: ^4.0.10
