@@ -13,10 +13,5 @@ dependencies:
     path: ../../shared
   universal_io: ^2.0.4
 
-
-dependency_overrides:
-  path: ^1.8.3
-
-
 dev_dependencies:
   lints: ^2.0.0

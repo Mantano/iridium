@@ -34,9 +34,7 @@ dependencies:
     path: ../shared
 
 dependency_overrides:
-  ffi: ^2.0.1
   shared_preferences_windows: ^2.1.2
-  path: ^1.8.3
   intl: ^0.18.0
 
 dev_dependencies:
