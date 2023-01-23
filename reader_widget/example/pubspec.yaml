@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   iridium_reader_widget:
-    path: ..
+    path: ../
   mno_webview:
     path: ../../components/webview
 
@@ -51,8 +51,8 @@ dependencies:
   shared_preferences: ^2.0.17
 
 dev_dependencies:
-#  flutter_test:
-#    sdk: flutter
+  #  flutter_test:
+  #    sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -69,7 +69,6 @@ dependency_overrides:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

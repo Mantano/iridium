@@ -43,7 +43,6 @@ dependency_overrides:
   collection: ^1.17.0
 
 flutter:
-
   assets:
     - assets/readium/assets/
     - assets/readium/divina/
