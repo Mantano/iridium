@@ -45,6 +45,7 @@ dependencies:
   cupertino_icons: ^1.0.5
 
   package_info_plus_web: ^2.0.0
+  path: ^1.8.3
   url_launcher_web: ^2.0.14
   shared_preferences: ^2.0.17
 

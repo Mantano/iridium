@@ -23,6 +23,7 @@ dependencies:
   xml: ^6.2.2
   mno_commons:
     path: ../commons
+  path: ^1.8.3
 
 dev_dependencies:
   image_compare: ^1.1.2
