@@ -3,4 +3,4 @@
 # Unauthorized copying of this file, via any medium is strictly prohibited.
 # Proprietary and confidential.
 
- ./rec_flutter.sh pub get
+./rec_flutter.sh test

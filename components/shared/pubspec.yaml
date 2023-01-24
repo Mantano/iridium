@@ -26,9 +26,10 @@ dependencies:
   path: ^1.8.3
 
 dev_dependencies:
-  image_compare: ^1.1.2
+  image_compare:
+    # TODO: Use upstream version when https://github.com/nitinramadoss/image_compare/pull/10 is merged
+    git:
+      url: https://github.com/838/image_compare
+      ref: upgrade/deps
   lints: ^2.0.1
   test: ^1.22.2
-
-dependency_overrides:
-  image: ^4.0.11
