@@ -4,7 +4,7 @@ version: 1.0.0
 publish_to: none
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
   mno_server:
@@ -17,4 +17,4 @@ dev_dependencies:
   lints: ^2.0.1
 
 dependency_overrides:
-  path: ^1.8.3
+  collection: ^1.17.0
