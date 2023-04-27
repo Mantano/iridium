@@ -1,26 +1,32 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
-import 'package:mno_webview/webview.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iridium_reader_widget/views/viewers/ui/reader_app_bar.dart';
 import 'package:iridium_reader_widget/views/viewers/ui/reader_toolbar.dart';
 import 'package:mno_commons/utils/functions.dart';
+import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
+import 'package:mno_webview/webview.dart';
+
+typedef PaginationCallback = Function(PaginationInfo paginationInfo);
 
 abstract class BookScreen extends StatefulWidget {
   final FileAsset asset;
   final ReaderAnnotationRepository? readerAnnotationRepository;
+  final PaginationCallback? paginationCallback;
 
   const BookScreen({
     super.key,
     required this.asset,
     this.readerAnnotationRepository,
+    this.paginationCallback,
   });
 }
 
@@ -110,6 +116,9 @@ abstract class BookScreenState<T extends BookScreen,
 
   void onReaderContextCreated(ReaderContext readerContext) {
     this.readerContext = readerContext;
+    if (widget.paginationCallback != null) {
+      readerContext.currentLocationStream.listen(widget.paginationCallback);
+    }
   }
 
   Widget buildWidgetWrapper(BuildContext context, Widget child,

@@ -81,6 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: EpubScreen.fromPath(
           filePath: widget.dirPath,
           location: '{"cfi":" ","idref":"file_12.html"}',
+          paginationCallback: (paginationInfo) {
+            Fimber.d("--- paginationInfo: $paginationInfo");
+          },
         ), //'{"idref":"id-id2640702"}'
       ),
     );
