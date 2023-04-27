@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  collection: #^1.17.0
+  collection: ^1.17.0
   crypto: ^3.0.2
   dartx: ^1.1.0
   device_info_plus: ^8.2.1
@@ -24,7 +24,7 @@ dependencies:
   multiple_localization: ^0.3.0
   path: ^1.8.2
   path_provider: ^2.0.14
-  shared_preferences: #^2.0.17
+  shared_preferences: ^2.1.0
   sqflite: ^2.2.7
   universal_io: ^2.2.0
   url_launcher: ^6.1.10
