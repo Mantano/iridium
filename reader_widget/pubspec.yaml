@@ -27,14 +27,14 @@ dependencies:
     path: ../components/webview
   cupertino_icons: ^1.0.5
   dartx: ^1.1.0
-  dfunc: ^0.8.1
+  dfunc: ^0.8.2
   fimber: ^0.6.6
-  flutter_bloc: ^8.1.1
+  flutter_bloc: ^8.1.2
   flutter_fimber: ^0.6.5
   flutter_inappwebview: ^5.7.2+3
   flutter_spinkit: ^5.1.0
-  fluttertoast: ^8.1.2
-  path_provider: ^2.0.11
+  fluttertoast: ^8.2.1
+  path_provider: ^2.0.14
   flutter_xlider:
     git:
       url: https://github.com/Ali-Azmoud/flutter_xlider.git
@@ -44,10 +44,6 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
-
-dependency_overrides:
-  collection: ^1.17.0
-  path: ^1.8.3
 
 # The following section is specific to Flutter.
 flutter:
