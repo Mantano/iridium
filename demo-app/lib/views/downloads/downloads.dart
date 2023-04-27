@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dartx/dartx_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +11,6 @@ import 'package:iridium_app/models/locator_reader_annotation_repository.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 import 'package:mno_shared/mediatype.dart';
-import 'package:mno_shared/publication.dart';
-import 'package:mno_streamer/parser.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
@@ -207,7 +204,12 @@ class _DownloadsState extends State<Downloads> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       withData: true,
       type: FileType.custom,
-      allowedExtensions: ['epub', 'lcpl'],
+      allowedExtensions: [
+        MediaType.epub.fileExtension!,
+        MediaType.lcpLicenseDocument.fileExtension!,
+        MediaType.lcpProtectedAudiobook.fileExtension!,
+        MediaType.lcpProtectedPdf.fileExtension!,
+      ],
     );
 
     if (result != null) {
