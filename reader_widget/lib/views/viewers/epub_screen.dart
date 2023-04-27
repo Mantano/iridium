@@ -24,6 +24,7 @@ class EpubScreen extends BookScreen {
       {super.key,
       required super.asset,
       super.readerAnnotationRepository,
+      super.paginationCallback,
       this.location,
       this.settings,
       this.theme});
@@ -32,6 +33,7 @@ class EpubScreen extends BookScreen {
       {Key? key,
       required String filePath,
       ReaderAnnotationRepository? readerAnnotationRepository,
+      PaginationCallback? paginationCallback,
       String? location,
       String? settings,
       String? theme}) {
@@ -45,6 +47,7 @@ class EpubScreen extends BookScreen {
       key: key,
       asset: FileAsset(File(filePath)),
       readerAnnotationRepository: readerAnnotationRepository,
+      paginationCallback: paginationCallback,
       location: location,
       settings: int.tryParse(settings ?? '100'),
       theme: decodedTheme,
@@ -55,6 +58,7 @@ class EpubScreen extends BookScreen {
       {Key? key,
       required File file,
       ReaderAnnotationRepository? readerAnnotationRepository,
+      PaginationCallback? paginationCallback,
       String? location,
       String? settings,
       String? theme}) {
@@ -68,6 +72,7 @@ class EpubScreen extends BookScreen {
       key: key,
       asset: FileAsset(file),
       readerAnnotationRepository: readerAnnotationRepository,
+      paginationCallback: paginationCallback,
       location: location,
       settings: int.tryParse(settings ?? '100'),
       theme: decodedTheme,
