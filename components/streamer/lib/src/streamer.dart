@@ -162,10 +162,10 @@ class Streamer {
       Publication publication = builder.also(onCreatePublication).build();
 
       publication.addLegacyProperties(await asset.mediaType);
-      Product2<int, Map<Link, LinkPagination>> infos =
+      var infos =
           await PaginationInfosService.computePaginationInfos(publication);
-      publication.nbPages = infos.item1;
-      publication.paginationInfo = infos.item2;
+      publication.nbPages = infos.$1;
+      publication.paginationInfo = infos.$2;
       // Fimber.d("publication.manifest: ${publication.manifest}");
 
       return PublicationTry.success(publication);

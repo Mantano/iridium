@@ -146,7 +146,7 @@ class LcpClientNative extends LcpClient {
   }
 }
 
-class LcpDrmContext extends Struct {
+base class LcpDrmContext extends Struct {
   external Pointer<Utf8> hashedPassphrase;
   external Pointer<Utf8> encryptedContentKey;
   external Pointer<Utf8> token;
@@ -180,7 +180,7 @@ class LcpDrmContext extends Struct {
       'errorCode: $errorCode}';
 }
 
-class StringList extends Struct {
+base class StringList extends Struct {
   external Pointer<Pointer<Utf8>> list;
 
   @Int64()
@@ -201,7 +201,7 @@ class StringList extends Struct {
   }
 }
 
-class Uint8Array extends Struct {
+base class Uint8Array extends Struct {
   external Pointer<Uint8> list;
 
   @Int64()

@@ -8,34 +8,26 @@ class ThemeConfig {
   static Color lightBG = Colors.white;
   static Color darkBG = const Color(0xff121212);
 
-  static ThemeData? lightTheme;
-  static ThemeData? darkTheme;
-
-  static ThemeData lightTheme0 = ThemeData(
-    brightness: Brightness.light,
-    backgroundColor: lightBG,
+  static ThemeData lightTheme = ThemeData(
     primaryColor: lightPrimary,
     scaffoldBackgroundColor: lightBG,
     appBarTheme: const AppBarTheme(
       elevation: 0.0,
     ),
-    colorScheme: ColorScheme.fromSwatch().copyWith(
+    textSelectionTheme: TextSelectionThemeData(cursorColor: lightAccent), colorScheme: ColorScheme.fromSwatch().copyWith(
       secondary: lightAccent,
       brightness: Brightness.light,
-    ),
-    textSelectionTheme: TextSelectionThemeData(cursorColor: lightAccent),
+    ).copyWith(background: lightBG),
   );
 
-  static ThemeData darkTheme0 = ThemeData(
+  static ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
-    backgroundColor: darkBG,
     primaryColor: darkPrimary,
     scaffoldBackgroundColor: darkBG,
     appBarTheme: const AppBarTheme(
       elevation: 0.0,
     ),
-    colorScheme: ColorScheme.fromSwatch()
-        .copyWith(secondary: darkAccent, brightness: Brightness.dark),
-    textSelectionTheme: TextSelectionThemeData(cursorColor: darkAccent),
+    textSelectionTheme: TextSelectionThemeData(cursorColor: darkAccent), colorScheme: ColorScheme.fromSwatch()
+        .copyWith(secondary: darkAccent, brightness: Brightness.dark).copyWith(background: darkBG),
   );
 }

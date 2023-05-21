@@ -130,10 +130,10 @@ class PublicationFactory {
 
   /// Compute a Publication [Link] for an epub [Item] and its fallbacks
   Link _computeLink(Item item, {Set<String> fallbackChain = const {}}) {
-    Product2<Set<String>, Properties> tuple =
+    (Set<String>, Properties) tuple =
         _computePropertiesAndRels(item, _itemrefByIdref[item.id]);
-    Set<String> rels = tuple.item1;
-    Properties properties = tuple.item2;
+    Set<String> rels = tuple.$1;
+    Properties properties = tuple.$2;
     return Link(
         id: item.id,
         href: item.href,
@@ -144,15 +144,15 @@ class PublicationFactory {
         alternates: _computeAlternates(item, fallbackChain));
   }
 
-  Product2<Set<String>, Properties> _computePropertiesAndRels(
+  (Set<String>, Properties) _computePropertiesAndRels(
       Item item, Itemref? itemref) {
     Map<String, dynamic> properties = {};
     Set<String> rels = {};
-    Product3<List<String>, List<String>, List<String>> parsedItemProperties =
+    (List<String>, List<String>, List<String>) parsedItemProperties =
         _parseItemProperties(item.properties);
-    List<String> manifestRels = parsedItemProperties.item1;
-    List<String> contains = parsedItemProperties.item2;
-    List<String> others = parsedItemProperties.item3;
+    List<String> manifestRels = parsedItemProperties.$1;
+    List<String> contains = parsedItemProperties.$2;
+    List<String> others = parsedItemProperties.$3;
     rels.addAll(manifestRels);
     if (contains.isNotEmpty) {
       properties["contains"] = contains;
@@ -172,7 +172,7 @@ class PublicationFactory {
     encryptionData[item.href.addPrefix('/')]
         ?.let((it) => properties["encrypted"] = it.toJson());
 
-    return Product2(rels, Properties(otherProperties: properties));
+    return (rels, Properties(otherProperties: properties));
   }
 
   /// Compute alternate links for [item], checking for an infinite recursion
@@ -192,7 +192,7 @@ class PublicationFactory {
     return [fallback, mediaOverlays].filterNotNull().toList();
   }
 
-  Product3<List<String>, List<String>, List<String>> _parseItemProperties(
+  (List<String>, List<String>, List<String>) _parseItemProperties(
       List<String> properties) {
     List<String> rels = [];
     List<String> contains = [];
@@ -224,7 +224,7 @@ class PublicationFactory {
           others.add(property);
       }
     }
-    return Product3(rels, contains, others);
+    return (rels, contains, others);
   }
 
   Map<String, String> _parseItemrefProperties(List<String> properties) {

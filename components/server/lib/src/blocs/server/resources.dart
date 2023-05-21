@@ -7,7 +7,6 @@
  * LICENSE file present in the project repository where this source code is maintained.
  */
 
-import 'package:dfunc/dfunc.dart';
 import 'package:mno_commons/utils/injectable.dart';
 
 class Resources {
@@ -15,7 +14,7 @@ class Resources {
 
   void add(String key, String body, {Injectable? injectable}) {
     if (injectable != null) {
-      resources[key] = Product2(body, injectable.rawValue);
+      resources[key] = (body, injectable.rawValue);
     } else {
       resources[key] = body;
     }
@@ -23,8 +22,8 @@ class Resources {
 
   String? get(String key) {
     var resource = resources[key];
-    if (resource is Product2<String, String>) {
-      return resource.item1;
+    if (resource is (String, String)) {
+      return resource.$1;
     }
     return resource as String?;
   }
