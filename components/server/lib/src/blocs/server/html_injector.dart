@@ -150,11 +150,11 @@ class _InjectHtmlResource extends TransformingResource {
       for (MapEntry<String, dynamic> entry in it.resources.entries) {
         String key = entry.key;
         dynamic value = entry.value;
-        if (value is Product2<String, String>) {
-          if (Injectable(value.item2) == Injectable.script) {
+        if (value is (String, String)) {
+          if (Injectable(value.$2) == Injectable.script) {
             endIncludes
                 .add(getHtmlScript("/${Injectable.script.rawValue}/$key"));
-          } else if (Injectable(value.item2) == Injectable.style) {
+          } else if (Injectable(value.$2) == Injectable.style) {
             endIncludes.add(getHtmlLink("/${Injectable.style.rawValue}/$key"));
           }
         }
@@ -268,7 +268,7 @@ class _InjectHtmlResource extends TransformingResource {
   }
 
   String getHtmlFont({required String fontFamily, required String href}) =>
-      "<style type=\"text/css\"> @font-face{font-family: \"$fontFamily\"; src:url(\"$href\") format('truetype');}</style>\n";
+      "<style type=\"text/css\"> @font-face{font-family: \"$fontFamily\"; src:url(\"" + href + "\") format('truetype');}</style>\n";
 
   String getHtmlLink(String resourceName) =>
       "<link rel=\"stylesheet\" type=\"text/css\" href=\"$resourceName\"/>\n";
@@ -304,8 +304,8 @@ class _InjectHtmlResource extends TransformingResource {
                     in preset.entries) {
                   if (property.key.ref == value["name"]) {
                     isInPreset = true;
-                    Product2<ReadiumCSSName, bool?> presetPair =
-                        Product2(property.key, preset[property.key]);
+                    (ReadiumCSSName, bool?) presetPair =
+                        (property.key, preset[property.key]);
                     Map<String, String> presetValue = applyPreset(presetPair);
                     properties[presetValue["name"]!] = presetValue["value"]!;
                   }
@@ -325,41 +325,41 @@ class _InjectHtmlResource extends TransformingResource {
         {};
   }
 
-  Map<String, String> applyPreset(Product2<ReadiumCSSName, bool?> preset) {
+  Map<String, String> applyPreset((ReadiumCSSName, bool?) preset) {
     Map<String, String> readiumCSSProperty = {};
 
-    readiumCSSProperty["name"] = preset.item1.ref;
+    readiumCSSProperty["name"] = preset.$1.ref;
 
-    if (preset.item1 == ReadiumCSSName.hyphens) {
+    if (preset.$1 == ReadiumCSSName.hyphens) {
       readiumCSSProperty["value"] = "";
-    } else if (preset.item1 == ReadiumCSSName.fontOverride) {
+    } else if (preset.$1 == ReadiumCSSName.fontOverride) {
       readiumCSSProperty["value"] = "readium-font-off";
-    } else if (preset.item1 == ReadiumCSSName.appearance) {
+    } else if (preset.$1 == ReadiumCSSName.appearance) {
       readiumCSSProperty["value"] = "readium-default-on";
-    } else if (preset.item1 == ReadiumCSSName.publisherDefault) {
+    } else if (preset.$1 == ReadiumCSSName.publisherDefault) {
       readiumCSSProperty["value"] = "";
-    } else if (preset.item1 == ReadiumCSSName.columnCount) {
+    } else if (preset.$1 == ReadiumCSSName.columnCount) {
       readiumCSSProperty["value"] = "auto";
-    } else if (preset.item1 == ReadiumCSSName.pageMargins) {
+    } else if (preset.$1 == ReadiumCSSName.pageMargins) {
       readiumCSSProperty["value"] = "0.5";
-    } else if (preset.item1 == ReadiumCSSName.lineHeight) {
+    } else if (preset.$1 == ReadiumCSSName.lineHeight) {
       readiumCSSProperty["value"] = "1.0";
-    } else if (preset.item1 == ReadiumCSSName.ligatures) {
+    } else if (preset.$1 == ReadiumCSSName.ligatures) {
       readiumCSSProperty["value"] = "";
-    } else if (preset.item1 == ReadiumCSSName.fontFamily) {
+    } else if (preset.$1 == ReadiumCSSName.fontFamily) {
       readiumCSSProperty["value"] = "Original";
-    } else if (preset.item1 == ReadiumCSSName.fontSize) {
+    } else if (preset.$1 == ReadiumCSSName.fontSize) {
       readiumCSSProperty["value"] = "100%";
-    } else if (preset.item1 == ReadiumCSSName.wordSpacing) {
+    } else if (preset.$1 == ReadiumCSSName.wordSpacing) {
       readiumCSSProperty["value"] = "0.0rem";
-    } else if (preset.item1 == ReadiumCSSName.letterSpacing) {
+    } else if (preset.$1 == ReadiumCSSName.letterSpacing) {
       readiumCSSProperty["value"] = "0.0em";
-    } else if (preset.item1 == ReadiumCSSName.textAlignment) {
+    } else if (preset.$1 == ReadiumCSSName.textAlignment) {
       readiumCSSProperty["value"] = "justify";
-    } else if (preset.item1 == ReadiumCSSName.paraIndent) {
+    } else if (preset.$1 == ReadiumCSSName.paraIndent) {
       readiumCSSProperty["value"] = "";
-    } else if (preset.item1 == ReadiumCSSName.scroll) {
-      if (preset.item2!) {
+    } else if (preset.$1 == ReadiumCSSName.scroll) {
+      if (preset.$2!) {
         readiumCSSProperty["value"] = "readium-scroll-on";
       } else {
         readiumCSSProperty["value"] = "readium-scroll-off";
