@@ -85,6 +85,7 @@ class EpubScreen extends BookScreen {
       required String rootHref,
       ReaderAnnotationRepository? readerAnnotationRepository,
       PaginationCallback? paginationCallback,
+      MediaType? mimeType,
       String? location,
       String? settings,
       String? theme}) {
@@ -96,8 +97,7 @@ class EpubScreen extends BookScreen {
     }
     return EpubScreen(
       key: key,
-      asset:
-          HttpAsset(rootHref, knownMediaType: MediaType.readiumWebpubManifest),
+      asset: HttpAsset(rootHref, knownMediaType: mimeType),
       readerAnnotationRepository: readerAnnotationRepository,
       paginationCallback: paginationCallback,
       location: location,
