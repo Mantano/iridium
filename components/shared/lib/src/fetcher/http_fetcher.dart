@@ -20,12 +20,12 @@ class HttpFetcher extends Fetcher {
   HttpFetcher(this.rootHref);
 
   @override
-  Future<List<Link>> links() async => [];
+  Future<List<Link>> links() async => [Link(href: Uri.parse(rootHref).path)];
 
   @override
   Resource get(Link link) {
-    String linkHref = link.href.addPrefix("/");
-    Uri url = Uri.parse("$rootHref$linkHref");
+    String linkHref = link.href.addPrefix("./");
+    Uri url = Uri.parse(rootHref).resolve(linkHref);
     return HttpResource(url, link);
   }
 
@@ -48,11 +48,11 @@ class HttpResource extends Resource {
 
   Future<ResourceTry<http.Response>> get response async =>
       _response ??= await catching(() async {
-        Uri uri = Uri.parse("https://cros-anywhere.herokuapp.com/$url");
+        Uri uri = Uri.parse("$url");
         return http.get(uri, headers: {
           'Access-Control-Allow-Origin': 'http://localhost:49430',
           'Access-Control-Allow-Methods':
-          'GET, POST, PATCH, PUT, DELETE, OPTIONS',
+              'GET, POST, PATCH, PUT, DELETE, OPTIONS',
           'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token',
         });
       });
