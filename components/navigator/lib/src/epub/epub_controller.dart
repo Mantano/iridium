@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:io';
+
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/widgets.dart';
@@ -56,7 +58,7 @@ class EpubController extends PublicationController {
       // to < 1.0, in order to get the WebViews to render! Otherwise they do load the data but don't render...
       keepPage: true,
       initialPage: initialPage,
-      viewportFraction: 0.99);
+      viewportFraction: Platform.isAndroid ? 0.99 : 1);
 
   @override
   void onSkipLeft({bool animated = true}) {
