@@ -93,4 +93,7 @@ class AcceptAllPredicate<T> implements Predicate<T> {
   void addArrayContainsCondition(String field, String value) {}
 
   void addArrayContainsAllCondition(String field, List<Object> values) {}
+
+  @override
+  void addValueNotInCondition(String field, List<Object> values) {}
 }

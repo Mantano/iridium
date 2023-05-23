@@ -5,8 +5,8 @@ publish_to: none
 homepage: https://iridium.rocks
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
-  flutter: '>=3.3.0'
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.7.0"
 
 dependencies:
   flutter:
@@ -25,7 +25,7 @@ dependencies:
     path: ../components/streamer
   mno_webview:
     path: ../components/webview
-  cupertino_icons: ^1.0.5
+  #  cupertino_icons: ^1.0.5
   dartx: ^1.1.0
   dfunc: ^0.9.0
   fimber: ^0.6.6
