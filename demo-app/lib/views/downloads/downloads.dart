@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
@@ -12,8 +11,6 @@ import 'package:iridium_app/models/locator_reader_annotation_repository.dart';
 import 'package:iridium_app/util/router.dart';
 import 'package:iridium_app/views/downloads/book_cover_generator.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
-import 'package:mno_lcp/lcp_service.dart';
-import 'package:mno_lcp/native/lcp_client_native.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
@@ -202,7 +199,8 @@ class _DownloadsState extends State<Downloads> {
   );
 
   void _deleteBook(Map dl, int index) {
-    db.remove(dl['id']).then((v) async {
+    // https://github.com/Mantano/iridium/issues/97 fixed by https://github.com/charlestyra89
+    db.remove(dl).then((v) async {
       File f = File(dl['path']);
       if (await f.exists()) {
         f.delete();
