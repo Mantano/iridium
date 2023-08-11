@@ -107,7 +107,7 @@ class _InjectHtmlResource extends TransformingResource {
       Fimber.e("No <head> tag found in this resource");
       return resourceHtml;
     }
-    var beginHeadIndex = head.end + 1;
+    var beginHeadIndex = head.end;
     var endHeadIndex =
         resourceHtml.indexOf(RegExp("</head>", caseSensitive: false));
     if (endHeadIndex == -1) {
@@ -224,6 +224,7 @@ class _InjectHtmlResource extends TransformingResource {
     resourceHtml = _insertString(
         '(</body>)', resourceHtml, '<div id="readium_paginator"></div>', false);
 
+    Fimber.d("------------- After injection, Resource HTML: $resourceHtml");
     return resourceHtml;
   }
 

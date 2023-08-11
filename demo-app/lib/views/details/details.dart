@@ -229,6 +229,7 @@ class _DetailsState extends State<Details> {
           filePath: path,
           readerAnnotationRepository: await LocatorReaderAnnotationRepository
               .createLocatorReaderAnnotationRepository(id),
+          isTextInteractionEnabled: false,
         ),
       );
     }

@@ -11,7 +11,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart' hide Decoration;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mno_webview/webview.dart';
+// import 'package:mno_webview/webview.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/decoration.dart';
@@ -21,6 +22,7 @@ import 'package:mno_navigator/src/epub/model/decoration_style_annotation_mark.da
 import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_predicate.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
+import 'package:universal_io/io.dart';
 
 @protected
 class WebViewScreenState extends State<WebViewScreen> {
@@ -167,31 +169,28 @@ class WebViewScreenState extends State<WebViewScreen> {
       ? InAppWebView(
           key: _webViewKey,
           initialUrlRequest: URLRequest(
-              url: Uri.parse(
-                  '${widget.address}/${link.href.removePrefix("/")}')),
-          initialOptions: InAppWebViewGroupOptions(
-            android: AndroidInAppWebViewOptions(
-              useHybridComposition: true,
-              useShouldInterceptRequest: true,
-              safeBrowsingEnabled: false,
-              cacheMode: AndroidCacheMode.LOAD_NO_CACHE,
-              disabledActionModeMenuItems:
-                  AndroidActionModeMenuItem.MENU_ITEM_SHARE |
-                      AndroidActionModeMenuItem.MENU_ITEM_WEB_SEARCH |
-                      AndroidActionModeMenuItem.MENU_ITEM_PROCESS_TEXT,
-            ),
-            crossPlatform: InAppWebViewOptions(
-              useShouldOverrideUrlLoading: true,
-              verticalScrollBarEnabled: false,
-              horizontalScrollBarEnabled: false,
-            ),
+              url: WebUri('${widget.address}/${link.href.removePrefix("/")}')),
+          initialSettings: InAppWebViewSettings(
+            isInspectable: kDebugMode && Platform.isIOS,
+            isTextInteractionEnabled:
+                _viewerSettingsBloc.viewerSettings.isTextInteractionEnabled,
+            useHybridComposition: true,
+            useShouldInterceptRequest: true,
+            safeBrowsingEnabled: false,
+            cacheMode: CacheMode.LOAD_NO_CACHE,
+            disabledActionModeMenuItems: ActionModeMenuItem.MENU_ITEM_SHARE |
+                ActionModeMenuItem.MENU_ITEM_WEB_SEARCH |
+                ActionModeMenuItem.MENU_ITEM_PROCESS_TEXT,
+            useShouldOverrideUrlLoading: true,
+            verticalScrollBarEnabled: false,
+            horizontalScrollBarEnabled: false,
           ),
           onConsoleMessage: (InAppWebViewController controller,
               ConsoleMessage consoleMessage) {
             Fimber.d(
                 "WebView[${consoleMessage.messageLevel}]: ${consoleMessage.message}");
           },
-          androidShouldInterceptRequest: (InAppWebViewController controller,
+          shouldInterceptRequest: (InAppWebViewController controller,
               WebResourceRequest request) async {
             if (!_serverBloc.startHttpServer &&
                 request.url.toString().startsWith(_serverBloc.address)) {
@@ -248,6 +247,8 @@ class WebViewScreenState extends State<WebViewScreen> {
       Fimber.d("_onPageFinished ERROR", ex: e, stacktrace: stacktrace);
     }
   }
+
+  ViewerSettings get viewerSettings => _viewerSettingsBloc.viewerSettings;
 
   Future _loadDecorations() async {
     String activeId = "";

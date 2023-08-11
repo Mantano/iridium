@@ -11,7 +11,7 @@ class ViewerSettingsBloc
     extends Bloc<ViewerSettingsEvent, ViewerSettingsState> {
   ViewerSettingsBloc(EpubReaderState readerState)
       : super(ViewerSettingsState(
-            ViewerSettings.defaultSettings(fontSize: readerState.fontSize))) {
+            ViewerSettings.defaultSettings(fontSize: readerState.fontSize, isTextInteractionEnabled: readerState.isTextInteractionEnabled))) {
     on<ScrollSnapShouldStopEvent>((event, emit) => emit(ViewerSettingsState(
         state.viewerSettings.setScrollSnapShouldStop(event.shouldStop))));
     on<IncrFontSizeEvent>((event, emit) =>

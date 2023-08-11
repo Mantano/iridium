@@ -37,7 +37,7 @@ dependencies:
 
   flutter_fimber: ^0.6.5
   fimber: ^0.6.6
-  flutter_inappwebview: ^5.7.2+3
+  flutter_inappwebview: ^6.0.0-beta.24+1
   path_provider: ^2.0.14
   universal_io: ^2.2.1
 
