@@ -125,10 +125,10 @@ packages:
     dependency: "direct main"
     description:
       name: fimber
-      sha256: "1415768ddd9fd66f134dbc53f731107554c98175a63d4e93234478a113ffabb8"
+      sha256: "42fcfa33acd43556c1e7ebfc12c2b03893418bc04a07931368c3573e228af2f0"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.6"
+    version: "0.7.0"
   frontend_server_client:
     dependency: transitive
     description:
