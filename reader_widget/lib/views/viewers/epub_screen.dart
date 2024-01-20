@@ -19,6 +19,7 @@ import 'package:mno_streamer/parser.dart';
 class EpubScreen extends BookScreen {
   final String? location;
   final int? settings;
+  final bool isTextInteractionEnabled;
   final Map<String, dynamic>? theme;
 
   const EpubScreen(
@@ -28,7 +29,8 @@ class EpubScreen extends BookScreen {
       super.paginationCallback,
       this.location,
       this.settings,
-      this.theme});
+      this.theme,
+      this.isTextInteractionEnabled = true});
 
   factory EpubScreen.fromPath(
       {Key? key,
@@ -37,7 +39,8 @@ class EpubScreen extends BookScreen {
       PaginationCallback? paginationCallback,
       String? location,
       String? settings,
-      String? theme}) {
+      String? theme,
+      bool isTextInteractionEnabled = true}) {
     Map<String, dynamic>? decodedTheme;
     try {
       decodedTheme = json.decode(theme!);
@@ -52,6 +55,7 @@ class EpubScreen extends BookScreen {
       location: location,
       settings: int.tryParse(settings ?? '100'),
       theme: decodedTheme,
+      isTextInteractionEnabled: isTextInteractionEnabled,
     );
   }
 
@@ -62,7 +66,8 @@ class EpubScreen extends BookScreen {
       PaginationCallback? paginationCallback,
       String? location,
       String? settings,
-      String? theme}) {
+      String? theme,
+      bool isTextInteractionEnabled = true}) {
     Map<String, dynamic>? decodedTheme;
     try {
       decodedTheme = json.decode(theme!);
@@ -77,6 +82,7 @@ class EpubScreen extends BookScreen {
       location: location,
       settings: int.tryParse(settings ?? '100'),
       theme: decodedTheme,
+      isTextInteractionEnabled: isTextInteractionEnabled,
     );
   }
 
@@ -88,7 +94,8 @@ class EpubScreen extends BookScreen {
       MediaType? mimeType,
       String? location,
       String? settings,
-      String? theme}) {
+      String? theme,
+      bool isTextInteractionEnabled = true}) {
     Map<String, dynamic>? decodedTheme;
     try {
       decodedTheme = json.decode(theme!);
@@ -103,6 +110,7 @@ class EpubScreen extends BookScreen {
       location: location,
       settings: int.tryParse(settings ?? '100'),
       theme: decodedTheme,
+      isTextInteractionEnabled: isTextInteractionEnabled,
     );
   }
 
@@ -118,7 +126,7 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   void initState() {
     super.initState();
     _viewerSettingsBloc =
-        ViewerSettingsBloc(EpubReaderState("", widget.settings ?? 100));
+        ViewerSettingsBloc(EpubReaderState("", widget.settings ?? 100, widget.isTextInteractionEnabled));
     debugPrint(widget.theme.toString());
     _readerThemeBloc = ReaderThemeBloc(widget.theme != null
         ? ReaderThemeConfig.fromJson(widget.theme!)

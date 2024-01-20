@@ -107,7 +107,7 @@ class _InjectHtmlResource extends TransformingResource {
       Fimber.e("No <head> tag found in this resource");
       return resourceHtml;
     }
-    var beginHeadIndex = head.end + 1;
+    var beginHeadIndex = head.end;
     var endHeadIndex =
         resourceHtml.indexOf(RegExp("</head>", caseSensitive: false));
     if (endHeadIndex == -1) {
@@ -268,7 +268,9 @@ class _InjectHtmlResource extends TransformingResource {
   }
 
   String getHtmlFont({required String fontFamily, required String href}) =>
-      "<style type=\"text/css\"> @font-face{font-family: \"$fontFamily\"; src:url(\"" + href + "\") format('truetype');}</style>\n";
+      "<style type=\"text/css\"> @font-face{font-family: \"$fontFamily\"; src:url(\"" +
+      href +
+      "\") format('truetype');}</style>\n";
 
   String getHtmlLink(String resourceName) =>
       "<link rel=\"stylesheet\" type=\"text/css\" href=\"$resourceName\"/>\n";

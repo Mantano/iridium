@@ -47,7 +47,7 @@ abstract class SelectionPopup {
               ],
             ));
     this.entry = entry;
-    Overlay.of(context)?.insert(entry);
+    Overlay.of(context).insert(entry);
   }
 
   void hidePopup() {

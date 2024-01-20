@@ -12,37 +12,51 @@ class ViewerSettings implements JSONable {
   int fontSize;
   final int columnGap;
   bool scrollSnapShouldStop = true;
+  bool isTextInteractionEnabled = true;
 
   // If true, column gap will not be part of JSON conversion
   bool hasNoStyle = false;
 
   ViewerSettings(this.syntheticSpreadMode, this.scrollMode, this.fontSize,
-      this.columnGap, this.scrollSnapShouldStop);
+      this.columnGap, this.scrollSnapShouldStop, this.isTextInteractionEnabled);
 
   factory ViewerSettings.defaultSettings(
-          {int fontSize = 100, bool scrollSnapShouldStop = true}) =>
+          {int fontSize = 100,
+          bool scrollSnapShouldStop = true,
+          bool isTextInteractionEnabled = true}) =>
       ViewerSettings(SyntheticSpreadMode.single, ScrollMode.auto, fontSize, 0,
-          scrollSnapShouldStop);
+          scrollSnapShouldStop, isTextInteractionEnabled);
 
   ViewerSettings setScrollSnapShouldStop(bool shouldStop) => ViewerSettings(
       this.syntheticSpreadMode,
       this.scrollMode,
       this.fontSize,
       this.columnGap,
-      shouldStop);
+      shouldStop,
+      this.isTextInteractionEnabled);
 
   ViewerSettings incrFontSize({int delta = 10}) {
     int newFontSize = fontSize + delta;
     newFontSize = newFontSize.clamp(minFontSize, maxFontSize);
-    return ViewerSettings(this.syntheticSpreadMode, this.scrollMode,
-        newFontSize, this.columnGap, this.scrollSnapShouldStop);
+    return ViewerSettings(
+        this.syntheticSpreadMode,
+        this.scrollMode,
+        newFontSize,
+        this.columnGap,
+        this.scrollSnapShouldStop,
+        this.isTextInteractionEnabled);
   }
 
   ViewerSettings decrFontSize({int delta = 10}) {
     int newFontSize = fontSize - delta;
     newFontSize = newFontSize.clamp(minFontSize, maxFontSize);
-    return ViewerSettings(this.syntheticSpreadMode, this.scrollMode,
-        newFontSize, this.columnGap, this.scrollSnapShouldStop);
+    return ViewerSettings(
+        this.syntheticSpreadMode,
+        this.scrollMode,
+        newFontSize,
+        this.columnGap,
+        this.scrollSnapShouldStop,
+        this.isTextInteractionEnabled);
   }
 
   bool get scrollViewDoc => scrollMode == ScrollMode.document;

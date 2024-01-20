@@ -122,7 +122,7 @@ abstract class RequestHandler {
               HttpHeaders.contentRangeHeader, 'bytes $start-$end/$length');
 
         ByteData? data =
-            (await resource.read(range: IntRange(start, end))).getOrNull();
+            (await resource.read(range: IntRange(start, end - start + 1))).getOrNull();
         if (data != null) {
           await response.addStream(data.asStream());
         }

@@ -2,10 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iridium_app/components/loading_widget.dart';
 import 'package:iridium_app/util/router.dart';
+import 'package:iridium_app/views/details/details.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:uuid/uuid.dart';
-
-import 'package:iridium_app/views/details/details.dart';
 
 class BookListItem extends StatelessWidget {
   final String? img;
@@ -98,7 +97,7 @@ class BookListItem extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 17.0,
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).textTheme.headline6?.color,
+                            color: Theme.of(context).textTheme.titleLarge?.color,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -130,7 +129,7 @@ class BookListItem extends StatelessWidget {
                           .replaceAll(r'\"', '"'),
                       style: TextStyle(
                         fontSize: 13.0,
-                        color: Theme.of(context).textTheme.caption?.color,
+                        color: Theme.of(context).textTheme.bodySmall?.color,
                       ),
                     ),
                   ],

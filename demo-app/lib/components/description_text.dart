@@ -38,7 +38,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                     .replaceAll(r"\'", "'"),
                 style: TextStyle(
                   fontSize: 16.0,
-                  color: Theme.of(context).textTheme.caption?.color,
+                  color: Theme.of(context).textTheme.bodySmall?.color,
                 ),
               )
             : Column(
@@ -50,7 +50,7 @@ class _DescriptionTextWidgetState extends State<DescriptionTextWidget> {
                         .replaceAll(r"\'", "'"),
                     style: TextStyle(
                       fontSize: 16.0,
-                      color: Theme.of(context).textTheme.caption?.color,
+                      color: Theme.of(context).textTheme.bodySmall?.color,
                     ),
                   ),
                   InkWell(

@@ -2,8 +2,8 @@ import 'package:example/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fimber/flutter_fimber.dart';
-import 'package:mno_webview/webview.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
+import 'package:mno_webview/webview.dart';
 import 'package:universal_io/io.dart' hide Link;
 
 Future<void> main() async {
@@ -14,7 +14,7 @@ Future<void> main() async {
     Fimber.plantTree(DebugBufferTree());
   }
   if (kDebugMode && Platform.isAndroid) {
-    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+    await InAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
   var fileName = "assets/books/accessible_epub_3.epub";
   // var fileName = "assets/books/39419251_rtl.epub";
@@ -84,6 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
           paginationCallback: (paginationInfo) {
             Fimber.d("--- paginationInfo: $paginationInfo");
           },
+          isTextInteractionEnabled: false,
         ), //'{"idref":"id-id2640702"}'
       ),
     );

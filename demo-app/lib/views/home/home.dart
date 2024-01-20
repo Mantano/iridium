@@ -146,7 +146,7 @@ class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
                       Radius.circular(20.0),
                     ),
                     onTap: () {
-                      Fimber.d("Opening ${link!.title} at URL: ${link.href}");
+                      Fimber.d("Opening ${link.title} at URL: ${link.href}");
                       MyRouter.pushPage(
                         context,
                         Genre(

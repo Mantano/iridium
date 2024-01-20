@@ -25,7 +25,7 @@ abstract class PublicationController extends NavigationController {
   final Function0<List<RequestHandler>> handlersProvider;
   final ServerBloc serverBloc;
   final CurrentSpineItemBloc currentSpineItemBloc;
-  final SelectionListenerFactory selectionListenerFactory;
+  final SelectionListenerFactory? selectionListenerFactory;
   final bool displayEditAnnotationIcon;
   ReaderContext? readerContext;
 
