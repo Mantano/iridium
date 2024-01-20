@@ -13,5 +13,8 @@ dependencies:
   universal_io: ^2.2.1
   xml: ^6.3.0
 
+dependency_overrides:
+  collection: ^1.17.2 #universal_io
+
 dev_dependencies:
   lints: ^2.1.0

@@ -99,7 +99,7 @@ class _DetailsState extends State<Details> {
       );
 
   Widget _buildDivider() => Divider(
-        color: Theme.of(context).textTheme.caption?.color,
+        color: Theme.of(context).textTheme.bodySmall?.color,
       );
 
   Widget _buildImageTitleSection(DetailsProvider detailsProvider) => Row(
@@ -291,7 +291,7 @@ class _DetailsState extends State<Details> {
               padding: const EdgeInsets.fromLTRB(0.0, 5.0, 5.0, 5.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).colorScheme.background,
                   borderRadius: const BorderRadius.all(
                     Radius.circular(20),
                   ),

@@ -224,7 +224,6 @@ class _InjectHtmlResource extends TransformingResource {
     resourceHtml = _insertString(
         '(</body>)', resourceHtml, '<div id="readium_paginator"></div>', false);
 
-    Fimber.d("------------- After injection, Resource HTML: $resourceHtml");
     return resourceHtml;
   }
 
@@ -269,7 +268,9 @@ class _InjectHtmlResource extends TransformingResource {
   }
 
   String getHtmlFont({required String fontFamily, required String href}) =>
-      "<style type=\"text/css\"> @font-face{font-family: \"$fontFamily\"; src:url(\"" + href + "\") format('truetype');}</style>\n";
+      "<style type=\"text/css\"> @font-face{font-family: \"$fontFamily\"; src:url(\"" +
+      href +
+      "\") format('truetype');}</style>\n";
 
   String getHtmlLink(String resourceName) =>
       "<link rel=\"stylesheet\" type=\"text/css\" href=\"$resourceName\"/>\n";

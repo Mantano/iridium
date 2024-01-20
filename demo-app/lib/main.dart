@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_fimber/flutter_fimber.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iridium_app/theme/theme_config.dart';
 import 'package:iridium_app/util/consts.dart';
 import 'package:iridium_app/view_models/app_provider.dart';
@@ -12,13 +13,12 @@ import 'package:iridium_app/view_models/favorites_provider.dart';
 import 'package:iridium_app/view_models/genre_provider.dart';
 import 'package:iridium_app/view_models/home_provider.dart';
 import 'package:iridium_app/views/splash/splash.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:json_theme/json_theme.dart';
-import 'package:mno_webview/webview.dart';
-import 'package:universal_io/io.dart' hide Link;
 import 'package:mno_lcp/lcp.dart';
 import 'package:mno_lcp/lcp_native.dart';
+import 'package:mno_webview/webview.dart';
+import 'package:provider/provider.dart';
+import 'package:universal_io/io.dart' hide Link;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,14 +73,14 @@ class MyApp extends StatelessWidget {
           navigatorKey: appProvider.navigatorKey,
           title: Constants.appName,
           theme: themeData(appProvider.theme),
-          darkTheme: themeData(ThemeConfig.darkTheme!),
+          darkTheme: themeData(ThemeConfig.darkTheme),
           home: const Splash(),
         ),
       );
 
   // Apply font to our app's theme
   ThemeData themeData(ThemeData theme) => theme.copyWith(
-        textTheme: GoogleFonts.sourceSansProTextTheme(
+        textTheme: GoogleFonts.openSansTextTheme(
           theme.textTheme,
         ),
       );

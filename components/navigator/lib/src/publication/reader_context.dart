@@ -48,7 +48,7 @@ class ReaderContext {
   late Map<Type, ReaderCommandProcessor> readerCommandProcessors;
   Link? currentSpineItem;
   SpineItemContext? currentSpineItemContext;
-  SelectionListenerFactory selectionListenerFactory;
+  SelectionListenerFactory? selectionListenerFactory;
 
   ReadingProgression? readingProgression;
 

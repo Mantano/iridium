@@ -41,7 +41,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   StreamSubscription<PaginationInfo>? _paginationInfoSubscription;
   late EpubCallbacks epubCallbacks;
   late bool currentSelectedSpineItem;
-  late SelectionListener selectionListener;
+  late SelectionListener? selectionListener;
   late StreamController<Selection?> selectionController;
   late StreamSubscription<Selection?> selectionSubscription;
   late StreamSubscription<ReaderAnnotation> bookmarkSubscription;
@@ -93,7 +93,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     webViewHorizontalGestureRecognizer = WebViewHorizontalGestureRecognizer(
         chapNumber: position, link: spineItem, readerContext: readerContext);
     selectionListener =
-        readerContext.selectionListenerFactory.create(readerContext, context);
+        readerContext.selectionListenerFactory?.create(readerContext, context);
     epubCallbacks = EpubCallbacks(
         _spineItemContext,
         _viewerSettingsBloc,
@@ -107,7 +107,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     selectionController = StreamController.broadcast();
     selectionSubscription = selectionController.stream.listen((selection) {
       if (selection != null) {
-        selectionListener.displayPopup(selection);
+        selectionListener?.displayPopup(selection);
       }
     });
     bookmarkSubscription = readerContext
@@ -154,7 +154,7 @@ class WebViewScreenState extends State<WebViewScreen> {
     deletedAnnotationIdsSubscription.cancel();
     selectionSubscription.cancel();
     selectionController.close();
-    selectionListener.hidePopup();
+    selectionListener?.hidePopup();
   }
 
   @override
