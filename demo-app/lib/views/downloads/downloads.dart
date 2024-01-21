@@ -85,7 +85,7 @@ class _DownloadsState extends State<Downloads> {
                 readerAnnotationRepository:
                 await LocatorReaderAnnotationRepository
                     .createLocatorReaderAnnotationRepository(id),
-                isTextInteractionEnabled: false,
+                isTextInteractionEnabled: true,
               ),
             );
           },
