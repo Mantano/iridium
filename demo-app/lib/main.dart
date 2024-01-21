@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_fimber/flutter_fimber.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iridium_app/theme/theme_config.dart';
 import 'package:iridium_app/util/consts.dart';
@@ -16,7 +17,6 @@ import 'package:iridium_app/views/splash/splash.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:mno_lcp/lcp.dart';
 import 'package:mno_lcp/lcp_native.dart';
-import 'package:mno_webview/webview.dart';
 import 'package:provider/provider.dart';
 import 'package:universal_io/io.dart' hide Link;
 
@@ -29,8 +29,8 @@ void main() async {
     Fimber.plantTree(DebugBufferTree());
   }
 
-  if (kDebugMode && Platform.isAndroid) {
-    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
+  if (kDebugMode) {
+    await InAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
 
   LcpNative.initLcpNative();

@@ -1,4 +1,4 @@
-import 'package:mno_webview/webview.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:mno_server/mno_server.dart';
 
 class AndroidRequest extends Request<AndroidResponse> {

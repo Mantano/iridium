@@ -32,8 +32,6 @@ dependencies:
     sdk: flutter
   iridium_reader_widget:
     path: ../
-  mno_webview:
-    path: ../../components/webview
 
   flutter_fimber: ^0.7.1
   flutter_inappwebview: ^6.0.0

@@ -32,14 +32,12 @@ dependencies:
     path: ../components/opds
   mno_shared:
     path: ../components/shared
-  mno_webview:
-    path: ../components/webview
   mno_lcp:
     path: ../components/lcp
   mno_streamer:
     path: ../components/streamer
 
-  cached_network_image: ^3.3.1
+  cached_network_image: ^3.2.3 # Don't change! Latest 3.3.1 version has a bug
   cupertino_icons: ^1.0.6
   dartx: ^1.2.0
   dfunc: ^0.9.0

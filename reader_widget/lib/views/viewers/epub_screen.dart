@@ -134,7 +134,7 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   }
 
   @override
-  Future<bool> onWillPop() async {
+  void onPopInvoked(didPop) async {
     try {
       readerContext.paginationInfo?.let((paginationInfo) =>
           readerAnnotationRepository.savePosition(paginationInfo));
@@ -147,7 +147,6 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
       // perhaps a snackbar notification can be added to indicate that there was a problem saving last location and settings
       debugPrint('error returning location and settings');
     }
-    return true;
   }
 
   @override

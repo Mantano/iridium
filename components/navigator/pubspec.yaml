@@ -32,8 +32,6 @@ dependencies:
     path: ../shared
   mno_streamer:
     path: ../streamer
-  mno_webview:
-    path: ../webview
 
 dev_dependencies:
   test: ^1.25.1
