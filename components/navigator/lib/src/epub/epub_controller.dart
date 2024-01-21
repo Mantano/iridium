@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:io';
-
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/widgets.dart';
@@ -13,6 +11,7 @@ import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import 'package:universal_io/io.dart';
 
 class EpubController extends PublicationController {
   PreloadPageController? _pageController;

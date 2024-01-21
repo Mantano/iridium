@@ -13,7 +13,7 @@ dependencies:
   fimber: ^0.7.0
   image: ^4.1.4
   universal_io: ^2.2.2
-  xml: ^6.3.0
+  xml: ^6.5.0
   mno_commons:
     path: ../commons
   mno_shared:
