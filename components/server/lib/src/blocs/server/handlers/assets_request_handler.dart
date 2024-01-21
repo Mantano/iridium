@@ -4,7 +4,6 @@
 
 import 'dart:typed_data';
 
-import 'package:fimber/fimber.dart';
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/mediatype.dart';
 import 'package:path/path.dart' as p;
@@ -50,8 +49,6 @@ class AssetsRequestHandler extends RequestHandler {
       );
       return true;
     } on Error catch (ex) {
-      // For debugging
-      Fimber.d("Error loading: $href", ex: ex, stacktrace: ex.stackTrace);
       return false;
     }
   }

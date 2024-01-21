@@ -9,6 +9,7 @@ in binary form by [Edrlab](https://edrlab.org) that simply must be dropped into 
 ## Features
 
 - [x] EPUB 2.x and 3.x support
+- [x] WebPub support (thanks to [Morten Sjøgren](https://github.com/m-abs), [Nota](https://github.com/Notalib)
 - [ ] Audiobook support
 - [ ] PDF support
 - [x] Readium LCP support (not in demo app yet)

@@ -37,7 +37,7 @@ dependencies:
 
   flutter_fimber: ^0.7.1
   flutter_inappwebview: ^6.0.0
-  path_provider: ^2.1.0
+  path_provider: ^2.1.2
   universal_io: ^2.2.2
 
   # The following adds the Cupertino Icons font to your application.
@@ -45,13 +45,13 @@ dependencies:
   #  cupertino_icons: ^1.0.5
 
   package_info_plus: ^5.0.1
-  url_launcher_web: ^2.0.18
-  shared_preferences: ^2.2.0
+  url_launcher_web: ^2.2.3
+  shared_preferences: ^2.2.2
 
 dependency_overrides:
   collection: ^1.18.0
   path: ^1.9.0
-  http: ^1.1.2
+  http: ^1.2.0
 
 dev_dependencies:
   #  flutter_test:
