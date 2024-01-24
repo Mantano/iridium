@@ -126,6 +126,9 @@ surprises are on the way ;-)
 Iridium is named after the chemical element, which is known for being extremely corrosion-resistant: this reader will
 stand the test of time 😎
 
+# Support
+
+You use this project for professional projects or just like it? Please consider [making a donation](https://www.paypal.com/donate/?hosted_button_id=4G7YYLF8624DQ) to help improve it!
 
 -----------
 <a name="readium_foundation">1</a>: Readium is a trademark of the [Readium Foundation](https://readium.org/))
