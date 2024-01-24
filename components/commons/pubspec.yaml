@@ -8,7 +8,7 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  archive: ^3.3.7
+  archive: ^3.4.10
   crypto: ^3.0.3
   dartx: ^1.2.0
   dfunc: ^0.9.0

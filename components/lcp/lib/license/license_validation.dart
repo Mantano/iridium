@@ -125,14 +125,11 @@ class LicenseValidation {
 
   void validate(LicenseValidationDocument document, Observer completion) {
     LVEvent event;
-    switch (document.runtimeType) {
-      case LicenseValidationLicenseDocument:
+    if (document is LicenseValidationLicenseDocument) {
         event = RetrievedLicenseDataEvent(document.data);
-        break;
-      case LicenseValidationStatusDocument:
+    } else if (document is LicenseValidationStatusDocument) {
         event = RetrievedStatusDataEvent(document.data);
-        break;
-      default:
+    } else {
         throw LcpException.unknown;
     }
     _log("validate $event");
@@ -158,52 +155,41 @@ class LicenseValidation {
   Future<void> _handle(LVState state) async {
     _log("state: ${state.runtimeType}");
     try {
-      switch (state.runtimeType) {
-        case StartState:
+      if (state is StartState) {
           _notifyObservers(null, null);
-          break;
-        case ValidateLicenseState:
-          _validateLicense((state as ValidateLicenseState).data);
-          break;
-        case FetchStatusState:
-          await _fetchStatus((state as FetchStatusState).license);
-          break;
-        case ValidateStatusState:
-          _validateStatus((state as ValidateStatusState).data);
-          break;
-        case FetchLicenseState:
-          await _fetchLicense((state as FetchLicenseState).status);
-          break;
-        case CheckLicenseStatusState:
-          CheckLicenseStatusState checkLicenseStatusState =
-              state as CheckLicenseStatusState;
-          _checkLicenseStatus(
-              checkLicenseStatusState.license, checkLicenseStatusState.status);
-          break;
-        case RetrievePassphraseState:
-          await _requestPassphrase((state as RetrievePassphraseState).license);
-          break;
-        case ValidateIntegrityState:
-          ValidateIntegrityState validateIntegrityState =
-              state as ValidateIntegrityState;
-          await _validateIntegrity(validateIntegrityState.license,
-              validateIntegrityState.passphrase);
-          break;
-        case RegisterDeviceState:
-          RegisterDeviceState registerDeviceState =
-              state as RegisterDeviceState;
-          await _registerDevice(
-              registerDeviceState.documents.license, registerDeviceState.link);
-          break;
-        case ValidState:
-          _notifyObservers((state as ValidState).documents, null);
-          break;
-        case FailureState:
-          _notifyObservers(null, (state as FailureState).error);
-          break;
-        case CancelledState:
+      }
+      else if (state is ValidateLicenseState) {
+        _validateLicense(state.data);
+      }
+      else if (state is FetchStatusState) {
+        await _fetchStatus(state.license);
+      }
+      else if (state is ValidateStatusState) {
+        _validateStatus(state.data);
+      }
+      else if (state is FetchLicenseState) {
+        await _fetchLicense(state.status);
+      }
+      else if (state is CheckLicenseStatusState) {
+        _checkLicenseStatus(state.license, state.status);
+      }
+      else if (state is RetrievePassphraseState) {
+        await _requestPassphrase(state.license);
+      }
+      else if (state is ValidateIntegrityState) {
+        await _validateIntegrity(state.license, state.passphrase);
+      }
+      else if (state is RegisterDeviceState) {
+        await _registerDevice(state.documents.license, state.link);
+      }
+      else if (state is ValidState) {
+        _notifyObservers(state.documents, null);
+      }
+      else if (state is FailureState) {
+        _notifyObservers(null, state.error);
+      }
+      else if (state is CancelledState) {
           _notifyObservers(null, null);
-          break;
       }
     } on Exception catch (error, stacktrace) {
       _log("LicenseValidation._handle ERROR: $state",
@@ -277,8 +263,8 @@ class LicenseValidation {
   void _checkLicenseStatus(LicenseDocument license, StatusDocument? status) {
     LicenseStatus? error;
     DateTime now = DateTime.now();
-    DateTime start = license.rights.start ?? now;
-    DateTime end = license.rights.end ?? now;
+    DateTime start = license.rights?.start ?? now;
+    DateTime end = license.rights?.end ?? now;
     if (start.isAfter(now) || now.isAfter(end)) {
       if (status != null) {
         DateTime? date = status.statusUpdated;

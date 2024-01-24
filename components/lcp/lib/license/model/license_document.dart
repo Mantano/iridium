@@ -45,7 +45,7 @@ class LicenseDocument {
   /// Used to associate the License Document with resources that are not
   /// locally available.
   final Links _links;
-  final Rights rights;
+  final Rights? rights;
 
   /// The user owning the License.
   final User user;
@@ -122,9 +122,8 @@ class LicenseDocument {
       throw Exception(
           LcpError.errorDescription(LcpErrorCase.publicationLinkNotFound));
     }
-    // TODO What to do if user or rights is null? Can it happen?
     return LicenseDocument._(id, issued, updated, provider, encryption, links,
-        rights!, user!, signature, jsonObject, text, data);
+        rights, user!, signature, jsonObject, text, data);
   }
 
   /// Returns the first link containing the given rel.

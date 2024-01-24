@@ -25,7 +25,7 @@ class MaterialRenewListener implements RenewListener {
     if (license == null) {
       return DateTime.now();
     }
-    DateTime start = (license!.license.rights.end ?? DateTime.now());
+    DateTime start = (license!.license.rights?.end ?? DateTime.now());
     DateTime end = maximumDate ?? DateTime.now().add(const Duration(days: 365));
     return await showDatePicker(
             context: context,

@@ -226,7 +226,7 @@ class License implements LcpLicense {
 
       _validateStatusDocument(await data);
 
-      return Try.success(_documents.license.rights.end);
+      return Try.success(_documents.license.rights?.end);
 //     } on CancellationException {
 // // Passthrough for cancelled coroutines
 //       rethrow;

@@ -111,8 +111,8 @@ class Licenses implements DeviceRepository, LicensesRepository {
         LicensesTable.name,
         {
           LicensesTable.id: license.id,
-          LicensesTable.printsleft: license.rights.print,
-          LicensesTable.copiesleft: license.rights.copy,
+          LicensesTable.printsleft: license.rights?.print,
+          LicensesTable.copiesleft: license.rights?.copy,
         },
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
