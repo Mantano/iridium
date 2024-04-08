@@ -21,16 +21,24 @@ class EpubScreen extends BookScreen {
   final int? settings;
   final bool isTextInteractionEnabled;
   final Map<String, dynamic>? theme;
+  ReaderThemeConfig? themeObject;
+  final int? startPage;
 
-  const EpubScreen(
+  EpubScreen(
       {super.key,
       required super.asset,
+      super.onDocumentLoaded,
+      super.onPageSwiped,
+      this.themeObject,
       super.readerAnnotationRepository,
       super.paginationCallback,
       this.location,
       this.settings,
+      this.startPage,
       this.theme,
-      this.isTextInteractionEnabled = true});
+      this.isTextInteractionEnabled = true}) {
+    themeObject = themeObject ?? ReaderThemeConfig.defaultTheme;
+  }
 
   factory EpubScreen.fromPath(
       {Key? key,
@@ -40,6 +48,12 @@ class EpubScreen extends BookScreen {
       String? location,
       String? settings,
       String? theme,
+      int? startPage,
+      Function(double totalNumberOfPages)? onDocumentLoaded,
+      Function(
+              String href, int percentage, int spineItemIndex, int currentPage)?
+          onPageSwiped,
+      ReaderThemeConfig? themeObject,
       bool isTextInteractionEnabled = true}) {
     Map<String, dynamic>? decodedTheme;
     try {
@@ -49,6 +63,10 @@ class EpubScreen extends BookScreen {
     }
     return EpubScreen(
       key: key,
+      themeObject: themeObject,
+      startPage: startPage,
+      onDocumentLoaded: onDocumentLoaded,
+      onPageSwiped: onPageSwiped,
       asset: FileAsset(File(filePath)),
       readerAnnotationRepository: readerAnnotationRepository,
       paginationCallback: paginationCallback,
@@ -64,6 +82,12 @@ class EpubScreen extends BookScreen {
       required File file,
       ReaderAnnotationRepository? readerAnnotationRepository,
       PaginationCallback? paginationCallback,
+      ReaderThemeConfig? themeObject,
+      int? startPage,
+      Function(double totalNumberOfPages)? onDocumentLoaded,
+      Function(
+              String href, int percentage, int spineItemIndex, int currentPage)?
+          onPageSwiped,
       String? location,
       String? settings,
       String? theme,
@@ -76,6 +100,10 @@ class EpubScreen extends BookScreen {
     }
     return EpubScreen(
       key: key,
+      onPageSwiped: onPageSwiped,
+      startPage: startPage,
+      onDocumentLoaded: onDocumentLoaded,
+      themeObject: themeObject,
       asset: FileAsset(file),
       readerAnnotationRepository: readerAnnotationRepository,
       paginationCallback: paginationCallback,
@@ -90,13 +118,19 @@ class EpubScreen extends BookScreen {
       {Key? key,
       required String rootHref,
       ReaderAnnotationRepository? readerAnnotationRepository,
+      ReaderThemeConfig? themeObject,
       PaginationCallback? paginationCallback,
+      Function(double totalNumberOfPages)? onDocumentLoaded,
+      Function(
+              String href, int percentage, int spineItemIndex, int currentPage)?
+          onPageSwiped,
       MediaType? mimeType,
       String? location,
       String? settings,
+      int? startPage,
       String? theme,
       bool isTextInteractionEnabled = true}) {
-    Map<String, dynamic>? decodedTheme;
+    Map<String, dynamic>? decodedTheme; //Theme
     try {
       decodedTheme = json.decode(theme!);
     } catch (e) {
@@ -104,6 +138,10 @@ class EpubScreen extends BookScreen {
     }
     return EpubScreen(
       key: key,
+      onDocumentLoaded: onDocumentLoaded,
+      onPageSwiped: onPageSwiped,
+      startPage: startPage,
+      themeObject: themeObject,
       asset: HttpAsset(rootHref, knownMediaType: mimeType),
       readerAnnotationRepository: readerAnnotationRepository,
       paginationCallback: paginationCallback,
@@ -125,12 +163,12 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   @override
   void initState() {
     super.initState();
-    _viewerSettingsBloc =
-        ViewerSettingsBloc(EpubReaderState("", widget.settings ?? 100, widget.isTextInteractionEnabled));
+    _viewerSettingsBloc = ViewerSettingsBloc(EpubReaderState(
+        "", widget.settings ?? 100, widget.isTextInteractionEnabled));
     debugPrint(widget.theme.toString());
     _readerThemeBloc = ReaderThemeBloc(widget.theme != null
         ? ReaderThemeConfig.fromJson(widget.theme!)
-        : ReaderThemeConfig.defaultTheme);
+        : widget.themeObject);
   }
 
   @override
@@ -149,6 +187,7 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
     }
   }
 
+  //NOTE: The startup location when the epub is opened for the first time.
   @override
   Future<String?> get openLocation async {
     if (widget.location != null) {
@@ -172,14 +211,28 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
           ReaderAnnotationRepository readerAnnotationRepository,
           Function0<List<RequestHandler>> handlersProvider) =>
       EpubController(
-          onServerClosed,
-          onPageJump,
-          locationFuture,
-          fileAsset,
-          streamerFuture,
-          readerAnnotationRepository,
-          handlersProvider,
-          selectionListenerFactory);
+        onServerClosed,
+        onPageJump,
+        locationFuture,
+        onDocumentLoaded,
+        widget.onPageSwiped,
+        fileAsset,
+        streamerFuture,
+        readerAnnotationRepository,
+        handlersProvider,
+        selectionListenerFactory,
+      );
+
+  void onDocumentLoaded(double totalNumberOfPages) {
+    if (widget.onDocumentLoaded != null) {
+      widget.onDocumentLoaded!(totalNumberOfPages);
+    }
+    if (widget.startPage != null && widget.startPage! < totalNumberOfPages) {
+      Future.delayed(const Duration(seconds: 1), () {
+        readerContext.execute(GoToPageCommand(widget.startPage!));
+      });
+    }
+  }
 
   @override
   Widget createPublicationNavigator({

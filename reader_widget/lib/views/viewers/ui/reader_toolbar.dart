@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -11,12 +13,15 @@ class ReaderToolbar extends StatefulWidget {
   final ReaderContext readerContext;
   final VoidCallback onSkipLeft;
   final VoidCallback onSkipRight;
+  Function(String href, int percentage, int spineItemIndex, int currentPage)?
+      onPageSwiped;
 
-  const ReaderToolbar(
+  ReaderToolbar(
       {super.key,
       required this.readerContext,
       required this.onSkipLeft,
-      required this.onSkipRight});
+      required this.onSkipRight,
+      this.onPageSwiped});
 
   @override
   State<StatefulWidget> createState() => ReaderToolbarState();
@@ -27,6 +32,7 @@ class ReaderToolbarState extends State<ReaderToolbar> {
   late StreamSubscription<bool> _toolbarStreamSubscription;
   late StreamSubscription<PaginationInfo> _currentLocationStreamSubscription;
   late StreamController<int> pageNumberController;
+  late StreamSubscription<ReaderCommand> _commandStreamSubscription;
   double opacity = 0.0;
 
   ReaderContext get readerContext => widget.readerContext;
@@ -48,6 +54,11 @@ class ReaderToolbarState extends State<ReaderToolbar> {
         readerContext.currentLocationStream.listen((event) {
       pageNumberController.add(event.page);
     });
+    _commandStreamSubscription = readerContext.commandsStream.listen((event) {
+      if (event is GoToPageCommand) {
+        pageNumberController.add(event.page);
+      }
+    });
   }
 
   @override
@@ -55,6 +66,7 @@ class ReaderToolbarState extends State<ReaderToolbar> {
     super.dispose();
     _toolbarStreamSubscription.cancel();
     _currentLocationStreamSubscription.cancel();
+    _commandStreamSubscription.cancel();
   }
 
   @override
@@ -82,7 +94,10 @@ class ReaderToolbarState extends State<ReaderToolbar> {
         ToolbarButton(
           asset:
               'packages/iridium_reader_widget/assets/images/ic_skip_left_white_24dp.png',
-          onPressed: onSkipLeft,
+          onPressed: () {
+            onSkipLeft();
+            pageNumberController.add(readerContext.currentPageNumber);
+          },
         ),
         const SizedBox(width: 8.0),
         (isReversed ? _buildNbPages(context) : _builderCurrentPage()),
@@ -92,7 +107,10 @@ class ReaderToolbarState extends State<ReaderToolbar> {
         ToolbarButton(
           asset:
               'packages/iridium_reader_widget/assets/images/ic_skip_right_white_24dp.png',
-          onPressed: onSkipRight,
+          onPressed: () {
+            onSkipRight();
+            pageNumberController.add(readerContext.currentPageNumber);
+          },
         ),
       ],
     );
@@ -105,6 +123,7 @@ class ReaderToolbarState extends State<ReaderToolbar> {
           pageNumber: snapshot.data ?? 1,
         ),
       );
+
   // Widget _builderCurrentPage() => StreamBuilder<int>(
   //       initialData: 1,
   //       stream: pageNumberController.stream,
@@ -131,6 +150,7 @@ class ReaderToolbarState extends State<ReaderToolbar> {
             builder: (context, snapshot) {
               var isReversed =
                   readerContext.readingProgression?.isReverseOrder() ?? false;
+              //NOTE: Getting the number of pages
               var maxPageNumber =
                   readerContext.publication?.nbPages.toDouble() ?? 1;
               var curPageNum = snapshot.data?.toDouble() ?? 1;
@@ -139,7 +159,17 @@ class ReaderToolbarState extends State<ReaderToolbar> {
                   onDragging: (handlerIndex, lowerValue, upperValue) =>
                       pageNumberController.add(lowerValue.toInt()),
                   onDragCompleted: (handlerIndex, lowerValue, upperValue) {
+                    //NOTE: Navigate to a specific page:
                     readerContext.execute(GoToPageCommand(lowerValue.toInt()));
+                    final currentPageData =
+                        readerContext.getEpubPaginationData();
+                    if (widget.onPageSwiped != null) {
+                      widget.onPageSwiped!(
+                          currentPageData.$1,
+                          currentPageData.$2,
+                          currentPageData.$3,
+                          currentPageData.$4);
+                    }
                   },
                   min: 1.0,
                   max: maxPageNumber,

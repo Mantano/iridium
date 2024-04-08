@@ -199,6 +199,19 @@ class ReaderContext {
     }
   }
 
+  (String href, int percentage, int spineItemIndex, int currentPage)
+      getEpubPaginationData() {
+    final command = GoToPageCommand(currentPageNumber);
+    _updateSpineItemIndexForCommand(command);
+    return (
+      command.href ?? '',
+      command.percent ?? 0,
+      command.spineItemIndex ?? 0,
+      currentPageNumber
+    );
+  }
+
+  //When you use the slider to navigate through the epub, this is called
   void _createOpenPageRequestForCommand(ReaderCommand command) {
     OpenPageRequest? openPageRequestData;
     ReaderCommandProcessor<ReaderCommand>? readerCommandProcessor =

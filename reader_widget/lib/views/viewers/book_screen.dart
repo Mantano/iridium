@@ -14,16 +14,23 @@ import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:mno_streamer/parser.dart';
 
+//Pagination called here
+
 typedef PaginationCallback = Function(PaginationInfo paginationInfo);
 
 abstract class BookScreen extends StatefulWidget {
   final PublicationAsset asset;
   final ReaderAnnotationRepository? readerAnnotationRepository;
   final PaginationCallback? paginationCallback;
+  Function(double totalNumberOfPages)? onDocumentLoaded;
+  Function(String href, int percentage, int spineItemIndex, int currentPage)?
+      onPageSwiped;
 
-  const BookScreen({
+  BookScreen({
     super.key,
     required this.asset,
+    this.onDocumentLoaded,
+    this.onPageSwiped,
     this.readerAnnotationRepository,
     this.paginationCallback,
   });
@@ -31,6 +38,7 @@ abstract class BookScreen extends StatefulWidget {
 
 abstract class BookScreenState<T extends BookScreen,
     PubController extends PublicationController> extends State<T> {
+  //NOTE: This is where we access the controller
   late PubController publicationController;
   late ReaderContext readerContext;
 
@@ -133,6 +141,7 @@ abstract class BookScreenState<T extends BookScreen,
               readerContext: readerContext,
               onSkipLeft: publicationController.onSkipLeft,
               onSkipRight: publicationController.onSkipRight,
+              onPageSwiped: widget.onPageSwiped,
             ),
           ),
           SafeArea(

@@ -20,6 +20,10 @@ class EpubController extends PublicationController {
       Function onServerClosed,
       Function? onPageJump,
       Future<String?> locationFuture,
+      Function(double totalNumberOfPages)? onDocumentLoaded,
+      Function(
+              String href, int percentage, int spineItemIndex, int currentPage)?
+          onPageSwiped,
       PublicationAsset fileAsset,
       Future<Streamer> streamerFuture,
       ReaderAnnotationRepository readerAnnotationRepository,
@@ -37,6 +41,8 @@ class EpubController extends PublicationController {
           selectionListenerFactory,
           true,
           displayEditAnnotationIcon,
+          onDocumentLoaded,
+          onPageSwiped,
         );
 
   PreloadPageController get pageController => _pageController!;
@@ -84,6 +90,12 @@ class EpubController extends PublicationController {
         Fimber.d("page: $page");
         pageController.jumpToPage(page);
       }
+
+      final currentPageData = readerContext?.getEpubPaginationData();
+      if (onPageSwiped != null && currentPageData != null) {
+        onPageSwiped!(currentPageData.$1, currentPageData.$2, 
+          currentPageData.$3, currentPageData.$4);
+      }
     }
   }
 
@@ -111,6 +123,12 @@ class EpubController extends PublicationController {
             (pageController.page ?? 0).round() + (isReverseOrder ? -1 : 1);
         Fimber.d("page: $page");
         pageController.jumpToPage(page);
+      }
+      
+      final currentPageData = readerContext?.getEpubPaginationData();
+      if (onPageSwiped != null && currentPageData != null) {
+        onPageSwiped!(currentPageData.$1, currentPageData.$2, 
+          currentPageData.$3, currentPageData.$4);
       }
     }
   }
