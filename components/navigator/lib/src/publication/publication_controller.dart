@@ -18,6 +18,10 @@ import 'package:mno_streamer/parser.dart';
 abstract class PublicationController extends NavigationController {
   final Function onServerClosed;
   final Function? onPageJump;
+  final Function(double totalNumberOfPages)? onDocumentLoaded;
+  final Function(
+          String href, int percentage, int spineItemIndex, int currentPage)?
+      onPageSwiped;
   final Future<String?> locationFuture;
   final PublicationAsset publicationAsset;
   final Future<Streamer> streamerFuture;
@@ -42,6 +46,8 @@ abstract class PublicationController extends NavigationController {
     this.selectionListenerFactory, [
     bool startHttpServer = true,
     this.displayEditAnnotationIcon = true,
+    this.onDocumentLoaded,
+    this.onPageSwiped,
   ])  : serverBloc = ServerBloc(startHttpServer: startHttpServer),
         currentSpineItemBloc = CurrentSpineItemBloc();
 
@@ -124,8 +130,9 @@ abstract class PublicationController extends NavigationController {
 
   void initPageController(int initialPage);
 
-  void onPageChanged(int position) =>
-      currentSpineItemBloc.add(CurrentSpineItemEvent(position));
+  void onPageChanged(int position) {
+    currentSpineItemBloc.add(CurrentSpineItemEvent(position));
+  }
 
   void _onServerStarted(ReaderContext readerContext) {
     readerCommandSubscription?.cancel();
@@ -133,11 +140,15 @@ abstract class PublicationController extends NavigationController {
         readerContext.commandsStream.listen(_onReaderCommand);
     readerContext.locator
         ?.let((it) => readerContext.execute(GoToLocationCommand.locator(it)));
+    final pages = readerContext.publication?.nbPages.toDouble();
+    if (onDocumentLoaded != null) {
+      onDocumentLoaded!(pages ?? 0);
+    }
   }
 
   void _onReaderCommand(ReaderCommand command) {
     if (pageControllerAttached && command.spineItemIndex != null) {
-      jumpToPage(command.spineItemIndex!);
+      jumpToPage(command.spineItemIndex!); //spineIndex
       onPageJump?.call();
     }
   }
