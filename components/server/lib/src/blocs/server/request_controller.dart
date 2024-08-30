@@ -35,7 +35,7 @@ class RequestController {
         if (await handler.handle(requestId, request, href)) {
           stopwatch.stop();
           // Fimber.d(
-          //     "========= REQUEST HREF: $href, time: ${stopwatch.elapsedMilliseconds}ms");
+          //     "========= REQUEST HREF: $href, time: ${stopwatch.elapsedMilliseconds}ms, handler: $handler");
           return response;
         }
       }

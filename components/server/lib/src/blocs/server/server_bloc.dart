@@ -85,6 +85,7 @@ class ServerBloc extends Bloc<ServerEvent, ServerState> {
       }
       _serverPort++;
     }
+    Fimber.d("serverPort: ${server.port}, ${server.address.host}");
     return server;
   }
 

@@ -16,6 +16,11 @@ import 'package:mno_shared/i18n/localizations/messages_de.dart' as messages_de;
 import 'package:mno_shared/i18n/localizations/messages_en.dart' as messages_en;
 import 'package:mno_shared/i18n/localizations/messages_es.dart' as messages_es;
 import 'package:mno_shared/i18n/localizations/messages_fr.dart' as messages_fr;
+import 'package:mno_shared/i18n/localizations/messages_it.dart' as messages_it;
+import 'package:mno_shared/i18n/localizations/messages_nl.dart' as messages_nl;
+import 'package:mno_shared/i18n/localizations/messages_pt.dart' as messages_pt;
+import 'package:mno_shared/i18n/localizations/messages_ru.dart' as messages_ru;
+import 'package:mno_shared/i18n/localizations/messages_tr.dart' as messages_tr;
 
 typedef LibraryLoader = Future<dynamic> Function();
 
@@ -24,6 +29,11 @@ Map<String, LibraryLoader> _deferredLibraries = {
   'es': () => Future.value(null),
   'fr': () => Future.value(null),
   'de': () => Future.value(null),
+  'it': () => Future.value(null),
+  'tr': () => Future.value(null),
+  'ru': () => Future.value(null),
+  'pt': () => Future.value(null),
+  'nl': () => Future.value(null),
 };
 
 MessageLookupByLibrary? _findExact(String localeName) {
@@ -36,6 +46,16 @@ MessageLookupByLibrary? _findExact(String localeName) {
       return messages_de.messages;
     case 'fr':
       return messages_fr.messages;
+    case 'it':
+      return messages_it.messages;
+    case 'ru':
+      return messages_ru.messages;
+    case 'tr':
+      return messages_tr.messages;
+    case 'pt':
+      return messages_pt.messages;
+    case 'nl':
+      return messages_nl.messages;
     default:
       return null;
   }

@@ -1,8 +1,8 @@
-import 'package:example/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fimber/flutter_fimber.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:iridium.reader.widget.example/utils/utils.dart';
 import 'package:iridium_reader_widget/views/viewers/epub_screen.dart';
 import 'package:universal_io/io.dart' hide Link;
 

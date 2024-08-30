@@ -134,7 +134,7 @@ class EpubScreenState extends BookScreenState<EpubScreen, EpubController> {
   }
 
   @override
-  void onPopInvoked(didPop) async {
+  void onPopInvoked(didPop, result) async {
     try {
       readerContext.paginationInfo?.let((paginationInfo) =>
           readerAnnotationRepository.savePosition(paginationInfo));

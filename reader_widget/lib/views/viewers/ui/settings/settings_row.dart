@@ -79,7 +79,7 @@ class _SettingsRowState<T extends ValueSettings> extends State<SettingsRow<T>> {
             child: Center(
               child: Text(
                 "${widget.label}\n$valueLabel",
-                style: Theme.of(context).textTheme.bodyText1,
+                style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
             ),

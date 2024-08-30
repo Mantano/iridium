@@ -83,10 +83,10 @@ abstract class BookScreenState<T extends BookScreen,
       future: loadWebViewConfig(),
       initialData: false,
       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-        if (snapshot.data!) {
+        if (snapshot.hasData) {
           return PopScope(
             canPop: true,
-            onPopInvoked: onPopInvoked,
+            onPopInvokedWithResult: onPopInvoked,
             child: Scaffold(
               body: createPublicationNavigator(
                 waitingScreenBuilder: buildWaitingScreen,
@@ -101,7 +101,7 @@ abstract class BookScreenState<T extends BookScreen,
         return const SizedBox.shrink();
       });
 
-  void onPopInvoked(bool didPop) async => true;
+  void onPopInvoked(bool didPop, result) async => true;
 
   Widget buildWaitingScreen(BuildContext context) => Center(
       child: SpinKitChasingDots(

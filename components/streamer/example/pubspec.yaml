@@ -9,12 +9,12 @@ environment:
 dependencies:
   mno_streamer:
     path: ../
-  dfunc: ^0.9.0
-  universal_io: ^2.2.1
-  xml: ^6.3.0
+  dfunc: ^0.10.0
+  universal_io: ^2.2.2
+  xml: ^6.5.0
 
 dependency_overrides:
-  collection: ^1.17.2 #universal_io
+  collection: ^1.19.0 #universal_io
 
 dev_dependencies:
-  lints: ^2.1.0
+  lints: ^4.0.0

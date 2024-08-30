@@ -5,11 +5,17 @@
 import 'package:intl/locale.dart';
 
 class LocaleUtils {
-  static List<String> get supportedLanguageCodes => [
+  static List<String> get supportedLanguageCodes =>
+      [
         'es',
         'en',
         'fr',
         'de',
+        'it',
+        'ru',
+        'tr',
+        'pt',
+        'nl',
       ];
 
   static bool isSupported(Locale locale) =>

@@ -29,7 +29,7 @@ void main() async {
     Fimber.plantTree(DebugBufferTree());
   }
 
-  if (kDebugMode) {
+  if (kDebugMode && Platform.isAndroid) {
     await InAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
 
