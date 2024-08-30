@@ -102,7 +102,9 @@ class DetailsProvider extends ChangeNotifier {
 
   Future downloadFile(
       BuildContext context, State state, String url, String filename) async {
-    PermissionStatus permission = await Permission.storage.status;
+    PermissionStatus permission = Platform.isMacOS
+        ? PermissionStatus.granted
+        : await Permission.storage.status;
 
     if (permission != PermissionStatus.granted) {
       await Permission.storage.request();

@@ -47,157 +47,157 @@ class _DownloadsState extends State<Downloads> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      centerTitle: true,
-      title: const Text('Downloads'),
-    ),
-    body: dls.isEmpty ? _buildEmptyListView() : _buildBodyList(),
-    floatingActionButton: FloatingActionButton(
-      tooltip: 'Import book',
-      child: const Icon(Icons.add),
-      onPressed: () {
-        Fimber.d("Import book");
-        _onImportBook();
-      },
-    ),
-  );
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Downloads'),
+        ),
+        body: dls.isEmpty ? _buildEmptyListView() : _buildBodyList(),
+        floatingActionButton: FloatingActionButton(
+          tooltip: 'Import book',
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Fimber.d("Import book");
+            _onImportBook();
+          },
+        ),
+      );
 
   Widget _buildBodyList() => ListView.separated(
-    shrinkWrap: true,
-    itemCount: dls.length,
-    itemBuilder: (BuildContext context, int index) {
-      Map dl = dls[index];
-      String imageUrl2 = dl['image'];
-      Fimber.d("--- cover: ${imageUrl2}");
-      return Dismissible(
-        key: ObjectKey(uuid.v4()),
-        direction: DismissDirection.endToStart,
-        background: _dismissibleBackground(),
-        onDismissed: (d) => _deleteBook(dl, index),
-        child: InkWell(
-          onTap: () async {
-            String path = dl['path'];
-            String id = dl['id'];
-            MyRouter.pushPage(
-              context,
-              EpubScreen.fromPath(
-                filePath: path,
-                readerAnnotationRepository:
-                await LocatorReaderAnnotationRepository
-                    .createLocatorReaderAnnotationRepository(id),
-                isTextInteractionEnabled: true,
-              ),
-            );
-          },
-          child: Padding(
-            padding:
-            const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-            child: Row(
-              children: <Widget>[
-                imageUrl2.startsWith("http")
-                    ? CachedNetworkImage(
-                  imageUrl: imageUrl2,
-                  placeholder: (context, url) => const SizedBox(
-                    height: 70.0,
-                    width: 70.0,
-                    child: LoadingWidget(),
+        shrinkWrap: true,
+        itemCount: dls.length,
+        itemBuilder: (BuildContext context, int index) {
+          Map dl = dls[index];
+          String imageUrl2 = dl['image'];
+          Fimber.d("--- cover: ${imageUrl2}");
+          return Dismissible(
+            key: ObjectKey(uuid.v4()),
+            direction: DismissDirection.endToStart,
+            background: _dismissibleBackground(),
+            onDismissed: (d) => _deleteBook(dl, index),
+            child: InkWell(
+              onTap: () async {
+                String path = dl['path'];
+                String id = dl['id'];
+                MyRouter.pushPage(
+                  context,
+                  EpubScreen.fromPath(
+                    filePath: path,
+                    readerAnnotationRepository:
+                        await LocatorReaderAnnotationRepository
+                            .createLocatorReaderAnnotationRepository(id),
+                    isTextInteractionEnabled: true,
                   ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    'assets/images/place.png',
-                    fit: BoxFit.cover,
-                    height: 70.0,
-                    width: 70.0,
-                  ),
-                  fit: BoxFit.cover,
-                  height: 70.0,
-                  width: 70.0,
-                )
-                    : Image.file(
-                  File(imageUrl2),
-                  fit: BoxFit.cover,
-                  height: 70.0,
-                  width: 70.0,
-                ),
-                const SizedBox(width: 10.0),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        dl['name'],
-                        style: const TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const Divider(),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                );
+              },
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                child: Row(
+                  children: <Widget>[
+                    imageUrl2.startsWith("http")
+                        ? CachedNetworkImage(
+                            imageUrl: imageUrl2,
+                            placeholder: (context, url) => const SizedBox(
+                              height: 70.0,
+                              width: 70.0,
+                              child: LoadingWidget(),
+                            ),
+                            errorWidget: (context, url, error) => Image.asset(
+                              'assets/images/place.png',
+                              fit: BoxFit.cover,
+                              height: 70.0,
+                              width: 70.0,
+                            ),
+                            fit: BoxFit.cover,
+                            height: 70.0,
+                            width: 70.0,
+                          )
+                        : Image.file(
+                            File(imageUrl2),
+                            fit: BoxFit.cover,
+                            height: 70.0,
+                            width: 70.0,
+                          ),
+                    const SizedBox(width: 10.0),
+                    Flexible(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'COMPLETED',
-                            style: TextStyle(
-                              fontSize: 13.0,
+                            dl['name'],
+                            style: const TextStyle(
+                              fontSize: 15.0,
                               fontWeight: FontWeight.bold,
-                              color:
-                              Theme.of(context).colorScheme.secondary,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Text(
-                            dl['size'],
-                            style: const TextStyle(
-                              fontSize: 13.0,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                          const Divider(),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                'COMPLETED',
+                                style: TextStyle(
+                                  fontSize: 13.0,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                dl['size'],
+                                style: const TextStyle(
+                                  fontSize: 13.0,
+                                ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
       );
-    },
-    separatorBuilder: (BuildContext context, int index) => const Divider(),
-  );
 
   Widget _buildEmptyListView() => Center(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Image.asset(
-          'assets/images/empty.png',
-          height: 300.0,
-          width: 300.0,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Image.asset(
+              'assets/images/empty.png',
+              height: 300.0,
+              width: 300.0,
+            ),
+            const Text(
+              'Nothing is here',
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
-        const Text(
-          'Nothing is here',
-          style: TextStyle(
-            fontSize: 24.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget _dismissibleBackground() => Container(
-    alignment: Alignment.centerRight,
-    padding: const EdgeInsets.only(right: 20.0),
-    color: Colors.red,
-    child: const Icon(
-      Feather.trash_2,
-      color: Colors.white,
-    ),
-  );
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20.0),
+        color: Colors.red,
+        child: const Icon(
+          Feather.trash_2,
+          color: Colors.white,
+        ),
+      );
 
   void _deleteBook(Map dl, int index) {
     // https://github.com/Mantano/iridium/issues/97 fixed by https://github.com/charlestyra89
@@ -242,8 +242,11 @@ class _DownloadsState extends State<Downloads> {
   }
 
   Future checkPermissionsAndCopyFile(State state, PlatformFile file) async {
-    PermissionStatus permission = await Permission.storage.status;
+    PermissionStatus permission = Platform.isMacOS
+        ? PermissionStatus.granted
+        : await Permission.storage.status;
 
+    // On MacOS, the permission is always granted
     if (permission != PermissionStatus.granted) {
       await Permission.storage.request();
       // access media location needed for android 10/Q
@@ -341,7 +344,6 @@ class _DownloadsState extends State<Downloads> {
     }).onFailure((openingException) {
       Fimber.e("Fail to open publication: $file", ex: openingException);
     });
-
   }
 
 // _importLcpPublication(File destFile) {

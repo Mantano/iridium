@@ -18,6 +18,7 @@ dependencies:
   fimber: ^0.7.0
   flutter_bloc: ^8.1.6
   flutter_inappwebview: ^6.0.0
+  webview_flutter: ^4.9.0
   flutter_spinkit: ^5.2.1
   photo_view: ^0.15.0
   preload_page_view: ^0.2.0

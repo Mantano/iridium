@@ -5,6 +5,11 @@ Iridium keeps the platform-specific code to the bare minimum (zero for now, in f
 unified codebase. Until now, only the precompiled LCP DRM native library is specific to each platform, and is provided
 in binary form by [Edrlab](https://edrlab.org) that simply must be dropped into the source tree.
 
+## Supported Platforms
+
+- **Android** 6 Marshmallow and later
+- **iOS** 15 and later
+- **macOS** 10.14 Mojave and later - *experimental*
 
 ## Features
 
