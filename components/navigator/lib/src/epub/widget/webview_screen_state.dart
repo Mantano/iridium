@@ -184,6 +184,8 @@ class WebViewScreenState extends State<WebViewScreen> {
             useShouldOverrideUrlLoading: true,
             verticalScrollBarEnabled: false,
             horizontalScrollBarEnabled: false,
+            // Below a fix suggested by westernbuptboy in https://github.com/Mantano/iridium/issues/102
+            decelerationRate: ScrollViewDecelerationRate.FAST,
           ),
           onConsoleMessage: (InAppWebViewController controller,
               ConsoleMessage consoleMessage) {
@@ -205,6 +207,9 @@ class WebViewScreenState extends State<WebViewScreen> {
           gestureRecognizers: {
             Factory<WebViewHorizontalGestureRecognizer>(
                 () => webViewHorizontalGestureRecognizer),
+            // Suggested by markusait in https://github.com/Mantano/iridium/issues/108#issuecomment-1984986046
+            Factory<VerticalDragGestureRecognizer>(
+                () => VerticalDragGestureRecognizer()),
             Factory<LongPressGestureRecognizer>(
                 () => LongPressGestureRecognizer()),
           },
