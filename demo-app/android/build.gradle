@@ -29,6 +29,9 @@ allprojects {
 
     }
     // From https://github.com/pichillilorenzo/flutter_inappwebview/pull/2182
+    // This temporary fix is required to fix an issue introduced when adding again webview_flutter
+    // to the dependencies, for the MacOS version.
+    // TODO It will be removed as soon as Lorenzo merges the PR
     configurations.all {
         resolutionStrategy {
             force 'androidx.webkit:webkit:1.8.0'
