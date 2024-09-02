@@ -28,6 +28,12 @@ allprojects {
         }
 
     }
+    // From https://github.com/pichillilorenzo/flutter_inappwebview/pull/2182
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.webkit:webkit:1.8.0'
+        }
+    }
 }
 
 
