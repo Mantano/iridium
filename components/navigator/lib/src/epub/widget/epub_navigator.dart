@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
@@ -67,7 +67,7 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
         reverse: readerContext?.readingProgression?.isReverseOrder() ?? false,
         itemCount: spine.length,
         itemBuilder: (context, position) =>
-            (Platform.isAndroid || Platform.isIOS)
+            (Platform.isAndroid || Platform.isIOS || Platform.isMacOS)
                 ? WebViewScreen(
                     address: serverState.address,
                     link: spine[position],
@@ -75,6 +75,11 @@ class EpubNavigatorState extends PublicationNavigatorState<EpubNavigator> {
                     readerContext: readerContext!,
                     publicationController: epubController,
                   )
-                : const SizedBox.shrink(),
+                : Center(
+              child: Text(
+                'Webview not implemented (yet) on this platform',
+                style: TextStyle(fontSize: 16, color: Colors.red),
+              ),
+            ),
       );
 }
