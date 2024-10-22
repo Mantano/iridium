@@ -34,7 +34,7 @@ dependencies:
     path: ../
 
   flutter_fimber: ^0.7.1
-  flutter_inappwebview: ^6.0.0
+  flutter_inappwebview: ^6.1.0+1
   path_provider: ^2.1.4
   universal_io: ^2.2.2
 

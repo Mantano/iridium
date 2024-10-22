@@ -25,12 +25,6 @@ import 'package:mno_navigator/src/publication/model/annotation_type_and_idref_pr
 import 'package:mno_server/mno_server.dart';
 import 'package:mno_shared/publication.dart';
 import 'package:universal_io/io.dart';
-import 'package:webview_flutter/webview_flutter.dart' as webview_flutter;
-// #docregion platform_imports
-// Import for Android features.
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-// Import for iOS/macOS features.
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 @protected
 class WebViewScreenState extends State<WebViewScreen> {
@@ -55,9 +49,6 @@ class WebViewScreenState extends State<WebViewScreen> {
   late StreamSubscription<ReaderAnnotation> bookmarkSubscription;
   late StreamSubscription<List<String>> deletedAnnotationIdsSubscription;
   late StreamSubscription<int> viewportWidthSubscription;
-
-  late final webview_flutter.WebViewController
-      _wefController; // Only needed for platforms where we use webview_flutter (MacOS)
 
   bool isLoaded = false;
 
@@ -150,94 +141,6 @@ class WebViewScreenState extends State<WebViewScreen> {
     viewportWidthSubscription = readerContext.viewportWidthStream
         .listen((viewportWidth) => _jsApi?.setViewportWidth(viewportWidth));
 
-    initializeWebViewFlutterIfNeeded();
-  }
-
-  void initializeWebViewFlutterIfNeeded() {
-    if (Platform.isMacOS) {
-      // #docregion platform_features
-      late final webview_flutter.PlatformWebViewControllerCreationParams params;
-      if (webview_flutter.WebViewPlatform.instance is WebKitWebViewPlatform) {
-        params = WebKitWebViewControllerCreationParams(
-          allowsInlineMediaPlayback: true,
-          mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-        );
-      } else {
-        params =
-            const webview_flutter.PlatformWebViewControllerCreationParams();
-      }
-
-      final webview_flutter.WebViewController controller =
-          webview_flutter.WebViewController.fromPlatformCreationParams(params);
-      // #enddocregion platform_features
-
-      controller
-        ..setJavaScriptMode(webview_flutter.JavaScriptMode.unrestricted)
-        ..setNavigationDelegate(
-          webview_flutter.NavigationDelegate(
-            onProgress: (int progress) {
-              debugPrint('WebView is loading (progress : $progress%)');
-            },
-            onPageStarted: (String url) {
-              debugPrint('Page started loading: $url');
-            },
-            onPageFinished: (String url) {
-              debugPrint('Page finished loading: $url');
-            },
-            onWebResourceError: (webview_flutter.WebResourceError error) {
-              debugPrint('''
-Page resource error:
-  code: ${error.errorCode}
-  description: ${error.description}
-  errorType: ${error.errorType}
-  isForMainFrame: ${error.isForMainFrame}
-          ''');
-            },
-            onNavigationRequest: (webview_flutter.NavigationRequest request) {
-              if (request.url.startsWith('https://www.youtube.com/')) {
-                debugPrint('blocking navigation to ${request.url}');
-                return webview_flutter.NavigationDecision.prevent;
-              }
-              debugPrint('allowing navigation to ${request.url}');
-              return webview_flutter.NavigationDecision.navigate;
-            },
-            onHttpError: (webview_flutter.HttpResponseError error) {
-              debugPrint(
-                  'Error occurred on page: ${error.response?.statusCode}');
-            },
-            onUrlChange: (webview_flutter.UrlChange change) {
-              debugPrint('url change to ${change.url}');
-            },
-            onHttpAuthRequest: (webview_flutter.HttpAuthRequest request) {
-              // openDialog(request);
-            },
-          ),
-        )
-        ..addJavaScriptChannel(
-          'Toaster',
-          onMessageReceived: (webview_flutter.JavaScriptMessage message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(message.message)),
-            );
-          },
-        )
-        ..loadRequest(Uri.parse('https://flutter.dev'));
-
-      // setBackgroundColor is not currently supported on macOS.
-      if (kIsWeb || !Platform.isMacOS) {
-        controller.setBackgroundColor(const Color(0x80000000));
-      }
-
-      // #docregion platform_features
-      if (controller.platform is AndroidWebViewController) {
-        AndroidWebViewController.enableDebugging(true);
-        (controller.platform as AndroidWebViewController)
-            .setMediaPlaybackRequiresUserGesture(false);
-      }
-      // #enddocregion platform_features
-
-      _wefController = controller;
-    }
   }
 
   @override
@@ -268,83 +171,79 @@ Page resource error:
   Widget buildWebViewComponent(Link link) {
     Fimber.d(
         " ============ Platform.isMacOS || Platform.isWindows || Platform.isLinux --> ${Platform.isMacOS || Platform.isWindows || Platform.isLinux}");
-    if (Platform.isMacOS) {
-      _wefController.loadRequest(
-          Uri.parse('${widget.address}/${spineItem.href.removePrefix("/")}'));
-    }
 
     return isLoaded
-        ? (Platform.isMacOS
-            ? webview_flutter.WebViewWidget(controller: _wefController)
-            : InAppWebView(
-                key: _webViewKey,
-                initialUrlRequest: URLRequest(
-                    url: WebUri(
-                        '${widget.address}/${link.href.removePrefix("/")}')),
-                initialSettings: InAppWebViewSettings(
-                  isInspectable: kDebugMode && Platform.isIOS,
-                  isTextInteractionEnabled: _viewerSettingsBloc
-                      .viewerSettings.isTextInteractionEnabled,
-                  useHybridComposition: true,
-                  useShouldInterceptRequest: true,
-                  safeBrowsingEnabled: false,
-                  cacheMode: CacheMode.LOAD_NO_CACHE,
-                  disabledActionModeMenuItems:
-                      ActionModeMenuItem.MENU_ITEM_SHARE |
-                          ActionModeMenuItem.MENU_ITEM_WEB_SEARCH |
-                          ActionModeMenuItem.MENU_ITEM_PROCESS_TEXT,
-                  useShouldOverrideUrlLoading: true,
-                  verticalScrollBarEnabled: false,
-                  horizontalScrollBarEnabled: false,
-                  // Below a fix suggested by westernbuptboy in https://github.com/Mantano/iridium/issues/102
-                  decelerationRate: ScrollViewDecelerationRate.FAST,
-                ),
-                onConsoleMessage: (InAppWebViewController controller,
-                    ConsoleMessage consoleMessage) {
-                  Fimber.d(
-                      "WebView[${consoleMessage.messageLevel}]: ${consoleMessage.message}");
-                },
-                shouldInterceptRequest: (InAppWebViewController controller,
-                    WebResourceRequest request) async {
-                  if (!_serverBloc.startHttpServer &&
-                      request.url.toString().startsWith(_serverBloc.address)) {
-                    _serverBloc
-                        .onRequest(AndroidRequest(request))
-                        .then((androidResponse) => androidResponse.response);
-                  }
-                },
-                shouldOverrideUrlLoading:
-                    (controller, navigationAction) async =>
-                        NavigationActionPolicy.ALLOW,
-                onLoadStop: _onPageFinished,
-                gestureRecognizers: {
-                  Factory<WebViewHorizontalGestureRecognizer>(
-                      () => webViewHorizontalGestureRecognizer),
-                  // Suggested by markusait in https://github.com/Mantano/iridium/issues/108#issuecomment-1984986046
-                  Factory<VerticalDragGestureRecognizer>(
-                      () => VerticalDragGestureRecognizer()),
-                  Factory<LongPressGestureRecognizer>(
-                      () => LongPressGestureRecognizer()),
-                },
-                contextMenu: ContextMenu(
-                  options: ContextMenuOptions(
-                      hideDefaultSystemContextMenuItems: true),
-                  onCreateContextMenu: (hitTestResult) async {
-                    _jsApi?.let((jsApi) async {
-                      Selection? selection =
-                          await jsApi.getCurrentSelection(currentLocator);
-                      selection?.offset = webViewOffset();
-                      selectionController.add(selection);
-                    });
-                  },
-                  onHideContextMenu: () {
-                    selectionController.add(null);
-                  },
-                ),
-                onWebViewCreated: _onWebViewCreated,
-              ))
+        ? buildInAppWebView(link)
         : const SizedBox.shrink();
   }
+
+  InAppWebView buildInAppWebView(Link link) => InAppWebView(
+              key: _webViewKey,
+              initialUrlRequest: URLRequest(
+                  url: WebUri(
+                      '${widget.address}/${link.href.removePrefix("/")}')),
+              initialSettings: InAppWebViewSettings(
+                isInspectable: kDebugMode && Platform.isIOS,
+                isTextInteractionEnabled: _viewerSettingsBloc
+                    .viewerSettings.isTextInteractionEnabled,
+                useHybridComposition: true,
+                useShouldInterceptRequest: true,
+                safeBrowsingEnabled: false,
+                cacheMode: CacheMode.LOAD_NO_CACHE,
+                disabledActionModeMenuItems:
+                    ActionModeMenuItem.MENU_ITEM_SHARE |
+                        ActionModeMenuItem.MENU_ITEM_WEB_SEARCH |
+                        ActionModeMenuItem.MENU_ITEM_PROCESS_TEXT,
+                useShouldOverrideUrlLoading: true,
+                verticalScrollBarEnabled: false,
+                horizontalScrollBarEnabled: false,
+                // Below a fix suggested by westernbuptboy in https://github.com/Mantano/iridium/issues/102
+                decelerationRate: ScrollViewDecelerationRate.FAST,
+              ),
+              onConsoleMessage: (InAppWebViewController controller,
+                  ConsoleMessage consoleMessage) {
+                Fimber.d(
+                    "WebView[${consoleMessage.messageLevel}]: ${consoleMessage.message}");
+              },
+              shouldInterceptRequest: (InAppWebViewController controller,
+                  WebResourceRequest request) async {
+                if (!_serverBloc.startHttpServer &&
+                    request.url.toString().startsWith(_serverBloc.address)) {
+                  _serverBloc
+                      .onRequest(AndroidRequest(request))
+                      .then((androidResponse) => androidResponse.response);
+                }
+              },
+              shouldOverrideUrlLoading:
+                  (controller, navigationAction) async =>
+                      NavigationActionPolicy.ALLOW,
+              onLoadStop: _onPageFinished,
+              gestureRecognizers: {
+                Factory<WebViewHorizontalGestureRecognizer>(
+                    () => webViewHorizontalGestureRecognizer),
+                // Suggested by markusait in https://github.com/Mantano/iridium/issues/108#issuecomment-1984986046
+                Factory<VerticalDragGestureRecognizer>(
+                    () => VerticalDragGestureRecognizer()),
+                Factory<LongPressGestureRecognizer>(
+                    () => LongPressGestureRecognizer()),
+              },
+              contextMenu: ContextMenu(
+                options: ContextMenuOptions(
+                    hideDefaultSystemContextMenuItems: true),
+                onCreateContextMenu: (hitTestResult) async {
+                  _jsApi?.let((jsApi) async {
+                    Selection? selection =
+                        await jsApi.getCurrentSelection(currentLocator);
+                    selection?.offset = webViewOffset();
+                    selectionController.add(selection);
+                  });
+                },
+                onHideContextMenu: () {
+                  selectionController.add(null);
+                },
+              ),
+              onWebViewCreated: _onWebViewCreated,
+            );
 
   void _onPageFinished(InAppWebViewController controller, Uri? url) async {
     // Fimber.d("_onPageFinished[$position]: $url");

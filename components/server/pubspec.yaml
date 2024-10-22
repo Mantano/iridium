@@ -22,17 +22,17 @@ dependencies:
   dfunc: ^0.10.0
   equatable: ^2.0.5
   fimber: ^0.7.0
-  flutter_inappwebview: ^6.0.0
+  flutter_inappwebview: ^6.1.5
   intl: ^0.19.0
-  path: ^1.9.0
+  path: ^1.9.1
   rxdart: ^0.28.0
   universal_io: ^2.2.2
 
 dependency_overrides:
   rxdart: ^0.28.0
-  collection: ^1.19.0
+  collection: ^1.19.1
   intl: ^0.19.0
-  meta: ^1.15.0
+  meta: ^1.16.0
 
 dev_dependencies:
-  lints: ^4.0.0
+  lints: ^5.0.0
