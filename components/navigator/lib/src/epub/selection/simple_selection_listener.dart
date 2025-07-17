@@ -6,7 +6,7 @@ import 'package:mno_navigator/src/epub/selection/annotation_popup.dart';
 import 'package:mno_navigator/src/epub/selection/highlight_popup.dart';
 import 'package:mno_navigator/src/epub/selection/new_selection_popup.dart';
 
-class SimpleSelectionListener extends SelectionListener {
+class SimpleSelectionListener extends ReaderSelectionListener {
   final State state;
   NewSelectionPopup? _newSelectionPopup;
   HighlightPopup? _highlightPopup;

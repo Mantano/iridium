@@ -49,7 +49,7 @@ class WebViewScreenState extends State<WebViewScreen> {
   StreamSubscription<PaginationInfo>? _paginationInfoSubscription;
   late EpubCallbacks epubCallbacks;
   late bool currentSelectedSpineItem;
-  late SelectionListener? selectionListener;
+  late ReaderSelectionListener? selectionListener;
   late StreamController<Selection?> selectionController;
   late StreamSubscription<Selection?> selectionSubscription;
   late StreamSubscription<ReaderAnnotation> bookmarkSubscription;

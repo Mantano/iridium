@@ -3,11 +3,11 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 import 'package:mno_navigator/src/epub/extensions/decoration_change.dart';
 
-abstract class SelectionListener {
+abstract class ReaderSelectionListener {
   final ReaderContext readerContext;
   final BuildContext context;
 
-  SelectionListener(this.readerContext, this.context);
+  ReaderSelectionListener(this.readerContext, this.context);
 
   JsApi? get jsApi => readerContext.currentSpineItemContext?.jsApi;
 

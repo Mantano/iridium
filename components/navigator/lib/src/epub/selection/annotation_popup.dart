@@ -3,7 +3,7 @@ import 'package:mno_navigator/epub.dart';
 import 'package:mno_navigator/publication.dart';
 
 class AnnotationPopup extends StatefulWidget {
-  final SelectionListener selectionListener;
+  final ReaderSelectionListener selectionListener;
   final Selection selection;
   final HighlightStyle style;
   final Color tint;
@@ -21,7 +21,7 @@ class AnnotationPopup extends StatefulWidget {
 
   static void showAnnotationPopup(
     BuildContext context,
-    SelectionListener selectionListener,
+    ReaderSelectionListener selectionListener,
     Selection selection,
     HighlightStyle style,
     Color tint,
@@ -43,7 +43,7 @@ class AnnotationPopupState extends State<AnnotationPopup> {
   static const double borderWidth = 4.0;
   late TextEditingController _controller;
 
-  SelectionListener get selectionListener => widget.selectionListener;
+  ReaderSelectionListener get selectionListener => widget.selectionListener;
 
   Selection get selection => widget.selection;
 

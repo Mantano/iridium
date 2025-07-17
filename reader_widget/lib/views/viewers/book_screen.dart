@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:dartx/dartx.dart';
 import 'package:fimber/fimber.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ abstract class BookScreenState<T extends BookScreen,
   }
 
   Future<bool> loadWebViewConfig() async {
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (kDebugMode && Platform.isAndroid) {
       await InAppWebViewController.setWebContentsDebuggingEnabled(true);
     }
     return true;
