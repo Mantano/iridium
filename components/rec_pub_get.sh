@@ -1,9 +1,6 @@
 #!/bin/bash
 folders=("commons"
-  "lcp"
-#  "lcp_native"
   "navigator"
-  "opds"
   "server"
   "shared"
   "streamer"

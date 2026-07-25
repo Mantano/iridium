@@ -4,14 +4,10 @@
 # Proprietary and confidential.
 
 folders=("components/commons"
-  "components/lcp"
   "components/navigator"
-  "components/opds"
   "components/server"
   "components/shared"
   "components/streamer"
-  "reader_widget"
-  "demo-app"
 )
 for i in "${folders[@]}"; do
   echo "flutter clean $i"

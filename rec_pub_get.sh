@@ -8,11 +8,7 @@ folders=("components/commons"
   "components/webview"
   "components/server"
   "components/streamer"
-  "components/opds"
   "components/navigator"
-  "components/lcp"
-  "reader_widget"
-  "demo-app"
 )
 for i in "${folders[@]}"; do
   echo "flutter pub get $i"
